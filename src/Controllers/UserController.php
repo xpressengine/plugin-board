@@ -572,19 +572,12 @@ class UserController extends Controller
 
         XeDB::beginTransaction();
 
-        // check permission
-        if ($this->handler->remove($item, $this->config) !== 1) {
-            XeDB::rollBack();
-            throw new DeleteFailException;
-        }
+        $this->handler->trash($item, $this->config);
+        $identifyManager->destroy($item);
 
         XeDB::commit();
 
-        $identifyManager->destroy($doc);
-
-        // 어떤 리스틑 보여 줘야 하는지 계산...
-
-        return Redirect::to($this->urlHandler->get('index', Input::except('id')));
+        return Redirect::to($this->urlHandler->get('index'));
     }
 
     /**
