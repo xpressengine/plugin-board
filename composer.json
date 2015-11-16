@@ -1,0 +1,72 @@
+{
+  "name": "xpressengine-plugin/board",
+  "description": "XpressEngine's plugin for bundle (XE)",
+  "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
+  "version": "0.3.0",
+  "support": {
+    "email": "developers@xpressengine.com"
+  },
+  "authors": [
+    {
+      "name": "XE Team",
+      "email": "developers@xpressengine.com",
+      "homepage": "http://xpressengine.io",
+      "role": "Developer"
+    }
+  ],
+  "license": "LGPL",
+  "type": "xpressengine-plugin",
+  "extra": {
+    "xpressengine": {
+      "title": "게시판",
+      "component": {
+        "module/board@board": {
+          "class": "Xpressengine\\Plugins\\Board\\Module\\Board",
+          "name": "Board",
+          "description": "XE Board 모듈",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/menuType1.png"
+          ]
+        },
+        "module/board@board/skin/board@default": {
+          "class": "Xpressengine\\Plugins\\Board\\Skin\\DefaultSkin",
+          "name": "게시판 기본 스킨",
+          "description": "게시판 기본 스킨.",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/userDefaultSkin1.png",
+            "/plugins/board/assets/img/screenshots/userDefaultSkin2.png"
+          ]
+        },
+        "module/board@board/settingsSkin/board@default": {
+          "class": "Xpressengine\\Plugins\\Board\\Skin\\SettingsSkin",
+          "name": "게시판 관리자 기본 스킨",
+          "description": "게시판 관리자 기본스킨",
+          "screenshot" : []
+        },
+        "uiobject/board@select": {
+          "class": "Xpressengine\\Plugins\\Board\\UIObject\\DesignSelect",
+          "name": "Design select",
+          "description": "디자인 셀렉트"
+        }
+      }
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://packagist.xpressengine.io"
+    }
+  ],
+  "require": {
+    "xpressengine-plugin/comment_service": "0.1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "mockery/mockery": "dev-master@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Xpressengine\\Plugins\\Board\\": "src/"
+    }
+  }
+}

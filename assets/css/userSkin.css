@@ -1,0 +1,189 @@
+.board-container {
+}
+
+.board-container .content{
+    text-align: left;
+}
+
+.board-container .__xe_profile_image {
+    margin: 0 6px 5px 0;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 100px;
+    height: 60px;
+    width: 60px;
+}
+.board-container .__xe_profile_image.small {
+    height: 20px;
+    width: 20px;
+}
+.board-list {
+}
+
+.board-list .table {
+    background-color: #FFFFFF;
+}
+.board-list .table-hover tbody tr:hover {
+    background-color: #FCFCFC;
+}
+.board-list caption {
+    display: none;
+}
+.board-list .column-th {
+    text-align: center;
+    font-weight: bold;
+    color: #424242;
+}
+.board-list .column-th a {
+    color: #424242;
+}
+.board-list .column-th-title {
+    width: 300px;
+}
+.board-list .column-td {
+    color: #555555;
+}
+.board-list .column-td a {
+    color: #555555;
+}
+.board-list .column-td a:visited {
+    color: #9d9d9d;
+}
+.board-list .column-td {
+    text-align: center;
+}
+.board-list .column-title {
+    text-align: left;
+}
+.board-list .table thead tr th {
+    border-bottom: 1px solid #BDBDBD;
+    padding: 10px 4px;
+}
+
+.board-list .table tbody tr td {
+    border-top: 0;
+    padding: 10px 4px;
+}
+.board-list .table tbody tr:last-child {
+    border-top: 0;
+    border-bottom: 1px solid #BDBDBD;
+    padding: 10px 4px;
+}
+
+.board-container {
+    padding:30px 0;
+}
+
+.board-container .btn-primary {
+    background-color: #6999F6;
+}
+.board-container .btn-alert {
+    background-color: #EEEEEE;
+    color: #616161;
+}
+.board-container .btn-alert:hover {
+    background-color: #FD6D6F;
+    color: #FFFFFF;
+}
+.board-container .btn-move {
+    background-color: #EEEEEE;
+    color: #616161;
+}
+.board-container .btn-move:hover {
+    background-color: #6999F6;
+    color: #FFFFFF;
+}
+.board-container .board-footer {
+    clear: both;
+}
+.board-container .search-form {
+    float:left;
+}
+
+.board-container .search-detail {
+    display: none;
+    padding-top:20px;
+}
+
+.board-container .paginate {
+    clear: both;
+    text-align: center;
+}
+
+.board-container .paginate .pagination li a{
+    background-color: #EEEEEE;
+    color: #AFAFAF;
+}
+.board-container .paginate .pagination:first-child a, .board-container .paginate .pagination:last-child a{
+    background-color: #EEEEEE;
+    color: #6999F6;
+}
+.board-container .paginate .pagination li.active span{
+    background-color: #6999F6;
+
+}
+.board-container .paginate .pagination li.disabled span{
+    background-color: #EEEEEE;
+    color: #AFAFAF;
+}
+.board-show .__xe_section {
+    clear: both;
+}
+.board-show .header .title-box {
+    padding: 15px 0;
+}
+.board-show .header .title-box .title {
+    font-size: 30px;
+}
+
+.board-show .header .member {
+    width: 100%;
+    float: left;
+}
+.board-show .header .__xe_user {
+    color: #6999F6;
+}
+.board-show .header .summary span{
+    color: #BCBCBC;
+    padding-right: 10px;
+}
+.board-show .content {
+    padding: 20px 5px;
+}
+.board-show .btn_section {
+    text-align: right;
+}
+.board-show .__xe_vote_document {
+    text-align: center;
+    margin: 30px 0;
+}
+.board-show .__xe_vote_document .btn{
+    width: 60px;
+    height: 56px;
+    background-color: #EEEEEE;
+    color: #585858;
+}
+.board-show .__xe_vote_document .btn-assent:hover, .board-show .__xe_vote_document .btn-assent.voted{
+    background-color: #FD6D6F;
+    color: #FFFFFF;
+}
+.board-show .__xe_vote_document .btn-dissent:hover, .board-show .__xe_vote_document .btn-dissent.voted{
+    background-color: #6999F6;
+    color: #FFFFFF;
+}
+
+.board-container .form .__xe_section {
+    padding-bottom: 15px;
+}
+.board-container .form .__xe_title {
+    padding-bottom: 30px;
+}
+
+.board-container .form .btn-area {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.board-container .btn-right {
+    float: right;
+}
