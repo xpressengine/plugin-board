@@ -159,8 +159,7 @@
                                 @if($item->commentCount > 0)
                                 <span class="reply_num mb_hidden" title="Replies">{{ $item->commentCount }}</span>
                                 @endif
-
-                                @if(strtotime($item->createdAt) + $config->get('newTime') > time())
+                                @if($item->isNew($config->get('newTime')))
                                     <span class="bd_ico_new"><i class="xi-new"></i><span class="bd_hidden">new</span></span>
                                 @endif
 
@@ -224,7 +223,7 @@
                                     <span class="reply_num mb_hidden" title="Replies">{{ $item->commentCount }}</span>
                                 @endif
 
-                                @if(strtotime($item->createdAt) + $config->get('newTime') > time())
+                                @if($item->isNew($config->get('newTime')))
                                     <span class="bd_ico_new"><i class="xi-new"></i><span class="bd_hidden">new</span></span>
                                 @endif
 

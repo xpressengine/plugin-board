@@ -84,7 +84,7 @@ class ConfigHandler
         'perPage' => 10,
         //'searchPerPage' => 10,
         'pageCount' => 10,
-        'newTime' => 86400, // 새글로 처리하는 시간
+        'newTime' => 1, // 새글로 처리하는 시간
         'comment' => true,
         'assent' => true,
         'dissent' => false,

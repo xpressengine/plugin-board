@@ -288,6 +288,17 @@ class ItemEntity implements ShortIdAssociateInterface, CommentUsable, SlugAssoci
     }
 
     /**
+     * Return is new
+     *
+     * @param int $hour hour config value
+     * @return bool
+     */
+    public function isNew($hour)
+    {
+       return strtotime($this->__get('createdAt')) + ($hour * 86400) > time();
+    }
+
+    /**
      * call document entity method
      *
      * @param string $method     method name

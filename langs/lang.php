@@ -127,8 +127,8 @@ return [
         'en' => 'You can set the number of page links to move pages in a bottom of the page.',
     ],
     'newArticleTime' => [
-        'ko' => '새글 기준 시간',
-        'en' => 'New article time',
+        'ko' => '새글 기준 시간(단위: 시간)',
+        'en' => 'New article time(Measure: Hour)',
     ],
     'newArticleTimeDescription' => [
         'ko' => '새글 표시를 위한 시간을 설정할 수 있습니다.',
