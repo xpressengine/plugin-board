@@ -373,8 +373,9 @@ class Handler
         }
 
         $doc = $this->document->put($doc);
-
-        if ($item->getSlug() != null) {
+        if ($item->slug != $item->getSlug()->slug) {
+            $slugEntity = $item->getSlug();
+            $slugEntity->slug = $item->slug;
             $this->slug->update($item->getSlug());
         }
 
