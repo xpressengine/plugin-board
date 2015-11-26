@@ -235,7 +235,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        /** @var \Illuminate\Http\Request $request */
+        /** @var \Xpressengine\Http\Request $request */
         $request = app('request');
         $user = Auth::user();
 
@@ -245,8 +245,12 @@ class UserController extends Controller
         $rules = $validator->getCreateRule($user, $this->config);
         $this->validate($request, $rules);
 
+        $inputs = $request->all();
+        // replace purifying content to origin content value
+        $inputs['content'] = $request->originAll()['content'];
+
         // make document entity
-        $doc = new DocumentEntity($this->handler->documentFilter($request->all()));
+        $doc = new DocumentEntity($this->handler->documentFilter($inputs));
         $doc->id = (new Keygen())->generate();
         $doc->instanceId = $this->boardId;
 
@@ -405,7 +409,7 @@ class UserController extends Controller
      */
     public function update()
     {
-        /** @var \Illuminate\Http\Request $request */
+        /** @var \Xpressengine\Http\Request $request */
         $request = app('request');
         $user = Auth::user();
         $id = $request->get('id');
@@ -439,7 +443,11 @@ class UserController extends Controller
         }
         $this->validate($request, $rules);
 
-        foreach ($this->handler->documentFilter($request->all()) as $name => $value) {
+        $inputs = $request->all();
+        // replace purifying content to origin content value
+        $inputs['content'] = $request->originAll()['content'];
+
+        foreach ($this->handler->documentFilter($inputs) as $name => $value) {
             $doc->{$name} = $value;
         }
 

@@ -451,13 +451,8 @@ class Handler
         if ($config->get('recursiveDelete') === true) {
             $rows = $this->document->getRepository()->getReplies($item->getDocument());
             foreach ($rows as $row) {
-                $doc = new DocumentEntity($row);
-                $doc->trash();
-                $item = $this->makeItem($doc);
-
-                if ($item->userId == '') {
-                    $item->userId = '';
-                }
+                $item = $this->get($row['id'], $row['instanceId']);
+                $item->setDocument($item->getDocument()->trash());
                 $this->put($item);
             }
         } else {
