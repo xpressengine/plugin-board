@@ -12,6 +12,7 @@
             @endif
             <div class="write_title">
                 {!! uio('titleWithSlug', [
+                'id' => $item->id,
                 'title' => Input::old('title', $item->title),
                 'slug' => $item->getSlug() === null ? '' : $item->getSlug()->slug,
                 'titleClassName' => 'bd_input',

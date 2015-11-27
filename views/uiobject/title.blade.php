@@ -11,11 +11,12 @@
                 var $container = $target.closest('.__xe_titleWithSlug');
                 $container.find('.__xe_slug_edit input').val($target.val());
 
-                checkSlug($container);
+                checkSlug($container, function() {
+                    $($container).parent().find('.__xe_slug_show').show();
+                });
 
                 var $parent = $(this).parent();
                 $parent.find('.__xe_slug_edit').hide();
-                $parent.find('.__xe_slug_show').show();
 
             }).on('click', '.__xe_slug_show .edit', function(event) {
                 event.preventDefault();
@@ -29,10 +30,12 @@
 
                 var $container = $(event.target).closest('.__xe_titleWithSlug');
 
-                checkSlug($container);
+                checkSlug($container, function() {
+                    $container.find('.__xe_slug_show').show();
+                });
 
                 $container.find('.__xe_slug_edit').hide();
-                $container.find('.__xe_slug_show').show();
+
             }).on('click', '.__xe_slug_edit .cancel', function(event) {
                 event.preventDefault();
 
@@ -44,13 +47,12 @@
 
             $('.__xe_titleWithSlug').each(function() {
                 var $container = $(this);
-
-                if ($container.find('input.title').data('slug') != '') {
+                if ($container.find('input.__xe_title').data('slug') != '') {
                     $container.find('.__xe_slug_show').show();
                 }
             });
 
-            function checkSlug($container)
+            function checkSlug($container, callback)
             {
                 var id = $container.find('[name="title"]').data('id'),
                         slug = $container.find('.__xe_slug_edit input').val();
@@ -62,7 +64,9 @@
                     dataType: 'json',
                     success: function(res) {
                         $container.find('.__xe_slug_edit input').val(res.slug);
-                        $container.find('.current-slug').text(res.slug);
+                        $container.find('.current-slug').text('{{instanceRoute('slug')}}/' + res.slug);
+
+                        callback();
                     }
                 });
             }
@@ -72,16 +76,18 @@
 @endif
 
 <div class="__xe_titleWithSlug">
-    <input type="text" name="{{ $titleDomName }}" class="{{$titleClassName}}" value="{{ $title }}" placeholder="{{ xe_trans('xe::title') }}" data-id="{{ $id }}" data-slug="{{ $slug }}"/>
+    <input type="text" name="{{ $titleDomName }}" class="__xe_title {{$titleClassName}}" value="{{ $title }}" placeholder="{{ xe_trans('xe::title') }}" data-id="{{ $id }}" data-slug="{{ $slug }}"/>
 
     <div class="__xe_slug_edit" style="display:none;">
-        <span class="edit-slug"><input type="text" name="{{ $slugDomName }}" value="{{ $slug }}"/></span>
+        <i class="xi-link"></i>
+        <span class="edit-slug">{{instanceRoute('slug')}}/<input type="text" name="{{ $slugDomName }}" value="{{ $slug }}"/></span>
         <span><a href="#" class="ok">OK</a></span>
         <span><a href="#" class="cancel">Cancel</a></span>
     </div>
 
     <div class="__xe_slug_show" style="display:none;">
-        <span class="current-slug">{{ $slug }}</span>
+        <i class="xi-link"></i>
+        <span class="current-slug">{{instanceRoute('slug')}}/{{ $slug }}</span>
         <span><a href="#" class="edit">Edit</a></span>
     </div>
 </div>
