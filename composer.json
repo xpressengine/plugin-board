@@ -21,7 +21,7 @@
       "title": "게시판",
       "component": {
         "module/board@board": {
-          "class": "Xpressengine\\Plugins\\Board\\Module\\Board",
+          "class": "Xpressengine\\Plugins\\Board\\Modules\\Board",
           "name": "Board",
           "description": "XE Board 모듈",
           "screenshot" : [
@@ -29,7 +29,7 @@
           ]
         },
         "module/board@board/skin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Skin\\DefaultSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Skins\\DefaultSkin",
           "name": "게시판 기본 스킨",
           "description": "게시판 기본 스킨.",
           "screenshot" : [
@@ -38,13 +38,13 @@
           ]
         },
         "module/board@board/settingsSkin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Skin\\SettingsSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Skins\\SettingsSkin",
           "name": "게시판 관리자 기본 스킨",
           "description": "게시판 관리자 기본스킨",
           "screenshot" : []
         },
         "uiobject/board@select": {
-          "class": "Xpressengine\\Plugins\\Board\\UIObject\\DesignSelect",
+          "class": "Xpressengine\\Plugins\\Board\\UIObjects\\DesignSelect",
           "name": "Design select",
           "description": "디자인 셀렉트"
         }

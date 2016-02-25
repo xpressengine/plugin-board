@@ -34,18 +34,6 @@
                     <input type="text" id="" name="perPage" class="form-control" value="{{Input::old('perPage', $config->get('perPage'))}}" />
                 </div>
 
-                {{--<div class="form-group">--}}
-                    {{--<label for="">{{xe_trans('board::perPageForSearch')}}</label>--}}
-                    {{--<p class="desc-text">{{xe_trans('board::perPageForSearchDescription')}}</p>--}}
-                    {{--<input type="text" id="" name="searchPerPage" class="form-control" value="{{Input::old('searchPerPage', $config->get('searchPerPage'))}}" />--}}
-                {{--</div>--}}
-
-                {{--<div class="form-group">--}}
-                    {{--<label for="">{{xe_trans('board::pageLinkCount')}}</label>--}}
-                    {{--<p class="desc-text">{{xe_trans('board::pageLinkCountDescription')}}</p>--}}
-                    {{--<input type="text" id="" name="pageCount" class="form-control" value="{{Input::old('pageCount', $config->get('pageCount'))}}" />--}}
-                {{--</div>--}}
-
                 <div class="form-group">
                     <label for="">{{xe_trans('board::newArticleTime')}}</label>
                     <p class="desc-text">{{xe_trans('board::newArticleTimeDescription')}}</p>
@@ -84,40 +72,16 @@
                     </select>
                 </div>
 
-                {{--<div class="form-group">--}}
-                    {{--<label for="">짧은 주소 사용</label>--}}
-                    {{--<p class="desc-text">Short uuid를 이용한 짧은 주소 사용</p>--}}
-                    {{--<select id="" name="shortId" class="form-control">--}}
-                        {{--<option value="true" {!! $config->get('shortId') == true ? 'selected="selected"' : '' !!} >Use</option>--}}
-                        {{--<option value="false" {!! $config->get('shortId') == false ? 'selected="selected"' : '' !!} >Disuse</option>--}}
-                    {{--</select>--}}
-                {{--</div>--}}
-
                 <div class="form-group">
                     <label for="">{{xe_trans('xe::orderType')}}</label>
                     <p></p>
-                    <select id="" name="order" class="form-control" onchange="$(this).parent().find('p').html(($(this).find(':selected').attr('description')))">
-                        @foreach($boardOrders as $key => $boardOrder)
-                            <option value="{{$key}}" description="{{xe_trans($boardOrder->description())}}" {!! $config->get('order') == $key ? 'selected="selected"' : '' !!}>{{xe_trans($boardOrder->name())}}</option>
+                    <select id="" name="order" class="form-control">
+                            <option value="">기본</option>
+                        @foreach($handler->getOrders() as $item)
+                            <option value="{{$item['value']}}" {!! $config->get('order') == $item['value'] ? 'selected="selected"' : '' !!}>{{xe_trans($item['text'])}}</option>
                         @endforeach
                     </select>
                 </div>
-
-                {{--<div class="form-group">--}}
-                    {{--<label>{{xe_trans('board::addon')}}</label>--}}
-                    {{-- set variables */ $i=0 /*--}}
-                    {{--@foreach($addons as $key=>$addon)--}}
-                    {{--<div class="checkbox">--}}
-                        {{--<label>--}}
-                            {{--<input type="checkbox" value="{{$key}}" name="addons[{{$i++}}]" {!! in_array($key, $config->get('addons') != null ? $config->get('addons') : []) === true ? 'checked="checked"' : '' !!} />--}}
-                            {{--<span title="{{$addon->getId()}}">{{$addon->name()}}</span>--}}
-                            {{--@if ($addon->getConfigUrl($config)) <a class="manage-link" href="{!!$addon->getConfigUrl($config) !!}" target="_blank">{{xe_trans('xe::manage')}}</a> @endif--}}
-                            {{--<span class="desc-text">{!!$addon->description()!!}</span>--}}
-
-                        {{--</label>--}}
-                    {{--</div>--}}
-                    {{--@endforeach--}}
-                {{--</div>--}}
 
                 <div class="form-group">
                     <label for="">{{xe_trans('board::adminEmail')}}</label>
@@ -170,14 +134,14 @@
                 </div>
 
                 <!-- Permission -->
-                @foreach ($perms as $perm)
-                    <div class="form-group">
-                        <label for="">{{ $perm['title'] }} {{xe_trans('xe::permission')}}</label>
-                        <div class="well">
-                            {!! uio('permission', $perm) !!}
-                        </div>
-                    </div>
-                @endforeach
+                {{--@foreach ($perms as $perm)--}}
+                    {{--<div class="form-group">--}}
+                        {{--<label for="">{{ $perm['title'] }} {{xe_trans('xe::permission')}}</label>--}}
+                        {{--<div class="well">--}}
+                            {{--{!! uio('permission', $perm) !!}--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--@endforeach--}}
 
                 <button type="submit" class="btn btn-primary">{{xe_trans('xe::save')}}</button>
             </form>
@@ -298,5 +262,5 @@
 </div>
 </section>
 
-{!! uio('uiobject/xpressengine@chakIt', 'Settings:게시판') !!}
+{{--{!! uio('uiobject/xpressengine@chakIt', 'Settings:게시판') !!}--}}
 

@@ -1,38 +1,40 @@
 <?php
 /**
- * Slug
+ * BoardSlug
  *
  * PHP version 5
  *
- * @category    Slug
- * @package     Xpressengine\Plugins\Board\Slug
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-namespace Xpressengine\Plugins\Board\Slug;
+namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
 
 /**
- * Slug
-
- * @category    Slug
- * @package     Xpressengine\Plugins\Board\Slug
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * BoardSlug
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
- *
- * @property string $slug       slug
- * @property string $id         document id
- * @property string $instanceId document instance id
- * @property string $title      document origin title
  */
-class Slug extends DynamicModel
+class BoardSlug extends DynamicModel
 {
-    protected $table = 'slug';
+    static protected $reserved = [];
+
+    protected $table = 'board_slug';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'targetId', 'slug', 'title', 'instanceId',
+    ];
 
     /**
      * 예약어 추가
@@ -52,58 +54,6 @@ class Slug extends DynamicModel
     }
 
     /**
-     * associate
-     *
-     * @param SlugAssociateInterface $entity slug associate interface entity
-     * @return SlugAssociateInterface
-     */
-    public function associate(SlugAssociateInterface $entity)
-    {
-        $instanceId = $entity->getInstanceId();
-        $documentId = $entity->getDocumentId();
-        $slug = $this->findById($documentId, $instanceId);
-        if ($slug != null) {
-            $entity->setSlugEntity($slug);
-        }
-        return $entity;
-    }
-
-    /**
-     * associates
-     *
-     * @param SlugAssociateInterface[] $entities slug associate interface entities or paginator
-     * @return SlugAssociateInterface[]
-     */
-    public function associates($entities)
-    {
-        $entitiesByInstanceId = [];
-        $instanceIds = [];
-        $documentIds = [];
-        foreach ($entities as $entity) {
-            $instanceId = $entity->getInstanceId();
-            if (empty($entitiesByInstanceId[$instanceId])) {
-                $entitiesByInstanceId[$instanceId] = [];
-            }
-
-            $documentId = $entity->getDocumentId();
-            $entitiesByInstanceId[$instanceId][$documentId] = $entity;
-            $documentIds[] = $documentId;
-            $instanceIds[] = $instanceId;
-        }
-
-        $slugs = $this->fetchByIdsInstanceIds(array_unique($documentIds), array_unique($instanceIds));
-
-        /** @var \Xpressengine\Plugins\Board\SlugEntity $entity */
-        foreach ($slugs as $entity) {
-            $instanceId = $entity->instanceId;
-            $id = $entity->id;
-            $entitiesByInstanceId[$instanceId][$id]->setSlugEntity($entity);
-        }
-
-        return $entities;
-    }
-
-    /**
      * convert title to slug
      * $title 을 ascii 코드로 변환 후 하이픈을 제외한 모든 특수문자 제거
      * 스페이스를 하이픈으로 변경
@@ -112,7 +62,7 @@ class Slug extends DynamicModel
      * @param string $slug  slug
      * @return string
      */
-    public function convert($title, $slug)
+    public static function convert($title, $slug = null)
     {
         // $slug 가 있다면 넘겨받은 slug 로 convert
         if ($slug != null) {
@@ -127,7 +77,7 @@ class Slug extends DynamicModel
         $len = mb_strlen($title);
         for ($i=0; $i<$len; $i++) {
             $ch = mb_substr($title, $i, 1);
-            $code = $this->utf8Ord($ch);
+            $code = static::utf8Ord($ch);
             if (
                 ($code <= 47 && $code != 45) ||
                 ($code >= 58 && $code <= 64) ||
@@ -150,7 +100,7 @@ class Slug extends DynamicModel
      * @param string $ch character
      * @return bool|int
      */
-    protected function utf8Ord($ch)
+    public static function utf8Ord($ch)
     {
         $len = strlen($ch);
         if ($len <= 0) {
@@ -176,22 +126,65 @@ class Slug extends DynamicModel
     }
 
     /**
-     * short generated id
+     * make slug string
      *
+     * @param string $slug slug
+     * @param string $id   document id
      * @return string
      */
-    public function getId()
+    public static function make($slug, $id)
     {
-        return $this->__get('id');
+        $slug = static::convert($slug);
+
+        $increment = 0;
+        if (in_array($slug, self::$reserved) === true) {
+            ++$increment;
+        }
+
+        while (static::has($slug, $increment) === true) {
+            $slugInfo = static::where('slug', $slug);
+            if ($slugInfo->id == $id) {
+                break;
+            }
+
+            ++$increment;
+        }
+
+        return static::makeIncrement($slug, $increment);
     }
 
     /**
-     * original id
+     * 새로운 문자 생성
      *
+     * @param string $slug      slug
+     * @param int    $increment increment count
      * @return string
      */
-    public function getOriginId()
+    protected static function makeIncrement($slug, $increment)
     {
-        return $this->__get('originId');
+        if ($increment > 0) {
+            $slug = $slug . '-' . $increment;
+        }
+        return $slug;
+    }
+
+    /**
+     * has slug
+     *
+     * @param string $slug      slug
+     * @param int    $increment increment count
+     * @return int
+     */
+    public static function has($slug, $increment = 0)
+    {
+        $slug = static::makeIncrement($slug, $increment);
+
+        $query = static::where('slug', $slug);
+        $count = $query->count();
+        if ($count !== 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

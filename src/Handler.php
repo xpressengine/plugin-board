@@ -6,530 +6,365 @@
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
 namespace Xpressengine\Plugins\Board;
 
-use Xpressengine\Comment\CommentHandler;
-use Xpressengine\Document\DocumentHandler;
-use Xpressengine\Member\Entities\Guest;
-use Xpressengine\Member\Entities\MemberEntityInterface;
 use Xpressengine\Config\ConfigEntity;
-use Xpressengine\Document\DocumentEntity;
-use Xpressengine\Interception\Proxy;
-use Illuminate\Session\SessionManager;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Http\Request;
-use Xpressengine\Plugins\Board\Exceptions\InvalidConfigException;
-use Xpressengine\Plugins\ShortIdGenerator\Plugin as ShortIdGenerator;
+use Xpressengine\Counter\Counter;
+use Xpressengine\Database\Eloquent\Builder;
+use Xpressengine\Document\DocumentHandler;
+use Xpressengine\Document\Models\Document;
+use Xpressengine\Http\Request;
+use Xpressengine\Member\Entities\MemberEntityInterface;
+use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\Models\BoardCategory;
+use Xpressengine\Plugins\Board\Models\BoardSlug;
+use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
-use Xpressengine\Member\Repositories\MemberRepositoryInterface as Member;
-use Xpressengine\Member\GuardInterface as Authenticator;
+
 
 /**
  * Board handler
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
 class Handler
 {
-    /**
-     * Handler 에 주입 한 Board config entity
-     * $this::setConfig() 로 주입
-     *
-     * @var ConfigEntity
-     */
-    protected $config;
-
-    /**
-     * board instance id
-     *
-     * @var string
-     */
-    protected $instanceId;
 
     /**
      * @var DocumentHandler
      */
-    protected $document;
-
-    /**
-     * @var ShortIdGenerator
-     */
-    protected $shortIdGenerator;
+    protected $documentHandler;
 
     /**
      * @var Storage
      */
     protected $storage;
 
-    /**
-     * @var Member
-     */
-    protected $member;
+    protected $readCounter;
 
-    /**
-     * @var Authenticator
-     */
-    protected $auth;
+    protected $voteCounter;
+
 
     /**
      * create instance
      *
-     * @param DocumentHandler  $document         document handler(Interception Proxy)
-     * @param ShortIdGenerator $shortIdGenerator short id generator
+     * @param DocumentHandler  $documentHandler  document handler(Interception Proxy)
      * @param Storage          $storage          storage
-     * @param SlugRepository   $slug             slug repository
-     * @param Member           $member           member
-     * @param Authenticator    $auth             auth
      */
     public function __construct(
-        DocumentHandler $document,
-        ShortIdGenerator $shortIdGenerator,
+        DocumentHandler $documentHandler,
         Storage $storage,
-        SlugRepository $slug,
-        Member $member,
-        Authenticator $auth
+        Counter $readCounter,
+        Counter $voteCounter
     ) {
-        $this->document = $document;
-        $this->shortIdGenerator = $shortIdGenerator;
+        $this->documentHandler = $documentHandler;
         $this->storage = $storage;
-        $this->slug = $slug;
-        $this->member = $member;
-        $this->auth = $auth;
+        $this->readCounter = $readCounter;
+        $this->voteCounter = $voteCounter;
+    }
+
+    public function getReadCounter()
+    {
+        return $this->readCounter;
+    }
+
+    public function getVoteCounter()
+    {
+        return $this->voteCounter;
     }
 
     /**
-     * set this handler's board config
+     * 게시판에 글 등록 시 핸들러를 통해서 처리
+     * Interception 을 통해 다양한 서드파티 기능이 추가될 수 있다.
      *
-     * @param ConfigEntity $config board config entity
-     * @return void
+     * @param array $args arguments
+     * @return Board
      */
-    public function setConfig(ConfigEntity $config)
+    public function add(array $args, MemberEntityInterface $user)
     {
-        $this->config = $config;
-        $this->setInstancedId($config->get('boardId'));
-    }
+        $model = new Board();
+        $model->getConnection()->beginTransaction();
 
-    /**
-     * set this handler's board id
-     *
-     * @param string $instanceId board id
-     * @return void
-     */
-    public function setInstancedId($instanceId)
-    {
-        $this->instanceId = $instanceId;
-    }
-
-    /**
-     * get document count by board instance id
-     *
-     * @param string $boardId board id
-     * @return int
-     */
-    public function countByBoardId($boardId)
-    {
-        return $this->document->countByInstanceId($boardId);
-    }
-
-    /**
-     * get document list
-     *
-     * @param array $wheres 검색 조건
-     * @param array $orders 정렬 조건
-     * @param int   $limit  get document count
-     * @return array
-     */
-    public function gets(array $wheres, array $orders, $limit = null)
-    {
-        $items = [];
-        foreach ($this->document->gets($wheres, $orders, $limit) as $doc) {
-            $items[] = $this->makeItem($doc);
+        $args['userId'] = $user->getId();
+        if ($args['userId'] === null) {
+            $args['userId'] = '';
+        }
+        if (empty($args['writer'])) {
+            $args['writer'] = $user->getDisplayName();
         }
 
-        $this->shortIdGenerator->associates($items);
-        $this->slug->associates($items);
+        // save Document
+        $doc = $this->documentHandler->add($args);
 
-        return $items;
-    }
+        $board = Board::find($doc->id);
 
-    /**
-     * get document list
-     *
-     * @param array $wheres 검색 조건
-     * @param array $orders 정렬 조건
-     * @param int   $limit  get document count
-     * @return array
-     */
-    public function getsNotice(array $wheres = [], array $orders = [], $limit = null)
-    {
-        if (empty($wheres['status'])) {
-            $wheres['status'] = DocumentEntity::STATUS_NOTICE;
-        }
-        if (empty($wheres['display'])) {
-            $wheres['display'] = DocumentEntity::DISPLAY_VISIBLE;
-        }
-        if (empty($wheres['published'])) {
-            $wheres['published'] = DocumentEntity::PUBLISHED_PUBLISHED;
+        // save Slug
+        $slug = new BoardSlug([
+            'slug' => $args['slug'],
+            'title' => $args['title'],
+            'instanceId' => $args['instanceId'],
+        ]);
+        $board->boardSlug()->save($slug);
+
+        // save Category
+        if (empty($args['itemId']) == false) {
+            $boardCategory = new BoardCategory([
+                'id' => $doc->id,
+                'itemId' => $args['itemId'],
+            ]);
+            $boardCategory->save();
         }
 
-        if (count($orders) == 0) {
-            $orders = ['createdAt' => 'desc'];
-        }
-
-        return $this->gets($wheres, $orders, $limit);
-    }
-
-    /**
-     * get document list by paginate
-     * board item entity class list
-     *
-     * @param array        $wheres 검색 조건
-     * @param array        $orders 정렬 조건
-     * @param ConfigEntity $config board config entity
-     * @return LengthAwarePaginator
-     * @see \Xpressengine\Document\Repositories\DocumentRepository
-     */
-    public function paginate(array $wheres, array $orders, ConfigEntity $config = null)
-    {
-        if ($config == null) {
-            $config = $this->config;
-        }
-
-        if ($orders == [] && $config->get('orderExtension') != null) {
-            $orderType = sprintf('\\%s', $config->get('orderExtension'));
-            (new $orderType)->make($wheres, $orders);
-        }
-
-        $paginator = $this->document->paginate($wheres, $orders, $config->get('perPage'));
-
-        // wrap item entity
-        foreach ($paginator as $key => $doc) {
-            $paginator[$key] = $this->makeItem($doc);
-        }
-
-        $this->shortIdGenerator->associates($paginator);
-        $this->slug->associates($paginator);
-
-        return $paginator;
-    }
-
-    /**
-     * $params 에서 Document entity 를 구성할 값을 필터링
-     * * underscore 로 시작하는 이름 제거
-     * * array 제거
-     *
-     * @param array $params parameters
-     * @return array
-     */
-    public function documentFilter(array $params)
-    {
-        $items = [];
-        foreach ($params as $key => $value) {
-            if (substr($key, 1) == '_') {
-                continue;
+        if (empty($args['_files']) === false) {
+            foreach (File::whereIn('id', $args['_files'])->get() as $file) {
+                $this->storage->bind($doc->id, $file);
             }
-            if (in_array($key, ['certifyKey_confirmation', 'anonymity', 'queryString', 'notice'])) {
-                continue;
-            }
-            if (is_array($value) || is_object($value)) {
-                continue;
-            }
-
-            $items[$key] = $value;
         }
 
-        return $items;
+        // 태그 등록
+//        /** @var \Xpressengine\Tag\TagHandler $tag */
+//        $tag = app('xe.tag');
+//        $hashTags = array_unique($request->get('_hashTags', []));
+//        $tag->set($this->boardId, $doc->id, $hashTags);
+
+        $model->getConnection()->commit();
+
+        return $board;
     }
 
-    /**
-     * create board item entity by document entity
-     *
-     * @param DocumentEntity        $doc     document entity
-     * @param Request               $request request
-     * @param MemberEntityInterface $user    user
-     * @return ItemEntity
-     */
-    public function makeItem(DocumentEntity $doc, Request $request = null, MemberEntityInterface $user = null)
+    public function put(Board $board, array $args)
     {
-        if ($request !== null && $user !== null) {
-            if ($request->get('notice') === '1') {
-                $doc->notice();
-            }
+        $board->getConnection()->beginTransaction();
 
-            // 비회원 글쓰기 또는 익명 글쓰기 처리
-            if ($user instanceof Guest) {
-                $doc->guest();
-            } elseif ($request->get('anonymity') == '1') {
-                $doc->anonymity($this->config->get('anonymityName'));
+        foreach ($args as $name => $value) {
+            if ($board->{$name} !== null) {
+                $board->{$name} = $value;
+            }
+        }
+
+        $doc = $this->documentHandler->put($board);
+
+        $boardSlug = $board->boardSlug;
+        $boardSlug->slug = $args['slug'];
+        $boardSlug->title = $board->title;
+        $board->boardSlug()->save($boardSlug);
+
+        // save Category
+        if (empty($args['itemId']) == false) {
+            $boardCategory = $board->boardCategory;
+            if ($boardCategory == null) {
+                $boardCategory = new BoardCategory([
+                    'id' => $doc->id,
+                    'itemId' => $args['itemId'],
+                ]);
             } else {
-                $doc->setAuthor($user);
+                $boardCategory->itemId = $board->itemId;
+            }
+
+            $boardCategory->save();
+        }
+
+        // bind files
+        // 업데이트 할 때 중복 bind 되어 fileable 이 계속 증가하는 오류가 있음
+        $fileIds = [];
+        if (empty($args['_files']) === false) {
+            foreach (File::whereIn('id', $args['_files'])->get() as $file) {
+                $fileIds[] = $file->id;
+                $this->storage->bind($doc->id, $file);
             }
         }
 
-        $item = new ItemEntity();
-        $item->setDocument($doc);
-
-        if ($request !== null) {
-            // set files
-            if (($fileIds = $request->get('_files')) !== null) {
-                $item->setFiles($this->storage->getsIn($fileIds));
-            }
-        }
-        return $item;
-    }
-
-    /**
-     * get document
-     *
-     * @param string $id         document id
-     * @param string $instanceId instance id
-     * @return ItemEntity
-     */
-    public function get($id, $instanceId = null)
-    {
-        $doc = $this->document->get($id, $instanceId);
-        if ($doc->userId === '') {
-            $doc->setAuthor($this->auth->makeGuest());
-        } else {
-            $doc->setAuthor($this->member->find($doc->getUserId()));
-        }
-
-        $entity = $this->makeItem($doc);
-
-        $this->shortIdGenerator->associate($entity);
-        $this->slug->associate($entity);
-
-        return $entity;
-    }
-
-    /**
-     * insert a document
-     *
-     * @param ItemEntity   $item   board item entity
-     * @param ConfigEntity $config board config entity
-     * @return void
-     */
-    public function add(ItemEntity $item, ConfigEntity $config)
-    {
-        $doc = $item->getDocument();
-
-        // board 의 function type 을 가져와 insert 실행
-//        if ($functionTypes = $config->get('functionType')) {
-//            foreach ($functionTypes as $className) {
-//                (new $className)->insert($doc);
-//            }
-//        }
-
-        $this->document->getRepository()->connection()->beginTransaction();
-
-        // board 의 설정을 가져와서.. 어떤 글인가... 확인해야 겠다...
-        // 그래서 어떤 insert 를 사용할 결정해야 겠어.
-        $this->document->add($doc);
-
-        $this->shortIdGenerator->make($item->id);
-
-        $slugEntity = new SlugEntity;
-        $slugEntity->slug = $item->slug;
-        $slugEntity->title = $item->title;
-        $slugEntity->id = $item->id;
-        $slugEntity->instanceId = $item->instanceId;
-        $this->slug->insert($slugEntity);
-
-        // interception 사용?
-        // Todo 게시판에 files 라고 있는데.. 이게 업로드된 파일 id 정보이다.
-        // 이걸 doc->id 와 매핑 시켜줘야 한다.
-        /** @var \Xpressengine\Storage\File $file */
-        foreach ($item->getFiles() as $file) {
-            $this->storage->bind($doc->id, $file);
-        }
-
-        $this->document->getRepository()->connection()->commit();
-    }
-
-    /**
-     * update document
-     *
-     * @param ItemEntity $item board item entity
-     * @return void
-     */
-    public function put(ItemEntity $item)
-    {
-        $doc = $item->getDocument();
-
-        // 비회원 글 수정시 비밀번호를 입력 안한 경우
-        $origin = $doc->getOriginal();
-        if ($origin['certifyKey'] != '' && $doc->certifyKey == '') {
-            $doc->certifyKey = $origin['certifyKey'];
-        }
-
-        $doc = $this->document->put($doc);
-        if ($item->slug != $item->getSlug()->slug) {
-            $slugEntity = $item->getSlug();
-            $slugEntity->slug = $item->slug;
-            $this->slug->update($item->getSlug());
-        }
-
-        // file 이 없어진걸 처리해야해.. 파일을 삭제한 경우를 말이지!
-        $currentFileIds = [];
-        /** @var \Xpressengine\Storage\File $file */
-        foreach ($this->storage->getsByTargetId($item->id) as $file) {
-            $currentFileIds[] = $file->getId();
-        }
-
-        $uploadedFileIds = [];
-        /** @var \Xpressengine\Storage\File $file */
-        foreach ($item->getFiles() as $file) {
-            $uploadedFileIds[] = $file->getId();
-            $this->storage->bind($doc->id, $file);
-        }
-
-        $files = $this->storage->getsIn(array_diff($currentFileIds, $uploadedFileIds));
+        $files = File::whereIn('id', array_diff($board->getFileIds(), $fileIds))->get();
         foreach ($files as $file) {
-            $this->storage->unBind($item->id, $file, true);
+            $this->storage->unBind($board->id, $file, true);
         }
+
+        // 태그 등록
+//        /** @var \Xpressengine\Tag\TagHandler $tag */
+//        $tag = app('xe.tag');
+//        $hashTags = array_unique(Input::get('hashTags', []));
+//        $tag->set($this->boardId, $doc->id, $hashTags);
+
+        $board->getConnection()->commit();
+
+        return Board::find($board->id);
     }
 
     /**
-     * 문서 삭제
+     * Proxy, Division 관련 설정이 된 Document model 반환
      *
-     * @param ItemEntity     $item   board item entity
-     * @param ConfigEntity   $config destination board config entity
-     * @return int
+     * @param string $instanceId document instance id
+     * @return Board
      */
-    public function remove(ItemEntity $item, ConfigEntity $config)
+    public function getModel($instanceId, ConfigEntity $config)
     {
-        $item = $this->get($item->id, $item->instanceId);
+        $board = new Board;
+        $board->setDivision($config);
+        $board->setProxyOptions($this->documentHandler->proxyOption($config));
+        return $board;
+    }
 
-        // 덧글이 있다면 덧글들을 모두 휴지통으로 옯긴다.
-        $count = 0;
-        if ($config->get('recursiveDelete') === true) {
-            $rows = $this->document->getRepository()->getReplies($item->getDocument());
-            foreach ($rows as $row) {
-                $item = $this->get($row['id'], $row['instanceId']);
+    public function getsNotice($instanceId, ConfigEntity $config)
+    {
+        $query = $this->getModel($instanceId, $config)
+            ->where('instanceId', $instanceId)
+            ->where('status', Document::STATUS_NOTICE)
+            ->where('display', Document::DISPLAY_VISIBLE)
+            ->where('published', Document::PUBLISHED_PUBLISHED);
 
-                $count = $this->document->remove($item->getDocument());
-                $this->slug->delete($item->getSlug());
-                /** @var \Xpressengine\Storage\File $file */
-                foreach ($this->storage->getsByTargetId($item->id) as $file) {
-                    $this->storage->unBind($item->id, $file, true);
-                }
-            }
+        return $query->get();
+    }
+
+    /**
+     * 인터셥센을 이용해 서드파티가 처리할 수 있도록 메소드 사용
+     *
+     * @param Builder $query
+     * @param Request $request
+     * @return QueryBuilder
+     */
+    public function makeWhere(Builder $query, Request $request)
+    {
+        return $query;
+    }
+
+    /**
+     * 인터셥센을 이용해 서드파티가 처리할 수 있도록 메소드 사용
+     *
+     * @param Builder $query
+     * @param Request $request
+     * @return Builder
+     */
+    public function makeOrder(Builder $query, Request $request)
+    {
+        if ($request->get('orderType') == null) {
+            $query->orderBy('head', 'desc')->orderBy('reply', 'asc');
+        } elseif ($request->get('orderType') == 'assentCount') {
+            $query->orderBy('assentCount', 'desc')->orderBy('createdAt', 'desc');
+        } elseif ($request->get('recentlyCreated') == 'assentCount') {
+            $query->orderBy(Board::CREATED_AT, 'desc');
+        } elseif ($request->get('recentlyUpdated') == 'assentCount') {
+            $query->orderBy(Board::UPDATED_AT, 'desc');
+        }
+
+        return $query;
+    }
+
+    public function getOrders()
+    {
+        return [
+            ['value' => 'assentCount', 'text' => 'board::assentOrder'],
+            ['value' => 'recentlyCreated', 'text' => 'board::recentlyCreated'],
+            ['value' => 'recentlyUpdated', 'text' => 'board::recentlyUpdated'],
+        ];
+    }
+
+
+    public function incrementReadCount(Board $board, $user)
+    {
+        if ($this->readCounter->has($board->id, $user) === false) {
+            $this->readCounter->add($board->id, $user);
+        }
+
+        $board->readCount = $this->readCounter->getPoint($board->id);
+        $board->save();
+    }
+
+    public function incrementVoteCount(Board $board, $user, $option)
+    {
+        if ($this->voteCounter->has($board->id, $user, $option) === false) {
+            $this->voteCounter->add($board->id, $user, $option);
+        }
+
+        $columnName = 'assentCount';
+        if ($option == 'dissent') {
+            $columnName = 'dissentCount';
+        }
+        $board->{$columnName} = $this->voteCounter->getPoint($board->id, $option);
+        $board->save();
+    }
+
+    public function decrementVoteCount(Board $board, $user, $option)
+    {
+        if ($this->voteCounter->has($board->id, $user, $option) === true) {
+            $this->voteCounter->remove($board->id, $user, $option);
+        }
+
+        $columnName = 'assentCount';
+        if ($option == 'dissent') {
+            $columnName = 'dissentCount';
+        }
+        $board->{$columnName} = $this->voteCounter->getPoint($board->id, $option);
+        $board->save();
+    }
+
+    public function hasVote(Board $board, $user, $option = '')
+    {
+        if ($option == '') {
+            return $this->voteCounter->hasByName($board->id, $user);
         } else {
-            $count = $this->document->remove($item->getDocument());
-            $this->slug->delete($item->getSlug());
-            /** @var \Xpressengine\Storage\File $file */
-            foreach ($this->storage->getsByTargetId($item->id) as $file) {
-                $this->storage->unBind($item->id, $file, true);
-            }
+            return $this->voteCounter->has($board->id, $user, $option);
         }
 
-        return $count;
     }
+
 
     /**
-     * 문서 휴지통 이동
+     * 비회원이 작성 글 여부 반환
      *
-     * @param ItemEntity     $item   board item entity
-     * @param ConfigEntity   $config destination board config entity
-     * @return void
+     * @return bool
      */
-    public function trash(ItemEntity $item, ConfigEntity $config)
-    {
-        $item = $this->get($item->id, $item->instanceId);
-
-        // 덧글이 있다면 덧글들을 모두 휴지통으로 옯긴다.
-        if ($config->get('recursiveDelete') === true) {
-            $rows = $this->document->getRepository()->getReplies($item->getDocument());
-            foreach ($rows as $row) {
-                $item = $this->get($row['id'], $row['instanceId']);
-                $item->setDocument($item->getDocument()->trash());
-                $this->put($item);
-            }
-        } else {
-            $this->document->trash($item->getDocument());
-        }
-    }
+//    public function isGuest(Board $board)
+//    {
+//        return $board->userType == Board::USER_TYPE_GUEST;
+//    }
 
     /**
-     * 문서 복원
+     * 수정 권한 확인
      *
-     * @param ItemEntity $item board item entity
-     * @return int 삭제된 문서 수
+     * @param MemberEntityInterface $author 로그인 사용자 정보
+     * @return bool
      */
-    public function restore(ItemEntity $item)
+    public function alterPerm(MemberEntityInterface $author)
     {
-
-        return $this->document->restore($item->getDocument());
+//        if ($this->isGuest($board) === true) {
+//            return true;
+//        }
+//        if ($author instanceof Guest == true) {
+//            return false;
+//        }
+//        if ($this->__get('userId') != $author->getId()) {
+//            return false;
+//        }
+        return true;
     }
-
     /**
-     * 게시판 이동
-     * Document Package 에서 comment 를 지원하지 않아서 사용할 수 있는 인터페이스가 없음
+     * 삭제 권한 확인
      *
-     * @param string         $id             document id
-     * @param ConfigEntity   $config         destination board config entity
-     * @param CommentHandler $commentHandler comment handler
+     * @param MemberEntityInterface $author 로그인 사용자 정보
+     * @return bool
      */
-    public function move($id, ConfigEntity $config, CommentHandler $commentHandler)
+    public function deletePerm(MemberEntityInterface $author)
     {
-        if ($config === null) {
-            throw new InvalidConfigException;
-        }
-
-        $item = $this->get($id);
-        $doc = $item->getDocument();
-
-        $dstInstanceId = $config->get('boardId');
-
-        // 덧글이 있다면 덧글들을 모두 옯긴다.
-        // 이거 document 인터페이스 있으멶 좋을까?? 사용 할 일 없어 보이는데.
-        $rows = $this->document->getRepository()->getReplies($doc);
-        foreach ($rows as $row) {
-            $item = $this->get($row['id'], $row['instanceId']);
-            $item->instanceId = $dstInstanceId;
-            $item->getSlug()->instanceId = $dstInstanceId;
-
-            if ($item->userId == '') {
-                $item->userId = '';
-            }
-            $this->put($item);
-            $commentHandler->moveByTarget($dstInstanceId, $item->id);
-        }
+//        if ($this->isGuest($board) === true) {
+//            return true;
+//        }
+//        if ($author instanceof Guest == true) {
+//            return false;
+//        }
+//        if ($this->__get('userId') != $author->getId()) {
+//            return false;
+//        }
+        return true;
     }
 
-    /**
-     * 복사
-     *
-     * @param string       $id     document id
-     * @param ConfigEntity $config destination board config entity
-     * @param string       $newId  new document id
-     * @return void
-     */
-    public function copy($id, ConfigEntity $config, $newId)
-    {
-        if ($config === null) {
-            throw new InvalidConfigException;
-        }
-
-        $item = $this->get($id);
-        $item->id = $newId;
-        $item->parentId = '';
-        $item->instanceId = $config->get('boardId');
-        $item->slug = $item->getSlug()->slug;
-
-        $doc = $item->getDocument();
-        $item = $this->makeItem($doc);
-
-        $this->add($item, $config);
-    }
 }

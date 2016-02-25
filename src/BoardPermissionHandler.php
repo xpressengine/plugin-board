@@ -1,35 +1,35 @@
 <?php
 /**
- * PermissionHandler
+ * BoardPermissionHandler
  *
  * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
 namespace Xpressengine\Plugins\Board;
 
-use Xpressengine\Permission\Factory as Permissions;
+use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Permission\Registered;
 use Xpressengine\Permission\Action;
 use Xpressengine\Member\Repositories\GroupRepositoryInterface as Assignor;
 
 /**
- * PermissionHandler
+ * BoardPermissionHandler
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-class PermissionHandler
+class BoardPermissionHandler
 {
     /** 문서 목록 퍼미션 action 이름 */
     const ACTION_LIST = 'list';
@@ -42,7 +42,7 @@ class PermissionHandler
      *
      * @var string
      */
-    protected $prefix = 'module/board@board';
+    protected $prefix;
 
     /**
      * @var string
@@ -84,18 +84,18 @@ class PermissionHandler
     /**
      * create instance
      *
-     * @param Permissions   $permissions   permission factory instance
+     * @param PermissionHandler   $permissionHandler   permission factory instance
      * @param Assignor      $assignor      assignor
      * @param Action        $action        action
      * @param ConfigHandler $configHandler config handler
      */
     public function __construct(
-        Permissions $permissions,
+        PermissionHandler $permissionHandler,
         Assignor $assignor,
         Action $action,
         ConfigHandler $configHandler
     ) {
-        $this->permissions = $permissions;
+        $this->permissionHandler = $permissionHandler;
         $this->assignor = $assignor;
         $this->action = $action;
         $this->configHandler = $configHandler;
@@ -104,6 +104,15 @@ class PermissionHandler
         $this->action->add(self::ACTION_MANAGE);
     }
 
+    /**
+     * set prefix
+     *
+     * @param $prefix
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
     /**
      * 글 리스트 권한 체크
      *
@@ -342,5 +351,22 @@ class PermissionHandler
         }
 
         return $perms;
+    }
+
+    /**
+     * check manager
+     *
+     * @param bool   $guest      is guest
+     * @param string $instanceId instance id
+     * @return bool
+     */
+    public function isManager($guest, $instanceId)
+    {
+        return true;
+        if ($guest === false && $this->get($instanceId)->ables(self::ACTION_MANAGE) === true)
+        {
+            return true;
+        }
+        return false;
     }
 }

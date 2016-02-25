@@ -1,13 +1,13 @@
 <?php
 /**
- * Instance manager
+ * InstanceManager
  *
  * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -21,14 +21,15 @@ use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistsInstanceException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidConfigException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
+use Xpressengine\Database\VirtualConnectionInterface as VirtualConnection;
 
 /**
- * Board manager
+ * InstanceManager
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -62,18 +63,20 @@ class InstanceManager
     /**
      * create instance
      *
+     * @param VirtualConnection   $conn          database connection
      * @param DocumentHandler     $document      document handler
      * @param DynamicFieldHandler $dynamicField  dynamic field handler
      * @param CommentHandler      $comment       comment handler
      * @param ConfigHandler       $configHandler config handler
      */
     public function __construct(
+        VirtualConnection $conn,
         DocumentHandler $document,
         DynamicFieldHandler $dynamicField,
         CommentHandler $comment,
         ConfigHandler $configHandler
     ) {
-        $this->conn = $document->getRepository()->connection();
+        $this->conn = $conn;
         $this->document = $document;
         $this->dynamicField = $dynamicField;
         $this->comment = $comment;
@@ -130,24 +133,24 @@ class InstanceManager
 
         $config = new ConfigEntity;
         foreach ([
-            'group' => $boardConfig->get('documentGroup'),
-            'revision' => $boardConfig->get('revision'),
-            'id' => 'category',
-            'typeId' => 'FieldType/xpressengine@Category',
-            'label' => 'board::category',
-            'skinId' => 'FieldType/xpressengine@Category/FieldSkin/xpressengine@default',
-            'use' => true,
-            'searchable' => true,
-            'required' => true,
-            'sortable' => false,
-            'tableMethod' => false,
-            'categoryId' => $category->id,
-            'colorSet' => 'default',
-            'joinColumnName' => 'id'
-        ] as $key => $value) {
+                     'group' => $boardConfig->get('documentGroup'),
+                     'revision' => $boardConfig->get('revision'),
+                     'id' => 'category',
+                     'typeId' => 'FieldType/xpressengine@Category',
+                     'label' => 'board::category',
+                     'skinId' => 'FieldType/xpressengine@Category/FieldSkin/xpressengine@default',
+                     'use' => true,
+                     'searchable' => true,
+                     'required' => true,
+                     'sortable' => false,
+                     'tableMethod' => false,
+                     'categoryId' => $category->id,
+                     'colorSet' => 'default',
+                     'joinColumnName' => 'id'
+                 ] as $key => $value) {
             $config->set($key, $value);
         }
-        
+
         $this->dynamicField->create($config);
     }
 

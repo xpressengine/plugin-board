@@ -9,7 +9,7 @@
 <div class="bd_select_list" data-name="{{ $name }}">
     <ul>
         <li><a href="#" data-value="">{{ xe_trans($label) }}</a></li>
-        @foreach ($items as $item)
+        @foreach ($items as $key=>$item)
             <li><a href="#" data-value="{{$item['value']}}">{{xe_trans($item['text'])}}</a></li>
         @endforeach
     </ul>

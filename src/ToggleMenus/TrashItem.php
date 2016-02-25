@@ -1,19 +1,42 @@
 <?php
+/**
+ * TrashItem
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
+ * @link        http://www.xpressengine.com
+ */
 namespace Xpressengine\Plugins\Board\ToggleMenus;
 
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
 
+/**
+ * TrashItem
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
+ * @link        http://www.xpressengine.com
+ */
 class TrashItem extends AbstractToggleMenu
 {
     public static $id = 'module/board@board/toggleMenu/xpressengine@trashItem';
 
     protected $type;
-    protected $docuemntId;
 
-    public function __construct($type, $docuemntId)
+    protected $documentId;
+
+    public function __construct($type, $documentId)
     {
         $this->type = $type;
-        $this->docuemntId = $docuemntId;
+        $this->documentId = $documentId;
     }
 
     public static function getName()
@@ -38,11 +61,11 @@ class TrashItem extends AbstractToggleMenu
 
     public function getAction()
     {
-        $doc = app('xe.document')->getById($this->docuemntId);
+        $doc = app('xe.document')->get($this->documentId);
 
         $config = app('xe.board.config')->get($doc->getInstanceId());
 
-        return app('xe.board.url')->get('trash', ['id' => $this->docuemntId], $config);
+        return app('xe.board.url')->get('trash', ['id' => $this->documentId], $config);
     }
 
     public function getScript()

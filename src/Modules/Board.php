@@ -6,23 +6,20 @@
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-namespace Xpressengine\Plugins\Board\Module;
+namespace Xpressengine\Plugins\Board\Modules;
 
+use Illuminate\Database\Schema\Blueprint;
 use Route;
 use Skin;
 use View;
-use Xpressengine\Plugins\Board\Addon\CounselBoard;
-use Xpressengine\Plugins\Board\Order\AssentCount;
-use Xpressengine\Plugins\Board\Order\RecentlyCreated;
-use Xpressengine\Plugins\Board\Order\RecentlyUpdated;
-use Xpressengine\Plugins\Board\SlugRepository;
-use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
 use Xpressengine\Module\AbstractModule;
+use Xpressengine\Plugins\Board\Models\BoardSlug;
+use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
 
 /**
  * # Board
@@ -32,8 +29,8 @@ use Xpressengine\Module\AbstractModule;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -52,31 +49,7 @@ class Board extends AbstractModule
         self::registerManageRoute();
         self::registerInstanceRoute();
         self::registerToggleMenu();
-        self::registerAddon();
-        self::registerOrders();
         self::registerSettingsMenu();
-    }
-
-    /**
-     * register addons
-     *
-     * @return void
-     */
-    protected static function registerAddon()
-    {
-        app('xe.pluginRegister')->add(CounselBoard::class);
-    }
-
-    /**
-     * register orders
-     *
-     * @return void
-     */
-    protected static function registerOrders()
-    {
-        app('xe.pluginRegister')->add(RecentlyCreated::class);
-        app('xe.pluginRegister')->add(RecentlyUpdated::class);
-        app('xe.pluginRegister')->add(AssentCount::class);
     }
 
     /**
@@ -159,13 +132,13 @@ class Board extends AbstractModule
             Route::get('/suggestion/hashTag/{id?}', ['as' => 'hashTag', 'uses' => 'UserController@suggestionHashTag']);
             Route::get('/suggestion/mention/{id?}', ['as' => 'mention', 'uses' => 'UserController@suggestionMention']);
             Route::get('/slug/{slug}', ['as' => 'slug2', 'uses' => 'UserController@slug']);
-            Route::get('/checkSlug', ['as' => 'checkSlug', 'uses' => 'UserController@checkSlug']);
+            Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'UserController@hasSlug']);
             Route::get('/{slug}', ['as' => 'slug', 'uses' => 'UserController@slug']);
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
 
-        SlugRepository::setReserved([
+        BoardSlug::setReserved([
             'index', 'create', 'edit', 'destroy', 'show', 'identify', 'revision', 'store', 'preview', 'temporary',
-            'trash', 'certify', 'update', 'vote', 'manageMenus', 'comment', 'file', 'suggestion', 'slug', 'checkSlug'
+            'trash', 'certify', 'update', 'vote', 'manageMenus', 'comment', 'file', 'suggestion', 'slug', 'hasSlug'
         ]);
     }
 

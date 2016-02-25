@@ -24,6 +24,7 @@ use Xpressengine\Support\EntityTrait;
  * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
+ * @deprecated
  *
  * @property string $slug       slug
  * @property string $id         document id

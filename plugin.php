@@ -5,39 +5,30 @@
  * PHP version 5
  *
  * @category    Board
- * @package     Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
 namespace Xpressengine\Plugins\Board;
 
-use Trash;
-use Xpressengine\Counter\Counter;
-use Xpressengine\Permission\Action;
+use Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Xpressengine\Plugin\AbstractPlugin;
-use Xpressengine\Plugins\Board\Addon\AddonManager;
-use Xpressengine\Plugins\Board\Controllers\DataImporter;
 use Xpressengine\Document\DocumentHandler;
-use Xpressengine\Comment\CommentHandler;
 use Xpressengine\Config\ConfigManager;
 use Xpressengine\DynamicField\DynamicFieldHandler;
-use Xpressengine\Permission\Factory as PermissionFactory;
-use Xpressengine\Member\Repositories\GroupRepositoryInterface as Assignor;
-use Xpressengine\Plugins\Board\Counter\ReadCounter;
-use Xpressengine\Plugins\Board\Counter\VoteCounter;
-use Xpressengine\Plugins\Board\Order\OrderManager;
-use Xpressengine\Plugins\ShortIdGenerator\Plugin as ShortIdGenerator;
-use Xpressengine\Translation\Translator;
+use Xpressengine\Permission\PermissionHandler;
+use Xpressengine\Counter\Factory as CounterFactory;
 
 /**
  * Plugin
  *
  * @category    Board
- * @package     Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -58,6 +49,20 @@ class Plugin extends AbstractPlugin
      */
     public function install()
     {
+        $this->createDefaultConfig();
+        $this->createSlugTable();
+        $this->putLang();
+
+        // set config for counter
+        /** @var Counter $counter */
+        // 이거 안됨
+//        $counter = app('xe.counter');
+//        $counter->getConfigHandler()->set(ReadCounter::COUNTER_NAME, Counter::TYPE_SESSION);
+//        $counter->getConfigHandler()->set(VoteCounter::COUNTER_NAME, Counter::TYPE_ID);
+    }
+
+    protected function createDefaultConfig()
+    {
         // create default config
         /**
          * @var $configManager ConfigManager
@@ -75,30 +80,51 @@ class Plugin extends AbstractPlugin
         $configHandler->getDefault();
 
         // create default permission
-        /**
-         * @var $permission PermissionFactory
-         * @var $group Assignor
-         */
-        $permission = app('xe.permission');
-        $group = app('xe.member.groups');
-        $action = new Action();
-        $permission = new PermissionHandler($permission, $group, $action, $configHandler);
-        $permission->setDefault($permission->getDefault());
+//        /**
+//         * @var $permission PermissionHandler
+//         * @var $group Assignor
+//         */
+//        $permission = app('xe.permission');
+//        $group = app('xe.member.groups');
+//        $action = new Action();
+//        $permission = new BoardPermissionHandler($permission, $group, $action, $configHandler);
+//        $permission->setDefault($permission->getDefault());
+    }
 
-        // create slug database table
-        $m = new Migrations\BoardMigration;
-        $m->install();
-
+    protected function putLang()
+    {
         // put board translation source
         /** @var Translator $trans */
         $trans = app('xe.translator');
         $trans->putFromLangDataSource('board', base_path('plugins/board/langs/lang.php'));
+    }
 
-        // set config for counter
-        /** @var Counter $counter */
-        $counter = app('xe.counter');
-        $counter->getConfigHandler()->set(ReadCounter::COUNTER_NAME, Counter::TYPE_SESSION);
-        $counter->getConfigHandler()->set(VoteCounter::COUNTER_NAME, Counter::TYPE_ID);
+    protected function createSlugTable()
+    {
+        if (Schema::hasTable('board_slug') === false) {
+            Schema::create('board_slug', function (Blueprint $table) {
+                $table->string('id', 255);
+                $table->string('instanceId', 255);
+                $table->string('slug', 255);
+                $table->string('title', 255);
+
+                $table->primary(array('id'));
+                $table->index(array('slug'));
+                $table->index(array('title'));
+            });
+        }
+    }
+
+    protected function createCategoryTable()
+    {
+        if (Schema::hasTable('board_category') === false) {
+            Schema::create('board_category', function (Blueprint $table) {
+                $table->string('id', 255);
+                $table->string('itemId', 255);
+
+                $table->primary(array('id'));
+            });
+        }
     }
 
     /**
@@ -148,7 +174,6 @@ class Plugin extends AbstractPlugin
     {
         $this->bindClasses();
         $this->registerTitleWithSlug();
-        $this->registerWaste();
     }
 
     /**
@@ -169,20 +194,19 @@ class Plugin extends AbstractPlugin
             'xe.plugin.board'
         );
 
+        // Handler
         $app->singleton('xe.board.handler', function ($app) {
-            /**
-             * @var $documentHandler DocumentHandler
-             * @var $shortIdGenerator ShortIdGenerator
-             */
-            $documentHandler = app('xe.document');
-            $shortIdGenerator = app('xe.plugin.shortIdGenerator');
-            $handler = new Handler(
-                $documentHandler,
-                $shortIdGenerator,
+            /** @var Handler $proxyHandler */
+            $proxyHandler = $app['xe.interception']->proxy(Handler::class, Handler::class);
+
+            $readCounter = app('xe.counter')->make($app['request'], 'read');
+            $voteCounter = app('xe.counter')->make($app['request'], 'vote', ['assent', 'dissent']);
+
+            $handler = new $proxyHandler(
+                app('xe.document'),
                 app('xe.storage'),
-                app('xe.board.slug'),
-                app('xe.members'),
-                app('xe.auth')
+                $readCounter,
+                $voteCounter
             );
             return $handler;
         });
@@ -191,15 +215,7 @@ class Plugin extends AbstractPlugin
             'xe.board.handler'
         );
 
-        $app->singleton('xe.board.slug', function ($app) {
-            $connector = $app['xe.db']->connection();
-            return new SlugRepository($connector);
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\SlugRepository',
-            'xe.board.slug'
-        );
-
+        // ConfigHandler
         $app->singleton('xe.board.config', function ($app) {
             /**
              * @var $configManager ConfigManager
@@ -221,69 +237,16 @@ class Plugin extends AbstractPlugin
             'xe.board.config'
         );
 
-        $app->singleton('xe.board.instance', function ($app) {
-            /**
-             * @var $documentHandler DocumentHandler
-             * @var $dynamicFieldHandler DynamicFieldHandler
-             * @var $commentHandler CommentHandler
-             */
-            $documentHandler = app('xe.document');
-            $dynamicFieldHandler = app('xe.dynamicField');
-            $commentHandler = app('xe.comment');
-
-            return new InstanceManager(
-                $documentHandler,
-                $dynamicFieldHandler,
-                $commentHandler,
-                $app['xe.board.config']
-            );
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\InstanceManager',
-            'xe.board.instance'
-        );
-
-        $app->singleton('xe.board.permission', function ($app) {
-            /**
-             * @var $permission PermissionFactory
-             * @var $group Assignor
-             * @var $action Action
-             */
-            $permission = app('xe.permission');
-            $group = app('xe.member.groups');
-            $action = new Action();
-
-            return new PermissionHandler($permission, $group, $action, $app['xe.board.config']);
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\PermissionHandler',
-            'xe.board.permission'
-        );
-
+        // UrlHandler
         $app->singleton('xe.board.url', function ($app) {
-            return new UrlHandler(app('xe.board.slug'));
+            return new UrlHandler();
         });
         $app->bind(
             'Xpressengine\Plugins\Board\UrlHandler',
             'xe.board.url'
         );
 
-        $app->singleton('xe.board.addon', function ($app) {
-            return new AddonManager(app('xe.pluginRegister'));
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\AddOn\AddonManager',
-            'xe.board.addon'
-        );
-
-        $app->singleton('xe.board.order', function ($app) {
-            return new OrderManager(app('xe.pluginRegister'));
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\Order\OrderManager',
-            'xe.board.order'
-        );
-
+        // Vlidator
         $app->singleton('xe.board.validator', function ($app) {
             return new Validator($app['xe.board.config'], $app['xe.dynamicField']);
         });
@@ -292,34 +255,7 @@ class Plugin extends AbstractPlugin
             'xe.board.validator'
         );
 
-        $app->singleton('xe.board.vote', function ($app) {
-            /**
-             * @var $documentHandler DocumentHandler
-             * @var $counter \Xpressengine\Counter\Counter
-             */
-            $documentHandler = app('xe.document');
-            $counter = app('xe.counter');
-            return new VoteCounter($documentHandler, $counter);
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\Counter\VoteCounter',
-            'xe.board.vote'
-        );
-
-        $app->singleton('xe.board.readCounter', function ($app) {
-            /**
-             * @var $documentHandler DocumentHandler
-             * @var $counter \Xpressengine\Counter\Counter
-             */
-            $documentHandler = app('xe.document');
-            $counter = app('xe.counter');
-            return new ReadCounter($documentHandler, $counter);
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\Counter\ReadCounter',
-            'xe.board.readCounter'
-        );
-
+        // IdentifyManager
         $app->singleton('xe.board.identify', function ($app) {
             /**
              * @var $session \Illuminate\Session\SessionManager
@@ -335,34 +271,28 @@ class Plugin extends AbstractPlugin
             'xe.board.identify'
         );
 
-        $app->singleton('xe.board.revision', function ($app) {
-            /** @var DocumentHandler $documentHandler */
+        $app->singleton('xe.board.instance', function ($app) {
+            /**
+             * @var $documentHandler DocumentHandler
+             * @var $dynamicFieldHandler DynamicFieldHandler
+             * @var $commentHandler CommentHandler
+             */
             $documentHandler = app('xe.document');
+            $dynamicFieldHandler = app('xe.dynamicField');
+            $commentHandler = app('xe.comment');
 
-            return new RevisionHandler($documentHandler, app('xe.board.config'));
+            return new InstanceManager(
+                $app['xe.db']->connection(),
+                $documentHandler,
+                $dynamicFieldHandler,
+                $commentHandler,
+                $app['xe.board.config']
+            );
         });
         $app->bind(
-            'Xpressengine\Plugins\Board\RevisionHandler',
-            'xe.board.revision'
+            'Xpressengine\Plugins\Board\InstanceManager',
+            'xe.board.instance'
         );
-
-        $app->singleton('xe.board.dataImporter', function ($app) {
-            return new DataImporter();
-        });
-        $app->bind(
-            'Xpressengine\Plugins\Board\Controllers\DataImporter',
-            'xe.board.dataImporter'
-        );
-    }
-
-    /**
-     * register waste
-     *
-     * @return void
-     */
-    private function registerWaste()
-    {
-        Trash::register(Waste\Waste::class);
     }
 
     /**
@@ -379,7 +309,7 @@ class Plugin extends AbstractPlugin
         $register = app('xe.pluginRegister');
         $uiObjectHandler = app('xe.uiobject');
 
-        $register->add(UIObject\Title::class);
-        $uiObjectHandler->setAlias('titleWithSlug', UIObject\Title::getId());
+        $register->add(UIObjects\Title::class);
+        $uiObjectHandler->setAlias('titleWithSlug', UIObjects\Title::getId());
     }
 }

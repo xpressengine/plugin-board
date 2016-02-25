@@ -1,12 +1,24 @@
 <?php
-namespace Xpressengine\Plugins\Board\UIObject;
+/**
+ * DesignSelect
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
+ * @link        http://www.xpressengine.com
+ */
+namespace Xpressengine\Plugins\Board\UIObjects;
 
 use Xpressengine\UIObject\AbstractUIObject;
 use View;
 
 /**
- * # DesignSelect
- * * Design select(DIV) 방식 select
+ * DesignSelect
+ * DIV 방식 select
  *
  * ## 사용법
  *
@@ -22,7 +34,12 @@ use View;
  * ]);
  * ```
  *
- * @package Xpressengine\Plugins\OfficialHomepage\UIObject
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
+ * @link        http://www.xpressengine.com
  */
 class DesignSelect extends AbstractUIObject
 {

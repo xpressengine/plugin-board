@@ -2,7 +2,7 @@
 /**
  *
  */
-namespace Xpressengine\Plugins\Board;
+namespace Xpressengine\Plugins\Board\Skins;
 
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Contracts\Pagination\Presenter as PresenterContract;

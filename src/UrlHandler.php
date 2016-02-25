@@ -1,13 +1,13 @@
 <?php
 /**
- * Board url handler
+ * UrlHandler
  *
  * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -15,14 +15,16 @@ namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\Config\ConfigEntity;
+use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\Models\Slug;
 
 /**
- * Url handler
+ * UrlHandler
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -42,12 +44,10 @@ class UrlHandler
     /**
      * create instance
      *
-     * @param SlugRepository $slug   document handler
-     * @param ConfigEntity   $config config entity
+     * @param ConfigEntity $config config entity
      */
-    public function __construct(SlugRepository $slug, ConfigEntity $config = null)
+    public function __construct(ConfigEntity $config = null)
     {
-        $this->slug = $slug;
         $this->config = $config;
     }
 
@@ -79,6 +79,7 @@ class UrlHandler
         if ($config == null) {
             $config = $this->config;
         }
+
         return instanceRoute($name, $params, $config->get('boardId'));
     }
 
@@ -88,22 +89,31 @@ class UrlHandler
      * 1. short id 가 있다면 short id 로 url return
      * 1. 기본 id 로 url return
      *
-     * @param ItemEntity $item   board item entity
-     * @param array      $params parameters
+     * @param Board $board  board item entity
+     * @param array $params parameters
      * @return string
      */
-    public function getShow(ItemEntity $item, $params = [])
+    public function getShow(Board $board, $params = [])
     {
-        if ($item->getSlug() !== null) {
-            return $this->getSlug($item->getSlug()->slug, $params);
+        $slug = $board->slug;
+        if ($slug != null) {
+            return $this->getSlug($slug->slug, $params);
         }
 
-        $id = $item->id;
-        if (($shortId = $item->getShortId()) !== null) {
-            $id = $shortId->getId();
-        }
+        $id = $board->id;
         $params['id'] = $id;
         return $this->get('show', $params);
+
+//        if ($item->getSlug() !== null) {
+//            return $this->getSlug($item->getSlug()->slug, $params);
+//        }
+//
+//        $id = $item->id;
+//        if (($shortId = $item->getShortId()) !== null) {
+//            $id = $shortId->getId();
+//        }
+//        $params['id'] = $id;
+//        return $this->get('show', $params);
     }
 
     /**
@@ -115,7 +125,7 @@ class UrlHandler
      */
     public function getSlugById($id)
     {
-        $slug = $this->slug->findById($id, $this->config->get('boardId'));
+        $slug = Slug::where(id, $id)->where('instanceId', $this->config->get('boardId'));
 
         if ($slug === null) {
             return '';
@@ -147,10 +157,11 @@ class UrlHandler
      * @param string         $id             document id
      * @param string         $instanceId     board instance id
      * @return string
+     * @deprecated
      */
-    public function makeSlug(SlugRepository $slugRepository, $slug, $id, $instanceId)
+    public function makeSlug($slug, $id, $instanceId)
     {
-        $slugInfo = $slugRepository->find($slug, $instanceId);
+        $slugInfo = Slug::where('slug', $slug)->where('instanceId', $instanceId);
 
         if ($slugInfo === null) {
             return $slug;
@@ -165,9 +176,10 @@ class UrlHandler
         }
 
         // slug 에 문자열 추가
-        $slug = $slugRepository->incrementName($slug, $instanceId);
+        //$slug = $slugRepository->incrementName($slug, $instanceId);
 
-        return $this->makeSlug($slugRepository, $slug, $id, $instanceId);
+        //return $this->makeSlug($slugRepository, $slug, $id, $instanceId);
+        return '';
     }
 
     /**

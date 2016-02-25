@@ -1,12 +1,12 @@
 <?php
 /**
- * Board config handler
+ * ConfigHandler
  *
  * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
  * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
@@ -19,12 +19,12 @@ use Xpressengine\DynamicField\ConfigHandler as DynamicFieldConfigHandler;
 use Xpressengine\Document\ConfigHandler as DocumentConfigHandler;
 
 /**
- * Board config handler
+ * ConfigHandler
  * 게시판의 설정을 관리하기 위해 ConfigManager 사용
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
  * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
@@ -68,13 +68,6 @@ class ConfigHandler
     ];
 
     /**
-     * 기본으로 사용 될 정렬 정렬 컴퍼넌트
-     *
-     * @var string
-     */
-    protected $defaultOrder = 'module/board@board/order/board@recentlyCreated';
-
-    /**
      * @var array
      */
     protected $defaultConfig = [
@@ -82,18 +75,16 @@ class ConfigHandler
         'boardName' => null,
         'skinId' => '',
         'perPage' => 10,
-        //'searchPerPage' => 10,
         'pageCount' => 10,
         'newTime' => 1, // 새글로 처리하는 시간
         'comment' => true,
         'assent' => true,
         'dissent' => false,
+        'category' => false,
         'anonymity' => false,
         'anonymityName' => 'Anonymity',
-        //'shortId' => true,
         'division' => false,
         'revision' => true,
-        'order' => 'module/board@board/order/board@recentlyCreated',
         'listColumns' => null,
         'formColumns' => null,
         'dynamicFieldList' => [],
@@ -207,7 +198,6 @@ class ConfigHandler
         if ($parent == null) {
             $default = $this->defaultConfig;
 
-            $default['order'] = $this->defaultOrder;
             $default['listColumns'] = $this->getDefaultListColumns();
             $default['formColumns'] = $this->getDefaultFormColumns();
 

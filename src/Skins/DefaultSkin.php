@@ -1,33 +1,31 @@
 <?php
 /**
- * Board user skin
+ * DefaultSkin
  *
  * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-namespace Xpressengine\Plugins\Board\Skin;
+namespace Xpressengine\Plugins\Board\Skins;
 
+use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
+use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
 use Xpressengine\Routing\InstanceConfig;
-use Xpressengine\Config\ConfigEntity;
-use Xpressengine\Plugins\Board\FieldSkins\Category\DesignSelectSkin;
-use Xpressengine\Plugins\Board\PaginationPresenter;
-use Xpressengine\Plugins\Board\PaginationMobilePresenter;
 use Xpressengine\Skin\AbstractSkin;
 use View;
 
 /**
- * Board user skin
+ * DefaultSkin
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -58,6 +56,15 @@ class DefaultSkin extends AbstractSkin
     }
 
     /**
+     * get manage URI
+     *
+     * @return string
+     */
+    public static function getSettingsURI()
+    {
+    }
+
+    /**
      * index customizer
      *
      * @return void
@@ -65,7 +72,7 @@ class DefaultSkin extends AbstractSkin
     protected function indexCustomizer()
     {
         $this->setDynamicFieldSkins();
-        $this->setBoardOrderItems();
+        //$this->setBoardOrderItems();
         $this->setPaginationPresenter();
         $this->setBoardList();
     }
@@ -78,7 +85,7 @@ class DefaultSkin extends AbstractSkin
     protected function showCustomizer()
     {
         $this->setDynamicFieldSkins();
-        $this->setBoardOrderItems();
+        //$this->setBoardOrderItems();
         $this->setPaginationPresenter();
         $this->setBoardList();
     }
@@ -129,24 +136,6 @@ class DefaultSkin extends AbstractSkin
     }
 
     /**
-     * set board order items
-     *
-     * @return void
-     */
-    protected function setBoardOrderItems()
-    {
-        $items = [];
-        foreach ($this->data['boardOrders'] as $id => $instance) {
-            $items[] = [
-                'value' => $id,
-                'text' => xe_trans($instance->name()),
-            ];
-        }
-
-        $this->data['boardOrderItems'] = $items;
-    }
-
-    /**
      * set board list
      *
      * @return void
@@ -172,25 +161,5 @@ class DefaultSkin extends AbstractSkin
             ];
         }
         $this->data['boardList'] = $boardList;
-    }
-    
-    /**
-     * get manage URI
-     *
-     * @return string
-     */
-    public static function getSettingsURI()
-    {
-    }
-
-    /**
-     * 스킨 설정을 위한 폼 html 반환
-     *
-     * @param array $data data
-     * @return string
-     */
-    public function getConfigForm(array $data)
-    {
-        return View::make('board::views.board.section.form', $data)->render();
     }
 }

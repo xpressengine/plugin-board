@@ -1,5 +1,5 @@
 <?php
-namespace Xpressengine\Plugins\Board\UIObject;
+namespace Xpressengine\Plugins\Board\UIObjects;
 
 use Xpressengine\UIObject\AbstractUIObject;
 use View;

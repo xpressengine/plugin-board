@@ -28,7 +28,7 @@
                 </li>
                 <li><a href="{{ $urlHandler->get('create') }}"><span class="bd_hidden">{{ xe_trans('board::newPost') }}</span><i class="xi-pen"></i></a></li>
                 @if ($isManager === true)
-                <li><a href="{{ route('manage.board.board.edit', ['boardId'=>$boardId]) }}" target="_blank"><span class="bd_hidden">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
+                <li><a href="{{ route('manage.board.board.edit', ['boardId'=>$instanceId]) }}" target="_blank"><span class="bd_hidden">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
                 @endif
             </ul>
         </div>
@@ -44,7 +44,7 @@
                     'name' => 'orderType',
                     'label' => xe_trans('xe::order'),
                     'value' => Input::get('orderType'),
-                    'items' => $boardOrderItems,
+                    'items' => $handler->getOrders(),
                 ]) !!}
             </div>
         </div>
@@ -146,7 +146,7 @@
             <tbody>
 
             <!-- NOTICE -->
-            @foreach($handler->getsNotice(['instanceId'=>$boardId]) as $item)
+            @foreach($handler->getsNotice($instanceId, $config) as $item)
                 <tr class="notice">
                     <td class="check"></td>
 

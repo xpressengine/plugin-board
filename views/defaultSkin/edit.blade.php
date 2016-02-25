@@ -1,3 +1,5 @@
+{{ Frontend::rule('board', $rules) }}
+
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
@@ -14,7 +16,7 @@
                 {!! uio('titleWithSlug', [
                 'id' => $item->id,
                 'title' => Input::old('title', $item->title),
-                'slug' => $item->getSlug() === null ? '' : $item->getSlug()->slug,
+                'slug' => $item->getSlug(),
                 'titleClassName' => 'bd_input',
                 'config' => $config
                 ]) !!}
@@ -42,15 +44,23 @@
 
         <div class="write_footer">
 
-            @foreach ($formColumns as $columnName)
-                @if (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null && $columnName != 'category')
-                    <div class="__xe_{{$columnName}} __xe_section">
-                        {!! $fieldType->getSkin()->edit($item->getAttributes()) !!}
-                    </div>
-                @endif
-            @endforeach
+            {{--@foreach ($formColumns as $columnName)--}}
+                {{--@if (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null && $columnName != 'category')--}}
+                    {{--<div class="__xe_{{$columnName}} __xe_section">--}}
+                        {{--{!! $fieldType->getSkin()->edit($item->getAttributes()) !!}--}}
+                    {{--</div>--}}
+                {{--@endif--}}
+            {{--@endforeach--}}
 
-            @if ($item->userType == \Xpressengine\Document\DocumentEntity::USER_TYPE_GUEST)
+                @foreach ($configHandler->formColumns($instanceId) as $columnName)
+                    @if ($columnName != 'category')
+                        <div class="__xe_{{$columnName}} __xe_section">
+                            {!! dfEdit($config->get('documentGroup'), $columnName, Input::all()) !!}
+                        </div>
+                    @endif
+                @endforeach
+
+            @if ($item->userType == $item::USER_TYPE_GUEST)
                 <div class="write_form_input">
                     <input type="text" name="writer" class="bd_input" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer', $item->writer) }}">
                     <input type="password" name="certifyKey" class="bd_input" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
@@ -60,7 +70,7 @@
 
             <div class="write_form_option">
                 @if($isManager === true)
-                <input type="checkbox" id="notice" name="notice" value="{{\Xpressengine\Document\DocumentEntity::STATUS_NOTICE}}" @if($item->status == \Xpressengine\Document\DocumentEntity::STATUS_NOTICE) checked="checked" @endif /><label for="notice">{{xe_trans('xe::notice')}}</label>
+                <input type="checkbox" id="notice" name="notice" value="{{$item::STATUS_NOTICE}}" @if($item->status == $item::STATUS_NOTICE) checked="checked" @endif /><label for="notice">{{xe_trans('xe::notice')}}</label>
                 @endif
             </div>
             <div class="write_form_btn">

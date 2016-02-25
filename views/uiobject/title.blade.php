@@ -11,7 +11,7 @@
                 var $container = $target.closest('.__xe_titleWithSlug');
                 $container.find('.__xe_slug_edit input').val($target.val());
 
-                checkSlug($container, function() {
+                hasSlug($container, function() {
                     $($container).parent().find('.__xe_slug_show').show();
                 });
 
@@ -30,7 +30,7 @@
 
                 var $container = $(event.target).closest('.__xe_titleWithSlug');
 
-                checkSlug($container, function() {
+                hasSlug($container, function() {
                     $container.find('.__xe_slug_show').show();
                 });
 
@@ -52,13 +52,13 @@
                 }
             });
 
-            function checkSlug($container, callback)
+            function hasSlug($container, callback)
             {
                 var id = $container.find('[name="title"]').data('id'),
                         slug = $container.find('.__xe_slug_edit input').val();
 
                 $.ajax({
-                    url: '{{ app('xe.board.url')->get('checkSlug') }}',
+                    url: '{{ app('xe.board.url')->get('hasSlug') }}',
                     data: {id: id, slug: slug},
                     type: 'get',
                     dataType: 'json',

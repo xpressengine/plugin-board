@@ -11,7 +11,7 @@
         <div class="more_info">
             <!-- [D] 클릭시 클래스 on 적용 -->
             @if ($item->userId != '')
-            <a href="{{ sprintf('/@%s', $item->getAuthor()->getAuthIdentifier()) }}" class="mb_autohr __xe_member" data-id="{{$item->getUserId()}}" data-text="{{ $item->writer }}">{{ $item->writer }}</a>
+            <a href="{{ sprintf('/@%s', $item->user->getAuthIdentifier()) }}" class="mb_autohr __xe_member" data-id="{{$item->userId}}" data-text="{{ $item->writer }}">{{ $item->writer }}</a>
             @else
             <a href="#" class="mb_autohr __xe_member" data-id="" data-text="{{ $item->writer }}">{{ $item->writer }}</a>
             @endif
@@ -31,7 +31,7 @@
             <!-- [D] 클릭시 클래스 on 적용 -->
             <a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="bd_hidden">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->fileCount }}</strong></a>
             <ul>
-                @foreach($item->getFiles() as $file)
+                @foreach($item->files() as $file)
                     <li><a href="#"><i class="xi-download-disk"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
                 @endforeach
             </ul>
@@ -40,11 +40,12 @@
         <div class="bd_function">
             <div class="bd_function_l">
                 <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
-                <a href="#" class="bd_ico bd_like @if(app('xe.board.vote')->invoked($item->id, Auth::user())) === false) invoked @endif"
+                <a href="#" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user()) === true) invoked @endif"
                    data-add-url="{{ $urlHandler->get('addVote', ['option' => 'assent']) }}" data-remove-url="{{ $urlHandler->get('removeVote', ['option' => 'assent']) }}" data-id="{{$item->id}}">
                    <i class="xi-heart"></i><span class="bd_hidden">{{ trans('board::like') }}</span>
                 </a>
-                <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num">{{$item->assentCount}}</a>
+                <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="
+                ">{{$item->assentCount}}</a>
 
                 <div class="bd_share_area">
                     <!-- [D] 클릭시 클래스 on 적용 -->
@@ -59,10 +60,10 @@
 
             </div>
             <div class="bd_function_r">
-                @if($item->alterPerm(Auth::user()))
+                @if($handler->alterPerm(Auth::user()))
                 <a href="{{ $urlHandler->get('edit', array_merge(Input::all(), ['id' => $item->id])) }}" class="bd_ico bd_modify"><i class="xi-eraser"></i><span class="bd_hidden">{{ xe_trans('xe::update') }}</span></a>
                 @endif
-                @if($item->deletePerm(Auth::user()))
+                @if($handler->deletePerm(Auth::user()))
                 <a href="{{ $urlHandler->get('destroy', array_merge(Input::all(), ['id' => $item->id])) }}" class="bd_ico bd_delete"><i class="xi-trash"></i><span class="bd_hidden">{{ xe_trans('xe::delete') }}</span></a>
                 @endif
                 <a href="{{ $urlHandler->get('create', array_merge(Input::all(), ['parentId' => $item->id])) }}" class="bd_ico bd_reply"><i class="xi-reply"></i><span class="bd_hidden">{{ xe_trans('xe::reply') }}</span></a>
@@ -86,7 +87,7 @@
 <!-- 댓글 -->
 @if ($config->get('comment') === true)
 <div class="__xe_comment">
-    {!! uio('comment', ['target' => $item]) !!}
+    {{--{!! uio('comment', ['target' => $item]) !!}--}}
 </div>
 @endif
 <!-- // 댓글 -->

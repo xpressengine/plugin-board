@@ -1,13 +1,13 @@
 <?php
 /**
- * Board identify manager
+ * IdentifyManager
  *
  * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -15,17 +15,16 @@ namespace Xpressengine\Plugins\Board;
 
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Session\SessionManager;
-use Xpressengine\Document\DocumentEntity;
 use Xpressengine\Document\DocumentHandler;
+use Xpressengine\Plugins\Board\Models\Board;
 
 /**
- * Board identify manager
- * 비회원이 글을 작성 한 경우 그 글을 인증하기 위해 사용
+ * IdentifyManager
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (akasima) <osh@xpressengine.com>
- * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (developers) <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -89,17 +88,17 @@ class IdentifyManager
     /**
      * 비회원 작성 글 인증 확인
      *
-     * @param ItemEntity $item       board item entity
-     * @param string     $email      email
-     * @param string     $certifyKey 인증 암호
+     * @param Board  $board      board model
+     * @param string $email      email
+     * @param string $certifyKey 인증 암호
      * @return bool
      */
-    public function verify(ItemEntity $item, $email, $certifyKey)
+    public function verify(Board $board, $email, $certifyKey)
     {
-        if ($email != $item->email) {
+        if ($email != $board->email) {
             return false;
         }
-        return $this->hasher->check($certifyKey, $item->certifyKey);
+        return $this->hasher->check($certifyKey, $board->certifyKey);
     }
 
     /**
@@ -116,13 +115,13 @@ class IdentifyManager
     /**
      * 인증 세션 생성
      *
-     * @param ItemEntity $item board item entity
+     * @param Board $board board model
      * @return void
      */
-    public function create(ItemEntity $item)
+    public function create(Board $board)
     {
-        $this->session->put($this->getKey($item->id), [
-            'certifyKey' => $item->certifyKey,
+        $this->session->put($this->getKey($board->id), [
+            'certifyKey' => $board->certifyKey,
             'expire' => $this->expireTime(),
         ]);
     }
@@ -140,24 +139,24 @@ class IdentifyManager
     /**
      * 인증 세션 반환
      *
-     * @param ItemEntity $item board item entity
+     * @param Board $board board model
      * @return mixed
      */
-    public function get(ItemEntity $item)
+    public function get(Board $board)
     {
-        return $this->session->get($this->getKey($item->id));
+        return $this->session->get($this->getKey($board->id));
     }
 
     /**
      * 문서에 대한 인증이 유효한지 검사
      * 인증 암호 및 유효 시간 검사
      *
-     * @param ItemEntity $item board item entity
+     * @param Board $board board model
      * @return bool
      */
-    public function validate(ItemEntity $item)
+    public function validate(Board $board)
     {
-        $session = $this->get($item);
+        $session = $this->get($board);
         if ($item->certifyKey != $session['certifyKey']) {
             return false;
         }
@@ -174,23 +173,23 @@ class IdentifyManager
     /**
      * 문서에 대해서 인증한 세션이 있는지 체크
      *
-     * @param ItemEntity $item board item entity
+     * @param Board $board board model
      * @return bool
      */
-    public function identified(ItemEntity $item)
+    public function identified(Board $board)
     {
-        $sessionName = $this->getKey($item->id);
+        $sessionName = $this->getKey($board->id);
         if ($this->session->has($sessionName) === false) {
             return false;
         }
 
-        if ($this->validate($item) === false) {
+        if ($this->validate($board) === false) {
             return false;
         }
 
         // 세션 갱신
-        $this->destroy($item);
-        $this->create($item);
+        $this->destroy($board);
+        $this->create($board);
 
         return true;
     }
@@ -198,11 +197,11 @@ class IdentifyManager
     /**
      * destroy session
      *
-     * @param ItemEntity $item board item entity
+     * @param Board $board board model
      * @return void
      */
-    public function destroy(ItemEntity $item)
+    public function destroy(Board $board)
     {
-        $this->session->remove($this->getKey($item->id));
+        $this->session->remove($this->getKey($board->id));
     }
 }
