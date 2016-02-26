@@ -208,9 +208,10 @@ class Handler
      */
     public function getModel($instanceId, ConfigEntity $config)
     {
+        $documentConfig = $this->documentHandler->getConfigHandler()->get($config->get('boardId'));
         $board = new Board;
-        $board->setDivision($config);
-        $board->setProxyOptions($this->documentHandler->proxyOption($config));
+        $board->setDivision($documentConfig);
+        $board->setProxyOptions($this->documentHandler->proxyOption($documentConfig));
         return $board;
     }
 

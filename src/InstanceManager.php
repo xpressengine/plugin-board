@@ -177,7 +177,7 @@ class InstanceManager
 
         $config = $this->configHandler->put($params);
         $configHandler = $this->document->getConfigHandler();
-        $documentConfig = $configHandler->makeEntity($params['boardId'], $params);
+        $documentConfig = $configHandler->make($params['boardId'], $params);
         $this->document->getInstanceManager()->put($documentConfig);
 
         $this->conn->commit();

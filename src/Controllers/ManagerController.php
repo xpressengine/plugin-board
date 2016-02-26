@@ -150,9 +150,9 @@ class ManagerController extends Controller
      * @param string $boardId board id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $instanceId)
+    public function update(Request $request, $boardId)
     {
-        $config = $this->configHandler->get($instanceId);
+        $config = $this->configHandler->get($boardId);
 
         $permissionNames = [];
         $permissionNames['read'] = ['readMode', 'readRating', 'readUser', 'readExcept'];
@@ -174,7 +174,7 @@ class ManagerController extends Controller
         }
 
         $config = $this->instanceManager->updateConfig($config->getPureAll());
-exit;
+
         // 확장 기능 사용
         //$this->extensionHandler->activate($inputs['extensions'], $config);
 
