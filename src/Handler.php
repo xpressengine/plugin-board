@@ -211,7 +211,7 @@ class Handler
         $instanceId = $config->get('boardId');
         $documentConfig = $this->documentHandler->getConfig($instanceId);
         $board = new Board;
-        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($instanceId));
+        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($documentConfig));
         return $board;
     }
 
@@ -226,7 +226,7 @@ class Handler
     {
         $instanceId = $config->get('boardId');
         $documentConfig = $this->documentHandler->getConfig($instanceId);
-        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($instanceId));
+        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($documentConfig));
         return $board;
     }
 
@@ -329,14 +329,9 @@ class Handler
         $board->save();
     }
 
-    public function hasVote(Board $board, $user, $option = '')
+    public function hasVote(Board $board, $user, $option)
     {
-        if ($option == '') {
-            return $this->voteCounter->hasByName($board->id, $user);
-        } else {
-            return $this->voteCounter->has($board->id, $user, $option);
-        }
-
+        return $this->voteCounter->has($board->id, $user, $option);
     }
 
 
