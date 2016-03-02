@@ -203,22 +203,43 @@ class Handler
     /**
      * Proxy, Division 관련 설정이 된 Document model 반환
      *
-     * @param string $instanceId document instance id
+     * @param ConfigEntity $config board config entity
      * @return Board
      */
-    public function getModel($instanceId, ConfigEntity $config)
+    public function getModel(ConfigEntity $config)
     {
-        $documentConfig = $this->documentHandler->getConfigHandler()->get($config->get('boardId'));
+        $instanceId = $config->get('boardId');
+        $documentConfig = $this->documentHandler->getConfig($instanceId);
         $board = new Board;
-        $board->setDivision($documentConfig);
-        $board->setProxyOptions($this->documentHandler->proxyOption($documentConfig));
+        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($instanceId));
         return $board;
     }
 
-    public function getsNotice($instanceId, ConfigEntity $config)
+    /**
+     * set model's config
+     *
+     * @param Board $board board model
+     * @param ConfigEntity $config board config entity
+     * @return Board
+     */
+    public function setModelConfig(Board $board, ConfigEntity $config)
     {
-        $query = $this->getModel($instanceId, $config)
-            ->where('instanceId', $instanceId)
+        $instanceId = $config->get('boardId');
+        $documentConfig = $this->documentHandler->getConfig($instanceId);
+        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($instanceId));
+        return $board;
+    }
+
+    /**
+     * get notice
+     *
+     * @param ConfigEntity $config
+     * @return mixed
+     */
+    public function getsNotice(ConfigEntity $config)
+    {
+        $query = $this->getModel($config)
+            ->where('instanceId', $config->get('boardId'))
             ->where('status', Document::STATUS_NOTICE)
             ->where('display', Document::DISPLAY_VISIBLE)
             ->where('published', Document::PUBLISHED_PUBLISHED);
@@ -231,7 +252,7 @@ class Handler
      *
      * @param Builder $query
      * @param Request $request
-     * @return QueryBuilder
+     * @return Builder
      */
     public function makeWhere(Builder $query, Request $request)
     {

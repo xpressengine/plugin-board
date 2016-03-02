@@ -146,7 +146,7 @@
             <tbody>
 
             <!-- NOTICE -->
-            @foreach($handler->getsNotice($instanceId, $config) as $item)
+            @foreach($handler->getsNotice($config) as $item)
                 <tr class="notice">
                     <td class="check"></td>
 

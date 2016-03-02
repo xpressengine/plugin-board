@@ -140,7 +140,7 @@ class UserController extends Controller
      */
     protected function listDataImporter(Request $request)
     {
-        $query = $this->handler->getModel($this->instanceId, $this->config)->where('instanceId', $this->instanceId)
+        $query = $this->handler->getModel($this->config)->where('instanceId', $this->instanceId)
         ->where('status', Document::STATUS_PUBLIC)
         ->where('display', Document::DISPLAY_VISIBLE)
         ->where('published', Document::PUBLISHED_PUBLISHED);
@@ -179,7 +179,8 @@ class UserController extends Controller
         /** @var MemberEntityInterface $user */
         $user = Auth::user();
         /** @var Board $item */
-        $item = Board::find($id);//$this->handler->get($id, $this->instanceId);
+        $item = $this->handler->getModel($this->config)->find($id);//$this->handler->get($id, $this->instanceId);
+        $this->handler->setModelConfig($item, $this->config);
 
         $visible = false;
         if ($item->display == Document::DISPLAY_VISIBLE) {
@@ -195,9 +196,6 @@ class UserController extends Controller
 
         if ($visible === true) {
             $this->handler->incrementReadCount($item, $user);
-            // 조회수 증가
-//            $readCounter = app('xe.board.readCounter');
-//            $readCounter->add($board, $user);
         }
 
         $formColumns = $this->configHandler->formColumns($this->instanceId);
@@ -312,7 +310,9 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $item = Board::find($id);//$this->handler->get($id, $this->instanceId);
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
         if ($item === null) {
             throw new NotFoundDocumentException;
         }
@@ -367,7 +367,8 @@ class UserController extends Controller
         }
 
         // 글 수정 시 게시판 설정이 아닌 글의 상태에 따른 처리가 되어야 한다.
-        $item = Board::find($id);
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
 
         // 비회원이 작성 한 글 인증
         // 비회원이 작성 한 글일 때 인증페이지로 이동
@@ -457,7 +458,8 @@ class UserController extends Controller
         $id = $request->get('id');
         $user = Auth::user();
 
-        $board = Board::find($id);
+        $board = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($board, $this->config);
 
         $voteCounter = $this->handler->getVoteCounter();
         $vote = $voteCounter->getByName($id, $user);
@@ -485,7 +487,8 @@ class UserController extends Controller
         $id = $request->get('id');
         $author = Auth::user();
 
-        $item = Board::find($id);
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
 
         $this->handler->incrementVoteCount($item, $author, $option);
 
@@ -504,7 +507,8 @@ class UserController extends Controller
         $id = $request->get('id');
         $author = Auth::user();
 
-        $item = $this->handler->get($id, $this->boardId);
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
 
         $this->handler->decrementVoteCount($item, $author, $option);
 
