@@ -40,12 +40,11 @@
         <div class="bd_function">
             <div class="bd_function_l">
                 <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
-                <a href="#" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user()) === true) invoked @endif"
+                <a href="#" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) invoked @endif"
                    data-add-url="{{ $urlHandler->get('addVote', ['option' => 'assent']) }}" data-remove-url="{{ $urlHandler->get('removeVote', ['option' => 'assent']) }}" data-id="{{$item->id}}">
                    <i class="xi-heart"></i><span class="bd_hidden">{{ trans('board::like') }}</span>
                 </a>
-                <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="
-                ">{{$item->assentCount}}</a>
+                <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num">{{$item->assentCount}}</a>
 
                 <div class="bd_share_area">
                     <!-- [D] 클릭시 클래스 on 적용 -->

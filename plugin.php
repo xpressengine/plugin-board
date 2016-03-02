@@ -200,6 +200,7 @@ class Plugin extends AbstractPlugin
             $proxyHandler = $app['xe.interception']->proxy(Handler::class, Handler::class);
 
             $readCounter = app('xe.counter')->make($app['request'], 'read');
+            $readCounter->setGuest();
             $voteCounter = app('xe.counter')->make($app['request'], 'vote', ['assent', 'dissent']);
 
             $handler = new $proxyHandler(

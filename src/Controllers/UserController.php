@@ -22,6 +22,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Xpressengine\Category\CategoryItem;
 use Xpressengine\Counter\Counter;
+use Xpressengine\Counter\Exceptions\GuestNotSupportException;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Image;
@@ -232,9 +233,9 @@ class UserController extends Controller
         $parentId = '';
         $head = '';
         if ($request->get('parentId') != null) {
-            $parent = $this->handler->get($request->get('parentId'), $this->instanceId);
-            $parentId = $parent->id;
-            $head = $parent->head;
+            $item = $this->handler->getModel($this->config)->find($request->get('parentId'));
+            $parentId = $item->id;
+            $head = $item->head;
         }
 
         /** @var MemberEntityInterface $user */
@@ -264,6 +265,7 @@ class UserController extends Controller
         $inputs = $request->all();
         $inputs['instanceId'] = $this->instanceId;
         $inputs['content'] = $request->originAll()['content'];
+        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 
         if ($request->get('status') == 'notice' && $this->isManager) {
             $inputs['status'] = null;
@@ -390,6 +392,7 @@ class UserController extends Controller
         $inputs = $request->all();
         // replace purifying content to origin content value
         $inputs['content'] = $request->originAll()['content'];
+        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 
         // 공지
         if ($request->get('status') == 'notice' && $this->isManager) {
@@ -490,7 +493,12 @@ class UserController extends Controller
         $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 
-        $this->handler->incrementVoteCount($item, $author, $option);
+        try {
+            $this->handler->incrementVoteCount($item, $author, $option);
+        } catch (GuestNotSupportException $e) {
+            throw new AccessDeniedHttpException;
+        }
+
 
         return $this->showVote($request);
     }
