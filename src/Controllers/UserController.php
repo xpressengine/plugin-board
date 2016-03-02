@@ -524,6 +524,37 @@ class UserController extends Controller
     }
 
     /**
+     * get voted user list
+     *
+     * @param $boardId
+     * @param $option
+     */
+    public function votedUsers(Request $request, $option)
+    {
+        $id = $request->get('id');
+        $author = Auth::user();
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        $users = $this->handler->getVoteCounter()->getUsers($item->id, $request->get('perPage'), $option);
+
+        $userList = [];
+        foreach ($users as $user) {
+            $userList[] = [
+                'id' => $user->id,
+                'displayName' => $user->displayName,
+                'profileImage' => $user->getProfileImage(),
+            ];
+        }
+
+        return Presenter::makeApi([
+            'current_page' => $request->get('page'),
+            'users' => $userList
+        ]);
+    }
+
+    /**
      * file upload
      *
      * @return string|\Xpressengine\Presenter\RendererInterface

@@ -105,12 +105,15 @@
             if ($target.hasClass('on') === false) {
                 var $modal = $('#myModal-list');
 
-                if ($modal.length == 0) {
-                    $modal = $('<div class="modal fade" id="myModal-list">');
-                    $modal.modal({show:false});
-                    $('body').append($modal);
+                if ($modal.length != 0) {
+                    $modal.empty();
                 }
 
+                $modal = $('<div class="modal fade" id="myModal-list">');
+                $modal.modal({show:false});
+                $('body').append($modal);
+
+                getUsers.currentPage = 1;
                 getUsers.get($(event.target).attr('href'), function(json) {
                     // modal css load
                     XE.cssLoad('/assets/vendor/core/css/modal.css');
@@ -130,11 +133,6 @@
                         }
                         $ul.append(li);
                     });
-
-                    // show modal
-                    $('<div class="modal fade" id="myModal-list">').
-                            append('<div class="modal-dialog">').
-                            append('<div class="modal-content">');
 
                     $modal.append($('<div class="modal-dialog">').append($('<div class="modal-content">').append(
                             $('<div class="modal-header bg_blue">').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="xi-close-thin"></i></button> <p class="modal-title">이 게시물을 좋아하는 사람들</p>')
