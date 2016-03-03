@@ -21,6 +21,7 @@ use Xpressengine\Config\ConfigManager;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Counter\Factory as CounterFactory;
+use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 
 /**
  * Plugin
@@ -293,6 +294,17 @@ class Plugin extends AbstractPlugin
         $app->bind(
             'Xpressengine\Plugins\Board\InstanceManager',
             'xe.board.instance'
+        );
+
+        // BoardPermissionHandler
+        $app->singleton('xe.board.permission', function ($app) {
+            $boardPermission = new BoardPermissionHandler($app['xe.permission'], $app['xe.board.config']);
+            $boardPermission->setPrefix(BoardModule::getId());
+            return $boardPermission;
+        });
+        $app->bind(
+            'Xpressengine\Plugins\Board\BoardPermissionHandler',
+            'xe.board.permission'
         );
     }
 

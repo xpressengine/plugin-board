@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Controllers;
 use App\Facades\XeDocument;
 use App\Facades\Presenter;
 use Auth;
+use Gate;
 use Storage;
 use Frontend;
 use App\Http\Controllers\Controller;
@@ -27,6 +28,7 @@ use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Member\Entities\MemberEntityInterface;
+use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\InvalidIdentifyException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
@@ -128,8 +130,15 @@ class UserController extends Controller
      * @throws AccessDeniedHttpException
      */
     //public function index(Request $request, PermissionHandler $permission)
-    public function index(Request $request)
+    public function index(Request $request, BoardPermissionhandler $boardPermission)
     {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_LIST,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
         return Presenter::makeAll('index', $this->listDataImporter($request));
     }
 
@@ -161,16 +170,19 @@ class UserController extends Controller
     /**
      * show
      * @param Request $request
-     * @param PermissionHandler $permission
+     * @param BoardPermissionhandler $permission
      * @param $id
      * @return mixed
      */
     //public function show(Request $request, PermissionHandler $permission, $id)
-    public function show(Request $request, $id)
+    public function show(Request $request, BoardPermissionhandler $boardPermission, $id)
     {
-//        if ($permission->hasRead($this->instanceId) === false) {
-//            throw new AccessDeniedHttpException;
-//        }
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_READ,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
 
         return Presenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request)));
     }
@@ -180,7 +192,7 @@ class UserController extends Controller
         /** @var MemberEntityInterface $user */
         $user = Auth::user();
         /** @var Board $item */
-        $item = $this->handler->getModel($this->config)->find($id);//$this->handler->get($id, $this->instanceId);
+        $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 
         $visible = false;
@@ -224,11 +236,14 @@ class UserController extends Controller
     }
 
     //public function create(Request $request, PermissionHandler $permission, Validator $validator)
-    public function create(Request $request, Validator $validator)
+    public function create(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
     {
-//        if ($permission->hasCreate($this->instanceId) === false) {
-//            throw new AccessDeniedHttpException;
-//        }
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_CREATE,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
 
         $parentId = '';
         $head = '';
@@ -252,15 +267,18 @@ class UserController extends Controller
     }
 
     //public function store(Request $request, PermissionHandler $permission)
-    public function store(Request $request)
+    public function store(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
     {
-//        if ($permission->hasCreate($this->instanceId) === false) {
-//            throw new AccessDeniedHttpException;
-//        }
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_CREATE,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
 
         $user = Auth::user();
 
-        $this->validate($request, app('xe.board.validator')->getCreateRule($user, $this->config));
+        $this->validate($request, $validator->getCreateRule($user, $this->config));
 
         $inputs = $request->all();
         $inputs['instanceId'] = $this->instanceId;
@@ -308,7 +326,7 @@ class UserController extends Controller
      * @return \Xpressengine\Presenter\RendererInterface
      */
     //public function edit(Request $request, PermissionHandler $permission, Validator $validator, $id)
-    public function edit(Request $request, Validator $validator, $id)
+    public function edit(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, $id)
     {
         $user = Auth::user();
 
@@ -330,10 +348,13 @@ class UserController extends Controller
             return $this->identify($item);
         }
 
-//        // 접근 권한 확인
-//        if ($permission->hasCreate($this->instanceId) === false) {
-//            throw new AccessDeniedHttpException;
-//        }
+        // 접근 권한 확인
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_CREATE,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
 
         /** @var \Xpressengine\Plugins\Board\Validator $validator */
         $validator = app('xe.board.validator');
@@ -359,7 +380,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     //public function update(Request $request, PermissionHandler $permission)
-    public function update(Request $request)
+    public function update(Request $request, Validator $validator)
     {
         $user = Auth::user();
         $id = $request->get('id');
@@ -384,8 +405,6 @@ class UserController extends Controller
             throw new InvalidIdentifyException;
         }
 
-        /** @var \Xpressengine\Plugins\Board\Validator $validator */
-        $validator = app('xe.board.validator');
         $rules = $validator->getEditRule($user, $this->config);
         $this->validate($request, $rules);
 
