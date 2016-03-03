@@ -27,5 +27,5 @@ use Xpressengine\Plugins\Board\BoardException;
  */
 class RequiredValueException extends BoardException
 {
-
+    protected $message = '":key" required.';
 }

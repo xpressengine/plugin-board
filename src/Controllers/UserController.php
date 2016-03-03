@@ -17,7 +17,6 @@ use App\Facades\XeDocument;
 use App\Facades\Presenter;
 use Auth;
 use Gate;
-use Storage;
 use Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
@@ -26,15 +25,21 @@ use Xpressengine\Counter\Counter;
 use Xpressengine\Counter\Exceptions\GuestNotSupportException;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
+use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Member\Entities\MemberEntityInterface;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\InvalidIdentifyException;
+use Xpressengine\Plugins\Board\Exceptions\InvalidRequestException;
+use Xpressengine\Plugins\Board\Exceptions\InvalidRequestHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundUploadFileException;
+use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
+use Xpressengine\Plugins\Board\Exceptions\RequiredValueHttpException;
 use Xpressengine\Plugins\Board\Handler;
+use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
@@ -43,6 +48,7 @@ use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Storage\File;
+use Xpressengine\Storage\Storage;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 
 
@@ -223,7 +229,7 @@ class UserController extends Controller
      * @throws Exception
      */
     //public function slug(Request $request, PermissionHandler $permission, $strSlug)
-    public function slug(Request $request, $strSlug)
+    public function slug(Request $request, BoardPermissionhandler $boardPermission, $strSlug)
     {
         $slug = BoardSlug::where('slug', $strSlug)->first();
 
@@ -232,7 +238,7 @@ class UserController extends Controller
         }
 
         //return $this->show($request, $permission, $slug->targetId);
-        return $this->show($request, $slug->targetId);
+        return $this->show($request, $boardPermission, $slug->targetId);
     }
 
     //public function create(Request $request, PermissionHandler $permission, Validator $validator)
@@ -267,7 +273,7 @@ class UserController extends Controller
     }
 
     //public function store(Request $request, PermissionHandler $permission)
-    public function store(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
+    public function store(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, IdentifyManager $identifyManager)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
@@ -290,13 +296,11 @@ class UserController extends Controller
         }
 
         // 암호 설정
-        /** @var \Xpressengine\Plugins\Board\IdentifyManager $identifyManager */
-        $identifyManager = app('xe.board.identify');
         if (empty($inputs['certifyKey']) === false) {
             $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
         }
 
-        $board = $this->handler->add($inputs, $user);
+        $board = $this->handler->add($inputs, $user, $this->config);
 
         // 답글인 경우 부모글이 있는 곳으로 이동한다.(최대한..)
         if ($request->get('parentId') != '') {
@@ -326,7 +330,7 @@ class UserController extends Controller
      * @return \Xpressengine\Presenter\RendererInterface
      */
     //public function edit(Request $request, PermissionHandler $permission, Validator $validator, $id)
-    public function edit(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, $id)
+    public function edit(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, IdentifyManager $identifyManager, $id)
     {
         $user = Auth::user();
 
@@ -338,8 +342,6 @@ class UserController extends Controller
         }
 
         // 비회원이 작성 한 글일 때 인증페이지로 이동
-        /** @var \Xpressengine\Plugins\Board\IdentifyManager $identifyManager */
-        $identifyManager = app('xe.board.identify');
         if (
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
@@ -380,13 +382,13 @@ class UserController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     //public function update(Request $request, PermissionHandler $permission)
-    public function update(Request $request, Validator $validator)
+    public function update(Request $request, Validator $validator, IdentifyManager $identifyManager)
     {
         $user = Auth::user();
         $id = $request->get('id');
 
         if ($id === null) {
-            throw new RequiredValueException;
+            throw new RequiredValueHttpException(['key' => 'id']);
         }
 
         // 글 수정 시 게시판 설정이 아닌 글의 상태에 따른 처리가 되어야 한다.
@@ -395,15 +397,14 @@ class UserController extends Controller
 
         // 비회원이 작성 한 글 인증
         // 비회원이 작성 한 글일 때 인증페이지로 이동
-        /** @var \Xpressengine\Plugins\Board\IdentifyManager $identifyManager */
-        $identifyManager = app('xe.board.identify');
         if (
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
         ) {
-            throw new InvalidIdentifyException;
+            return $this->identify($item, $this->urlHandler->get('edit', ['id' => $item->id]));
         }
+
 
         $rules = $validator->getEditRule($user, $this->config);
         $this->validate($request, $rules);
@@ -419,21 +420,19 @@ class UserController extends Controller
         }
 
         // 암호 설정
-        if ($item->certifyKey != '') {
-            $item->certifyKey = $identifyManager->hash($item->certifyKey);
-        }
-
-        // 비회원 글 수정시 비밀번호를 입력 안한 경우 원래 비밀번호로 설
-        if ($item->getOriginal('certifyKey') != '' && $item->certifyKey == '') {
-            $item->certifyKey = $item->getOriginal('certifyKey');
+        $oldCertifyKey = $item->certifyKey;
+        if ($item->certifyKey != '' && isset($inputs['certifyKey']) === true && $inputs['certifyKey'] == '') {
+            $inputs['certifyKey'] = $item->certifyKey;
+        } elseif ($item->certifyKey != '' && isset($inputs['certifyKey']) === true && $inputs['certifyKey'] != '') {
+            $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
         }
 
         $board = $this->handler->put($item, $inputs);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
-        if ($item->getOriginal('certifyKey') != '' && $item->getOriginal('certifyKey') != $item->certifyKey) {
-            $identifyManager->destroy($item);
-            $identifyManager->create($item);
+        if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {
+            $identifyManager->destroy($board);
+            $identifyManager->create($board);
         }
 
         return Redirect::to(
@@ -443,20 +442,47 @@ class UserController extends Controller
 
     /**
      * 비회원 인증 페이지
-     * @param DocumentEntity $doc     document entity
-     * @param null|string    $referer referer url (return page url)
+     * @param Board $board board model
+     * @param null|string $referer referer url (return page url)
      * @return \Xpressengine\Presenter\RendererInterface
+     * @internal param DocumentEntity $doc document entity
      */
-    public function identify(DocumentEntity $doc, $referer = null)
+    public function identify(Board $board, $referer = null)
     {
         // 레퍼러는 현재 url
         if ($referer == null) {
-            $referer = URL::current();
+            $referer = app('url')->current();
         }
         return Presenter::make('identify', [
-            'doc' => $doc,
+            'board' => $board,
             'referer' => $referer,
         ]);
+    }
+
+    public function identificationConfirm(Request $request, IdentifyManager $identifyManager)
+    {
+        $item = $this->handler->getModel($this->config)->find($request->get('id'));
+
+        if ($item->certifyKey == '') {
+            throw new InvalidRequestException;
+        }
+
+        if ($request->get('email') == '') {
+            throw new RequiredValueHttpException(['key' => xe_trans('xe::email')]);
+        }
+
+        if ($request->get('certifyKey') == '') {
+            throw new RequiredValueHttpException(['key' => xe_trans('xe::password')]);
+        }
+
+        if ($identifyManager->verify($item, $request->get('email'), $request->get('certifyKey')) === false) {
+            throw new NotMatchedCertifyKeyException;
+        }
+
+        // 인증 되었다면 DB의 인증키를 세션에 저장
+        $identifyManager->create($item);
+
+        return Redirect::to($request->get('referer', 'edit'));
     }
 
     /**
@@ -581,11 +607,8 @@ class UserController extends Controller
      * @throws \Xpressengine\Media\Exceptions\NotAvailableException
      * @throws \Xpressengine\Storage\Exceptions\InvalidFileException
      */
-    public function fileUpload(Request $request)
+    public function fileUpload(Request $request, Storage $storage)
     {
-        /** @var \Xpressengine\Storage\Storage $storage */
-        $storage = app('xe.storage');
-
         $uploadedFile = null;
         if ($request->file('file') !== null) {
             $uploadedFile = $request->file('file');
@@ -628,17 +651,15 @@ class UserController extends Controller
      * @param string $id  id
      * @return void
      */
-    public function fileSource($id)
+    public function fileSource(BoardPermissionHandler $boardPermission, $id)
     {
-//        $permission = $this->permissionHandler->get($this->boardId);
-//        if ($permission->unables(ACTION::READ) === true) {
-//            throw new AccessDeniedHttpException;
-//        }
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_READ,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
 
-        // permission 추가 해야 함.
-
-        /** @var \Xpressengine\Storage\Storage $storage */
-        $storage = app('xe.storage');
         $file = File::find($id);
 
         /** @var \Xpressengine\Media\MediaManager $mediaManager */
@@ -653,11 +674,9 @@ class UserController extends Controller
                 BoardModule::THUMBNAIL_TYPE,
                 $dimension
             );
-
-            $file = $media[0];
         }
 
-        header('Content-type: ' . $file->mime);
+        header('Content-type: ' . $media->mime);
         echo $file->getContent();
     }
 }

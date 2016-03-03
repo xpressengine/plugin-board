@@ -15,7 +15,7 @@ namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Member\Entities\MemberEntityInterface;
-use Xpressengine\Member\Entities\Guest;
+use Xpressengine\User\Models\Guest;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 
 
@@ -118,7 +118,7 @@ class Validator
     public function guestStore()
     {
         return [
-            'writer' => 'Required|AlphaNum|Min:4',
+            'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
             'certifyKey' => 'Required|AlphaNum|Between:4,64|',
         ];
@@ -132,7 +132,7 @@ class Validator
     public function guestUpdate()
     {
         return [
-            'writer' => 'Required|AlphaNum|Min:4',
+            'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
             'certifyKey' => 'AlphaNum|Between:4,64|',
         ];

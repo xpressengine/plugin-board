@@ -25,6 +25,7 @@ use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
+use Xpressengine\User\Models\Guest;
 
 
 /**
@@ -90,9 +91,9 @@ class Handler
      * @param array $args arguments
      * @return Board
      */
-    public function add(array $args, MemberEntityInterface $user)
+    public function add(array $args, MemberEntityInterface $user, ConfigEntity $config)
     {
-        $model = new Board();
+        $model = $this->getModel($config);
         $model->getConnection()->beginTransaction();
 
         $args['userId'] = $user->getId();
@@ -102,11 +103,17 @@ class Handler
         if (empty($args['writer'])) {
             $args['writer'] = $user->getDisplayName();
         }
+        if ($user instanceof Guest) {
+            $args['userType'] = Board::USER_TYPE_GUEST;
+        }
 
         // save Document
         $doc = $this->documentHandler->add($args);
 
-        $board = Board::find($doc->id);
+        $model = $this->getModel($config);
+
+        $board = $model->find($doc->id);
+        $this->setModelConfig($board, $config);
 
         // save Slug
         $slug = new BoardSlug([
@@ -197,7 +204,7 @@ class Handler
 
         $board->getConnection()->commit();
 
-        return Board::find($board->id);
+        return $board->find($board->id);
     }
 
     /**

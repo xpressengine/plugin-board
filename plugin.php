@@ -150,16 +150,6 @@ class Plugin extends AbstractPlugin
     /**
      * @return boolean
      */
-    public function checkInstalled()
-    {
-        // TODO: Implement checkInstall() method.
-
-        return true;
-    }
-
-    /**
-     * @return boolean
-     */
     public function checkUpdated()
     {
         // TODO: Implement checkUpdate() method.

@@ -92,7 +92,7 @@ class InstanceManager
     public function create(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException;
+            throw new RequiredValueException(['key' => 'boardId']);
         }
 
         $config = $this->configHandler->get($params['boardId']);
@@ -163,7 +163,7 @@ class InstanceManager
     public function updateConfig(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException;
+            throw new RequiredValueException(['key' => 'boardId']);
         }
 
         $config = $this->configHandler->get($params['boardId']);

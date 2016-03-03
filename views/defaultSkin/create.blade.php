@@ -1,7 +1,7 @@
 {{ Frontend::rule('board', $rules) }}
 
 <div class="board_write">
-    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board">
+    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
     <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
     <input type="hidden" name="parentId" value="{{$parentId}}" />
     <input type="hidden" name="head" value="{{$head}}" />
