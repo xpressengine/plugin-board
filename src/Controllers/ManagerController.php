@@ -20,6 +20,8 @@ use App\Sections\DynamicFieldSection;
 use App\Sections\ToggleMenuSection;
 use App\Sections\SkinSection;
 use Xpressengine\Http\Request;
+use Xpressengine\Permission\Grant;
+use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\InstanceManager;
@@ -99,10 +101,11 @@ class ManagerController extends Controller
     /**
      * edit
      *
+     * @param BoardPermissionHandler $boardPermission
      * @param string $boardId board id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function edit($boardId)
+    public function edit(BoardPermissionHandler $boardPermission, $boardId)
     {
         $config = $this->configHandler->get($boardId);
 
@@ -114,8 +117,6 @@ class ManagerController extends Controller
 
         $formColumns = $this->configHandler->formColumns($boardId);
 
-        //$boardOrders = app('xe.board.order')->gets();
-
         $skinSection = (new SkinSection())->setting(BoardModule::getId(), $boardId);
 
         $commentSection = '';
@@ -126,7 +127,7 @@ class ManagerController extends Controller
 
         $toggleMenuSection = (new ToggleMenuSection())->setting(BoardModule::getId(), $boardId);
 
-        //$perms = $this->permissionHandler->getPerms($boardId);
+        $perms = $boardPermission->getPerms($boardId);
 
         return $this->presenter->make('edit', [
             'config' => $config,
@@ -134,12 +135,11 @@ class ManagerController extends Controller
             'listOptions' => $listOptions,
             'listColumns' => $listColumns,
             'formColumns' => $formColumns,
-            //'boardOrders' => $boardOrders,
             'skinSection' => $skinSection,
             'commentSection' => $commentSection,
             'dynamicFieldSection' => $dynamicFieldSection,
             'toggleMenuSection' => $toggleMenuSection,
-          //  'perms' => $perms,
+            'perms' => $perms,
         ]);
     }
 
@@ -147,10 +147,12 @@ class ManagerController extends Controller
     /**
      * update
      *
+     * @param Request $request
+     * @param BoardPermissionHandler $boardPermission
      * @param string $boardId board id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $boardId)
+    public function update(Request $request, BoardPermissionHandler $boardPermission, $boardId)
     {
         $config = $this->configHandler->get($boardId);
 
@@ -167,34 +169,29 @@ class ManagerController extends Controller
             $permissionNames['manage']
         ));
 
-        //$inputs['extensions'] = isset($inputs['extensions']) ? $inputs['extensions'] : [];
-
         foreach ($inputs as $key => $value) {
             $config->set($key, $value);
         }
 
         $config = $this->instanceManager->updateConfig($config->getPureAll());
 
-        // 확장 기능 사용
-        //$this->extensionHandler->activate($inputs['extensions'], $config);
-
         // permission update
-//        $grant = new Grant();
-//
-//        foreach ($this->permissionHandler->getActions() as $action) {
-//            $permInputs = Input::only($permissionNames[$action]);
-//            if ($permInputs[$action.'Mode'] == 'manual') {
-//                $grant = $this->permissionHandler->createGrant($grant, $action, [
-//                    Grant::RATING_TYPE => $permInputs[$action . 'Rating'],
-//                    Grant::GROUP_TYPE => isset($permInputs[$action . 'Group']) ?
-//                        $permInputs[$action . 'Group'] : [],
-//                    Grant::USER_TYPE => explode(',', $permInputs[$action . 'User']),
-//                    Grant::EXCEPT_TYPE => explode(',', $permInputs[$action . 'Except'])
-//                ]);
-//            }
-//        }
-//
-//        $this->permissionHandler->set($boardId, $grant);
+        $grant = new Grant();
+
+        foreach ($boardPermission->getActions() as $action) {
+            $permInputs = $request->only($permissionNames[$action]);
+            if ($permInputs[$action.'Mode'] == 'manual') {
+                $grant = $boardPermission->createGrant($grant, $action, [
+                    Grant::RATING_TYPE => $permInputs[$action . 'Rating'],
+                    Grant::GROUP_TYPE => isset($permInputs[$action . 'Group']) ?
+                        $permInputs[$action . 'Group'] : [],
+                    Grant::USER_TYPE => explode(',', $permInputs[$action . 'User']),
+                    Grant::EXCEPT_TYPE => explode(',', $permInputs[$action . 'Except'])
+                ]);
+            }
+        }
+
+        $boardPermission->set($boardId, $grant);
 
         return Redirect::to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
     }

@@ -134,14 +134,14 @@
                 </div>
 
                 <!-- Permission -->
-                {{--@foreach ($perms as $perm)--}}
-                    {{--<div class="form-group">--}}
-                        {{--<label for="">{{ $perm['title'] }} {{xe_trans('xe::permission')}}</label>--}}
-                        {{--<div class="well">--}}
-                            {{--{!! uio('permission', $perm) !!}--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--@endforeach--}}
+                @foreach ($perms as $perm)
+                    <div class="form-group">
+                        <label for="">{{ $perm['title'] }} {{xe_trans('xe::permission')}}</label>
+                        <div class="well">
+                            {!! uio('permission', $perm) !!}
+                        </div>
+                    </div>
+                @endforeach
 
                 <button type="submit" class="btn btn-primary">{{xe_trans('xe::save')}}</button>
             </form>

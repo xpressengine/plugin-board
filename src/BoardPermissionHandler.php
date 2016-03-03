@@ -13,11 +13,13 @@
  */
 namespace Xpressengine\Plugins\Board;
 
+use Xpressengine\Permission\Permission;
 use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Permission\Registered;
 use Xpressengine\Permission\Action;
 use Xpressengine\Member\Repositories\GroupRepositoryInterface as Assignor;
+use Xpressengine\Plugin\PluginRegister;
 
 /**
  * BoardPermissionHandler
@@ -31,6 +33,12 @@ use Xpressengine\Member\Repositories\GroupRepositoryInterface as Assignor;
  */
 class BoardPermissionHandler
 {
+    /** 문서 생성 퍼미션 action 이름 */
+    const ACTION_CREATE = 'create';
+
+    /** 문서 조회 퍼미션 action 이름 */
+    const ACTION_READ = 'read';
+
     /** 문서 목록 퍼미션 action 이름 */
     const ACTION_LIST = 'list';
 
@@ -53,28 +61,16 @@ class BoardPermissionHandler
      * @var array
      */
     protected $actions = [
-        Action::CREATE,
-        Action::READ,
+        self::ACTION_CREATE,
+        self::ACTION_READ,
         self::ACTION_LIST,
         self::ACTION_MANAGE,
     ];
 
     /**
-     * @var Permissions
+     * @var PermissionHandler
      */
-    protected $permissions;
-
-    /**
-     * 회원 패키지의 그룹 관리자
-     *
-     * @var Assignor
-     */
-    protected $assignor;
-
-    /**
-     * @var Action
-     */
-    protected $action;
+    protected $permissionHandler;
 
     /**
      * @var ConfigHandler
@@ -84,24 +80,15 @@ class BoardPermissionHandler
     /**
      * create instance
      *
-     * @param PermissionHandler   $permissionHandler   permission factory instance
-     * @param Assignor      $assignor      assignor
-     * @param Action        $action        action
+     * @param PermissionHandler $permissionHandler permission factory instance
      * @param ConfigHandler $configHandler config handler
      */
     public function __construct(
         PermissionHandler $permissionHandler,
-        Assignor $assignor,
-        Action $action,
         ConfigHandler $configHandler
     ) {
         $this->permissionHandler = $permissionHandler;
-        $this->assignor = $assignor;
-        $this->action = $action;
         $this->configHandler = $configHandler;
-
-        $this->action->add(self::ACTION_LIST);
-        $this->action->add(self::ACTION_MANAGE);
     }
 
     /**
@@ -113,53 +100,6 @@ class BoardPermissionHandler
     {
         $this->prefix = $prefix;
     }
-    /**
-     * 글 리스트 권한 체크
-     *
-     * @param string $instanceId instance id(board id)
-     * @return bool
-     */
-    public function hasList($instanceId)
-    {
-        $permission = $this->get($instanceId);
-        if ($permission->unables(self::ACTION_LIST) === true) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 글 생성 권한 체크
-     *
-     * @param string $instanceId instance id(board id)
-     * @return bool
-     */
-    public function hasCreate($instanceId)
-    {
-        $permission = $this->get($instanceId);
-        if ($permission->unables(Action::CREATE) === true) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 글 조회 권한 체크
-     *
-     * @param string $instanceId instance id(board id)
-     * @return bool
-     */
-    public function hasRead($instanceId)
-    {
-        $permission = $this->get($instanceId);
-        if ($permission->unables(Action::READ) === true) {
-            return false;
-        }
-
-        return true;
-    }
 
     /**
      * 퍼미션 인스턴스 이름 반환
@@ -167,20 +107,48 @@ class BoardPermissionHandler
      * @param string $instanceId instance identifier
      * @return string
      */
-    private function name($instanceId)
+    public function name($instanceId)
     {
         return sprintf('%s.%s', $this->prefix, $instanceId);
+    }
+
+    public function getPerms($instanceId)
+    {
+        $default = $this->getDefault();
+        $permission = $this->get($instanceId);
+
+        $perms = [];
+        foreach ($this->actions as $actionName) {
+            $mode = "inherit";
+            if ($permission !== null) {
+                $pureGrant = $permission->pure($actionName);
+                $mode = ($pureGrant === null) ? "inherit" : "manual";
+            }
+
+            $grant = $default->pure($actionName);
+            if ($permission !== null && $permission->pure($actionName) !== null) {
+                $grant = $permission->pure($actionName);
+            }
+            $perms[] = [
+                'mode' => $mode,
+                'title' => $actionName,
+                'grant' => $grant,
+                'groups' => [], // 그룹 정보는 어떻게 획득해야 하나
+            ];
+        }
+
+        return $perms;
     }
 
     /**
      * 권한 객체 반환
      *
      * @param string $instanceId instance identifier
-     * @return \Xpressengine\Permission\Permissions\InstancePermission
+     * @return \Xpressengine\Permission\Permission
      */
     public function get($instanceId)
     {
-        return $this->permissions->instance($this->name($instanceId));
+        return $this->permissionHandler->get($this->name($instanceId));
     }
 
     /**
@@ -192,7 +160,7 @@ class BoardPermissionHandler
      */
     public function set($instanceId, Grant $grant)
     {
-        $this->permissions->register('instance', $this->name($instanceId), $grant);
+        $this->permissionHandler->register($this->name($instanceId), $grant);
     }
 
     /**
@@ -201,7 +169,7 @@ class BoardPermissionHandler
      *
      * @return Grant
      */
-    public function getDefault()
+    public function getDefaultGrant()
     {
         $grant = new Grant();
 
@@ -213,7 +181,7 @@ class BoardPermissionHandler
                     Grant::USER_TYPE => [],
                     Grant::EXCEPT_TYPE => []
                 ];
-            } elseif ($action == self::ACTION_LIST || $action == Action::READ) {
+            } elseif ($action == self::ACTION_LIST || $action == self::ACTION_READ) {
                 $perm = [
                     Grant::RATING_TYPE => 'guest',
                     Grant::GROUP_TYPE => [],
@@ -236,6 +204,22 @@ class BoardPermissionHandler
     }
 
     /**
+     * 게시판 기본 권한 반환
+     *
+     * @return null|\Xpressengine\Permission\Permission
+     */
+    public function getDefault()
+    {
+        $permission = $this->permissionHandler->get($this->prefix);
+        if ($permission === null) {
+            $this->setDefault($this->getDefaultGrant());
+            $permission = $this->permissionHandler->get($this->prefix);
+        }
+
+        return $permission;
+    }
+
+    /**
      * 게시판 기본 권한 설정
      *
      * @param Grant $grant grant information object
@@ -243,7 +227,7 @@ class BoardPermissionHandler
      */
     public function setDefault(Grant $grant)
     {
-        $this->permissions->register('instance', $this->prefix, $grant);
+        $this->permissionHandler->register($this->prefix, $grant);
     }
 
     /**
@@ -264,60 +248,6 @@ class BoardPermissionHandler
     }
 
     /**
-     * 퍼미션 grant 반환
-     *
-     * @param Registered $registered registered permission
-     * @param string     $action     permission action name(Action::CREATE|self::ACTION_MANAGE)
-     * @return array
-     */
-    public function getGrant(Registered $registered, $action)
-    {
-        if ($action == self::ACTION_MANAGE) {
-            $grant = $this->getManageGrant($registered);
-        } else {
-            $defaultPerm = [
-                Grant::RATING_TYPE => '',
-                Grant::GROUP_TYPE => [],
-                Grant::USER_TYPE => [],
-                Grant::EXCEPT_TYPE => []
-            ];
-
-            if ($registered[$action] != null) {
-                $grant = array_merge($defaultPerm, $registered[$action]);
-            } else {
-                $grant = $defaultPerm;
-            }
-        }
-
-        return $grant;
-    }
-
-    /**
-     * 관리 권한 설정을 위한 기본 퍼미션 반환
-     * 관리 권한은 다른 권한 설정과 다른 점이 있다(RATING_TYPE 이 제한적으로 제공 된다거나..)
-     *
-     * @param Registered $registered registered permission
-     * @return array
-     */
-    public function getManageGrant(Registered $registered)
-    {
-        $defaultPerm = [
-            Grant::RATING_TYPE => '',
-            Grant::GROUP_TYPE => [],
-            Grant::USER_TYPE => [],
-            Grant::EXCEPT_TYPE => []
-        ];
-
-        if ($registered[self::ACTION_MANAGE] != null) {
-            $grant = array_merge($defaultPerm, $registered[self::ACTION_MANAGE]);
-        } else {
-            $grant = $defaultPerm;
-        }
-
-        return $grant;
-    }
-
-    /**
      * 게시판에서 사용하는 권한 action 리스트 반환
      *
      * @return array
@@ -325,32 +255,6 @@ class BoardPermissionHandler
     public function getActions()
     {
         return $this->actions;
-    }
-
-    /**
-     * action 의 permission 설정 반환
-     *
-     * @param string $instanceId instance identifier
-     * @return array
-     */
-    public function getPerms($instanceId)
-    {
-        $registered = $this->get($instanceId)->getRegistered();
-
-        $perms = [];
-        foreach ($this->actions as $action) {
-            $pureGrant = $registered->pure($action);
-            $mode = ($pureGrant === null) ? "inherit" : "manual";
-
-            $perms[] = [
-                'mode' => $mode,
-                'title' => $action,
-                'grant' => $this->getGrant($registered, $action),
-                'groups' => $this->assignor->all(),
-            ];
-        }
-
-        return $perms;
     }
 
     /**
