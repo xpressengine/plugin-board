@@ -14,8 +14,8 @@
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Config\ConfigEntity;
-use Xpressengine\Member\Entities\MemberEntityInterface;
-use Xpressengine\Member\Entities\Guest;
+use Xpressengine\User\UserInterface;
+use Xpressengine\User\Models\Guest;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 
 
@@ -62,12 +62,12 @@ class Validator
     /**
      * get create rule
      *
-     * @param MemberEntityInterface $user   user
+     * @param UserInterface $user   user
      * @param ConfigEntity          $config board config entity
      * @param array|null            $rules  rules
      * @return array
      */
-    public function getCreateRule(MemberEntityInterface $user, ConfigEntity $config, array $rules = null)
+    public function getCreateRule(UserInterface $user, ConfigEntity $config, array $rules = null)
     {
         $rules = $this->makeRule($config, $rules);
         if ($user instanceof Guest) {
@@ -77,7 +77,7 @@ class Validator
         return $rules;
     }
 
-    public function getEditRule(MemberEntityInterface $user, ConfigEntity $config, array $rules = null)
+    public function getEditRule(UserInterface $user, ConfigEntity $config, array $rules = null)
     {
         $rules = $this->makeRule($config, $rules);
         if ($user instanceof Guest) {

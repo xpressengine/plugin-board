@@ -19,12 +19,12 @@ use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
-use Xpressengine\Member\Entities\MemberEntityInterface;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
+use Xpressengine\User\UserInterface;
 
 
 /**
@@ -87,10 +87,12 @@ class Handler
      * 게시판에 글 등록 시 핸들러를 통해서 처리
      * Interception 을 통해 다양한 서드파티 기능이 추가될 수 있다.
      *
-     * @param array $args arguments
+     * @param array         $args arguments
+     * @param UserInterface $user
+     *
      * @return Board
      */
-    public function add(array $args, MemberEntityInterface $user)
+    public function add(array $args, UserInterface $user)
     {
         $model = new Board();
         $model->getConnection()->beginTransaction();
@@ -348,10 +350,10 @@ class Handler
     /**
      * 수정 권한 확인
      *
-     * @param MemberEntityInterface $author 로그인 사용자 정보
+     * @param UserInterface $author 로그인 사용자 정보
      * @return bool
      */
-    public function alterPerm(MemberEntityInterface $author)
+    public function alterPerm(UserInterface $author)
     {
 //        if ($this->isGuest($board) === true) {
 //            return true;
@@ -367,10 +369,10 @@ class Handler
     /**
      * 삭제 권한 확인
      *
-     * @param MemberEntityInterface $author 로그인 사용자 정보
+     * @param UserInterface $author 로그인 사용자 정보
      * @return bool
      */
-    public function deletePerm(MemberEntityInterface $author)
+    public function deletePerm(UserInterface $author)
     {
 //        if ($this->isGuest($board) === true) {
 //            return true;

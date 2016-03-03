@@ -18,7 +18,6 @@ use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Permission\Registered;
 use Xpressengine\Permission\Action;
-use Xpressengine\Member\Repositories\GroupRepositoryInterface as Assignor;
 use Xpressengine\Plugin\PluginRegister;
 
 /**
