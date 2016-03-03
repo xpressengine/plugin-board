@@ -27,7 +27,6 @@ use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Image;
-use Xpressengine\Member\Entities\MemberEntityInterface;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\InvalidIdentifyException;
@@ -195,7 +194,7 @@ class UserController extends Controller
 
     protected function showDataImporter($id)
     {
-        /** @var MemberEntityInterface $user */
+        /** @var UserInterface $user */
         $user = Auth::user();
         /** @var Board $item */
         $item = $this->handler->getModel($this->config)->find($id);
@@ -259,7 +258,7 @@ class UserController extends Controller
             $head = $item->head;
         }
 
-        /** @var MemberEntityInterface $user */
+        /** @var UserInterface $user */
         $user = Auth::user();
         $rules = $validator->getCreateRule($user, $this->config);
 
