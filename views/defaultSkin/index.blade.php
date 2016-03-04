@@ -204,7 +204,6 @@
             @endforeach
             <!-- /NOTICE -->
 
-
             @if (count($paginate) == 0)
             <!-- NO ARTICLE -->
             <tr class="no_article">
@@ -225,8 +224,9 @@
                     @foreach ($config->get('listColumns') as $columnName)
                         @if ($columnName == 'title')
                             <td class="title column-{{$columnName}}">
-                                @if ($item->category)
-                                    <span class="category">{!! $fieldType->getSkin()->output('category', $item->getAttributes()) !!}</span>
+
+                                @if ($config->get('category') == true)
+                                    <span class="category">{!! $item->boardCategory->categoryItem->word !!}</span>
                                 @endif
                                 <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>
 

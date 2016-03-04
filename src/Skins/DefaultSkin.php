@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Skins;
 
+use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
 use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
 use Xpressengine\Routing\InstanceConfig;
@@ -120,7 +121,7 @@ class DefaultSkin extends AbstractSkin
         // replace dynamicField skin registered information
         /** @var \Xpressengine\Register\Container $register */
         $register = app('xe.register');
-        $register->add('FieldType/xpressengine@Category/FieldSkin/xpressengine@default', DesignSelectSkin::class);
+        $register->set('FieldType/xpressengine@Category/FieldSkin/xpressengine@default', DesignSelectSkin::class);
     }
 
     /**

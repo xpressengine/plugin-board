@@ -199,7 +199,7 @@ class InstanceManager
 
         // get document config
         $this->document->destroyInstance($boardId);
-        $this->comment->drop($boardId);
+        //$this->comment->drop($boardId);
 
         // remove board config
         $this->configHandler->remove($config);
@@ -221,7 +221,7 @@ class InstanceManager
      */
     public function summary($instanceId, Handler $handler)
     {
-        $documentCount = $handler->countByBoardId($instanceId);
+        $documentCount = $this->document->getModel($instanceId)->where('instanceId', $instanceId)->count();
         $configs = $this->configHandler->getDynamicFields($this->configHandler->get($instanceId));
         $dynamicFieldCount = count($configs);
 

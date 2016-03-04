@@ -193,6 +193,7 @@
             if ($target.hasClass('__xe_select_box_show')) {
                 event.preventDefault();
                 var $dst = $target.next('.bd_select_list');
+
                 if ($dst.length === 0) {
                     $dst = $target.closest('.bd_select_area').next('.bd_select_list');
                 }

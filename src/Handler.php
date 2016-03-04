@@ -111,8 +111,8 @@ class Handler
         $doc = $this->documentHandler->add($args);
 
         $model = $this->getModel($config);
-
         $board = $model->find($doc->id);
+
         $this->setModelConfig($board, $config);
 
         // save Slug
@@ -289,13 +289,8 @@ class Handler
             $query = $query->where('writer', $request->get('writer'));
         }
 
-        if ($config->get('category') === true && $request->get('categoryItemId', '') !== '') {
-            $query = $query->join(
-                'board_category',
-                sprintf('%s.%s', $query->getQuery()->from, 'id'),
-                '=',
-                sprintf('%s.%s', 'board_category', 'id')
-            )->where('itemId', $request->get('categoryItemId'));
+        if ($request->get('categoryItemId', '') !== '') {
+            $query = $query->where('itemId', $request->get('categoryItemId'));
         }
 
         return $query;

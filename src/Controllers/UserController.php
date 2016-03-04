@@ -168,6 +168,15 @@ class UserController extends Controller
         ->where('display', Document::DISPLAY_VISIBLE)
         ->where('published', Document::PUBLISHED_PUBLISHED);
 
+        if ($this->config->get('category') === true) {
+            $query = $query->leftJoin(
+                'board_category',
+                sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                '=',
+                sprintf('%s.%s', 'board_category', 'id')
+            );
+        }
+
         $query = $this->handler->makeWhere($query, $request, $this->config);
         $query = $this->handler->makeOrder($query, $request, $this->config);
 
