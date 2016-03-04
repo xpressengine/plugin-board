@@ -66,20 +66,17 @@ class InstanceManager
      * @param VirtualConnection   $conn          database connection
      * @param DocumentHandler     $document      document handler
      * @param DynamicFieldHandler $dynamicField  dynamic field handler
-     * @param CommentHandler      $comment       comment handler
      * @param ConfigHandler       $configHandler config handler
      */
     public function __construct(
         VirtualConnection $conn,
         DocumentHandler $document,
         DynamicFieldHandler $dynamicField,
-        CommentHandler $comment,
         ConfigHandler $configHandler
     ) {
         $this->conn = $conn;
         $this->document = $document;
         $this->dynamicField = $dynamicField;
-        $this->comment = $comment;
         $this->configHandler = $configHandler;
     }
 
@@ -105,8 +102,8 @@ class InstanceManager
         $documentConfig = $this->document->createInstance($params['boardId'], $params);
 
         // create comment config(create new comment instance)
-        $this->comment->createInstance($documentConfig->get('instanceId'), $documentConfig->get('division'));
-        $this->comment->configure($documentConfig->get('instanceId'), ['useWysiwyg' => true]);
+//        $this->comment->createInstance($documentConfig->get('instanceId'), $documentConfig->get('division'));
+//        $this->comment->configure($this->comment->getInstanceId($documentConfig->get('instanceId')), ['useWysiwyg' => true]);
 
         $params['documentGroup'] = $documentConfig->get('group');
         $params['commentGroup'] = 'comments_' . $documentConfig->get('instanceId');

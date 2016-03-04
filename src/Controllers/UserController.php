@@ -18,9 +18,11 @@ use App\Facades\Presenter;
 use Auth;
 use Gate;
 use Frontend;
+use Keygen;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Xpressengine\Category\CategoryItem;
+use Xpressengine\Category\Models\Category;
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Counter\Counter;
 use Xpressengine\Counter\Exceptions\GuestNotSupportException;
 use Xpressengine\Document\Models\Document;
@@ -49,7 +51,8 @@ use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
-
+use Xpressengine\User\UserInterface;
+use Xpressengine\User\Models\Guest;
 
 /**
  * UserController
@@ -101,7 +104,7 @@ class UserController extends Controller
      * @param BoardPermissionHandler $permissionHandler
      */
     //public function __construct(Handler $handler, ConfigHandler $configHandler, UrlHandler $urlHandler, BoardPermissionHandler $permissionHandler)
-    public function __construct(Handler $handler, ConfigHandler $configHandler, UrlHandler $urlHandler)
+    public function __construct(Handler $handler, ConfigHandler $configHandler, UrlHandler $urlHandler, BoardPermissionhandler $boardPermission)
     {
         $instanceConfig = InstanceConfig::instance();
         $this->instanceId = $instanceConfig->getInstanceId();
@@ -113,8 +116,13 @@ class UserController extends Controller
         $this->config = $configHandler->get($this->instanceId);
         $urlHandler->setConfig($this->config);
 
-        //$this->isManager = $permissionHandler->isManager(Auth::guest(), $this->instanceId);
-        $this->isManager = true;
+        $this->isManager = false;
+        if (Gate::allows(
+            BoardPermissionHandler::ACTION_MANAGE,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            $this->isManager = true;
+        };
 
         // set Skin
         Presenter::setSkin(BoardModule::getId());
@@ -160,16 +168,21 @@ class UserController extends Controller
         ->where('display', Document::DISPLAY_VISIBLE)
         ->where('published', Document::PUBLISHED_PUBLISHED);
 
-        $query = $this->handler->makeWhere($query, $request);
-        $query = $this->handler->makeOrder($query, $request);
+        $query = $this->handler->makeWhere($query, $request, $this->config);
+        $query = $this->handler->makeOrder($query, $request, $this->config);
 
         $paginate = $query->paginate($this->config->get('perPage'))->appends($request->except('page'));
 
         $fieldTypes = (array)$this->configHandler->getDynamicFields($this->config);
 
-        $boardOrders = [];
+        $categoryItem = null;
+        $categoryItems = null;
+        if ($this->config->get('category') === true) {
+            $categoryItem = CategoryItem::find($request->get('categoryItemId'));
+            $categoryItems = Category::find($this->config->get('categoryId'))->items;
+        }
 
-        return compact('notices', 'paginate', 'fieldTypes', 'boardOrders');
+        return compact('notices', 'paginate', 'fieldTypes', 'categoryItem', 'categoryItems');
     }
 
     /**
@@ -216,9 +229,17 @@ class UserController extends Controller
             $this->handler->incrementReadCount($item, $user);
         }
 
+        $showCategoryItem = null;
+        if ($this->config->get('category')) {
+            $boardCategory = $item->boardCategory;
+            if ($boardCategory) {
+                $showCategoryItem = $boardCategory->categoryItem;
+            }
+        }
+
         $formColumns = $this->configHandler->formColumns($this->instanceId);
 
-        return compact('item', 'visible', 'formColumns', 'boardOrders');
+        return compact('item', 'visible', 'formColumns', 'showCategoryItem');
     }
 
     /**
@@ -258,6 +279,11 @@ class UserController extends Controller
             $head = $item->head;
         }
 
+        $categoryItems = null;
+        if ($this->config->get('category') === true) {
+            $categoryItems = Category::find($this->config->get('categoryId'))->items;
+        }
+
         /** @var UserInterface $user */
         $user = Auth::user();
         $rules = $validator->getCreateRule($user, $this->config);
@@ -267,6 +293,7 @@ class UserController extends Controller
             'handler' => $this->handler,
             'parentId' => $parentId,
             'head' => $head,
+            'categoryItems' => $categoryItems,
             'rules' => $rules,
         ]);
     }
@@ -303,11 +330,11 @@ class UserController extends Controller
 
         // 답글인 경우 부모글이 있는 곳으로 이동한다.(최대한..)
         if ($request->get('parentId') != '') {
-            return Redirect::to(
+            return redirect()->to(
                 $this->urlHandler->get('index', $this->urlHandler->queryStringToArray($request->get('queryString')))
             );
         } else {
-            return Redirect::to($this->urlHandler->get('index'));
+            return redirect()->to($this->urlHandler->get('index'));
         }
     }
 
@@ -357,6 +384,16 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        $categoryItem = null;
+        $categoryItems = null;
+        if ($this->config->get('category') === true) {
+            $boardCategory = $item->boardCategory;
+            if ($boardCategory) {
+                $categoryItem = $boardCategory->categoryItem;
+            }
+            $categoryItems = Category::find($this->config->get('categoryId'))->items;
+        }
+
         /** @var \Xpressengine\Plugins\Board\Validator $validator */
         $validator = app('xe.board.validator');
         $rules = $validator->getEditRule($user, $this->config);
@@ -370,7 +407,8 @@ class UserController extends Controller
             'handler' => $this->handler,
             'item' => $item,
             'parent' => $parent,
-            //'formColumns' => $formColumns,
+            'categoryItem' => $categoryItem,
+            'categoryItems' => $categoryItems,
             'rules' => $rules,
         ]);
     }
@@ -434,7 +472,7 @@ class UserController extends Controller
             $identifyManager->create($board);
         }
 
-        return Redirect::to(
+        return redirect()->to(
             $this->urlHandler->getSlug($item->boardSlug->slug, $this->urlHandler->queryStringToArray($request->get('queryString')))
         );
     }
@@ -481,7 +519,65 @@ class UserController extends Controller
         // 인증 되었다면 DB의 인증키를 세션에 저장
         $identifyManager->create($item);
 
-        return Redirect::to($request->get('referer', 'edit'));
+        return redirect()->to($request->get('referer', 'edit'));
+    }
+
+    /**
+     * 미리보기
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Xpressengine\Keygen\UnknownGeneratorException
+     */
+    public function preview(Request $request, Validator $validator, BoardPermissionhandler $boardPermission)
+    {
+        /** @var \Illuminate\Http\Request $request */
+        $request = app('request');
+
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_CREATE,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        /** @var UserInterface $user */
+        $user = Auth::user();
+
+        // get rules
+        $this->validate($request, $validator->getCreateRule($user, $this->config));
+
+        $content = $request->originAll()['content'];
+        $title = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+
+        $writer = $user->getDisplayName();
+        if ($request->get('writer', '') !== '') {
+            $writer = $request->get('writer');
+        }
+        if ($this->config->get('anonymity') === true) {
+            $writer = $this->config->get('anonymityName');
+        }
+
+        if ($request->get('categoryItemId', '') !== '') {
+
+        }
+
+        $showCategoryItem = null;
+        if ($request->get('categoryItemId', '') !== '') {
+            $showCategoryItem = CategoryItem::find($request->get('categoryItemId'));
+        }
+
+        $formColumns = $this->configHandler->formColumns($this->instanceId);
+
+        return Presenter::make('preview', [
+            'config' => $this->config,
+            'handler' => $this->handler,
+            'formColumns' => $formColumns,
+            'currentDate' => date('Y-m-d H:i:s'),
+            'title' => $title,
+            'content' => $content,
+            'writer' => $writer,
+            'showCategoryItem' => $showCategoryItem,
+        ]);
     }
 
     /**

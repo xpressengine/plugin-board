@@ -67,6 +67,7 @@ class Board extends AbstractModule
                 ['as' => 'manage.board.board.global.edit', 'uses' => 'ManagerController@globalEdit']
             );
             Route::get('edit/{boardId}', ['as' => 'manage.board.board.edit', 'uses' => 'ManagerController@edit']);
+            Route::post('storeCategory/{boardId}', ['as' => 'manage.board.board.storeCategory', 'uses' => 'ManagerController@storeCategory']);
             Route::post(
                 'update/{boardId}',
                 ['as' => 'manage.board.board.update', 'uses' => 'ManagerController@update']

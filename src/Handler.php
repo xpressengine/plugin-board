@@ -124,10 +124,10 @@ class Handler
         $board->boardSlug()->save($slug);
 
         // save Category
-        if (empty($args['itemId']) == false) {
+        if (empty($args['categoryItemId']) == false) {
             $boardCategory = new BoardCategory([
                 'id' => $doc->id,
-                'itemId' => $args['itemId'],
+                'itemId' => $args['categoryItemId'],
             ]);
             $boardCategory->save();
         }
@@ -178,6 +178,20 @@ class Handler
                 $boardCategory->itemId = $board->itemId;
             }
 
+            $boardCategory->save();
+        }
+
+        // save Category
+        if (empty($args['categoryItemId']) == false) {
+            $boardCategory = $board->boardCategory;
+            if ($boardCategory == null) {
+                $boardCategory = new BoardCategory([
+                    'id' => $doc->id,
+                    'itemId' => $args['categoryItemId'],
+                ]);
+            } else {
+                $boardCategory->itemId = $args['categoryItemId'];
+            }
             $boardCategory->save();
         }
 
@@ -259,10 +273,31 @@ class Handler
      *
      * @param Builder $query
      * @param Request $request
+     * @param ConfigEntity $config
      * @return Builder
      */
-    public function makeWhere(Builder $query, Request $request)
+    public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
     {
+        if ($request->get('title_content', '') !== '') {
+            $query = $query->whereNested(function ($query) use ($request) {
+                $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_content')))
+                    ->orWhere('content', 'like', sprintf('%%%s%%', $request->get('title_content')));
+            });
+        }
+
+        if ($request->get('writer', '') !== '') {
+            $query = $query->where('writer', $request->get('writer'));
+        }
+
+        if ($config->get('category') === true && $request->get('categoryItemId', '') !== '') {
+            $query = $query->join(
+                'board_category',
+                sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                '=',
+                sprintf('%s.%s', 'board_category', 'id')
+            )->where('itemId', $request->get('categoryItemId'));
+        }
+
         return $query;
     }
 
@@ -271,9 +306,10 @@ class Handler
      *
      * @param Builder $query
      * @param Request $request
+     * @param ConfigEntity $config
      * @return Builder
      */
-    public function makeOrder(Builder $query, Request $request)
+    public function makeOrder(Builder $query, Request $request, ConfigEntity $config)
     {
         if ($request->get('orderType') == null) {
             $query->orderBy('head', 'desc')->orderBy('reply', 'asc');

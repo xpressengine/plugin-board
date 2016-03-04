@@ -7,11 +7,20 @@
         <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
 
         <div class="write_header">
-            @if(DynamicField::has($config->get('documentGroup'), 'category'))
             <div class="write_category">
-                {!! DynamicField::get($config->get('documentGroup'), 'category')->getSkin()->edit($item->getAttributes()) !!}
+                @if($config->get('category') == true)
+                <input type="hidden" name="categoryItemId" value="{{ $categoryItem ? xe_trans($categoryItem->id) : '' }}" />
+                    <a href="#" class="bd_select __xe_select_box_show">{{ $categoryItem ? xe_trans($categoryItem->word) : xe_trans('xe::category') }}</a>
+                <div class="bd_select_list" data-name="categoryItemId">
+                    <ul>
+                        <li><a href="#" data-value="">{{xe_trans('xe::category')}}</a></li>
+                        @foreach ($categoryItems as $cateItem)
+                            <li><a href="#" data-value="{{$cateItem->id}}">{{xe_trans($cateItem->word)}}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
             </div>
-            @endif
             <div class="write_title">
                 {!! uio('titleWithSlug', [
                 'id' => $item->id,

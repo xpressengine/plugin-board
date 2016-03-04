@@ -256,21 +256,4 @@ class BoardPermissionHandler
     {
         return $this->actions;
     }
-
-    /**
-     * check manager
-     *
-     * @param bool   $guest      is guest
-     * @param string $instanceId instance id
-     * @return bool
-     */
-    public function isManager($guest, $instanceId)
-    {
-        return true;
-        if ($guest === false && $this->get($instanceId)->ables(self::ACTION_MANAGE) === true)
-        {
-            return true;
-        }
-        return false;
-    }
 }

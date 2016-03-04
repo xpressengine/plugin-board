@@ -25,6 +25,14 @@ return [
         'ko' => '익명글 사용',
         'en' => 'Anonymity Use',
     ],
+    'anonymityName' => [
+        'ko' => '익명 이름',
+        'en' => 'Anonymity Name',
+    ],
+    'anonymityNameDescription' => [
+        'ko' => '익명으로 글 작성할 때 사용할 이름 입니다.',
+        'en' => 'The name used to create anonymous posts.',
+    ],
     'category' => [
         'ko' => '카테고리',
         'en' => 'Category',

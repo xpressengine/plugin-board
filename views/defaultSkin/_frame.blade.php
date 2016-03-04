@@ -31,11 +31,11 @@
         $('.__xe_order_change').on('click', 'li', function(event) {
             var $input = $(this).closest('.__xe_order_change').find('input'),
                     name = $input.prop('name'),
-                    categoryId = $(event.target).data('value');
+                    order = $(event.target).data('value');
 
             // search submit
             var $frm = $('.__xe_search');
-            $frm.find('[name="'+name+'"]').val(categoryId);
+            $frm.find('[name="'+name+'"]').val(order);
             $frm.submit();
         });
 

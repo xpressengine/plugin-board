@@ -34,11 +34,21 @@
         </div>
 
         <div class="bd_sorting_area mb_hidden">
-            @if(DynamicField::has($config->get('documentGroup'), 'category'))
-            <div class="bd_select_area bd_align __xe_category_change">
-                {!! DynamicField::get($config->get('documentGroup'), 'category')->getSkin()->edit(Input::all()) !!}
-            </div>
+            @if($config->get('category') == true)
+                <div class="bd_select_area bd_align __xe_category_change">
+                    <input type="hidden" name="categoryItemId" value="{{ Input::get('categoryItemId') }}" />
+                    <a href="#" class="bd_select __xe_select_box_show">{{ $categoryItem ? xe_trans($categoryItem->word) : xe_trans('xe::category') }}</a>
+                    <div class="bd_select_list" data-name="categoryItemId">
+                        <ul>
+                            <li><a href="#" data-value="">{{xe_trans('xe::category')}}</a></li>
+                            @foreach ($categoryItems as $item)
+                                <li><a href="#" data-value="{{$item->id}}">{{xe_trans($item->word)}}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             @endif
+
             <div class="bd_select_area bd_align __xe_order_change">
                 {!! uio('uiobject/board@select', [
                     'name' => 'orderType',
@@ -96,6 +106,7 @@
             </div>
             </form>
             <form method="get" class="__xe_search" action="{{ $urlHandler->get('index') }}">
+                <input type="hidden" name="categoryItemId" value="{{ Input::get('categoryItemId') }}" />
                 <input type="hidden" name="orderType" value="{{ input::get('orderType') }}" />
             <div class="bd_search_detail">
                 <dl>

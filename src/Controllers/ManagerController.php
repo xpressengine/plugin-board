@@ -15,10 +15,12 @@ namespace Xpressengine\Plugins\Board\Controllers;
 
 use XeDB;
 use Redirect;
+use Presenter;
 use App\Http\Controllers\Controller;
 use App\Sections\DynamicFieldSection;
 use App\Sections\ToggleMenuSection;
 use App\Sections\SkinSection;
+use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
@@ -143,7 +145,6 @@ class ManagerController extends Controller
         ]);
     }
 
-
     /**
      * update
      *
@@ -193,6 +194,22 @@ class ManagerController extends Controller
 
         $boardPermission->set($boardId, $grant);
 
-        return Redirect::to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
+        return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
+    }
+
+    public function storeCategory(CategoryHandler $categoryHandler, $boardId)
+    {
+        $input = [
+            'name' => $boardId . '-' . BoardModule::getId(),
+        ];
+        $category = $categoryHandler->create($input);
+
+        $config = $this->configHandler->get($boardId);
+        $config->set('categoryId', $category->id);
+        $this->instanceManager->updateConfig($config->getPureAll());
+
+        return Presenter::makeApi(
+            $category->getAttributes()
+        );
     }
 }
