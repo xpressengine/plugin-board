@@ -193,7 +193,7 @@ class UserController extends Controller
      * @return mixed
      */
     //public function show(Request $request, PermissionHandler $permission, $id)
-    public function show(Request $request, BoardPermissionhandler $boardPermission, $id)
+    public function show(Request $request, BoardPermissionhandler $boardPermission, $menuUrl, $id)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
@@ -249,7 +249,7 @@ class UserController extends Controller
      * @throws Exception
      */
     //public function slug(Request $request, PermissionHandler $permission, $strSlug)
-    public function slug(Request $request, BoardPermissionhandler $boardPermission, $strSlug)
+    public function slug(Request $request, BoardPermissionhandler $boardPermission, $menuUrl, $strSlug)
     {
         $slug = BoardSlug::where('slug', $strSlug)->first();
 
@@ -258,7 +258,7 @@ class UserController extends Controller
         }
 
         //return $this->show($request, $permission, $slug->targetId);
-        return $this->show($request, $boardPermission, $slug->targetId);
+        return $this->show($request, $boardPermission, $menuUrl, $slug->targetId);
     }
 
     //public function create(Request $request, PermissionHandler $permission, Validator $validator)
@@ -356,7 +356,7 @@ class UserController extends Controller
      * @return \Xpressengine\Presenter\RendererInterface
      */
     //public function edit(Request $request, PermissionHandler $permission, Validator $validator, $id)
-    public function edit(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, IdentifyManager $identifyManager, $id)
+    public function edit(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, IdentifyManager $identifyManager, $menuUrl, $id)
     {
         $user = Auth::user();
 
@@ -530,9 +530,6 @@ class UserController extends Controller
      */
     public function preview(Request $request, Validator $validator, BoardPermissionhandler $boardPermission)
     {
-        /** @var \Illuminate\Http\Request $request */
-        $request = app('request');
-
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
             new Instance($boardPermission->name($this->instanceId)))
@@ -625,7 +622,7 @@ class UserController extends Controller
      * @param $option
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function addVote(Request $request, $option)
+    public function addVote(Request $request, $menuUrl, $option)
     {
         $id = $request->get('id');
         $author = Auth::user();
@@ -650,7 +647,7 @@ class UserController extends Controller
      * @param $option
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function removeVote(Request $request, $option)
+    public function removeVote(Request $request, $menuUrl, $option)
     {
         $id = $request->get('id');
         $author = Auth::user();
@@ -669,7 +666,7 @@ class UserController extends Controller
      * @param $boardId
      * @param $option
      */
-    public function votedUsers(Request $request, $option)
+    public function votedUsers(Request $request, $menuUrl, $option)
     {
         $id = $request->get('id');
         $author = Auth::user();
@@ -746,7 +743,7 @@ class UserController extends Controller
      * @param string $id  id
      * @return void
      */
-    public function fileSource(BoardPermissionHandler $boardPermission, $id)
+    public function fileSource(BoardPermissionHandler $boardPermission, $menuUrl, $id)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
