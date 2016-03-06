@@ -20,6 +20,7 @@
             <span class="mb_readnum"><i class="xi-eye"></i> {{$item->readCount}}</span>
         </div>
     </div>
+
     <div class="read_body">
         <div class="xe_content">
             {!! uio('contentCompiler', ['content' => $item->content]) !!}
@@ -27,6 +28,14 @@
     </div>
 
     <div class="read_footer">
+
+        @foreach ($configHandler->formColumns($instanceId) as $columnName)
+            @if (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null)
+                <div class="__xe_{{$columnName}} __xe_section">
+                    {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
+                </div>
+            @endif
+        @endforeach
 
         <div class="bd_file_list">
             <!-- [D] 클릭시 클래스 on 적용 -->

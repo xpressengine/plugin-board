@@ -9,7 +9,7 @@
         <div class="write_header">
             <div class="write_category">
                 @if($config->get('category') == true)
-                <input type="hidden" name="categoryItemId" value="{{ $categoryItem ? xe_trans($categoryItem->id) : '' }}" />
+                <input type="hidden" name="categoryItemId" value="" />
                     <a href="#" class="bd_select __xe_select_box_show">{{ $categoryItem ? xe_trans($categoryItem->word) : xe_trans('xe::category') }}</a>
                 <div class="bd_select_list" data-name="categoryItemId">
                     <ul>
@@ -53,21 +53,13 @@
 
         <div class="write_footer">
 
-            {{--@foreach ($formColumns as $columnName)--}}
-                {{--@if (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null && $columnName != 'category')--}}
-                    {{--<div class="__xe_{{$columnName}} __xe_section">--}}
-                        {{--{!! $fieldType->getSkin()->edit($item->getAttributes()) !!}--}}
-                    {{--</div>--}}
-                {{--@endif--}}
-            {{--@endforeach--}}
-
-                @foreach ($configHandler->formColumns($instanceId) as $columnName)
-                    @if ($columnName != 'category')
-                        <div class="__xe_{{$columnName}} __xe_section">
-                            {!! dfEdit($config->get('documentGroup'), $columnName, Input::all()) !!}
-                        </div>
-                    @endif
-                @endforeach
+            @foreach ($configHandler->formColumns($instanceId) as $columnName)
+                @if (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null)
+                    <div class="__xe_{{$columnName}} __xe_section">
+                        {!! $fieldType->getSkin()->edit($item->getAttributes()) !!}
+                    </div>
+                @endif
+            @endforeach
 
             @if ($item->userType == $item::USER_TYPE_GUEST)
                 <div class="write_form_input">
@@ -85,7 +77,7 @@
             <div class="write_form_btn">
                 <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
                 <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
-                <a href="{{ $urlHandler->get('index', Input::except('id', 'parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>
+                <a href="{{ $urlHandler->getShow($item, Input::except('parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>
             </div>
 
         </div>

@@ -293,6 +293,8 @@ class Handler
             $query = $query->where('itemId', $request->get('categoryItemId'));
         }
 
+        $query->getProxyManager()->wheres($query->getQuery(), $request->all());
+
         return $query;
     }
 
@@ -315,6 +317,8 @@ class Handler
         } elseif ($request->get('recentlyUpdated') == 'assentCount') {
             $query->orderBy(Board::UPDATED_AT, 'desc');
         }
+
+        $query->getProxyManager()->orders($query->getQuery(), $request->all());
 
         return $query;
     }
