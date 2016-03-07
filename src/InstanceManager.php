@@ -16,7 +16,7 @@ namespace Xpressengine\Plugins\Board;
 use Category;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\DynamicField\DynamicFieldHandler;
-use Xpressengine\Comment\CommentHandler;
+use Xpressengine\Plugins\Comment\Handler as CommentHandler;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistsInstanceException;
@@ -54,7 +54,7 @@ class InstanceManager
     /**
      * @var CommentHandler
      */
-    protected $comment;
+    protected $commentHandler;
 
     /**
      * @var ConfigHandler
@@ -79,13 +79,15 @@ class InstanceManager
         DocumentHandler $document,
         DynamicFieldHandler $dynamicField,
         ConfigHandler $configHandler,
-        BoardPermissionHandler $permissionHandler
+        BoardPermissionHandler $permissionHandler,
+        CommentHandler $commentHandler
     ) {
         $this->conn = $conn;
         $this->document = $document;
         $this->dynamicField = $dynamicField;
         $this->configHandler = $configHandler;
         $this->permissionHandler = $permissionHandler;
+        $this->commentHandler = $commentHandler;
     }
 
     /**
@@ -110,8 +112,8 @@ class InstanceManager
         $documentConfig = $this->document->createInstance($params['boardId'], $params);
 
         // create comment config(create new comment instance)
-//        $this->comment->createInstance($documentConfig->get('instanceId'), $documentConfig->get('division'));
-//        $this->comment->configure($this->comment->getInstanceId($documentConfig->get('instanceId')), ['useWysiwyg' => true]);
+        $this->commentHandler->createInstance($documentConfig->get('instanceId'), $documentConfig->get('division'));
+        $this->commentHandler->configure($this->commentHandler->getInstanceId($documentConfig->get('instanceId')), ['useWysiwyg' => true]);
 
         $params['documentGroup'] = $documentConfig->get('group');
         $params['commentGroup'] = 'comments_' . $documentConfig->get('instanceId');
@@ -209,7 +211,7 @@ class InstanceManager
 
         // get document config
         $this->document->destroyInstance($boardId);
-        //$this->comment->drop($boardId);
+        $this->commentHandler->drop($this->commentHandler->getInstanceId($boardId));
 
         // remove board config
         $this->configHandler->remove($config);

@@ -263,7 +263,8 @@ class Plugin extends AbstractPlugin
                 $documentHandler,
                 $dynamicFieldHandler,
                 $app['xe.board.config'],
-                $app['xe.board.permission']
+                $app['xe.board.permission'],
+                $app['xe.plugin.comment']->getHandler()
             );
         });
         $app->bind(
