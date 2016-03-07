@@ -52,6 +52,7 @@ class Plugin extends AbstractPlugin
     {
         $this->createDefaultConfig();
         $this->createSlugTable();
+        $this->createCategoryTable();
         $this->putLang();
     }
 
@@ -90,14 +91,15 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_slug') === false) {
             Schema::create('board_slug', function (Blueprint $table) {
-                $table->string('id', 255);
+                $table->bigIncrements('id');
+                $table->string('targetId', 255);
                 $table->string('instanceId', 255);
                 $table->string('slug', 255);
                 $table->string('title', 255);
 
-                $table->primary(array('id'));
                 $table->index(array('slug'));
                 $table->index(array('title'));
+                $table->index(array('targetId'));
             });
         }
     }
