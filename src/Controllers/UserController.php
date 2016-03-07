@@ -587,9 +587,71 @@ class UserController extends Controller
     }
 
     /**
+     * delete document
+     *
+     * @param string $url url
+     * @param string $id  document id
+     * @return \Illuminate\Http\RedirectResponse|\Xpressengine\Presenter\RendererInterface
+     */
+    public function destroy(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
+    {
+        $user = Auth::user();
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        // 비회원이 작성 한 글 인증
+        if (
+            $item->isGuest() === true &&
+            $identifyManager->identified($item) === false &&
+            $user->getRating() != 'super'
+        ) {
+            return $this->identify($item, $this->urlHandler->get('edit', ['id' => $item->id]));
+        }
+
+        $this->handler->trash($item, $this->config);
+
+        $identifyManager->destroy($item);
+
+        return redirect()->to($this->urlHandler->get('index', $request->all()));
+    }
+
+    /**
+     * 관리자 휴지통 이동
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Xpressengine\Presenter\RendererInterface
+     */
+    public function trash(Request $request)
+    {
+        $user = Auth::user();
+        $id = $request->get('id');
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        if ($user->getRating() != 'super' && $user->getId() != $item->id) {
+            throw new AccessDeniedHttpException;
+        }
+
+        $id = Input::get('id');
+        $author = Auth::user();
+
+        $item = $this->handler->get($id, $this->boardId);
+
+        // 관리자 또는 본인 글이 아니면 접근 할 수 없음
+        if ($author->getRating() !== 'super' && $author->getId() != $item->id) {
+            throw new NotFoundDocumentException;
+        }
+
+        $this->handler->trash($item, $this->config);
+
+        return redirect()->to($this->urlHandler->get('index'))->with(['alert' => ['type' => 'success', 'message' => xe_trans('xe::complete')]]);
+    }
+
+    /**
      * 투표 정보
      *
-     * @param $boardId
+     * @param Request $request
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function showVote(Request $request)
@@ -627,7 +689,8 @@ class UserController extends Controller
     /**
      * 찬성
      *
-     * @param $boardId
+     * @param Request $request
+     * @param $menuUrl
      * @param $option
      * @return \Xpressengine\Presenter\RendererInterface
      */
@@ -652,7 +715,8 @@ class UserController extends Controller
     /**
      * 반대
      *
-     * @param $boardId
+     * @param Request $request
+     * @param $menuUrl
      * @param $option
      * @return \Xpressengine\Presenter\RendererInterface
      */
@@ -672,8 +736,10 @@ class UserController extends Controller
     /**
      * get voted user list
      *
-     * @param $boardId
+     * @param Request $request
+     * @param $menuUrl
      * @param $option
+     * @return
      */
     public function votedUsers(Request $request, $menuUrl, $option)
     {

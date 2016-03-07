@@ -222,6 +222,102 @@ class Handler
     }
 
     /**
+     * 문서 삭제
+     *
+     * @param Board $board
+     * @param ConfigEntity $config
+     * @return void
+     * @throws \Exception
+     */
+    public function remove(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        // 덧글이 있다면 덧글들을 모두 삭제
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '') {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                $item->slug->delete();
+                $files = File::whereIn('id', $item->getFileIds())->get();
+                foreach ($files as $file) {
+                    $this->storage->unBind($item->id, $file, true);
+                }
+                // 태그 제거
+                $item->delete();
+            }
+        } else {
+            $board->slug->delete();
+            $files = File::whereIn('id', $board->getFileIds())->get();
+            foreach ($files as $file) {
+                $this->storage->unBind($board->id, $file, true);
+            }
+            // 태그 제거
+            $board->delete();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 문서 휴지통 이동
+     *
+     * @param Board $board
+     * @param ConfigEntity $config
+     * @return void
+     */
+    public function trash(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        // 덧글이 있다면 덧글들을 모두 휴지통으로 옯긴다.
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '') {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                $item->setTrash()->save();
+            }
+        } else {
+            $board->setTrash()->save();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 문서 복원
+     */
+    public function restore(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        // 덧글이 있다면 덧글들을 모두 복원
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '') {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                $item->setRestore()->save();
+            }
+        } else {
+            $board->setRestore()->save();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
      * Proxy, Division 관련 설정이 된 Document model 반환
      *
      * @param ConfigEntity $config board config entity
@@ -375,17 +471,6 @@ class Handler
     {
         return $this->voteCounter->has($board->id, $user, $option);
     }
-
-
-    /**
-     * 비회원이 작성 글 여부 반환
-     *
-     * @return bool
-     */
-//    public function isGuest(Board $board)
-//    {
-//        return $board->userType == Board::USER_TYPE_GUEST;
-//    }
 
     /**
      * 수정 권한 확인
