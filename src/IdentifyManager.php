@@ -98,6 +98,7 @@ class IdentifyManager
         if ($email != $board->email) {
             return false;
         }
+
         return $this->hasher->check($certifyKey, $board->certifyKey);
     }
 
@@ -157,13 +158,13 @@ class IdentifyManager
     public function validate(Board $board)
     {
         $session = $this->get($board);
-        if ($item->certifyKey != $session['certifyKey']) {
+        if ($board->certifyKey != $session['certifyKey']) {
             return false;
         }
 
         // 세션 만료됨
         if ($session['expire'] < time()) {
-            $this->destroy($item);
+            $this->destroy($board);
             return false;
         }
 

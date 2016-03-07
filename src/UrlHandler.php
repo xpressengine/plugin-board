@@ -95,7 +95,7 @@ class UrlHandler
      */
     public function getShow(Board $board, $params = [])
     {
-        $slug = $board->slug;
+        $slug = $board->boardSlug;
         if ($slug != null) {
             return $this->getSlug($slug->slug, $params);
         }

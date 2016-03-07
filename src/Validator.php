@@ -14,9 +14,9 @@
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Config\ConfigEntity;
-use Xpressengine\User\UserInterface;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\DynamicField\DynamicFieldHandler;
+use Xpressengine\User\UserInterface;
 
 
 /**
@@ -63,8 +63,8 @@ class Validator
      * get create rule
      *
      * @param UserInterface $user   user
-     * @param ConfigEntity          $config board config entity
-     * @param array|null            $rules  rules
+     * @param ConfigEntity  $config board config entity
+     * @param array|null    $rules  rules
      * @return array
      */
     public function getCreateRule(UserInterface $user, ConfigEntity $config, array $rules = null)
@@ -118,7 +118,7 @@ class Validator
     public function guestStore()
     {
         return [
-            'writer' => 'Required|AlphaNum|Min:4',
+            'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
             'certifyKey' => 'Required|AlphaNum|Between:4,64|',
         ];
@@ -132,7 +132,7 @@ class Validator
     public function guestUpdate()
     {
         return [
-            'writer' => 'Required|AlphaNum|Min:4',
+            'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
             'certifyKey' => 'AlphaNum|Between:4,64|',
         ];

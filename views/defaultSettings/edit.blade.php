@@ -64,6 +64,15 @@
                     </select>
                 </div>
 
+                <div class="form-group form-category-select">
+                    <label for="">{{xe_trans('xe::category')}}</label>
+                    <select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-url="{{route('manage.board.board.storeCategory', ['boardId' => $config->get('boardId')])}}">
+                        <option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >Use</option>
+                        <option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >Disuse</option>
+                    </select>
+                    <button type="button" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') === false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>
+                </div>
+
                 <div class="form-group">
                     <label for="">{{xe_trans('board::anonymityUse')}}</label>
                     <select id="" name="anonymity" class="form-control">
@@ -73,14 +82,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">{{xe_trans('xe::orderType')}}</label>
-                    <p></p>
-                    <select id="" name="order" class="form-control">
-                            <option value="">기본</option>
-                        @foreach($handler->getOrders() as $item)
-                            <option value="{{$item['value']}}" {!! $config->get('order') == $item['value'] ? 'selected="selected"' : '' !!}>{{xe_trans($item['text'])}}</option>
-                        @endforeach
-                    </select>
+                    <label for="">{{xe_trans('board::anonymityName')}}</label>
+                    <p class="desc-text">{{xe_trans('board::anonymityDescription')}}</p>
+                    <input type="text" name="managerEmail" class="form-control" value="{{ Input::old('anonymityName', $config->get('anonymityName')) }}" />
                 </div>
 
                 <div class="form-group">

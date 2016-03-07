@@ -18,6 +18,7 @@ use Xpressengine\Document\DocumentHandler;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Comment\CommentHandler;
 use Xpressengine\Config\ConfigEntity;
+use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistsInstanceException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidConfigException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
@@ -61,26 +62,30 @@ class InstanceManager
     protected $configHandler;
 
     /**
+     * @var BoardPermissionHandler
+     */
+    protected $permissionHandler;
+
+    /**
      * create instance
      *
      * @param VirtualConnection   $conn          database connection
      * @param DocumentHandler     $document      document handler
      * @param DynamicFieldHandler $dynamicField  dynamic field handler
-     * @param CommentHandler      $comment       comment handler
      * @param ConfigHandler       $configHandler config handler
      */
     public function __construct(
         VirtualConnection $conn,
         DocumentHandler $document,
         DynamicFieldHandler $dynamicField,
-        CommentHandler $comment,
-        ConfigHandler $configHandler
+        ConfigHandler $configHandler,
+        BoardPermissionHandler $permissionHandler
     ) {
         $this->conn = $conn;
         $this->document = $document;
         $this->dynamicField = $dynamicField;
-        $this->comment = $comment;
         $this->configHandler = $configHandler;
+        $this->permissionHandler = $permissionHandler;
     }
 
     /**
@@ -92,7 +97,7 @@ class InstanceManager
     public function create(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException;
+            throw new RequiredValueException(['key' => 'boardId']);
         }
 
         $config = $this->configHandler->get($params['boardId']);
@@ -105,13 +110,15 @@ class InstanceManager
         $documentConfig = $this->document->createInstance($params['boardId'], $params);
 
         // create comment config(create new comment instance)
-        $this->comment->createInstance($documentConfig->get('instanceId'), $documentConfig->get('division'));
-        $this->comment->configure($documentConfig->get('instanceId'), ['useWysiwyg' => true]);
+//        $this->comment->createInstance($documentConfig->get('instanceId'), $documentConfig->get('division'));
+//        $this->comment->configure($this->comment->getInstanceId($documentConfig->get('instanceId')), ['useWysiwyg' => true]);
 
         $params['documentGroup'] = $documentConfig->get('group');
         $params['commentGroup'] = 'comments_' . $documentConfig->get('instanceId');
 
         $config = $this->configHandler->add($params);
+
+        $this->permissionHandler->set($params['boardId'], new Grant());
 
         // category dynamic field create
         //$this->createDefaultDynamicField($config);
@@ -163,7 +170,7 @@ class InstanceManager
     public function updateConfig(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException;
+            throw new RequiredValueException(['key' => 'boardId']);
         }
 
         $config = $this->configHandler->get($params['boardId']);
@@ -202,7 +209,7 @@ class InstanceManager
 
         // get document config
         $this->document->destroyInstance($boardId);
-        $this->comment->drop($boardId);
+        //$this->comment->drop($boardId);
 
         // remove board config
         $this->configHandler->remove($config);
@@ -224,7 +231,7 @@ class InstanceManager
      */
     public function summary($instanceId, Handler $handler)
     {
-        $documentCount = $handler->countByBoardId($instanceId);
+        $documentCount = $this->document->getModel($instanceId)->where('instanceId', $instanceId)->count();
         $configs = $this->configHandler->getDynamicFields($this->configHandler->get($instanceId));
         $dynamicFieldCount = count($configs);
 

@@ -24,6 +24,7 @@ use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
+use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
 
 
@@ -92,9 +93,9 @@ class Handler
      *
      * @return Board
      */
-    public function add(array $args, UserInterface $user)
+    public function add(array $args, UserInterface $user, ConfigEntity $config)
     {
-        $model = new Board();
+        $model = $this->getModel($config);
         $model->getConnection()->beginTransaction();
 
         $args['userId'] = $user->getId();
@@ -104,11 +105,17 @@ class Handler
         if (empty($args['writer'])) {
             $args['writer'] = $user->getDisplayName();
         }
+        if ($user instanceof Guest) {
+            $args['userType'] = Board::USER_TYPE_GUEST;
+        }
 
         // save Document
         $doc = $this->documentHandler->add($args);
 
-        $board = Board::find($doc->id);
+        $model = $this->getModel($config);
+        $board = $model->find($doc->id);
+
+        $this->setModelConfig($board, $config);
 
         // save Slug
         $slug = new BoardSlug([
@@ -119,10 +126,10 @@ class Handler
         $board->boardSlug()->save($slug);
 
         // save Category
-        if (empty($args['itemId']) == false) {
+        if (empty($args['categoryItemId']) == false) {
             $boardCategory = new BoardCategory([
                 'id' => $doc->id,
-                'itemId' => $args['itemId'],
+                'itemId' => $args['categoryItemId'],
             ]);
             $boardCategory->save();
         }
@@ -176,6 +183,20 @@ class Handler
             $boardCategory->save();
         }
 
+        // save Category
+        if (empty($args['categoryItemId']) == false) {
+            $boardCategory = $board->boardCategory;
+            if ($boardCategory == null) {
+                $boardCategory = new BoardCategory([
+                    'id' => $doc->id,
+                    'itemId' => $args['categoryItemId'],
+                ]);
+            } else {
+                $boardCategory->itemId = $args['categoryItemId'];
+            }
+            $boardCategory->save();
+        }
+
         // bind files
         // 업데이트 할 때 중복 bind 되어 fileable 이 계속 증가하는 오류가 있음
         $fileIds = [];
@@ -199,7 +220,164 @@ class Handler
 
         $board->getConnection()->commit();
 
-        return Board::find($board->id);
+        return $board->find($board->id);
+    }
+
+    /**
+     * 문서 삭제
+     *
+     * @param Board $board
+     * @param ConfigEntity $config
+     * @return void
+     * @throws \Exception
+     */
+    public function remove(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        // 덧글이 있다면 덧글들을 모두 삭제
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '' && $board->reply !== null) {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                if ($item->slug !== null) {
+                    $item->slug->delete();
+                }
+                $files = File::whereIn('id', $item->getFileIds())->get();
+                foreach ($files as $file) {
+                    $this->storage->unBind($item->id, $file, true);
+                }
+                // 태그 제거
+                $item->delete();
+            }
+        } else {
+            if ($board->slug !== null) {
+                $board->slug->delete();
+            }
+            $files = File::whereIn('id', $board->getFileIds())->get();
+            foreach ($files as $file) {
+                $this->storage->unBind($board->id, $file, true);
+            }
+            // 태그 제거
+            $board->delete();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 문서 휴지통 이동
+     *
+     * @param Board $board
+     * @param ConfigEntity $config
+     * @return void
+     */
+    public function trash(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        // 덧글이 있다면 덧글들을 모두 휴지통으로 옯긴다.
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '' && $board->reply !== null) {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                $item->setTrash()->save();
+            }
+        } else {
+            $board->setTrash()->save();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 문서 복원
+     */
+    public function restore(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        // 덧글이 있다면 덧글들을 모두 복원
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '' && $board->reply !== null) {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                $item->setRestore()->save();
+            }
+        } else {
+            $board->setRestore()->save();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 게시판 이동
+     * Document Package 에서 comment 를 지원하지 않아서 사용할 수 있는 인터페이스가 없음
+     *
+     * @param string         $id             document id
+     * @param ConfigEntity   $config         destination board config entity
+     * @param CommentHandler $commentHandler comment handler
+     */
+    public function move(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        $dstInstanceId = $config->get('boardId');
+
+        // 덧글이 있다면 덧글들을 모두 옯긴다.
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '' && $board->reply !== null) {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                $item->instanceId = $dstInstanceId;
+                $item->save();
+            }
+        } else {
+            $board->instanceId = $dstInstanceId;
+            $board->save();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 복사
+     *
+     * @param string       $id     document id
+     * @param ConfigEntity $config destination board config entity
+     * @param string       $newId  new document id
+     * @return void
+     */
+    public function copy(Board $board, UserInterface $user, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        $args = array_merge($board->getDynamicAttributes(), $board->getAttributes());
+        $args['id'] = null;
+        $args['instanceId'] = $config->get('boardId');
+        $args['slug'] = $board->boardSlug->slug;
+        $args['categoryItemId'] = $board->boardCategory->itemId;
+
+        $this->add($args, $user, $config);
+
+        $board->getConnection()->commit();
     }
 
     /**
@@ -254,10 +432,28 @@ class Handler
      *
      * @param Builder $query
      * @param Request $request
+     * @param ConfigEntity $config
      * @return Builder
      */
-    public function makeWhere(Builder $query, Request $request)
+    public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
     {
+        if ($request->get('title_content', '') !== '') {
+            $query = $query->whereNested(function ($query) use ($request) {
+                $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_content')))
+                    ->orWhere('content', 'like', sprintf('%%%s%%', $request->get('title_content')));
+            });
+        }
+
+        if ($request->get('writer', '') !== '') {
+            $query = $query->where('writer', $request->get('writer'));
+        }
+
+        if ($request->get('categoryItemId', '') !== '') {
+            $query = $query->where('itemId', $request->get('categoryItemId'));
+        }
+
+        $query->getProxyManager()->wheres($query->getQuery(), $request->all());
+
         return $query;
     }
 
@@ -266,9 +462,10 @@ class Handler
      *
      * @param Builder $query
      * @param Request $request
+     * @param ConfigEntity $config
      * @return Builder
      */
-    public function makeOrder(Builder $query, Request $request)
+    public function makeOrder(Builder $query, Request $request, ConfigEntity $config)
     {
         if ($request->get('orderType') == null) {
             $query->orderBy('head', 'desc')->orderBy('reply', 'asc');
@@ -279,6 +476,8 @@ class Handler
         } elseif ($request->get('recentlyUpdated') == 'assentCount') {
             $query->orderBy(Board::UPDATED_AT, 'desc');
         }
+
+        $query->getProxyManager()->orders($query->getQuery(), $request->all());
 
         return $query;
     }
@@ -336,24 +535,13 @@ class Handler
         return $this->voteCounter->has($board->id, $user, $option);
     }
 
-
-    /**
-     * 비회원이 작성 글 여부 반환
-     *
-     * @return bool
-     */
-//    public function isGuest(Board $board)
-//    {
-//        return $board->userType == Board::USER_TYPE_GUEST;
-//    }
-
     /**
      * 수정 권한 확인
      *
-     * @param UserInterface $author 로그인 사용자 정보
+     * @param $author 로그인 사용자 정보
      * @return bool
      */
-    public function alterPerm(UserInterface $author)
+    public function alterPerm($author)
     {
 //        if ($this->isGuest($board) === true) {
 //            return true;
@@ -369,10 +557,10 @@ class Handler
     /**
      * 삭제 권한 확인
      *
-     * @param UserInterface $author 로그인 사용자 정보
+     * @param $author 로그인 사용자 정보
      * @return bool
      */
-    public function deletePerm(UserInterface $author)
+    public function deletePerm($author)
     {
 //        if ($this->isGuest($board) === true) {
 //            return true;

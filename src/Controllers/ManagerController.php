@@ -15,18 +15,26 @@ namespace Xpressengine\Plugins\Board\Controllers;
 
 use XeDB;
 use Redirect;
+use Presenter;
 use App\Http\Controllers\Controller;
 use App\Sections\DynamicFieldSection;
 use App\Sections\ToggleMenuSection;
 use App\Sections\SkinSection;
+use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\Exceptions\NotFoundConfigHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\InstanceManager;
+use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Routing\InstanceRouteHandler;
+use Xpressengine\Routing\RouteRepository;
+use Xpressengine\User\Models\Guest;
+use Xpressengine\User\Models\User;
 
 /**
  * ManagerController
@@ -143,7 +151,6 @@ class ManagerController extends Controller
         ]);
     }
 
-
     /**
      * update
      *
@@ -193,6 +200,317 @@ class ManagerController extends Controller
 
         $boardPermission->set($boardId, $grant);
 
-        return Redirect::to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
+        return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
+    }
+
+    public function storeCategory(CategoryHandler $categoryHandler, $boardId)
+    {
+        $input = [
+            'name' => $boardId . '-' . BoardModule::getId(),
+        ];
+        $category = $categoryHandler->create($input);
+
+        $config = $this->configHandler->get($boardId);
+        $config->set('categoryId', $category->id);
+        $this->instanceManager->updateConfig($config->getPureAll());
+
+        return Presenter::makeApi(
+            $category->getAttributes()
+        );
+    }
+
+    /**
+     * document manager
+     *
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function docsIndex(Request $request, RouteRepository $routeRepository)
+    {
+        $instances = [];
+        $instanceIds = [];
+        $urls = [];
+
+        $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
+        foreach ($instanceRoutes as $route) {
+            $instanceIds[] = $route->instanceId;
+            $urls[$route->instanceId] = $route->url;
+            $instances[] = [
+                'id' => $route->instanceId,
+                'name' => $route->url,
+            ];
+        }
+
+        $wheres = [
+            'status' => Board::STATUS_PUBLIC,
+            'instanceIds' => $instanceIds,
+        ];
+
+        // keyword 검색 처리
+        if ($request->get('searchKeyword') != '') {
+            $searchTarget = $request->get('searchTarget');
+            $searchKeyword = $request->get('searchKeyword');
+            if ($searchTarget == 'title_content') {
+                $wheres[$searchTarget] = $searchKeyword;
+            } else {
+                $wheres[$searchTarget] = $searchKeyword;
+            }
+        }
+
+        // 상세 검색 처리
+        foreach ($request->all() as $key => $value) {
+            if ($value != '') {
+                $wheres[$key] = $value;
+            }
+        }
+
+        // 정렬 처리
+        $orders = ['createdAt' => 'desc'];
+
+        $query = Board::whereIn('instanceId', $instanceIds)->where('status', Board::STATUS_PUBLIC);
+        $query->orderBy('createdAt', 'desc');
+        $documents = $query->paginate(15)->appends($request->except('page'));
+
+        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls'));
+    }
+
+    /**
+     * document manager
+     *
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function docsApprove(Request $request, RouteRepository $routeRepository)
+    {
+        $instances = [];
+        $instanceIds = [];
+        $urls = [];
+
+        $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
+        foreach ($instanceRoutes as $aliasRoute) {
+            $instanceIds[] = $aliasRoute->instanceId;
+            $urls[$aliasRoute->instanceId] = $aliasRoute->url;
+            $instances[] = [
+                'id' => $aliasRoute->instanceId,
+                'name' => $aliasRoute->url,
+            ];
+        }
+
+        $wheres = [
+            'approved' => Board::APPROVED_REJECTED,
+            'instanceIds' => $instanceIds,
+        ];
+
+        // keyword 검색 처리
+        if ($request->get('searchKeyword') != '') {
+            $searchTarget = $request->get('searchTarget');
+            $searchKeyword = $request->get('searchKeyword');
+            if ($searchTarget == 'title_content') {
+                $wheres[$searchTarget] = $searchKeyword;
+            } else {
+                $wheres[$searchTarget] = $searchKeyword;
+            }
+        }
+
+        // 상세 검색 처리
+        foreach ($request->all() as $key => $value) {
+            if ($value != '') {
+                $wheres[$key] = $value;
+            }
+        }
+
+        $query = Board::whereIn('instanceId', $instanceIds)->where('approved', Board::APPROVED_REJECTED);
+        $query->orderBy('createdAt', 'desc');
+        $documents = $query->paginate(15)->appends($request->except('page'));
+
+        return $this->presenter->make('docs.approve', compact('documents', 'instances', 'urls'));
+    }
+
+    /**
+     * document manager
+     *
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function docsTrash(Request $request, RouteRepository $routeRepository)
+    {
+        $instances = [];
+        $instanceIds = [];
+        $urls = [];
+
+        $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
+        foreach ($instanceRoutes as $route) {
+            $instanceIds[] = $route->instanceId;
+            $urls[$route->instanceId] = $route->url;
+            $instances[] = [
+                'id' => $route->instanceId,
+                'name' => $route->url,
+            ];
+        }
+
+        $wheres = [
+            'status' => Board::STATUS_TRASH,
+            'instanceIds' => $instanceIds,
+        ];
+
+        // keyword 검색 처리
+        if ($request->get('searchKeyword') != '') {
+            $searchTarget = $request->get('searchTarget');
+            $searchKeyword = $request->get('searchKeyword');
+            if ($searchTarget == 'title_content') {
+                $wheres[$searchTarget] = $searchKeyword;
+            } else {
+                $wheres[$searchTarget] = $searchKeyword;
+            }
+        }
+
+        // 상세 검색 처리
+        foreach ($request->all() as $key => $value) {
+            if ($value != '') {
+                $wheres[$key] = $value;
+            }
+        }
+
+        $query = Board::whereIn('instanceId', $instanceIds)->where('status', Board::STATUS_TRASH);
+        $query->orderBy('createdAt', 'desc');
+        $documents = $query->paginate(15)->appends($request->except('page'));
+
+        return $this->presenter->make('docs.trash', compact('documents', 'instances', 'urls'));
+    }
+
+    /**
+     * update document approve status
+     *
+     * @return \Illuminate\Http\RedirectResponse|Redirect
+     */
+    public function approve(Request $request)
+    {
+        $approved = $request->get('approved');
+
+        $documentIds = $request->get('id');
+        $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
+
+        $items = Board::find($documentIds);
+
+        foreach ($items as $item) {
+            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
+            $this->handler->put($item, ['approve' => $approved]);
+        }
+
+        return $this->presenter->makeApi([]);
+    }
+
+    /**
+     * destroy document
+     *
+     * @return \Illuminate\Http\RedirectResponse|Redirect
+     */
+    public function destroy(Request $request)
+    {
+        $documentIds = $request->get('id');
+        $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
+
+        $items = Board::find($documentIds);
+
+        foreach ($items as $item) {
+            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
+            $this->handler->remove($item, $this->configHandler->get($item->instanceId));
+        }
+
+        return $this->presenter->makeApi([]);
+    }
+
+    /**
+     * move to trash
+     *
+     * @return \Illuminate\Http\RedirectResponse|Redirect
+     */
+    public function trash(Request $request)
+    {
+        $documentIds = $request->get('id');
+        $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
+
+        $items = Board::find($documentIds);
+
+        foreach ($items as $item) {
+            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
+            $this->handler->trash($item, $this->configHandler->get($item->instanceId));
+        }
+
+        return $this->presenter->makeApi([]);
+    }
+
+    /**
+     * move to restore
+     *
+     * @return \Illuminate\Http\RedirectResponse|Redirect
+     */
+    public function restore(Request $request)
+    {
+        $documentIds = $request->get('id');
+        $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
+
+        $items = Board::find($documentIds);
+
+        foreach ($items as $item) {
+            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
+            $this->handler->restore($item, $this->configHandler->get($item->instanceId));
+        }
+
+        return $this->presenter->makeApi([]);
+    }
+
+    /**
+     * move to move
+     *
+     * @return \Illuminate\Http\RedirectResponse|Redirect
+     */
+    public function move(Request $request)
+    {
+        $documentIds = $request->get('id');
+        $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
+
+        $instanceId = $request->get('instanceId');
+        $config = $this->configHandler->get($instanceId);
+        if ($config === null) {
+            throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
+        }
+
+        $items = Board::find($documentIds);
+
+        foreach ($items as $item) {
+            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
+            $this->handler->move($item, $config);
+        }
+
+        return $this->presenter->makeApi([]);
+    }
+
+    /**
+     * move to copy
+     *
+     * @return \Illuminate\Http\RedirectResponse|Redirect
+     */
+    public function copy(Request $request)
+    {
+        $documentIds = $request->get('id');
+        $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
+
+        $instanceId = $request->get('instanceId');
+        $config = $this->configHandler->get($instanceId);
+        if ($config === null) {
+            throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
+        }
+
+        $items = Board::find($documentIds);
+
+        foreach ($items as $item) {
+            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
+            $user = new Guest;
+            if ($item->userId != '') {
+                $user = User::find($item->userId);
+            }
+
+            $this->handler->copy($item, $user, $config);
+        }
+
+        return $this->presenter->makeApi([]);
     }
 }

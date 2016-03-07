@@ -6,8 +6,8 @@
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (akasima) <osh@xpressengine.com>
+ * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
@@ -20,8 +20,8 @@ use Xpressengine\Support\Exceptions\XpressengineException;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
+ * @author      XE Team (akasima) <osh@xpressengine.com>
+ * @copyright   2014 Copyright (C) NAVER <http://www.navercorp.com>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */

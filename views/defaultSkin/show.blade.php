@@ -4,13 +4,14 @@
 @if($visible == true)
 <div class="board_read">
     <div class="read_header">
-        @if(DynamicField::has($config->get('documentGroup'), 'category'))
-        <span class="category">{!! DynamicField::get($config->get('documentGroup'), 'category')->getSkin()->show($item->getAttributes()) !!}</span>
+        @if($config->get('category') == true && $showCategoryItem)
+        <span class="category">{{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}</span>
         @endif
+
         <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
         <div class="more_info">
             <!-- [D] 클릭시 클래스 on 적용 -->
-            @if ($item->userId != '')
+            @if ($item->userId != '' && $config->get('anonymity') === 'false')
             <a href="{{ sprintf('/@%s', $item->user->getAuthIdentifier()) }}" class="mb_autohr __xe_member" data-id="{{$item->userId}}" data-text="{{ $item->writer }}">{{ $item->writer }}</a>
             @else
             <a href="#" class="mb_autohr __xe_member" data-id="" data-text="{{ $item->writer }}">{{ $item->writer }}</a>
@@ -19,6 +20,7 @@
             <span class="mb_readnum"><i class="xi-eye"></i> {{$item->readCount}}</span>
         </div>
     </div>
+
     <div class="read_body">
         <div class="xe_content">
             {!! uio('contentCompiler', ['content' => $item->content]) !!}
@@ -26,6 +28,14 @@
     </div>
 
     <div class="read_footer">
+
+        @foreach ($configHandler->formColumns($instanceId) as $columnName)
+            @if (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null)
+                <div class="__xe_{{$columnName}} __xe_section">
+                    {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
+                </div>
+            @endif
+        @endforeach
 
         <div class="bd_file_list">
             <!-- [D] 클릭시 클래스 on 적용 -->

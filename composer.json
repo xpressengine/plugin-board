@@ -58,7 +58,7 @@
     }
   ],
   "require": {
-    "xpressengine-plugin/comment_service": "0.1.0"
+    "xpressengine-plugin/comment": "0.1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",

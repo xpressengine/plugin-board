@@ -67,6 +67,7 @@ class Board extends AbstractModule
                 ['as' => 'manage.board.board.global.edit', 'uses' => 'ManagerController@globalEdit']
             );
             Route::get('edit/{boardId}', ['as' => 'manage.board.board.edit', 'uses' => 'ManagerController@edit']);
+            Route::post('storeCategory/{boardId}', ['as' => 'manage.board.board.storeCategory', 'uses' => 'ManagerController@storeCategory']);
             Route::post(
                 'update/{boardId}',
                 ['as' => 'manage.board.board.update', 'uses' => 'ManagerController@update']
@@ -115,7 +116,7 @@ class Board extends AbstractModule
             Route::post('/temporary', ['as' => 'temporary', 'uses' => 'UserController@temporary']);
             Route::get('/trash', ['as' => 'trash', 'uses' => 'UserController@trash']);
             Route::post('/trash', ['as' => 'trash', 'uses' => 'UserController@trash']);
-            Route::post('/certify', ['as' => 'certify', 'uses' => 'UserController@certify']);
+            Route::post('/identificationConfirm', ['as' => 'identificationConfirm', 'uses' => 'UserController@identificationConfirm']);
             Route::post('/update', ['as' => 'update', 'uses' => 'UserController@update']);
             Route::get('/vote/show', ['as' => 'showVote', 'uses' => 'UserController@showVote']);
             Route::get('/vote/users/{option}', ['as' => 'votedUsers', 'uses' => 'UserController@votedUsers']);

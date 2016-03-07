@@ -104,7 +104,7 @@
 .board_list td.favorite>a.on{color:#ffda00}
 .board_list td.title{width:100%;white-space:normal;text-align:left;word-break:break-all}
 .board_list td.author img {position:relative;top: -1px}
-.board_list .title .category{display:none;margin-right:5px;padding:0 7px;border:1px solid #1677cb;border-radius:10px;color:#1677cb;font-size:10px;vertical-align:top}
+.board_list .title .category{display:block;margin-right:5px;padding:0 7px;border:1px solid #1677cb;border-radius:10px;color:#1677cb;font-size:10px;vertical-align:top}
 .board_list .notice .title .category{display:inline-block;border-color:#1677cb;background-color:#1677cb;color:#fff}
 .board_list tr.no_article{height:218px}
 .board_list tr.no_article:hover{background-color:#fff}

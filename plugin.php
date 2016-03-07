@@ -53,13 +53,6 @@ class Plugin extends AbstractPlugin
         $this->createDefaultConfig();
         $this->createSlugTable();
         $this->putLang();
-
-        // set config for counter
-        /** @var Counter $counter */
-        // 이거 안됨
-//        $counter = app('xe.counter');
-//        $counter->getConfigHandler()->set(ReadCounter::COUNTER_NAME, Counter::TYPE_SESSION);
-//        $counter->getConfigHandler()->set(VoteCounter::COUNTER_NAME, Counter::TYPE_ID);
     }
 
     protected function createDefaultConfig()
@@ -81,15 +74,8 @@ class Plugin extends AbstractPlugin
         $configHandler->getDefault();
 
         // create default permission
-//        /**
-//         * @var $permission PermissionHandler
-//         * @var $group Assignor
-//         */
-//        $permission = app('xe.permission');
-//        $group = app('xe.member.groups');
-//        $action = new Action();
-//        $permission = new BoardPermissionHandler($permission, $group, $action, $configHandler);
-//        $permission->setDefault($permission->getDefault());
+        $permission = new BoardPermissionHandler(app('xe.permission'), $configHandler);
+        $permission->getDefault();
     }
 
     protected function putLang()
@@ -150,17 +136,7 @@ class Plugin extends AbstractPlugin
     /**
      * @return boolean
      */
-    public function checkInstalled()
-    {
-        // TODO: Implement checkInstall() method.
-
-        return true;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function checkUpdated()
+    public function checkUpdated($installedVersion = NULL)
     {
         // TODO: Implement checkUpdate() method.
     }
@@ -281,14 +257,13 @@ class Plugin extends AbstractPlugin
              */
             $documentHandler = app('xe.document');
             $dynamicFieldHandler = app('xe.dynamicField');
-            $commentHandler = app('xe.comment');
 
             return new InstanceManager(
                 $app['xe.db']->connection(),
                 $documentHandler,
                 $dynamicFieldHandler,
-                $commentHandler,
-                $app['xe.board.config']
+                $app['xe.board.config'],
+                $app['xe.board.permission']
             );
         });
         $app->bind(

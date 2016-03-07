@@ -1,7 +1,7 @@
 {{ Frontend::rule('board', $rules) }}
 
 <div class="board_write">
-    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board">
+    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
     <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
     <input type="hidden" name="parentId" value="{{$parentId}}" />
     <input type="hidden" name="head" value="{{$head}}" />
@@ -9,14 +9,20 @@
 
     <div class="write_header">
         <div class="write_category form-group">
-        {{--{!! $handler->getCategorySkin(app('xe.dynamicField'))->create(Input::all()) !!}--}}
+            @if($config->get('category') == true)
+            <input type="hidden" name="categoryItemId" value="" />
+            <a href="#" class="bd_select __xe_select_box_show">{{ xe_trans('xe::category') }}</a>
+            <div class="bd_select_list" data-name="categoryItemId">
+                <ul>
+                    <li><a href="#" data-value="">{{xe_trans('xe::category')}}</a></li>
+                    @foreach ($categoryItems as $item)
+                        <li><a href="#" data-value="{{$item->id}}">{{xe_trans($item->word)}}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
         </div>
 
-        @if(DynamicField::has($config->get('documentGroup'), 'category'))
-        <div class="write_category form-group">
-            {!! dfCreate($config->get('documentGroup'), 'category', Input::all()) !!}
-        </div>
-        @endif
         <div class="write_title">
             {!! uio('titleWithSlug', [
             'title' => Input::old('title'),

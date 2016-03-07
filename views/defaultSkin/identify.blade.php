@@ -2,10 +2,10 @@
     <h2>{{ xe_trans('xe::identification') }}</h2>
     <p>{{ xe_trans('xe::enterYourPassword') }}</p>
 
-    <form method="post" action="{{ $urlHandler->get('certify') }}">
+    <form method="post" action="{{ $urlHandler->get('identificationConfirm') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="referer" class="form-control" value="{{$referer}}" />
-        <input type="hidden" name="id" class="form-control" value="{{$doc->id}}" />
+        <input type="hidden" name="id" class="form-control" value="{{$board->id}}" />
 
         <input type="email" name="email" class="form-control" value="" placeholder="{{ xe_trans('xe::email') }}"/>
         <input type="password" name="certifyKey" class="form-control" value="" placeholder="{{ xe_trans('xe::password') }}"/>

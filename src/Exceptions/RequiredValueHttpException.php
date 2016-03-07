@@ -1,6 +1,6 @@
 <?php
 /**
- * BoardException
+ * RequiredValueHttpException
  *
  * PHP version 5
  *
@@ -11,12 +11,12 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-namespace Xpressengine\Plugins\Board;
+namespace Xpressengine\Plugins\Board\Exceptions;
 
-use Xpressengine\Support\Exceptions\XpressengineException;
+use Xpressengine\Plugins\Board\HttpBoardException;
 
 /**
- * BoardException
+ * RequiredValueHttpException
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -25,7 +25,7 @@ use Xpressengine\Support\Exceptions\XpressengineException;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-class BoardException extends XpressengineException
+class RequiredValueHttpException extends HttpBoardException
 {
-
+    protected $message = 'xe::required';
 }

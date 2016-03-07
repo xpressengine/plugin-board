@@ -68,4 +68,26 @@ $(function() {
             }
         }
     });
+
+    $('.form-category-select select').bind('change', function(e) {
+        var $o = $(this);
+        if ($o.val() == 'true' && $o.data('id') == '') {
+            XE.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: $o.data('url'),
+                success: function(data) {
+                    $o.data('id', data.id);
+                    $o.next('button').attr('disabled', false);
+                }
+            });
+        } else {
+            $o.next('button').attr('disabled', $o.val() == 'true' ? false : true);
+        }
+
+    });
+    $('.form-category-select button').bind('click', function(e) {
+        var $o = $(this);
+        window.open($o.data('href') + '/' + $o.prev('select').data('id'), '_blank');
+    });
 });

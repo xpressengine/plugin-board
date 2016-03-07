@@ -13,7 +13,10 @@
  */
 namespace Xpressengine\Plugins\Board\Models;
 
+use Illuminate\Database\Query\JoinClause;
+use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Database\Eloquent\DynamicModel;
+use Xpressengine\Http\Request;
 
 /**
  * BoardCategory
@@ -29,4 +32,11 @@ class BoardCategory extends DynamicModel
 {
     protected $table = 'board_category';
     public $timestamps = false;
+
+    protected $fillable = ['id', 'itemId'];
+
+    public function categoryItem()
+    {
+        return $this->belongsTo('Xpressengine\Category\Models\CategoryItem', 'itemId');
+    }
 }
