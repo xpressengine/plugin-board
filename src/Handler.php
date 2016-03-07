@@ -265,7 +265,10 @@ class Handler
                 foreach ($files as $file) {
                     $this->storage->unBind($item->id, $file, true);
                 }
-                // 태그 제거
+                $tags = Tag::getByTaggable($item->id);
+                foreach ($tags as $tag) {
+                    $tag->delete();
+                }
                 $item->delete();
             }
         } else {
@@ -276,7 +279,10 @@ class Handler
             foreach ($files as $file) {
                 $this->storage->unBind($board->id, $file, true);
             }
-            // 태그 제거
+            $tags = Tag::getByTaggable($board->id);
+            foreach ($tags as $tag) {
+                $tag->delete();
+            }
             $board->delete();
         }
 
