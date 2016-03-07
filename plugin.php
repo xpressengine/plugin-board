@@ -185,6 +185,7 @@ class Plugin extends AbstractPlugin
             $handler = new $proxyHandler(
                 app('xe.document'),
                 app('xe.storage'),
+                app('xe.tag'),
                 $readCounter,
                 $voteCounter
             );
