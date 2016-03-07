@@ -236,13 +236,15 @@ class Handler
         // 덧글이 있다면 덧글들을 모두 삭제
         if ($config->get('recursiveDelete') === true) {
             $query = Board::where('head', $board->head);
-            if ($board->reply !== '') {
+            if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
             $items = $query->get();
             foreach ($items as $item) {
                 $this->setModelConfig($item, $config);
-                $item->slug->delete();
+                if ($item->slug !== null) {
+                    $item->slug->delete();
+                }
                 $files = File::whereIn('id', $item->getFileIds())->get();
                 foreach ($files as $file) {
                     $this->storage->unBind($item->id, $file, true);
@@ -251,7 +253,9 @@ class Handler
                 $item->delete();
             }
         } else {
-            $board->slug->delete();
+            if ($board->slug !== null) {
+                $board->slug->delete();
+            }
             $files = File::whereIn('id', $board->getFileIds())->get();
             foreach ($files as $file) {
                 $this->storage->unBind($board->id, $file, true);
@@ -277,7 +281,7 @@ class Handler
         // 덧글이 있다면 덧글들을 모두 휴지통으로 옯긴다.
         if ($config->get('recursiveDelete') === true) {
             $query = Board::where('head', $board->head);
-            if ($board->reply !== '') {
+            if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
             $items = $query->get();
@@ -302,7 +306,7 @@ class Handler
         // 덧글이 있다면 덧글들을 모두 복원
         if ($config->get('recursiveDelete') === true) {
             $query = Board::where('head', $board->head);
-            if ($board->reply !== '') {
+            if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
             $items = $query->get();
@@ -313,6 +317,63 @@ class Handler
         } else {
             $board->setRestore()->save();
         }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 게시판 이동
+     * Document Package 에서 comment 를 지원하지 않아서 사용할 수 있는 인터페이스가 없음
+     *
+     * @param string         $id             document id
+     * @param ConfigEntity   $config         destination board config entity
+     * @param CommentHandler $commentHandler comment handler
+     */
+    public function move(Board $board, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        $dstInstanceId = $config->get('boardId');
+
+        // 덧글이 있다면 덧글들을 모두 옯긴다.
+        if ($config->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head);
+            if ($board->reply !== '' && $board->reply !== null) {
+                $query->where('reply', 'like', $board->reply . '%');
+            }
+            $items = $query->get();
+            foreach ($items as $item) {
+                $this->setModelConfig($item, $config);
+                $item->instanceId = $dstInstanceId;
+                $item->save();
+            }
+        } else {
+            $board->instanceId = $dstInstanceId;
+            $board->save();
+        }
+
+        $board->getConnection()->commit();
+    }
+
+    /**
+     * 복사
+     *
+     * @param string       $id     document id
+     * @param ConfigEntity $config destination board config entity
+     * @param string       $newId  new document id
+     * @return void
+     */
+    public function copy(Board $board, UserInterface $user, ConfigEntity $config)
+    {
+        $board->getConnection()->beginTransaction();
+
+        $args = array_merge($board->getDynamicAttributes(), $board->getAttributes());
+        $args['id'] = null;
+        $args['instanceId'] = $config->get('boardId');
+        $args['slug'] = $board->boardSlug->slug;
+        $args['categoryItemId'] = $board->boardCategory->itemId;
+
+        $this->add($args, $user, $config);
 
         $board->getConnection()->commit();
     }

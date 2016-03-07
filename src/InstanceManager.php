@@ -18,6 +18,7 @@ use Xpressengine\Document\DocumentHandler;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Comment\CommentHandler;
 use Xpressengine\Config\ConfigEntity;
+use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistsInstanceException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidConfigException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
@@ -61,6 +62,11 @@ class InstanceManager
     protected $configHandler;
 
     /**
+     * @var BoardPermissionHandler
+     */
+    protected $permissionHandler;
+
+    /**
      * create instance
      *
      * @param VirtualConnection   $conn          database connection
@@ -72,12 +78,14 @@ class InstanceManager
         VirtualConnection $conn,
         DocumentHandler $document,
         DynamicFieldHandler $dynamicField,
-        ConfigHandler $configHandler
+        ConfigHandler $configHandler,
+        BoardPermissionHandler $permissionHandler
     ) {
         $this->conn = $conn;
         $this->document = $document;
         $this->dynamicField = $dynamicField;
         $this->configHandler = $configHandler;
+        $this->permissionHandler = $permissionHandler;
     }
 
     /**
@@ -109,6 +117,8 @@ class InstanceManager
         $params['commentGroup'] = 'comments_' . $documentConfig->get('instanceId');
 
         $config = $this->configHandler->add($params);
+
+        $this->permissionHandler->set($params['boardId'], new Grant());
 
         // category dynamic field create
         //$this->createDefaultDynamicField($config);

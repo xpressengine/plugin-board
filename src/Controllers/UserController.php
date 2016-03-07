@@ -260,7 +260,7 @@ class UserController extends Controller
     //public function slug(Request $request, PermissionHandler $permission, $strSlug)
     public function slug(Request $request, BoardPermissionhandler $boardPermission, $menuUrl, $strSlug)
     {
-        $slug = BoardSlug::where('slug', $strSlug)->first();
+        $slug = BoardSlug::where('slug', $strSlug)->where('instanceId', $this->instanceId)->first();
 
         if ($slug === null) {
             throw new NotFoundDocumentException;

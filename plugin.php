@@ -262,7 +262,8 @@ class Plugin extends AbstractPlugin
                 $app['xe.db']->connection(),
                 $documentHandler,
                 $dynamicFieldHandler,
-                $app['xe.board.config']
+                $app['xe.board.config'],
+                $app['xe.board.permission']
             );
         });
         $app->bind(

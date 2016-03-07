@@ -75,7 +75,7 @@
                         <tr>
                             <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
                             <td>
-                                <span><b>[{{ $document->instanceId }}]</b> {{ $document->title }}</span>
+                                <span><b>[{{ $urls[$document->instanceId] }}]</b> {{ $document->title }}</span>
 
                                 <a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" class="btn" target="_blank">
                                     <i class="fa fa-link fa-lg"></i>
