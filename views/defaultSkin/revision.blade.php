@@ -21,7 +21,7 @@
             <div class="content" style="min-height: 300px;">
                 {!! $doc->content !!}
             </div>
-        @elseif (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null)
+        @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
             <div>
                 {!! $fieldType->getSkin()->show($fieldType->getConfig(), $doc->getAttributes()) !!}
             </div>

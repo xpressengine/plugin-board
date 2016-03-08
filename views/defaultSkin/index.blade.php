@@ -119,7 +119,7 @@
                         @if($typeConfig->get('searchable') === true)
                         <dt>{{ $typeConfig->get('label') }}</dt>
                         <dd>
-                            {!! DynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Input::all()) !!}
+                            {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Input::all()) !!}
                         </dd>
                         @endif
                     @endforeach
@@ -196,7 +196,7 @@
                             <td class="read_num mb_hidden">{{ $item->{$columnName} }}</td>
                         @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
                             <td class="time mb_hidden column-{{$columnName}}" title="{{ $item->{$columnName} }}">{!! sprintf('‘%s', str_replace('-', '.', substr($item->{$columnName}, 2, 8))) !!}</td>
-                        @elseif (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null)
+                        @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                             @if ($columnName == 'category')
                                 <td class="category mb_hidden column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>
                             @else
@@ -263,7 +263,7 @@
                             <td class="read_num mb_hidden">{{ $item->{$columnName} }}</td>
                         @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
                             <td class="time mb_hidden column-{{$columnName}}" title="{{ $item->{$columnName} }}">{!! sprintf('‘%s', str_replace('-', '.', substr($item->{$columnName}, 2, 8))) !!}</td>
-                        @elseif (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null)
+                        @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                             @if ($columnName == 'category')
                                 <td class="category mb_hidden column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>
                             @else
