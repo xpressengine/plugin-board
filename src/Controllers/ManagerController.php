@@ -15,7 +15,7 @@ namespace Xpressengine\Plugins\Board\Controllers;
 
 use XeDB;
 use Redirect;
-use Presenter;
+use XePresenter;
 use App\Http\Controllers\Controller;
 use App\Sections\DynamicFieldSection;
 use App\Sections\ToggleMenuSection;
@@ -214,7 +214,7 @@ class ManagerController extends Controller
         $config->set('categoryId', $category->id);
         $this->instanceManager->updateConfig($config->getPureAll());
 
-        return Presenter::makeApi(
+        return XePresenter::makeApi(
             $category->getAttributes()
         );
     }

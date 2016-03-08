@@ -54,7 +54,7 @@
         <div class="write_footer">
 
             @foreach ($configHandler->formColumns($instanceId) as $columnName)
-                @if (($fieldType = DynamicField::get($config->get('documentGroup'), $columnName)) != null)
+                @if (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                     <div class="__xe_{{$columnName}} __xe_section">
                         {!! $fieldType->getSkin()->edit($item->getAttributes()) !!}
                     </div>
