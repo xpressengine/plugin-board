@@ -1,7 +1,7 @@
-{{ Frontend::js('plugins/board/assets/js/doc.js')->appendTo('body')->load() }}
-{{ Frontend::js('plugins/board/assets/js/respond.min.js')->appendTo('body')->load() }}
-{{ Frontend::css('plugins/board/assets/css/board.css')->load() }}
-{{ Frontend::css('plugins/board/assets/css/doc.css')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/doc.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/respond.min.js')->appendTo('body')->load() }}
+{{ XeFrontend::css('plugins/board/assets/css/board.css')->load() }}
+{{ XeFrontend::css('plugins/board/assets/css/doc.css')->load() }}
 
 <div class="board">
     <div class="board_header">

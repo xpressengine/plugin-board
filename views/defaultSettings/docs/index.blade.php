@@ -6,7 +6,7 @@
     게시판 문서를 관리하는 페이지 입니다.
 @endsection
 
-{{ Frontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
 
 
 <div class="panel">

@@ -1,5 +1,5 @@
-{{ Frontend::css('/assets/common/css/dropdown.css')->load() }}
-{{ Frontend::js('/assets/vendor/core/js/toggleMenu.js')->appendTo('head')->load() }}
+{{ XeFrontend::css('/assets/common/css/dropdown.css')->load() }}
+{{ XeFrontend::js('/assets/vendor/core/js/toggleMenu.js')->appendTo('head')->load() }}
 
 @if($visible == true)
 <div class="board_read">
@@ -108,3 +108,4 @@
 
 <!-- 리스트 -->
 @include('board::views.defaultSkin.index')
+

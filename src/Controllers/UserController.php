@@ -17,7 +17,7 @@ use App\Facades\XeDocument;
 use App\Facades\Presenter;
 use Auth;
 use Gate;
-use Frontend;
+use XeFrontend;
 use Keygen;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;

@@ -1,6 +1,6 @@
 게시판 상위 설정
 
-{{ Frontend::js('plugins/board/Skins/Manager/assets/board.js')->load() }}
+{{ XeFrontend::js('plugins/board/Skins/Manager/assets/board.js')->load() }}
 
 
 @section('page_title')

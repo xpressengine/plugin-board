@@ -5,7 +5,7 @@
 @section('page_description')
 @endsection
 
-{{ Frontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
 
 <!-- Main content -->
 <section class="content __xe_sections bbbb">
