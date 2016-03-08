@@ -15,7 +15,7 @@ namespace Xpressengine\Plugins\Board\Modules;
 
 use Illuminate\Database\Schema\Blueprint;
 use Route;
-use Skin;
+use XeSkin;
 use View;
 use Xpressengine\Module\AbstractModule;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
@@ -222,7 +222,7 @@ class Board extends AbstractModule
      */
     public function createMenuForm()
     {
-        $skins = Skin::getList('module/board@board');
+        $skins = XeSkin::getList('module/board@board');
 
         return View::make('board::views/menuType/create', [
             'boardId' => null,
@@ -259,7 +259,7 @@ class Board extends AbstractModule
      */
     public function editMenuForm($instanceId)
     {
-        $skins = Skin::getList(self::getId());
+        $skins = XeSkin::getList(self::getId());
 
         return View::make('board::views/menuType/edit', [
             'boardId' => $instanceId,
