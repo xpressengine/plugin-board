@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\ToggleMenus;
 
+use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
 
 /**
@@ -61,9 +62,9 @@ class TrashItem extends AbstractToggleMenu
 
     public function getAction()
     {
-        $doc = app('xe.document')->get($this->documentId);
+        $doc = Board::find($this->documentId);
 
-        $config = app('xe.board.config')->get($doc->getInstanceId());
+        $config = app('xe.board.config')->get($doc->instanceId);
 
         return app('xe.board.url')->get('trash', ['id' => $this->documentId], $config);
     }
