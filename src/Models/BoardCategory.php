@@ -33,7 +33,9 @@ class BoardCategory extends DynamicModel
     protected $table = 'board_category';
     public $timestamps = false;
 
-    protected $fillable = ['id', 'itemId'];
+    protected $primaryKey = 'targetId';
+
+    protected $fillable = ['targetId', 'itemId'];
 
     public function categoryItem()
     {

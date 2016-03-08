@@ -24,6 +24,8 @@ use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
+use Xpressengine\Tag\Tag;
+use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
 
@@ -51,6 +53,11 @@ class Handler
      */
     protected $storage;
 
+    /**
+     * @var TagHandler
+     */
+    protected $tag;
+
     protected $readCounter;
 
     protected $voteCounter;
@@ -65,11 +72,13 @@ class Handler
     public function __construct(
         DocumentHandler $documentHandler,
         Storage $storage,
+        TagHandler $tag,
         Counter $readCounter,
         Counter $voteCounter
     ) {
         $this->documentHandler = $documentHandler;
         $this->storage = $storage;
+        $this->tag = $tag;
         $this->readCounter = $readCounter;
         $this->voteCounter = $voteCounter;
     }
@@ -128,7 +137,7 @@ class Handler
         // save Category
         if (empty($args['categoryItemId']) == false) {
             $boardCategory = new BoardCategory([
-                'id' => $doc->id,
+                'targetId' => $doc->id,
                 'itemId' => $args['categoryItemId'],
             ]);
             $boardCategory->save();
@@ -140,11 +149,9 @@ class Handler
             }
         }
 
-        // 태그 등록
-//        /** @var \Xpressengine\Tag\TagHandler $tag */
-//        $tag = app('xe.tag');
-//        $hashTags = array_unique($request->get('_hashTags', []));
-//        $tag->set($this->boardId, $doc->id, $hashTags);
+        if (empty($args['_hashTags']) === false) {
+            $this->tag->set($doc->id, $args['_hashTags'], $doc->instanceId);
+        }
 
         $model->getConnection()->commit();
 
@@ -169,26 +176,11 @@ class Handler
         $board->boardSlug()->save($boardSlug);
 
         // save Category
-        if (empty($args['itemId']) == false) {
-            $boardCategory = $board->boardCategory;
-            if ($boardCategory == null) {
-                $boardCategory = new BoardCategory([
-                    'id' => $doc->id,
-                    'itemId' => $args['itemId'],
-                ]);
-            } else {
-                $boardCategory->itemId = $board->itemId;
-            }
-
-            $boardCategory->save();
-        }
-
-        // save Category
         if (empty($args['categoryItemId']) == false) {
             $boardCategory = $board->boardCategory;
             if ($boardCategory == null) {
                 $boardCategory = new BoardCategory([
-                    'id' => $doc->id,
+                    'targetId' => $doc->id,
                     'itemId' => $args['categoryItemId'],
                 ]);
             } else {
@@ -203,7 +195,9 @@ class Handler
         if (empty($args['_files']) === false) {
             foreach (File::whereIn('id', $args['_files'])->get() as $file) {
                 $fileIds[] = $file->id;
-                $this->storage->bind($doc->id, $file);
+                if ($this->storage->has($doc->id, $file) === false) {
+                    $this->storage->bind($doc->id, $file);
+                }
             }
         }
 
@@ -212,11 +206,16 @@ class Handler
             $this->storage->unBind($board->id, $file, true);
         }
 
-        // 태그 등록
-//        /** @var \Xpressengine\Tag\TagHandler $tag */
-//        $tag = app('xe.tag');
-//        $hashTags = array_unique(Input::get('hashTags', []));
-//        $tag->set($this->boardId, $doc->id, $hashTags);
+        if (empty($args['_hashTags']) === false) {
+            $this->tag->set($doc->id, $args['_hashTags'], $doc->instanceId);
+        }
+
+        $tags = Tag::getByTaggable($doc->id);
+        foreach ($tags as $tag) {
+            if (in_array($tag->word, $args['_hashTags']) === false) {
+                $tags->delete();
+            }
+        }
 
         $board->getConnection()->commit();
 
@@ -244,14 +243,20 @@ class Handler
             $items = $query->get();
             foreach ($items as $item) {
                 $this->setModelConfig($item, $config);
-                if ($item->slug !== null) {
-                    $item->slug->delete();
+                if ($item->boardSlug !== null) {
+                    $item->boardSlug->delete();
+                }
+                if ($item->boardCategory !== null) {
+                    $item->boardCategory->delete();
                 }
                 $files = File::whereIn('id', $item->getFileIds())->get();
                 foreach ($files as $file) {
                     $this->storage->unBind($item->id, $file, true);
                 }
-                // 태그 제거
+                $tags = Tag::getByTaggable($item->id);
+                foreach ($tags as $tag) {
+                    $tag->delete();
+                }
                 $item->delete();
             }
         } else {
@@ -262,7 +267,10 @@ class Handler
             foreach ($files as $file) {
                 $this->storage->unBind($board->id, $file, true);
             }
-            // 태그 제거
+            $tags = Tag::getByTaggable($board->id);
+            foreach ($tags as $tag) {
+                $tag->delete();
+            }
             $board->delete();
         }
 

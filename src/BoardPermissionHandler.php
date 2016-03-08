@@ -49,7 +49,7 @@ class BoardPermissionHandler
      *
      * @var string
      */
-    protected $prefix;
+    protected $prefix = 'module/board@board';
 
     /**
      * @var string

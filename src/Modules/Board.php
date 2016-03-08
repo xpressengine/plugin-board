@@ -245,7 +245,7 @@ class Board extends AbstractModule
         $input = $menuTypeParams;
         $input['boardId'] = $instanceId;
         if ($input['boardName'] == '') {
-            $input['boardName'] = $itemParams['itemTitle'];
+            $input['boardName'] = $itemParams['title'];
         }
 
         app('xe.board.instance')->create($input);

@@ -10,7 +10,7 @@
     <div class="write_header">
         <div class="write_category form-group">
             @if($config->get('category') == true)
-            <input type="hidden" name="categoryItemId" value="" />
+            <input type="hidden" name="categoryItemId" value="" placeholder="{{ xe_trans('xe::category') }}"/>
             <a href="#" class="bd_select __xe_select_box_show">{{ xe_trans('xe::category') }}</a>
             <div class="bd_select_list" data-name="categoryItemId">
                 <ul>

@@ -67,7 +67,7 @@ class Board extends Document
      */
     public function boardCategory()
     {
-        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardCategory', 'id');
+        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardCategory', 'targetId');
     }
 
     public function files()

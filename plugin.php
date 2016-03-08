@@ -52,6 +52,7 @@ class Plugin extends AbstractPlugin
     {
         $this->createDefaultConfig();
         $this->createSlugTable();
+        $this->createCategoryTable();
         $this->putLang();
     }
 
@@ -90,14 +91,15 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_slug') === false) {
             Schema::create('board_slug', function (Blueprint $table) {
-                $table->string('id', 255);
+                $table->bigIncrements('id');
+                $table->string('targetId', 255);
                 $table->string('instanceId', 255);
                 $table->string('slug', 255);
                 $table->string('title', 255);
 
-                $table->primary(array('id'));
                 $table->index(array('slug'));
                 $table->index(array('title'));
+                $table->index(array('targetId'));
             });
         }
     }
@@ -106,10 +108,10 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_category') === false) {
             Schema::create('board_category', function (Blueprint $table) {
-                $table->string('id', 255);
+                $table->string('targetId', 255);
                 $table->string('itemId', 255);
 
-                $table->primary(array('id'));
+                $table->primary(array('targetId'));
             });
         }
     }
@@ -183,6 +185,7 @@ class Plugin extends AbstractPlugin
             $handler = new $proxyHandler(
                 app('xe.document'),
                 app('xe.storage'),
+                app('xe.tag'),
                 $readCounter,
                 $voteCounter
             );
@@ -263,7 +266,8 @@ class Plugin extends AbstractPlugin
                 $documentHandler,
                 $dynamicFieldHandler,
                 $app['xe.board.config'],
-                $app['xe.board.permission']
+                $app['xe.board.permission'],
+                $app['xe.plugin.comment']->getHandler()
             );
         });
         $app->bind(

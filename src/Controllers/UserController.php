@@ -51,6 +51,8 @@ use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
+use Xpressengine\Tag\TagHandler;
+use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
 use Xpressengine\User\Models\Guest;
 
@@ -173,7 +175,7 @@ class UserController extends Controller
                 'board_category',
                 sprintf('%s.%s', $query->getQuery()->from, 'id'),
                 '=',
-                sprintf('%s.%s', 'board_category', 'id')
+                sprintf('%s.%s', 'board_category', 'targetId')
             );
         }
 
@@ -845,5 +847,51 @@ class UserController extends Controller
 
         header('Content-type: ' . $media->mime);
         echo $file->getContent();
+    }
+
+    /**
+     * 해시태그 suggestion 리스트
+     *
+     * @param string $url url
+     * @param string $id  id
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function suggestionHashTag(Request $request, TagHandler $tag, $menuUrl, $id = null)
+    {
+        $tags = $tag->similar($request->get('string'));
+
+        $suggestions = [];
+        foreach ($tags as $tag) {
+            $suggestions[] = [
+                'id' => $tag->id,
+                'word' => $tag->word,
+            ];
+        }
+
+        return Presenter::makeApi($suggestions);
+    }
+
+    /**
+     * 멘션 suggestion 리스트
+     *
+     * @param string $url url
+     * @param string $id  id
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function suggestionMention(Request $request, $menuUrl, $id = null)
+    {
+        $suggestions = [];
+
+        $string = $request->get('string');
+        $users = User::where('displayName', 'like', $string . '%')->where('id', '<>', Auth::user()->getId())->get();
+        foreach ($users as $user) {
+            $suggestions[] = [
+                'id' => $user->getId(),
+                'displayName' => $user->getDisplayName(),
+                'profileImage' => $user->profileImage,
+            ];
+        }
+
+        return Presenter::makeApi($suggestions);
     }
 }
