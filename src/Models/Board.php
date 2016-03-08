@@ -14,6 +14,7 @@
 namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Document\Models\Document;
+use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Storage\File;
 
 /**
@@ -26,7 +27,7 @@ use Xpressengine\Storage\File;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-class Board extends Document
+class Board extends Document implements CommentUsable
 {
     /**
      * Return is new
@@ -114,5 +115,35 @@ class Board extends Document
     public function isGuest()
     {
         return $this->getAttribute('userType') === self::USER_TYPE_GUEST;
+    }
+
+    /**
+     * Returns unique identifier
+     *
+     * @return string
+     */
+    public function getUid()
+    {
+        return $this->getAttribute('id');
+    }
+
+    /**
+     * Returns instance identifier
+     *
+     * @return mixed
+     */
+    public function getInstanceId()
+    {
+        return $this->getAttribute('instanceId');
+    }
+
+    /**
+     * Returns author
+     *
+     * @return \Xpressengine\User\UserInterface
+     */
+    public function getAuthor()
+    {
+        return $this->user;
     }
 }

@@ -77,8 +77,8 @@
         </div>
         <div class="write_form_btn">
             @if (Auth::guest() !== true)
-            <a href="#" class="bd_btn btn_temp_save __xe_temp_btn_load">{{ xe_trans('comment_service::tempLoad') }}</a>
-            <a href="#" class="bd_btn btn_preview __xe_temp_btn_save">{{ xe_trans('comment_service::tempSave') }}</a>
+            {{--<a href="#" class="bd_btn btn_temp_save __xe_temp_btn_load">{{ xe_trans('comment_service::tempLoad') }}</a>--}}
+            {{--<a href="#" class="bd_btn btn_preview __xe_temp_btn_save">{{ xe_trans('comment_service::tempSave') }}</a>--}}
             @endif
 
             <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
@@ -96,22 +96,22 @@
 {{ XeFrontend::js('assets/vendor/core/js/temporary.js')->appendTo('body')->load() }}
 
 <script>
-    $(function() {
-        var form = $('#board_form');
-        var temporary = $('textarea', form).temporary({
-            key: 'document|{{$instanceId}}',
-            btnLoad: $('.__xe_temp_btn_load', form),
-            btnSave: $('.__xe_temp_btn_save', form),
-            container: $('.__xe_temp_container', form),
-            withForm: true,
-            callback: function (data) {
-                console.log(data);
-                if (xe3CkEditors['xeContentEditor']) {
-                    xe3CkEditors['xeContentEditor'].setData($('textarea', this.dom).val());
-                }
-            }
-        });
-    });
+    {{--$(function() {--}}
+        {{--var form = $('#board_form');--}}
+        {{--var temporary = $('textarea', form).temporary({--}}
+            {{--key: 'document|{{$instanceId}}',--}}
+            {{--btnLoad: $('.__xe_temp_btn_load', form),--}}
+            {{--btnSave: $('.__xe_temp_btn_save', form),--}}
+            {{--container: $('.__xe_temp_container', form),--}}
+            {{--withForm: true,--}}
+            {{--callback: function (data) {--}}
+                {{--console.log(data);--}}
+                {{--if (xe3CkEditors['xeContentEditor']) {--}}
+                    {{--xe3CkEditors['xeContentEditor'].setData($('textarea', this.dom).val());--}}
+                {{--}--}}
+            {{--}--}}
+        {{--});--}}
+    {{--});--}}
 
 
     {{--$(function() {--}}

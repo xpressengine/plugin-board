@@ -35,6 +35,7 @@ use Xpressengine\Routing\InstanceRouteHandler;
 use Xpressengine\Routing\RouteRepository;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\Models\User;
+use Xpressengine\Plugins\Comment\ManageSection as CommentSection;
 
 /**
  * ManagerController
@@ -101,7 +102,6 @@ class ManagerController extends Controller
 
         $this->presenter->setSettingsSkin(BoardModule::getId());
         $this->presenter->share('handler', $this->handler);
-        //$this->presenter->share('permissionHandler', $this->permissionHandler);
         $this->presenter->share('configHandler', $this->configHandler);
         $this->presenter->share('urlHandler', $this->urlHandler);
     }
@@ -127,8 +127,7 @@ class ManagerController extends Controller
 
         $skinSection = (new SkinSection())->setting(BoardModule::getId(), $boardId);
 
-        $commentSection = '';
-        //$commentSection = (new CommentSection())->setting($boardId);
+        $commentSection = (new CommentSection())->setting($boardId);
 
         $dynamicFieldSection = (new DynamicFieldSection($config->get('documentGroup')))
             ->setting(XeDB::connection(), $config->get('revision'));

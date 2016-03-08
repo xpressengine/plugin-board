@@ -96,7 +96,7 @@
 <!-- 댓글 -->
 @if ($config->get('comment') === true)
 <div class="__xe_comment">
-    {{--{!! uio('comment', ['target' => $item]) !!}--}}
+    {!! uio('comment', ['target' => $item]) !!}
 </div>
 @endif
 <!-- // 댓글 -->
