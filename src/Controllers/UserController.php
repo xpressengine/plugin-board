@@ -175,7 +175,7 @@ class UserController extends Controller
                 'board_category',
                 sprintf('%s.%s', $query->getQuery()->from, 'id'),
                 '=',
-                sprintf('%s.%s', 'board_category', 'id')
+                sprintf('%s.%s', 'board_category', 'targetId')
             );
         }
 
@@ -858,14 +858,13 @@ class UserController extends Controller
      */
     public function suggestionHashTag(Request $request, TagHandler $tag, $menuUrl, $id = null)
     {
-        // tag의 decomposed에 '#'이 붙어있어 정상적으로 검색 안됨
-        $tags = $tag->similar('#' . $request->get('string'));
+        $tags = $tag->similar($request->get('string'));
 
         $suggestions = [];
         foreach ($tags as $tag) {
             $suggestions[] = [
                 'id' => $tag->id,
-                'word' => mb_substr($tag->word, 1), // word에서 '#' 제거
+                'word' => $tag->word,
             ];
         }
 

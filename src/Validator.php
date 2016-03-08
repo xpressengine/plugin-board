@@ -100,6 +100,10 @@ class Validator
             $rules = $this->basic();
         }
 
+        if ($config->get('category') === true) {
+            $rules = array_merge($rules, $this->category());
+        }
+
         // add dynamic field rule
         /** @var \Xpressengine\Config\ConfigEntity $dynamicFieldConfig */
         foreach ($this->configHandler->getDynamicFields($config) as $dynamicFieldConfig) {
@@ -149,6 +153,13 @@ class Validator
             'title' => 'Required',
             'slug' => 'Required',
             'content' => 'Required',
+        ];
+    }
+
+    public function category()
+    {
+        return [
+            'categoryItemId' =>  'Required',
         ];
     }
 }

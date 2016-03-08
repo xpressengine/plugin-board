@@ -137,7 +137,7 @@ class Handler
         // save Category
         if (empty($args['categoryItemId']) == false) {
             $boardCategory = new BoardCategory([
-                'id' => $doc->id,
+                'targetId' => $doc->id,
                 'itemId' => $args['categoryItemId'],
             ]);
             $boardCategory->save();
@@ -176,26 +176,11 @@ class Handler
         $board->boardSlug()->save($boardSlug);
 
         // save Category
-        if (empty($args['itemId']) == false) {
-            $boardCategory = $board->boardCategory;
-            if ($boardCategory == null) {
-                $boardCategory = new BoardCategory([
-                    'id' => $doc->id,
-                    'itemId' => $args['itemId'],
-                ]);
-            } else {
-                $boardCategory->itemId = $board->itemId;
-            }
-
-            $boardCategory->save();
-        }
-
-        // save Category
         if (empty($args['categoryItemId']) == false) {
             $boardCategory = $board->boardCategory;
             if ($boardCategory == null) {
                 $boardCategory = new BoardCategory([
-                    'id' => $doc->id,
+                    'targetId' => $doc->id,
                     'itemId' => $args['categoryItemId'],
                 ]);
             } else {
@@ -258,8 +243,11 @@ class Handler
             $items = $query->get();
             foreach ($items as $item) {
                 $this->setModelConfig($item, $config);
-                if ($item->slug !== null) {
-                    $item->slug->delete();
+                if ($item->boardSlug !== null) {
+                    $item->boardSlug->delete();
+                }
+                if ($item->boardCategory !== null) {
+                    $item->boardCategory->delete();
                 }
                 $files = File::whereIn('id', $item->getFileIds())->get();
                 foreach ($files as $file) {

@@ -103,17 +103,6 @@ class UrlHandler
         $id = $board->id;
         $params['id'] = $id;
         return $this->get('show', $params);
-
-//        if ($item->getSlug() !== null) {
-//            return $this->getSlug($item->getSlug()->slug, $params);
-//        }
-//
-//        $id = $item->id;
-//        if (($shortId = $item->getShortId()) !== null) {
-//            $id = $shortId->getId();
-//        }
-//        $params['id'] = $id;
-//        return $this->get('show', $params);
     }
 
     /**

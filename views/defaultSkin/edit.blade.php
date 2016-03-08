@@ -1,7 +1,7 @@
 {{ Frontend::rule('board', $rules) }}
 
 <div class="board_write">
-    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board">
+    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="id" value="{{$item->id}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
@@ -9,7 +9,7 @@
         <div class="write_header">
             <div class="write_category">
                 @if($config->get('category') == true)
-                <input type="hidden" name="categoryItemId" value="" />
+                <input type="hidden" name="categoryItemId" value="{{ $categoryItem ? $categoryItem->id : '' }}" placeholder="{{ xe_trans('xe::category') }}"/>
                     <a href="#" class="bd_select __xe_select_box_show">{{ $categoryItem ? xe_trans($categoryItem->word) : xe_trans('xe::category') }}</a>
                 <div class="bd_select_list" data-name="categoryItemId">
                     <ul>

@@ -146,6 +146,9 @@
 
                 @foreach ($config->get('listColumns') as $columnName)
                     @if ($columnName == 'title')
+                        @if ($config->get('category') == true)
+                            <th scope="col" class="title column-th-category"><span>{{ xe_trans('board::category') }}</span></th>
+                        @endif
                         <th scope="col" class="title column-th-{{$columnName}}"><span>{{ xe_trans('board::'.$columnName) }}</span></th>
                     @else
                         <th scope="col" class="column-th-{{$columnName}}"><span>{{ xe_trans('board::'.$columnName) }}</span></th>
@@ -163,6 +166,9 @@
 
                     @foreach ($config->get('listColumns') as $columnName)
                         @if ($columnName == 'title')
+                            @if ($config->get('category') == true)
+                                <td class="category mb_hidden column-category">{!! $item->boardCategory !== null ? $item->boardCategory->categoryItem->word : '' !!}</td>
+                            @endif
                             <td class="title column-{{$columnName}}">
                                 <span class="category">{{ xe_trans('xe::notice') }}</span>
                                 <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>
@@ -223,9 +229,12 @@
 
                     @foreach ($config->get('listColumns') as $columnName)
                         @if ($columnName == 'title')
+                            @if ($config->get('category') == true)
+                                <td class="category mb_hidden column-category">{!! $item->boardCategory !== null ? $item->boardCategory->categoryItem->word : '' !!}</td>
+                            @endif
                             <td class="title column-{{$columnName}}">
 
-                                @if ($config->get('category') == true)
+                                @if ($config->get('category') == true && $item->boardCategory !== null)
                                     <span class="category">{!! $item->boardCategory->categoryItem->word !!}</span>
                                 @endif
                                 <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>

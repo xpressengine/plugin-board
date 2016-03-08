@@ -108,10 +108,10 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_category') === false) {
             Schema::create('board_category', function (Blueprint $table) {
-                $table->string('id', 255);
+                $table->string('targetId', 255);
                 $table->string('itemId', 255);
 
-                $table->primary(array('id'));
+                $table->primary(array('targetId'));
             });
         }
     }
