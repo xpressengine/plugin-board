@@ -542,44 +542,4 @@ class Handler
     {
         return $this->voteCounter->has($board->id, $user, $option);
     }
-
-    /**
-     * 수정 권한 확인
-     *
-     * @param $author 로그인 사용자 정보
-     * @return bool
-     */
-    public function alterPerm($author)
-    {
-//        if ($this->isGuest($board) === true) {
-//            return true;
-//        }
-//        if ($author instanceof Guest == true) {
-//            return false;
-//        }
-//        if ($this->__get('userId') != $author->getId()) {
-//            return false;
-//        }
-        return true;
-    }
-    /**
-     * 삭제 권한 확인
-     *
-     * @param $author 로그인 사용자 정보
-     * @return bool
-     */
-    public function deletePerm($author)
-    {
-//        if ($this->isGuest($board) === true) {
-//            return true;
-//        }
-//        if ($author instanceof Guest == true) {
-//            return false;
-//        }
-//        if ($this->__get('userId') != $author->getId()) {
-//            return false;
-//        }
-        return true;
-    }
-
 }
