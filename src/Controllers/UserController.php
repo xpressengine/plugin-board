@@ -751,7 +751,7 @@ class UserController extends Controller
         $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 
-        $users = $this->handler->getVoteCounter()->getUsers($item->id, $request->get('perPage'), $option);
+        $users = $this->handler->getVoteCounter()->getUsers($item->id, $option);
 
         $userList = [];
         foreach ($users as $user) {
