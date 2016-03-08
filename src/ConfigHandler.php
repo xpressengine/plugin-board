@@ -145,7 +145,9 @@ class ConfigHandler
         $dynamicFieldIds = [];
         /** @var ConfigEntity $config */
         foreach ($configs as $config) {
-            $dynamicFieldIds[] = $config->get('id');
+            if ($config->get('use') === true) {
+                $dynamicFieldIds[] = $config->get('id');
+            }
         }
 
         // 없는 dynamic field 제거
@@ -163,7 +165,7 @@ class ConfigHandler
          * @var ConfigEntity $config
          */
         foreach ($configs as $config) {
-            if (in_array($config->get('id'), $columns) === false) {
+            if (in_array($config->get('id'), $columns) === false && $config->get('use') === true) {
                 $columns[] = $config->get('id');
             }
         }
