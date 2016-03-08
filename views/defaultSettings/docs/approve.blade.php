@@ -6,7 +6,7 @@
 
 @endsection
 
-{{ Frontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
 
 <div class="panel">
     <div class="panel-heading">

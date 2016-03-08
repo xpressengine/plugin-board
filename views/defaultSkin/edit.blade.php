@@ -1,4 +1,4 @@
-{{ Frontend::rule('board', $rules) }}
+{{ XeFrontend::rule('board', $rules) }}
 
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
@@ -84,7 +84,7 @@
     </form>
 </div>
 
-{{ Frontend::js('assets/vendor/core/js/temporary.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('assets/vendor/core/js/temporary.js')->appendTo('body')->load() }}
 {{--<script>--}}
     {{--$(function() {--}}
         {{--$('.board-container .__xe_btn_temporary').bind('click', function() {--}}
