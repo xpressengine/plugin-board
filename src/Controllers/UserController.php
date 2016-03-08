@@ -13,8 +13,8 @@
  */
 namespace Xpressengine\Plugins\Board\Controllers;
 
-use App\Facades\XeDocument;
-use App\Facades\Presenter;
+use XeDocument;
+use XePresenter;
 use Auth;
 use Gate;
 use XeFrontend;
@@ -127,13 +127,13 @@ class UserController extends Controller
         };
 
         // set Skin
-        Presenter::setSkin(BoardModule::getId());
-        Presenter::share('handler', $handler);
-        Presenter::share('configHandler', $configHandler);
-        Presenter::share('urlHandler', $urlHandler);
-        Presenter::share('isManager', $this->isManager);
-        Presenter::share('instanceId', $this->instanceId);
-        Presenter::share('config', $this->config);
+        XePresenter::setSkin(BoardModule::getId());
+        XePresenter::share('handler', $handler);
+        XePresenter::share('configHandler', $configHandler);
+        XePresenter::share('urlHandler', $urlHandler);
+        XePresenter::share('isManager', $this->isManager);
+        XePresenter::share('instanceId', $this->instanceId);
+        XePresenter::share('config', $this->config);
     }
 
     /**
@@ -154,7 +154,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return Presenter::makeAll('index', $this->listDataImporter($request));
+        return XePresenter::makeAll('index', $this->listDataImporter($request));
     }
 
     /**
@@ -213,7 +213,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return Presenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request)));
+        return XePresenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request)));
     }
 
     protected function showDataImporter($id)
@@ -299,7 +299,7 @@ class UserController extends Controller
         $user = Auth::user();
         $rules = $validator->getCreateRule($user, $this->config);
 
-        return Presenter::makeAll('create', [
+        return XePresenter::makeAll('create', [
             'action' => 'create',
             'handler' => $this->handler,
             'parentId' => $parentId,
@@ -354,7 +354,7 @@ class UserController extends Controller
         $slug = BoardSlug::convert('', $request->get('slug'));
         $slug = BoardSlug::make($slug, $request->get('id'), $this->instanceId);
 
-        return Presenter::makeApi([
+        return XePresenter::makeApi([
             'slug' => $slug,
         ]);
     }
@@ -413,7 +413,7 @@ class UserController extends Controller
 
         //$formColumns = $this->configHandler->formColumns($this->instanceId);
 
-        return Presenter::make('edit', [
+        return XePresenter::make('edit', [
             'config' => $this->config,
             'handler' => $this->handler,
             'item' => $item,
@@ -501,7 +501,7 @@ class UserController extends Controller
         if ($referer == null) {
             $referer = app('url')->current();
         }
-        return Presenter::make('identify', [
+        return XePresenter::make('identify', [
             'board' => $board,
             'referer' => $referer,
         ]);
@@ -576,7 +576,7 @@ class UserController extends Controller
 
         $formColumns = $this->configHandler->formColumns($this->instanceId);
 
-        return Presenter::make('preview', [
+        return XePresenter::make('preview', [
             'config' => $this->config,
             'handler' => $this->handler,
             'formColumns' => $formColumns,
@@ -677,7 +677,7 @@ class UserController extends Controller
         $voteCounter = $this->handler->getVoteCounter();
         $vote = $voteCounter->getByName($id, $user);
 
-        return Presenter::makeApi([
+        return XePresenter::makeApi([
             'display' => $display,
             'id' => $id,
             'counts' => [
@@ -762,7 +762,7 @@ class UserController extends Controller
             ];
         }
 
-        return Presenter::makeApi([
+        return XePresenter::makeApi([
             'current_page' => $request->get('page'),
             'users' => $userList
         ]);
@@ -806,7 +806,7 @@ class UserController extends Controller
             }
         }
 
-        return Presenter::makeApi([
+        return XePresenter::makeApi([
             'file' => $file->toArray(),
             'media' => $media,
             'thumbnails' => $thumbnails,
@@ -868,7 +868,7 @@ class UserController extends Controller
             ];
         }
 
-        return Presenter::makeApi($suggestions);
+        return XePresenter::makeApi($suggestions);
     }
 
     /**
@@ -892,6 +892,6 @@ class UserController extends Controller
             ];
         }
 
-        return Presenter::makeApi($suggestions);
+        return XePresenter::makeApi($suggestions);
     }
 }
