@@ -87,8 +87,12 @@ class ManagerController extends Controller
     /**
      * create instance
      */
-    public function __construct(Handler $handler, ConfigHandler $configHandler, UrlHandler $urlHandler, InstanceManager $instanceManager)
-    {
+    public function __construct(
+        Handler $handler,
+        ConfigHandler $configHandler,
+        UrlHandler $urlHandler,
+        InstanceManager $instanceManager
+    ) {
         /** @var \Xpressengine\Plugins\Board\Plugin $plugin */
         //$this->plugin = app('xe.plugin')->getPlugin('board')->getObject();
 
@@ -100,7 +104,7 @@ class ManagerController extends Controller
 
         $this->presenter = app('xe.presenter');
 
-        $this->presenter->setSettingsSkin(BoardModule::getId());
+        $this->presenter->setSettingsModule(BoardModule::getId());
         $this->presenter->share('handler', $this->handler);
         $this->presenter->share('configHandler', $this->configHandler);
         $this->presenter->share('urlHandler', $this->urlHandler);

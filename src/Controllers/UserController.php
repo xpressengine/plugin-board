@@ -103,11 +103,14 @@ class UserController extends Controller
      * @param Handler $handler
      * @param ConfigHandler $configHandler
      * @param UrlHandler $urlHandler
-     * @param BoardPermissionHandler $permissionHandler
+     * @param BoardPermissionhandler $boardPermission
      */
-    //public function __construct(Handler $handler, ConfigHandler $configHandler, UrlHandler $urlHandler, BoardPermissionHandler $permissionHandler)
-    public function __construct(Handler $handler, ConfigHandler $configHandler, UrlHandler $urlHandler, BoardPermissionhandler $boardPermission)
-    {
+    public function __construct(
+        Handler $handler,
+        ConfigHandler $configHandler,
+        UrlHandler $urlHandler,
+        BoardPermissionhandler $boardPermission
+    ) {
         $instanceConfig = InstanceConfig::instance();
         $this->instanceId = $instanceConfig->getInstanceId();
 
@@ -127,7 +130,7 @@ class UserController extends Controller
         };
 
         // set Skin
-        XePresenter::setSkin(BoardModule::getId());
+        XePresenter::setModule(BoardModule::getId());
         XePresenter::share('handler', $handler);
         XePresenter::share('configHandler', $configHandler);
         XePresenter::share('urlHandler', $urlHandler);
