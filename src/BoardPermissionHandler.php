@@ -111,6 +111,26 @@ class BoardPermissionHandler
         return sprintf('%s.%s', $this->prefix, $instanceId);
     }
 
+    public function getDefaultPerms()
+    {
+        $default = $this->getDefault();
+
+        $perms = [];
+        foreach ($this->actions as $actionName) {
+            $mode = "top";
+            $grant = $default->pure($actionName);
+
+            $perms[] = [
+                'mode' => $mode,
+                'title' => $actionName,
+                'grant' => $grant,
+                'groups' => [],
+            ];
+        }
+
+        return $perms;
+    }
+
     public function getPerms($instanceId)
     {
         $default = $this->getDefault();

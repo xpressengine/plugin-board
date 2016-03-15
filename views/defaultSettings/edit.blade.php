@@ -30,19 +30,22 @@
 
                 <div class="form-group">
                     <label for="">{{xe_trans('board::perPage')}}</label>
+                    <label><input type="checkbox" class="inheritCheck" data-target="perPage" @if($config->getPure('perPage') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
                     <p class="desc-text">{{xe_trans('board::perPageDescription')}}</p>
-                    <input type="text" id="" name="perPage" class="form-control" value="{{Input::old('perPage', $config->get('perPage'))}}" />
+                    <input type="text" id="" name="perPage" class="form-control" value="{{Input::old('perPage', $config->get('perPage'))}}" @if($config->getPure('perPage') == null) disabled="disabled" @endif/>
                 </div>
 
                 <div class="form-group">
                     <label for="">{{xe_trans('board::newArticleTime')}}</label>
+                    <label><input type="checkbox" class="inheritCheck" data-target="newTime" @if($config->getPure('newTime') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
                     <p class="desc-text">{{xe_trans('board::newArticleTimeDescription')}}</p>
-                    <input type="text" id="" name="newTime" class="form-control" value="{{Input::old('newTime', $config->get('newTime'))}}" />
+                    <input type="text" id="" name="newTime" class="form-control" value="{{Input::old('newTime', $config->get('newTime'))}}" @if($config->getPure('newTime') == null) disabled="disabled" @endif/>
                 </div>
 
                 <div class="form-group">
                     <label for="">{{xe_trans('xe::comment')}}</label>
-                    <select id="" name="comment" class="form-control">
+                    <label><input type="checkbox" class="inheritCheck" data-target="comment" @if($config->getPure('comment') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                    <select id="" name="comment" class="form-control" @if($config->getPure('comment') == null) disabled="disabled" @endif>
                         <option value="true" {!! $config->get('comment') == true ? 'selected="selected"' : '' !!} >Use</option>
                         <option value="false" {!! $config->get('comment') == false ? 'selected="selected"' : '' !!} >Disuse</option>
                     </select>
@@ -50,7 +53,8 @@
 
                 <div class="form-group">
                     <label for="">{{xe_trans('xe::recommend')}}</label>
-                    <select id="" name="assent" class="form-control">
+                    <label><input type="checkbox" class="inheritCheck" data-target="assent" @if($config->getPure('assent') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                    <select id="" name="assent" class="form-control" @if($config->getPure('assent') == null) disabled="disabled" @endif>
                         <option value="true" {!! $config->get('assent') == true ? 'selected="selected"' : '' !!} >Use</option>
                         <option value="false" {!! $config->get('assent') == false ? 'selected="selected"' : '' !!} >Disuse</option>
                     </select>
@@ -58,7 +62,8 @@
 
                 <div class="form-group">
                     <label for="">{{xe_trans('xe::discommend')}}</label>
-                    <select id="" name="dissent" class="form-control">
+                    <label><input type="checkbox" class="inheritCheck" data-target="dissent" @if($config->getPure('dissent') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                    <select id="" name="dissent" class="form-control" @if($config->getPure('dissent') == null) disabled="disabled" @endif>
                         <option value="true" {!! $config->get('dissent') == true ? 'selected="selected"' : '' !!} >Use</option>
                         <option value="false" {!! $config->get('dissent') == false ? 'selected="selected"' : '' !!} >Disuse</option>
                     </select>
@@ -66,7 +71,8 @@
 
                 <div class="form-group form-category-select">
                     <label for="">{{xe_trans('xe::category')}}</label>
-                    <select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-url="{{route('manage.board.board.storeCategory', ['boardId' => $config->get('boardId')])}}">
+                    <label><input type="checkbox" class="inheritCheck" data-target="category" @if($config->getPure('category') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                    <select id="" name="category" class="form-control" @if($config->getPure('category') == null) disabled="disabled" @endif data-id="{{ $config->get('categoryId') }}" data-url="{{route('manage.board.board.storeCategory', ['boardId' => $config->get('boardId')])}}">
                         <option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >Use</option>
                         <option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >Disuse</option>
                     </select>
@@ -75,7 +81,8 @@
 
                 <div class="form-group">
                     <label for="">{{xe_trans('board::anonymityUse')}}</label>
-                    <select id="" name="anonymity" class="form-control">
+                    <label><input type="checkbox" class="inheritCheck" data-target="anonymity" @if($config->getPure('anonymity') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                    <select id="" name="anonymity" class="form-control" @if($config->getPure('anonymity') == null) disabled="disabled" @endif>
                         <option value="true" {!! $config->get('anonymity') == true ? 'selected="selected"' : '' !!} >Use</option>
                         <option value="false" {!! $config->get('anonymity') == false ? 'selected="selected"' : '' !!} >Disuse</option>
                     </select>
@@ -83,19 +90,22 @@
 
                 <div class="form-group">
                     <label for="">{{xe_trans('board::anonymityName')}}</label>
+                    <label><input type="checkbox" class="inheritCheck" data-target="anonymityName" @if($config->getPure('anonymityName') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
                     <p class="desc-text">{{xe_trans('board::anonymityDescription')}}</p>
-                    <input type="text" name="managerEmail" class="form-control" value="{{ Input::old('anonymityName', $config->get('anonymityName')) }}" />
+                    <input type="text" name="anonymityName" class="form-control" @if($config->getPure('anonymityName') == null) disabled="disabled" @endif value="{{ Input::old('anonymityName', $config->get('anonymityName')) }}" />
                 </div>
 
                 <div class="form-group">
                     <label for="">{{xe_trans('board::adminEmail')}}</label>
+                    <label><input type="checkbox" class="inheritCheck" data-target="managerEmail" @if($config->getPure('managerEmail') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
                     <p class="desc-text">{{xe_trans('board::adminEmailDescription')}}</p>
-                    <input type="text" name="managerEmail" class="form-control" value="{{ Input::old('managerEmail', $config->get('managerEmail')) }}" />
+                    <input type="text" name="managerEmail" class="form-control" @if($config->getPure('managerEmail') == null) disabled="disabled" @endif value="{{ Input::old('managerEmail', $config->get('managerEmail')) }}" />
                 </div>
 
                 <div class="form-group">
                     <label for="">{{xe_trans('xe::list')}}</label>
-                    <div class="form-inline">
+                    <label><input type="checkbox" class="inheritCheck" data-select=".listColumns" @if($config->getPure('listColumns') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                    <div class="form-inline listColumns">
                         <div class="form-group">
                             <select class="form-control" id="list_options" size="8" multiple="multiple">
                                 @foreach ($listOptions as $columnName)
@@ -108,7 +118,7 @@
 
                         </div>
                         <div class="form-group">
-                            <select class="form-control" id="list_selected" size="8" multiple="multiple">
+                            <select class="form-control" id="list_selected" size="8" multiple="multiple" @if($config->getPure('listColumns') == null) disabled="disabled" @endif>
                                 @foreach ($listColumns as $columnName)
                                     <option value="{{$columnName}}">{{$columnName}}</option>
                                 @endforeach
@@ -124,8 +134,9 @@
 
                 <div class="form-group">
                     <label for="">{{xe_trans('xe::input')}}</label>
-                    <div class="form-group">
-                        <select class="form-control" id="form_order" size="8" multiple="multiple">
+                    <label><input type="checkbox" class="inheritCheck" data-select=".formColumns" @if($config->getPure('formColumns') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                    <div class="form-group formColumns">
+                        <select class="form-control" id="form_order" size="8" multiple="multiple" @if($config->getPure('formColumns') == null) disabled="disabled" @endif>
                             @foreach ($formColumns as $columnName)
                                 <option value="{{$columnName}}">{{$columnName}}</option>
                             @endforeach
@@ -152,15 +163,19 @@
             <script>
                 $(function() {
                     $('#board_manage_form').bind('submit', function() {
-                        $('#list_selected option').each(function() {
-                            var listColumn = $('<input>').attr('name', 'listColumns[]').val($(this).val()).attr('type', 'hidden');
-                            $('#board_manage_form').append(listColumn);
-                        });
+                        if ($('#list_selected').prop('disabled') == false) {
+                            $('#list_selected option').each(function() {
+                                var listColumn = $('<input>').attr('name', 'listColumns[]').val($(this).val()).attr('type', 'hidden');
+                                $('#board_manage_form').append(listColumn);
+                            });
+                        }
 
-                        $('#form_order option').each(function() {
-                            var listColumn = $('<input>').attr('name', 'formColumns[]').val($(this).val()).attr('type', 'hidden');
-                            $('#board_manage_form').append(listColumn);
-                        });
+                        if ($('#form_order').prop('disabled') == false) {
+                            $('#form_order option').each(function() {
+                                var listColumn = $('<input>').attr('name', 'formColumns[]').val($(this).val()).attr('type', 'hidden');
+                                $('#board_manage_form').append(listColumn);
+                            });
+                        }
                     });
                 });
             </script>
@@ -265,6 +280,4 @@
     </div>
 </div>
 </section>
-
-{{--{!! uio('uiobject/xpressengine@chakIt', 'Settings:게시판') !!}--}}
 

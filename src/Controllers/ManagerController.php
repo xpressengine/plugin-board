@@ -104,10 +104,88 @@ class ManagerController extends Controller
 
         $this->presenter = app('xe.presenter');
 
-        $this->presenter->setSettingsModule(BoardModule::getId());
+        $this->presenter->setSettingsSkinTargetId(BoardModule::getId());
         $this->presenter->share('handler', $this->handler);
         $this->presenter->share('configHandler', $this->configHandler);
         $this->presenter->share('urlHandler', $this->urlHandler);
+    }
+
+    /**
+     * @param BoardPermissionHandler $boardPermission
+     * @return mixed|\Xpressengine\Presenter\RendererInterface
+     */
+    public function globalEdit(BoardPermissionHandler $boardPermission)
+    {
+        $config = $this->configHandler->getDefault();
+
+        $listOptions = $this->configHandler->getDefaultListColumns();
+        $listColumns = $config->get('listColumns');
+
+        // 현재 선택된건 제외 시키고 보여줌
+        $listOptions = array_diff($listOptions, $listColumns);
+
+        $formColumns = $this->configHandler->getDefaultFormColumns();
+
+        $perms = $boardPermission->getDefaultPerms();
+
+        return $this->presenter->make('global.edit', [
+            'config' => $config,
+            'listOptions' => $listOptions,
+            'listColumns' => $listColumns,
+            'formColumns' => $formColumns,
+            'perms' => $perms,
+        ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function globalUpdate(Request $request, BoardPermissionHandler $boardPermission)
+    {
+        $config = $this->configHandler->getDefault();
+
+        $permissionNames = [];
+        $permissionNames['read'] = ['readMode', 'readRating', 'readUser', 'readExcept'];
+        $permissionNames['list'] = ['listMode', 'listRating', 'listUser', 'listExcept'];
+        $permissionNames['create'] = ['createMode', 'createRating', 'createUser', 'createExcept'];
+        $permissionNames['manage'] = ['manageMode', 'manageRating', 'manageUser', 'manageExcept'];
+        $inputs = $request->except(array_merge(
+            ['_token'],
+            $permissionNames['read'],
+            $permissionNames['list'],
+            $permissionNames['create'],
+            $permissionNames['manage']
+        ));
+
+        foreach ($inputs as $key => $value) {
+            $config->set($key, $value);
+        }
+
+        $params = $config->getPureAll();
+
+        XeDB::beginTransaction();
+
+        $config = $this->configHandler->putDefault($params);
+
+        // permission update
+        $grant = new Grant();
+
+        foreach ($boardPermission->getActions() as $action) {
+            $permInputs = $request->only($permissionNames[$action]);
+            $grant = $boardPermission->createGrant($grant, $action, [
+                Grant::RATING_TYPE => $permInputs[$action . 'Rating'],
+                Grant::GROUP_TYPE => isset($permInputs[$action . 'Group']) ?
+                    $permInputs[$action . 'Group'] : [],
+                Grant::USER_TYPE => explode(',', $permInputs[$action . 'User']),
+                Grant::EXCEPT_TYPE => explode(',', $permInputs[$action . 'Except'])
+            ]);
+        }
+
+        $boardPermission->setDefault($grant);
+
+        XeDB::commit();
+
+        return redirect()->to($this->urlHandler->managerUrl('global.edit'));
     }
 
     /**
@@ -181,6 +259,12 @@ class ManagerController extends Controller
 
         foreach ($inputs as $key => $value) {
             $config->set($key, $value);
+        }
+
+        foreach ($config->getPureAll() as $key => $value) {
+            if ($config->getParent()->get($key) != null && isset($inputs[$key]) === false) {
+                unset($config[$key]);
+            }
         }
 
         $config = $this->instanceManager->updateConfig($config->getPureAll());

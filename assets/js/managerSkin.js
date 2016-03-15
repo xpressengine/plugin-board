@@ -84,8 +84,21 @@ $(function() {
         } else {
             $o.next('button').attr('disabled', $o.val() == 'true' ? false : true);
         }
-
     });
+
+    $('.inheritCheck').bind('click', function(e) {
+        var $o = $(this),
+            target = $o.data('target'),
+            select = $o.data('select');
+        if (target != undefined) {
+            $o.closest('.form-group').find('[name="'+target+'"]').prop('disabled', $o.prop('checked'));
+        } else if (select != undefined) {
+            var $group = $o.closest('.form-group').find(select);
+            $group.find('button').prop('disabled', $o.prop('checked'));
+            $group.find('select').prop('disabled', $o.prop('checked'));
+        }
+    });
+
     $('.form-category-select button').bind('click', function(e) {
         var $o = $(this);
         window.open($o.data('href') + '/' + $o.prev('select').data('id'), '_blank');

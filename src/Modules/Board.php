@@ -13,7 +13,6 @@
  */
 namespace Xpressengine\Plugins\Board\Modules;
 
-use Illuminate\Database\Schema\Blueprint;
 use Route;
 use XeSkin;
 use View;
@@ -22,7 +21,8 @@ use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
 
 /**
- * # Board
+ * Board
+ *
  * * Board Module
  * * AbstractModule 인터페이스 지원. 메뉴로 추가할 수 있음.
  * * Boot 할 때 Addon, Order 게시판 번들 추가 기능 등록
@@ -65,6 +65,10 @@ class Board extends AbstractModule
             Route::get(
                 '/global/edit',
                 ['as' => 'manage.board.board.global.edit', 'uses' => 'ManagerController@globalEdit']
+            );
+            Route::post(
+                '/global/update',
+                ['as' => 'manage.board.board.global.update', 'uses' => 'ManagerController@globalUpdate']
             );
             Route::get('edit/{boardId}', ['as' => 'manage.board.board.edit', 'uses' => 'ManagerController@edit']);
             Route::post('storeCategory/{boardId}', ['as' => 'manage.board.board.storeCategory', 'uses' => 'ManagerController@storeCategory']);

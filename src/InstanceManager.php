@@ -180,8 +180,6 @@ class InstanceManager
             throw new InvalidConfigException;
         }
 
-        $params = array_merge($config->getPureAll(), $params);
-
         $this->conn->beginTransaction();
 
         $config = $this->configHandler->put($params);
