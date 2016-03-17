@@ -1,9 +1,6 @@
 {{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
 {{ XeFrontend::js('plugins/board/assets/js/userSkin.js')->appendTo('body')->load() }}
-{{ XeFrontend::js('plugins/board/assets/js/doc.js')->appendTo('body')->load() }}
-{{ XeFrontend::js('plugins/board/assets/js/respond.min.js')->appendTo('body')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/board.css')->load() }}
-{{ XeFrontend::css('plugins/board/assets/css/tomorrow-night-eighties.css')->load() }}
 
 <script type="text/javascript">
     XE.$(function($) {
