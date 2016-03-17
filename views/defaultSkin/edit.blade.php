@@ -84,7 +84,7 @@
     </form>
 </div>
 
-{{ XeFrontend::js('assets/vendor/core/js/temporary.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('assets/core/common/js/temporary.js')->appendTo('body')->load() }}
 {{--<script>--}}
     {{--$(function() {--}}
         {{--$('.board-container .__xe_btn_temporary').bind('click', function() {--}}

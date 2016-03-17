@@ -14,7 +14,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="row">
-                        <p class="txt_tit">{{xe_trans('board::boardDetailConfigures')}}</p>
+                        <p class="text-title">{{xe_trans('board::boardDetailConfigures')}}</p>
 
                         <div class="right_btn pull-right" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#boardSection">
                             <!-- [D] 메뉴 닫기 시 버튼 클래스에 card_close 추가 및 item_container none/block 처리-->

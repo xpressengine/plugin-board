@@ -93,7 +93,7 @@
 </div>
 
 {{ XeFrontend::css('/assets/core/common/css/temporary.css')->load() }}
-{{ XeFrontend::js('assets/vendor/core/js/temporary.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('assets/core/common/js/temporary.js')->appendTo('body')->load() }}
 
 <script>
     {{--$(function() {--}}
