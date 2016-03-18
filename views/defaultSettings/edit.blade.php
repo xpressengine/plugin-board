@@ -14,7 +14,7 @@
     <div class="panel">
         <div class="panel-heading">
             <div class="row">
-                <p class="txt_tit">{{xe_trans('board::boardDetailConfigures')}}</p>
+                <p class="text-title">{{xe_trans('board::boardDetailConfigures')}}</p>
 
                 <div class="right_btn pull-right" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#boardSection">
                     <!-- [D] 메뉴 닫기 시 버튼 클래스에 card_close 추가 및 item_container none/block 처리-->
@@ -187,7 +187,7 @@
     <div class="panel">
         <div class="panel-heading">
             <div class="row">
-                <p class="txt_tit">{{xe_trans('xe::skin')}}</p>
+                <p class="text-title">{{xe_trans('xe::skin')}}</p>
 
                 <div class="right_btn pull-right" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#skinSection">
                     <!-- [D] 메뉴 닫기 시 버튼 클래스에 card_close 추가 및 item_container none/block 처리-->
@@ -211,7 +211,7 @@
     <div class="panel">
         <div class="panel-heading">
             <div class="row">
-                <p class="txt_tit">{{xe_trans('xe::dynamicField')}}</p>
+                <p class="text-title">{{xe_trans('xe::dynamicField')}}</p>
 
                 <div class="right_btn pull-right" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#dynamicFieldSection">
                     <!-- [D] 메뉴 닫기 시 버튼 클래스에 card_close 추가 및 item_container none/block 처리-->
@@ -235,7 +235,7 @@
     <div class="panel">
         <div class="panel-heading">
             <div class="row">
-                <p class="txt_tit">{{xe_trans('xe::toggleMenu')}}</p>
+                <p class="text-title">{{xe_trans('xe::toggleMenu')}}</p>
 
                 <div class="right_btn pull-right" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#toggleMenuSection">
                     <!-- [D] 메뉴 닫기 시 버튼 클래스에 card_close 추가 및 item_container none/block 처리-->
@@ -259,7 +259,7 @@
     <div class="panel">
         <div class="panel-heading">
             <div class="row">
-                <p class="txt_tit">{{xe_trans('xe::comment')}}</p>
+                <p class="text-title">{{xe_trans('xe::comment')}}</p>
 
                 <div class="right_btn pull-right" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#commentSection">
                     <!-- [D] 메뉴 닫기 시 버튼 클래스에 card_close 추가 및 item_container none/block 처리-->
