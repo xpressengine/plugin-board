@@ -6,7 +6,18 @@ return [
         'ko' => '게시판',
         'en' => 'Board',
     ],
-
+    'articlesManage' => [
+        'ko' => '게시물 관리',
+        'en' => 'Articles manage',
+    ],
+    'articlesApprove' => [
+        'ko' => '게시물 승인',
+        'en' => 'Articles approve',
+    ],
+    'trashManage' => [
+        'ko' => '휴지통 관리',
+        'en' => 'Trash manage',
+    ],
     'defaultUserSkin' => [
         'ko' => '사용자 기본 스킨',
         'en' => 'Default User Skin',

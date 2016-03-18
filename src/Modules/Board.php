@@ -167,29 +167,29 @@ class Board extends AbstractModule
         // settings menu 등록
         $menus = [
             'contents.board' => [
-                'title' => '게시판',
+                'title' => 'board::board',
                 'display' => true,
-                'description' => 'blur blur~',
+                'description' => '',
                 'ordering' => 2000
             ],
             'contents.board.board' => [
-                'title' => '게시물 관리',
+                'title' => 'board::articlesManage',
                 'display' => true,
-                'description' => 'blur blur~',
+                'description' => '',
                 'link' => route('manage.board.board.docs.index'),
                 'ordering' => 2001
             ],
             'contents.board.boardapprove' => [
-                'title' => '승인',
+                'title' => 'board::articlesApprove',
                 'display' => true,
-                'description' => 'blur blur~',
+                'description' => '',
                 'link' => route('manage.board.board.docs.approve'),
                 'ordering' => 2002
             ],
             'contents.board.boardtrash' => [
-                'title' => '휴지통',
+                'title' => 'board::trashManage',
                 'display' => true,
-                'description' => 'blur blur~',
+                'description' => '',
                 'link' => route('manage.board.board.docs.trash'), 'settings_menu' => 'contents.board.boardtrash',
                 'ordering' => 2003
             ],
