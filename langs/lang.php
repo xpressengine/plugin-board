@@ -72,6 +72,14 @@ return [
         'ko' => '조회수',
         'en' => 'Read',
     ],
+    'read' => [
+        'ko' => '조회',
+        'en' => 'Read'
+    ],
+    'recommend' => [
+        'ko' => '추천',
+        'en' => 'Recommend'
+    ],
     'newPost' => [
         'ko' => '새로운 글작성',
         'en' => 'New Post',
@@ -172,5 +180,9 @@ return [
     'notFoundDocument' => [
         'ko' => '문서를 찾을 수 없습니다.',
         'en' => 'Not found document.',
+    ],
+    'writeDate' => [
+        'ko' => '작성일',
+        'en' => 'Write Date',
     ],
 ];

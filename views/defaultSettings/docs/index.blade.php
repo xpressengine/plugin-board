@@ -1,186 +1,116 @@
-@section('page_title')
-    <h2>게시판 문서관리</h2>
-@endsection
-
-@section('page_description')
-    게시판 문서를 관리하는 페이지 입니다.
-@endsection
-
 {{ XeFrontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
 
-
-<div class="panel">
-    <div class="panel-heading">
-<section class="contain">
-
-    <div class="row">
-        <div class="col-sm-12">
-
-            <!-- function button -->
-            <div class="btn-group pull-left mg-bottom mg-right-sm __xe_function_buttons">
-                <button type="button" class="btn btn-default __xe_button" data-mode="trash">
-                    <i class="fa fa-trash"></i>
-                    휴지통
-                </button>
-                <button type="button" class="btn btn-default __xe_button" data-mode="destroy">
-                    <i class="fa fa-times"></i>
-                    삭제
-                </button>
-                <button type="button" class="btn btn-default __xe_button" data-mode="move">
-                    <i class="fa fa-arrow-right"></i>
-                    이동
-                </button>
-                <div class="btn-group pull-left">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="more view" style="min-width:68px">
-                        <span class="sr-only">more view</span>
-                        <i class="fa fa-ellipsis-h" title="more view"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" class="__xe_button" data-mode="restore"> <i class="fa fa-refresh"></i>복원</a></li>
-                        <li><a href="#" class="__xe_button" data-mode="reject"> <i class="fa fa-ban"></i>승인반려</a></li>
-                        <li><a href="#" class="__xe_button" data-mode="approve"> <i class="fa fa-check-circle-o"></i>게시승인</a></li>
-                    </ul>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <h3 class="panel-title">{{ xe_trans('board::articlesManage') }}</h3>
+                    </div>
                 </div>
-            </div>
-            <!-- /function button -->
 
-            <!-- search button -->
-            <div class="form-inline pull-right">
-                <form class="__xe_search_form" method="get">
-                    <div class="input-group mg-bottom">
-                        <div class="input-group-btn __xe_btn_search_target">
-                            <input type="hidden" name="searchTarget" value="{{ Input::old('searchTarget') }}">
-                            <button type="button" class="btn btn-default dropdown-toggle text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">선택<span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="item" value="">선택</a></li>
-                                <li><a href="#" class="item" value="title_content">제목+내용</a></li>
-                                <li><a href="#" class="item" value="title">제목</a></li>
-                                <li><a href="#" class="item" value="content">내용</a></li>
-                                <li><a href="#" class="item" value="writer">글쓴이</a></li>
+                <div class="panel-heading">
+
+                    <div class="pull-left">
+                        <div class="btn-group btn-fillter" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><strong>필터</strong></li>
+                                <li class="active"><a href="#">모든 글</a></li>
+                                <li><a href="#">공개</a></li>
+                                <li><a href="#">비밀</a></li>
+                                <li><a href="#">임시</a></li>
+                                <li><a href="#">신고</a></li>
+                                <li class="divider"></li>
+                                <li><strong>정렬</strong></li>
+                                <li class="active"><a href="#">날짜</a></li>
+                                <li><a href="#">작성자</a></li>
+                                <li><a href="#">제목</a></li>
                             </ul>
                         </div>
-                        <input type="text" class="form-control" aria-label="..." name="searchKeyword" value="{{Input::get('searchKeyword')}}">
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"> <i class="fa fa-search"></i> <span class="sr-only">search</span> </button>
-                            <a href="{{$urlHandler->managerUrl('docs.index')}}" class="btn btn-default">취소</a>
+
+                        <div class="btn-group __xe_function_buttons" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default __xe_button" data-mode="trash">{{xe_trans('xe::trash')}}</button>
+                            <button type="button" class="btn btn-default __xe_button" data-mode="destroy">{{xe_trans('xe::delete')}}</button>
+                            <button type="button" class="btn btn-default __xe_button" data-mode="move">{{xe_trans('xe::move')}}</button>
                         </div>
                     </div>
-                </form>
-            </div>
-            <!-- /search button -->
-        </div>
-    </div>
+                    <div class="pull-right">
+                        <div class="input-group search-group">
+                            <form>
+                                <div class="input-group-btn __xe_btn_search_target">
+                                    <input type="hidden" name="searchTarget" value="{{ Input::old('searchTarget') }}">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{xe_trans('xe::select')}} <span class="caret"></span></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li @if(Input::old('searchTarget') == '') class="active" @endif><a href="#" value="">{{xe_trans('xe::select')}}</a></li>
+                                        <li @if(Input::old('searchTarget') == 'title_content') class="active" @endif><a href="#" value="title_content">{{xe_trans('board::titleAndContent')}}</a></li>
+                                        <li @if(Input::old('searchTarget') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
+                                        <li @if(Input::old('searchTarget') == 'content') class="active" @endif><a href="#" value="content">{{xe_trans('board::content')}}</a></li>
+                                        <li @if(Input::old('searchTarget') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
+                                        {{----}}
+                                        {{--<li class="active"><a href="#">제목</a></li>--}}
+                                        {{--<li><a href="#">제목+내용</a></li>--}}
+                                        {{--<li><a href="#">내용</a></li>--}}
+                                        {{--<li><a href="#">작성자</a></li>--}}
+                                    </ul>
+                                </div><!-- /btn-group -->
+                                <input type="text" name="searchKeyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Input::get('searchKeyword')}}">
+                                <button class="btn-link">
+                                    <i class="xi-magnifier"></i><span class="sr-only">{{xe_trans('xe::search')}}</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
 
-
-    <!-- table -->
-    <div class="box box-primary mg-bottom">
-        <form class="__xe_form_list" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col"><input type="checkbox" title="Check All" class="__xe_check_all"></th>
-                        <th scope="col">제목</th>
-                        <th scope="col">작성자</th>
-                        <th scope="col"><i class="fa fa-thumbs-o-up"></i> / <i class="fa fa-thumbs-o-down"></i> / <i class="fa fa-eye"></i></th>
-                        <th scope="col">날짜</th>
-                        <th scope="col">IP</th>
-                        <th scope="col">상태</th>
-                        <th scope="col">승인</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($documents as $document)
-                    <tr>
-                        <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
-                        <td>
-                            <span><b>[{{ $urls[$document->instanceId] }}]</b> {{ $document->title }}</span>
-
-                            <a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" class="btn" target="_blank">
-                                <i class="fa fa-link fa-lg"></i>
-                            </a>
-                        </td>
-                        <td>{{ $document->writer }}</td>
-                        <td>{{ $document->assentCount }} / {{ $document->dissentCount }} / {{ $document->readCount }}</td>
-                        <td>{{ $document->createdAt }}</td>
-                        <td>{{ $document->ipaddress }}</td>
-                        <td>{{ $document->display }}</td>
-                        <td>{{ $document->approved }}</td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </form>
-    </div>
-    <!-- /table -->
-
-    <div class="row">
-        <div class="col-sm-12">
-
-            <!-- function button -->
-            <div class="btn-group pull-left mg-bottom mg-right-sm __xe_function_buttons">
-                <button type="button" class="btn btn-default __xe_button" data-mode="trash">
-                    <i class="fa fa-trash"></i>
-                    휴지통
-                </button>
-                <button type="button" class="btn btn-default __xe_button" data-mode="destroy">
-                    <i class="fa fa-times"></i>
-                    삭제
-                </button>
-                <button type="button" class="btn btn-default __xe_button" data-mode="move">
-                    <i class="fa fa-arrow-right"></i>
-                    이동
-                </button>
-                <div class="btn-group pull-left">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="more view" style="min-width:68px">
-                        <span class="sr-only">more view</span>
-                        <i class="fa fa-ellipsis-h" title="more view"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" class="__xe_button" data-mode="restore"> <i class="fa fa-refresh"></i>복원</a></li>
-                        <li><a href="#" class="__xe_button" data-mode="reject"> <i class="fa fa-ban"></i>승인반려</a></li>
-                        <li><a href="#" class="__xe_button" data-mode="approve"> <i class="fa fa-check-circle-o"></i>게시승인</a></li>
-                    </ul>
                 </div>
-            </div>
-            <!-- /function button -->
-
-            <!-- search button -->
-            <div class="form-inline pull-right">
-                <form class="__xe_search_form" method="get">
-                    <div class="input-group mg-bottom">
-                        <div class="input-group-btn __xe_btn_search_target">
-                            <input type="hidden" name="searchTarget" value="{{ Input::old('searchTarget') }}">
-                            <button type="button" class="btn btn-default dropdown-toggle text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">선택<span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="item" value="">선택</a></li>
-                                <li><a href="#" class="item" value="title_content">제목+내용</a></li>
-                                <li><a href="#" class="item" value="title">제목</a></li>
-                                <li><a href="#" class="item" value="content">내용</a></li>
-                                <li><a href="#" class="item" value="writer">글쓴이</a></li>
-                            </ul>
-                        </div>
-                        <input type="text" class="form-control" aria-label="..." name="searchKeyword" value="{{Input::get('searchKeyword')}}">
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"> <i class="fa fa-search"></i> <span class="sr-only">search</span> </button>
-                            <a href="http://xe3.dev1.xpressengine.com/manage/module/pluginA@board" class="btn btn-default">취소</a>
-                        </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col"><input type="checkbox" class="__xe_check_all"></th>
+                            <th scope="col">{{xe_trans('board::title')}}</th>
+                            <th scope="col">{{xe_trans('board::writer')}}</th>
+                            <th scope="col">{{xe_trans('board::recommend')}}/{{xe_trans('board::read')}}</th>
+                            <th scope="col">{{xe_trans('board::writeDate')}}</th>
+                            <th scope="col">IP</th>
+                            <th scope="col">{{xe_trans('xe::status')}}</th>
+                            <th scope="col">{{xe_trans('xe::approve')}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($documents as $document)
+                        <tr>
+                            <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
+                            <td><a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" target="_blank"><strong>[{{ $urls[$document->instanceId] }}]</strong> {{ $document->title }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
+                            <td><a href="#">{{ $document->writer }}</a></td>
+                            <td>{{ $document->assentCount }}/{{ $document->readCount }}</td>
+                            <td><a href="#">{{ $document->createdAt }}</a></td>
+                            <td><a href="#">{{ $document->ipaddress }}</a></td>
+                            <td><span class="label label-green">{{ $document->display }}</span></td>
+                            <td><span class="label label-grey">{{ $document->approved }}</span></td>
+                        </tr>
+                        </tbody>
+                        @endforeach
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="pull-left">
+                        <nav>
+                            {!! $documents->render() !!}
+                        </nav>
                     </div>
-                </form>
-            </div>
-            <!-- /search button -->
-        </div>
-    </div>
+                </div>
 
-    <nav class="text-center">{!! $documents->render() !!}</nav>
-</section>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="modal fade __xe_document_move">
-    <div class="modal-dialog">
+    <div class="modal-dialog" data-toggle="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
