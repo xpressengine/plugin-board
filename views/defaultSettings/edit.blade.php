@@ -1,5 +1,5 @@
 @section('page_title')
-    <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
+    <h2>{{xe_trans('board::boardDetailConfigures')}} - {{xe_trans($config->get('boardName'))}}</h2>
 @endsection
 
 @section('page_description')
