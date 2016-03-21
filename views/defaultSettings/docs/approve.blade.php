@@ -1,142 +1,88 @@
-@section('page_title')
-    <h2>게시물 승인 관리</h2>
-@endsection
-
-@section('page_description')
-
-@endsection
-
 {{ XeFrontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
 
-<div class="panel">
-    <div class="panel-heading">
-<section class="contain">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel-group">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <h3 class="panel-title">{{ xe_trans('board::articlesApprove') }}</h3>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-sm-12">
+                <div class="panel-heading">
 
-            <!-- function button -->
-            <div class="btn-group pull-left mg-bottom mg-right-sm __xe_function_buttons">
-                <button type="button" class="btn btn-default __xe_button" data-mode="approve">
-                    <i class="fa fa-check-circle-o"></i>
-                    게시승인
-                </button>
-            </div>
-            <!-- /function button -->
-
-            <!-- search button -->
-            <div class="form-inline pull-right">
-                <form class="__xe_search_form" method="get">
-                    <div class="input-group mg-bottom">
-                        <div class="input-group-btn __xe_btn_search_target">
-                            <input type="hidden" name="searchTarget" value="{{ Input::old('searchTarget') }}">
-                            <button type="button" class="btn btn-default dropdown-toggle text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">선택<span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="item" value="">선택</a></li>
-                                <li><a href="#" class="item" value="title_content">제목+내용</a></li>
-                                <li><a href="#" class="item" value="title">제목</a></li>
-                                <li><a href="#" class="item" value="content">내용</a></li>
-                                <li><a href="#" class="item" value="writer">글쓴이</a></li>
-                            </ul>
-                        </div>
-                        <input type="text" class="form-control" aria-label="..." name="searchKeyword" value="{{Input::get('searchKeyword')}}">
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"> <i class="fa fa-search"></i> <span class="sr-only">search</span> </button>
-                            <a href="http://xe3.dev1.xpressengine.com/manage/module/pluginA@board" class="btn btn-default">취소</a>
+                    <div class="pull-left">
+                        <div class="btn-group __xe_function_buttons" role="group" aria-label="...">
+                            <button type="button" class="btn btn-default __xe_button" data-mode="approve">{{xe_trans('xe::approve')}}</button>
                         </div>
                     </div>
-                </form>
-            </div>
-            <!-- /search button -->
-        </div>
-    </div>
-
-
-    <!-- table -->
-    <div class="box box-primary mg-bottom">
-        <form class="__xe_form_list" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col"><input type="checkbox" title="Check All" class="__xe_check_all"></th>
-                        <th scope="col">제목</th>
-                        <th scope="col">작성자</th>
-                        <th scope="col"><i class="fa fa-thumbs-o-up"></i> / <i class="fa fa-thumbs-o-down"></i> / <i class="fa fa-eye"></i></th>
-                        <th scope="col">날짜</th>
-                        <th scope="col">IP</th>
-                        <th scope="col">상태</th>
-                        <th scope="col">승인</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($documents as $document)
-                        <tr>
-                            <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
-                            <td>
-                                <span><b>[{{ $urls[$document->instanceId] }}]</b> {{ $document->title }}</span>
-
-                                <a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" class="btn" target="_blank">
-                                    <i class="fa fa-link fa-lg"></i>
-                                </a>
-                            </td>
-                            <td>{{ $document->writer }}</td>
-                            <td>{{ $document->assentCount }} / {{ $document->dissentCount }} / {{ $document->readCount }}</td>
-                            <td>{{ $document->createdAt }}</td>
-                            <td>{{ $document->ipaddress }}</td>
-                            <td>{{ $document->display }}</td>
-                            <td>{{ $document->approved }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </form>
-    </div>
-    <!-- /table -->
-
-    <div class="row">
-        <div class="col-sm-12">
-
-            <!-- function button -->
-            <div class="btn-group pull-left mg-bottom mg-right-sm __xe_function_buttons">
-                <button type="button" class="btn btn-default __xe_button" data-mode="approve">
-                    <i class="fa fa-check-circle-o"></i>
-                    게시승인
-                </button>
-            </div>
-            <!-- /function button -->
-
-            <!-- search button -->
-            <div class="form-inline pull-right">
-                <form class="__xe_search_form" method="get">
-                    <div class="input-group mg-bottom">
-                        <div class="input-group-btn __xe_btn_search_target">
-                            <input type="hidden" name="searchTarget" value="{{ Input::old('searchTarget') }}">
-                            <button type="button" class="btn btn-default dropdown-toggle text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">선택<span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="item" value="">선택</a></li>
-                                <li><a href="#" class="item" value="title_content">제목+내용</a></li>
-                                <li><a href="#" class="item" value="title">제목</a></li>
-                                <li><a href="#" class="item" value="content">내용</a></li>
-                                <li><a href="#" class="item" value="writer">글쓴이</a></li>
-                            </ul>
-                        </div>
-                        <input type="text" class="form-control" aria-label="..." name="searchKeyword" value="{{Input::get('searchKeyword')}}">
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"> <i class="fa fa-search"></i> <span class="sr-only">search</span> </button>
-                            <a href="{{$urlHandler->managerUrl('docs.approve')}}" class="btn btn-default">취소</a>
+                    <div class="pull-right">
+                        <div class="input-group search-group">
+                            <form>
+                                <div class="input-group-btn __xe_btn_search_target">
+                                    <input type="hidden" name="searchTarget" value="{{ Input::get('searchTarget') }}">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Input::has('searchTarget') && Input::get('searchTarget') != '' ? xe_trans('board::' . Input::get('searchTarget')) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li @if(Input::get('searchTarget') == '') class="active" @endif><a href="#" value="">{{xe_trans('xe::select')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'titleAndcontent') class="active" @endif><a href="#" value="titleAndcontent">{{xe_trans('board::titleAndContent')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'content') class="active" @endif><a href="#" value="content">{{xe_trans('board::content')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
+                                <input type="text" name="searchKeyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Input::get('searchKeyword')}}">
+                                <button class="btn-link">
+                                    <i class="xi-magnifier"></i><span class="sr-only">{{xe_trans('xe::search')}}</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </form>
-            </div>
-            <!-- /search button -->
-        </div>
-    </div>
 
-    <nav class="text-center">{!! $documents->render() !!}</nav>
-</section>
+                </div>
+                <div class="table-responsive">
+                    <form class="__xe_form_list" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><input type="checkbox" class="__xe_check_all"></th>
+                                <th scope="col">{{xe_trans('board::title')}}</th>
+                                <th scope="col">{{xe_trans('board::writer')}}</th>
+                                <th scope="col">{{xe_trans('board::recommend')}}/{{xe_trans('board::read')}}</th>
+                                <th scope="col">{{xe_trans('board::writeDate')}}</th>
+                                <th scope="col">IP</th>
+                                <th scope="col">{{xe_trans('xe::status')}}</th>
+                                <th scope="col">{{xe_trans('xe::approve')}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($documents as $document)
+                                <tr>
+                                    <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
+                                    <td><a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" target="_blank"><strong>[{{ $urls[$document->instanceId] }}]</strong> {{ $document->title }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
+                                    <td><a href="#">{{ $document->writer }}</a></td>
+                                    <td>{{ $document->assentCount }}/{{ $document->readCount }}</td>
+                                    <td><a href="#">{{ $document->createdAt }}</a></td>
+                                    <td><a href="#">{{ $document->ipaddress }}</a></td>
+                                    <td><span class="label label-green">{{ $document->display }}</span></td>
+                                    <td><span class="label label-grey">{{ $document->approved }}</span></td>
+                                </tr>
+                            </tbody>
+                            @endforeach
+                        </table>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                    <div class="pull-left">
+                        <nav>
+                            {!! $documents->render() !!}
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -173,12 +119,15 @@
             eval('actions.' + mode + '($f)');
         });
 
-        $('.__xe_btn_search_target .item').click(function (e) {
+        $('.__xe_btn_search_target .dropdown-menu a').click(function (e) {
             e.preventDefault();
 
             $('[name="searchTarget"]').val($(this).attr('value'));
-            $('.__xe_btn_search_target .text').text($(this).text());
-        })
+            $('.__xe_btn_search_target .__xe_text').text($(this).text());
+
+            $(this).closest('.dropdown-menu').find('li').removeClass('active');
+            $(this).closest('li').addClass('active');
+        });
 
         $('.__xe_btns_search').on('click', 'button', function() {
             var frm = $(this).parents('form');

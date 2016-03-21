@@ -13,25 +13,6 @@
                 <div class="panel-heading">
 
                     <div class="pull-left">
-                        <div class="btn-group btn-fillter" role="group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><strong>필터</strong></li>
-                                <li class="active"><a href="#">모든 글</a></li>
-                                <li><a href="#">공개</a></li>
-                                <li><a href="#">비밀</a></li>
-                                <li><a href="#">임시</a></li>
-                                <li><a href="#">신고</a></li>
-                                <li class="divider"></li>
-                                <li><strong>정렬</strong></li>
-                                <li class="active"><a href="#">날짜</a></li>
-                                <li><a href="#">작성자</a></li>
-                                <li><a href="#">제목</a></li>
-                            </ul>
-                        </div>
-
                         <div class="btn-group __xe_function_buttons" role="group" aria-label="...">
                             <button type="button" class="btn btn-default __xe_button" data-mode="trash">{{xe_trans('xe::trash')}}</button>
                             <button type="button" class="btn btn-default __xe_button" data-mode="destroy">{{xe_trans('xe::delete')}}</button>
@@ -42,19 +23,14 @@
                         <div class="input-group search-group">
                             <form>
                                 <div class="input-group-btn __xe_btn_search_target">
-                                    <input type="hidden" name="searchTarget" value="{{ Input::old('searchTarget') }}">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{xe_trans('xe::select')}} <span class="caret"></span></button>
+                                    <input type="hidden" name="searchTarget" value="{{ Input::get('searchTarget') }}">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Input::has('searchTarget') && Input::get('searchTarget') != '' ? xe_trans('board::' . Input::get('searchTarget')) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li @if(Input::old('searchTarget') == '') class="active" @endif><a href="#" value="">{{xe_trans('xe::select')}}</a></li>
-                                        <li @if(Input::old('searchTarget') == 'title_content') class="active" @endif><a href="#" value="title_content">{{xe_trans('board::titleAndContent')}}</a></li>
-                                        <li @if(Input::old('searchTarget') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
-                                        <li @if(Input::old('searchTarget') == 'content') class="active" @endif><a href="#" value="content">{{xe_trans('board::content')}}</a></li>
-                                        <li @if(Input::old('searchTarget') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
-                                        {{----}}
-                                        {{--<li class="active"><a href="#">제목</a></li>--}}
-                                        {{--<li><a href="#">제목+내용</a></li>--}}
-                                        {{--<li><a href="#">내용</a></li>--}}
-                                        {{--<li><a href="#">작성자</a></li>--}}
+                                        <li @if(Input::get('searchTarget') == '') class="active" @endif><a href="#" value="">{{xe_trans('board::select')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'titleAndcontent') class="active" @endif><a href="#" value="titleAndcontent">{{xe_trans('board::titleAndContent')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'content') class="active" @endif><a href="#" value="content">{{xe_trans('board::content')}}</a></li>
+                                        <li @if(Input::get('searchTarget') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
                                     </ul>
                                 </div><!-- /btn-group -->
                                 <input type="text" name="searchKeyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Input::get('searchKeyword')}}">
@@ -67,34 +43,37 @@
 
                 </div>
                 <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col"><input type="checkbox" class="__xe_check_all"></th>
-                            <th scope="col">{{xe_trans('board::title')}}</th>
-                            <th scope="col">{{xe_trans('board::writer')}}</th>
-                            <th scope="col">{{xe_trans('board::recommend')}}/{{xe_trans('board::read')}}</th>
-                            <th scope="col">{{xe_trans('board::writeDate')}}</th>
-                            <th scope="col">IP</th>
-                            <th scope="col">{{xe_trans('xe::status')}}</th>
-                            <th scope="col">{{xe_trans('xe::approve')}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($documents as $document)
-                        <tr>
-                            <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
-                            <td><a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" target="_blank"><strong>[{{ $urls[$document->instanceId] }}]</strong> {{ $document->title }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
-                            <td><a href="#">{{ $document->writer }}</a></td>
-                            <td>{{ $document->assentCount }}/{{ $document->readCount }}</td>
-                            <td><a href="#">{{ $document->createdAt }}</a></td>
-                            <td><a href="#">{{ $document->ipaddress }}</a></td>
-                            <td><span class="label label-green">{{ $document->display }}</span></td>
-                            <td><span class="label label-grey">{{ $document->approved }}</span></td>
-                        </tr>
-                        </tbody>
-                        @endforeach
-                    </table>
+                    <form class="__xe_form_list" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col"><input type="checkbox" class="__xe_check_all"></th>
+                                <th scope="col">{{xe_trans('board::title')}}</th>
+                                <th scope="col">{{xe_trans('board::writer')}}</th>
+                                <th scope="col">{{xe_trans('board::recommend')}}/{{xe_trans('board::read')}}</th>
+                                <th scope="col">{{xe_trans('board::writeDate')}}</th>
+                                <th scope="col">IP</th>
+                                <th scope="col">{{xe_trans('xe::status')}}</th>
+                                <th scope="col">{{xe_trans('xe::approve')}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($documents as $document)
+                                <tr>
+                                    <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
+                                    <td><a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" target="_blank"><strong>[{{ $urls[$document->instanceId] }}]</strong> {{ $document->title }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
+                                    <td><a href="#">{{ $document->writer }}</a></td>
+                                    <td>{{ $document->assentCount }}/{{ $document->readCount }}</td>
+                                    <td><a href="#">{{ $document->createdAt }}</a></td>
+                                    <td><a href="#">{{ $document->ipaddress }}</a></td>
+                                    <td><span class="label label-green">{{ $document->display }}</span></td>
+                                    <td><span class="label label-grey">{{ $document->approved }}</span></td>
+                                </tr>
+                            </tbody>
+                            @endforeach
+                        </table>
+                    </form>
                 </div>
                 <div class="panel-footer">
                     <div class="pull-left">
@@ -168,12 +147,15 @@
             eval('actions.' + mode + '($f)');
         });
 
-        $('.__xe_btn_search_target .item').click(function (e) {
+        $('.__xe_btn_search_target .dropdown-menu a').click(function (e) {
             e.preventDefault();
 
             $('[name="searchTarget"]').val($(this).attr('value'));
-            $('.__xe_btn_search_target .text').text($(this).text());
-        })
+            $('.__xe_btn_search_target .__xe_text').text($(this).text());
+
+            $(this).closest('.dropdown-menu').find('li').removeClass('active');
+            $(this).closest('li').addClass('active');
+        });
 
         $('.__xe_btns_search').on('click', 'button', function() {
             var frm = $(this).parents('form');

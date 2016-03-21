@@ -48,9 +48,17 @@ return [
         'ko' => '카테고리',
         'en' => 'Category',
     ],
+    'select' => [
+        'ko' => '선택',
+        'en' => 'Select',
+    ],
     'title' => [
         'ko' => '제목',
         'en' => 'Title',
+    ],
+    'content' => [
+        'ko' => '내용',
+        'en' => 'Content',
     ],
     'titleAndContent' => [
         'ko' => '제목+내용',
