@@ -156,6 +156,6 @@ class Board extends Document implements CommentUsable
      */
     public function getLink(InstanceRoute $route)
     {
-        return $route->url . '/' . $this->getKey();
+        return $route->url . '/show/' . $this->getKey();
     }
 }
