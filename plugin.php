@@ -75,7 +75,7 @@ class Plugin extends AbstractPlugin
         $configHandler->getDefault();
 
         // create default permission
-        $permission = new BoardPermissionHandler(app('xe.permission'), $configHandler);
+        $permission = new BoardPermissionHandler(app('xe.permission'));
         $permission->getDefault();
     }
 
@@ -256,7 +256,6 @@ class Plugin extends AbstractPlugin
             /**
              * @var $documentHandler DocumentHandler
              * @var $dynamicFieldHandler DynamicFieldHandler
-             * @var $commentHandler CommentHandler
              */
             $documentHandler = app('xe.document');
             $dynamicFieldHandler = app('xe.dynamicField');
