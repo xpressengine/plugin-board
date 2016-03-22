@@ -176,7 +176,7 @@ class Plugin extends AbstractPlugin
         // Handler
         $app->singleton('xe.board.handler', function ($app) {
             /** @var Handler $proxyHandler */
-            $proxyHandler = $app['xe.interception']->proxy(Handler::class, Handler::class);
+            $proxyHandler = $app['xe.interception']->proxy(Handler::class);
 
             $readCounter = app('xe.counter')->make($app['request'], 'read');
             $readCounter->setGuest();

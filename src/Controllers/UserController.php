@@ -313,8 +313,12 @@ class UserController extends Controller
     }
 
     //public function store(Request $request, PermissionHandler $permission)
-    public function store(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, IdentifyManager $identifyManager)
-    {
+    public function store(
+        Request $request,
+        Validator $validator,
+        BoardPermissionHandler $boardPermission,
+        IdentifyManager $identifyManager
+    ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
             new Instance($boardPermission->name($this->instanceId)))
