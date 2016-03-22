@@ -323,4 +323,21 @@ class Board extends AbstractModule
     {
         return route('manage.board.board.edit', $instanceId);
     }
+    
+    /**
+     * Get menu type's item object
+     *
+     * @param string $id item id of menu type
+     * @return mixed
+     */
+    public function getTypeItem($id)
+    {
+        static $items = [];
+
+        if (!isset($items[$id])) {
+            $items[$id] = \Xpressengine\Plugins\Board\Models\Board::find($id);
+        }
+
+        return $items[$id];
+    }
 }
