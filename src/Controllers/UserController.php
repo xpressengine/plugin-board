@@ -119,15 +119,17 @@ class UserController extends Controller
         $this->urlHandler = $urlHandler;
 
         $this->config = $configHandler->get($this->instanceId);
-        $urlHandler->setConfig($this->config);
+        if ($this->config !== null) {
+            $urlHandler->setConfig($this->config);
 
-        $this->isManager = false;
-        if (Gate::allows(
-            BoardPermissionHandler::ACTION_MANAGE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
-            $this->isManager = true;
-        };
+            $this->isManager = false;
+            if (Gate::allows(
+                BoardPermissionHandler::ACTION_MANAGE,
+                new Instance($boardPermission->name($this->instanceId)))
+            ) {
+                $this->isManager = true;
+            };
+        }
 
         // set Skin
         XePresenter::setSkinTargetId(BoardModule::getId());
@@ -313,8 +315,12 @@ class UserController extends Controller
     }
 
     //public function store(Request $request, PermissionHandler $permission)
-    public function store(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, IdentifyManager $identifyManager)
-    {
+    public function store(
+        Request $request,
+        Validator $validator,
+        BoardPermissionHandler $boardPermission,
+        IdentifyManager $identifyManager
+    ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
             new Instance($boardPermission->name($this->instanceId)))

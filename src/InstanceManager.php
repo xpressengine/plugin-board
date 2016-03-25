@@ -69,10 +69,12 @@ class InstanceManager
     /**
      * create instance
      *
-     * @param VirtualConnection   $conn          database connection
-     * @param DocumentHandler     $document      document handler
-     * @param DynamicFieldHandler $dynamicField  dynamic field handler
-     * @param ConfigHandler       $configHandler config handler
+     * @param VirtualConnection      $conn              database connection
+     * @param DocumentHandler        $document          document handler
+     * @param DynamicFieldHandler    $dynamicField      dynamic field handler
+     * @param ConfigHandler          $configHandler     config handler
+     * @param BoardPermissionHandler $permissionHandler permission handler
+     * @param CommentHandler         $commentHandler    comment handler
      */
     public function __construct(
         VirtualConnection $conn,

@@ -15,6 +15,7 @@ namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Plugins\Comment\CommentUsable;
+use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\Storage\File;
 
 /**
@@ -145,5 +146,16 @@ class Board extends Document implements CommentUsable
     public function getAuthor()
     {
         return $this->user;
+    }
+
+    /**
+     * Returns the link
+     *
+     * @param InstanceRoute $route route instance
+     * @return string
+     */
+    public function getLink(InstanceRoute $route)
+    {
+        return $route->url . '/show/' . $this->getKey();
     }
 }

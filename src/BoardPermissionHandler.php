@@ -72,22 +72,12 @@ class BoardPermissionHandler
     protected $permissionHandler;
 
     /**
-     * @var ConfigHandler
-     */
-    protected $configHandler;
-
-    /**
      * create instance
      *
      * @param PermissionHandler $permissionHandler permission factory instance
-     * @param ConfigHandler $configHandler config handler
      */
-    public function __construct(
-        PermissionHandler $permissionHandler,
-        ConfigHandler $configHandler
-    ) {
+    public function __construct(PermissionHandler $permissionHandler) {
         $this->permissionHandler = $permissionHandler;
-        $this->configHandler = $configHandler;
     }
 
     /**

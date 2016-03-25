@@ -75,7 +75,7 @@ class Plugin extends AbstractPlugin
         $configHandler->getDefault();
 
         // create default permission
-        $permission = new BoardPermissionHandler(app('xe.permission'), $configHandler);
+        $permission = new BoardPermissionHandler(app('xe.permission'));
         $permission->getDefault();
     }
 
@@ -176,7 +176,7 @@ class Plugin extends AbstractPlugin
         // Handler
         $app->singleton('xe.board.handler', function ($app) {
             /** @var Handler $proxyHandler */
-            $proxyHandler = $app['xe.interception']->proxy(Handler::class, Handler::class);
+            $proxyHandler = $app['xe.interception']->proxy(Handler::class);
 
             $readCounter = app('xe.counter')->make($app['request'], 'read');
             $readCounter->setGuest();
@@ -256,7 +256,6 @@ class Plugin extends AbstractPlugin
             /**
              * @var $documentHandler DocumentHandler
              * @var $dynamicFieldHandler DynamicFieldHandler
-             * @var $commentHandler CommentHandler
              */
             $documentHandler = app('xe.document');
             $dynamicFieldHandler = app('xe.dynamicField');
