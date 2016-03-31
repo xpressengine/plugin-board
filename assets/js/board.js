@@ -1,4 +1,4 @@
-XE.$(function($) {
+$(function($) {
     $('.bd_select_list').on('click', 'a', function(event) {
         event.preventDefault();
         var $target = $(event.target),

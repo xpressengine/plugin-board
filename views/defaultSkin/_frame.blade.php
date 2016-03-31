@@ -3,7 +3,7 @@
 {{ XeFrontend::css('plugins/board/assets/css/board.css')->load() }}
 
 <script type="text/javascript">
-    XE.$(function($) {
+    $(function($) {
         $(document).on('click touchstart', function(event) {
             var $target = $(event.target);
 
@@ -233,7 +233,7 @@
 
 @if($isManager === true)
 <script type="text/javascript">
-XE.$(function($) {
+$(function($) {
     // copy documents
     $('.__xe_copy').on('click', 'li', function(event) {
         if (hasChecked() === false) {

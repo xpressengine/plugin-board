@@ -115,7 +115,7 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
-    XE.$(function ($) {
+    $(function ($) {
 
         $('.__xe_check_all').click(function () {
             if ($(this).is(':checked')) {

@@ -96,7 +96,7 @@ var XeBoardSkin = {
     })
 };
 
-XE.$(function($) {
+$(function($) {
     if ($('.__xe_vote_document').length) {
         React.render(
             React.createElement(XeBoardSkin.VoteBox, {
