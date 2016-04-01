@@ -27,8 +27,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>{{xe_trans('board::perPage')}} <small>{{xe_trans('board::perPageDescription')}}</small></label>
-                                        <label><input type="checkbox" class="inheritCheck" data-target="newTime" @if($config->getPure('newTime') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
-                                        <div class="list-group-item">
+                                        <label><input type="checkbox" class="inheritCheck" data-target="perPage" @if($config->getPure('perPage') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
+                                        <div class="input-group">
                                             <input type="text" id="" name="perPage" class="form-control" value="{{Input::old('perPage', $config->get('perPage'))}}" @if($config->getPure('perPage') == null) disabled="disabled" @endif/>
                                         </div>
                                     </div>
@@ -200,7 +200,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="pull-right">
-                                <button type="button" class="btn btn-primary"><i class="xi-download"></i>저장</button>
+                                <button type="submit" class="btn btn-primary"><i class="xi-download"></i>저장</button>
                             </div>
                         </div>
                     </div>
@@ -263,10 +263,6 @@
                             {!! $dynamicFieldSection !!}
                         </div>
                         <div class="panel-footer">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-default">취소</button>
-                                <button type="button" class="btn btn-primary"><i class="xi-download"></i>저장</button>
-                            </div>
                         </div>
 
                     </div>
