@@ -19,6 +19,7 @@
   "extra": {
     "xpressengine": {
       "title": "게시판",
+      "icon": "icon.png",
       "component": {
         "module/board@board": {
           "class": "Xpressengine\\Plugins\\Board\\Modules\\Board",
