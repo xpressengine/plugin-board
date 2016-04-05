@@ -1,4 +1,3 @@
-{{ XeFrontend::css('/assets/common/css/dropdown.css')->load() }}
 {{ XeFrontend::js('/assets/core/common/js/toggleMenu.js')->appendTo('head')->load() }}
 
 @if($visible == true)
