@@ -16,7 +16,7 @@
             @else
             <a href="#" class="mb_autohr __xe_member" data-id="" data-text="{{ $item->writer }}">{{ $item->writer }}</a>
             @endif
-            <span class="mb_time __xe_short_date" title="{{$item->createdAt}}" data-timestamp="{{strtotime($item->createdAt)}}"><i class="xi-time"></i> {{$item->createdAt}}</span>
+            <span class="mb_time" title="{{$item->createdAt}}" data-xe-timeago="{{$item->createdAt}}"><i class="xi-time"></i> {{$item->createdAt}}</span>
             <span class="mb_readnum"><i class="xi-eye"></i> {{$item->readCount}}</span>
         </div>
     </div>
