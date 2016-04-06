@@ -38,6 +38,24 @@
             "/plugins/board/assets/img/screenshots/userDefaultSkin2.png"
           ]
         },
+        "module/board@board/skin/board@gallery": {
+          "class": "Xpressengine\\Plugins\\Board\\Skins\\GallerySkin",
+          "name": "게시판 갤러리 스킨",
+          "description": "게시판 갤러리 스킨.",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/userDefaultSkin1.png",
+            "/plugins/board/assets/img/screenshots/userDefaultSkin2.png"
+          ]
+        },
+        "module/board@board/skin/board@blog": {
+          "class": "Xpressengine\\Plugins\\Board\\Skins\\BlogSkin",
+          "name": "게시판 블로그 스킨",
+          "description": "게시판 블로그 스킨.",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/userDefaultSkin1.png",
+            "/plugins/board/assets/img/screenshots/userDefaultSkin2.png"
+          ]
+        },
         "module/board@board/settingsSkin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Skins\\SettingsSkin",
           "name": "게시판 관리자 기본 스킨",

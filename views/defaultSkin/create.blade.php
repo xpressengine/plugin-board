@@ -83,8 +83,7 @@
 
             <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
             <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
-
-            <a href="{{ $urlHandler->get('index', Input::except('id', 'parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>
+            {{--<a href="{{ $urlHandler->get('index', Input::except('id', 'parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>--}}
         </div>
 
         <!-- 게시판 addon -->

@@ -77,7 +77,7 @@
             <div class="write_form_btn">
                 <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
                 <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
-                <a href="{{ $urlHandler->getShow($item, Input::except('parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>
+                {{--<a href="{{ $urlHandler->getShow($item, Input::except('parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>--}}
             </div>
 
         </div>
