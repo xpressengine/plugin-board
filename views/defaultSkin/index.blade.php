@@ -227,7 +227,7 @@
                     @foreach ($config->get('listColumns') as $columnName)
                         @if ($columnName == 'title')
                             @if ($config->get('category') == true)
-                                <td class="category mb_hidden column-category">{!! $item->boardCategory !== null ? $item->boardCategory->categoryItem->word : '' !!}</td>
+                                <td class="category mb_hidden column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                             @endif
                             <td class="title column-{{$columnName}}">
 
