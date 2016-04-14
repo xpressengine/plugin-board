@@ -1680,7 +1680,7 @@
     color: #696e7a;
 }
 .comment_action_area {
-    display: none;
+    /*display: none;*/
     clear: both;
 }
 .comment_action_area .comment_form {
