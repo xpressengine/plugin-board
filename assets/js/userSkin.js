@@ -112,6 +112,7 @@ $(function($) {
             React.createElement(ToggleMenu, {
                 type: "module/board@board/" +  $('.__xe_manage_menu_document').attr('data-instance-id'),
                 identifier: $('.__xe_manage_menu_document').attr('data-id'),
+                align: 'right',
                 //class: '',
                 //text: ' • • • ',
                 //itemClass: '',
@@ -128,7 +129,7 @@ $(function($) {
         event.preventDefault();
 
         var form = $(this).parents('form');
-		
+
 		var currentUrl = form.attr('action');
 		var currentTarget = form.attr('target');
 		var pieces = currentUrl.split('/');
