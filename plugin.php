@@ -53,6 +53,7 @@ class Plugin extends AbstractPlugin
         $this->createDefaultConfig();
         $this->createSlugTable();
         $this->createCategoryTable();
+        $this->createGalleryThumbnailTable();
         $this->putLang();
     }
 
@@ -110,6 +111,20 @@ class Plugin extends AbstractPlugin
             Schema::create('board_category', function (Blueprint $table) {
                 $table->string('targetId', 255);
                 $table->string('itemId', 255);
+
+                $table->primary(array('targetId'));
+            });
+        }
+    }
+
+    protected function createGalleryThumbnailTable()
+    {
+        if (Schema::hasTable('board_gallery_thumbs') === false) {
+            Schema::create('board_gallery_thumbs', function (Blueprint $table) {
+                $table->string('targetId', 255);
+                $table->string('boardThumbnailFileId', 255);
+                $table->string('boardThumbnailExternalPath', 255);
+                $table->string('boardThumbnailPath', 255);
 
                 $table->primary(array('targetId'));
             });

@@ -145,7 +145,7 @@
                     </div>
                     <div class="thumb_area">
                         <a href="#">
-                            <img src="http://placehold.it/230x140" alt="">
+                            <img src="{{ $item->boardThumbnailPath }}" alt="">
                             @if($item->isNew($config->get('newTime')))
                                 <span class="ribbon new"><span class="bd_hidden">new</span></span>
                             @endif

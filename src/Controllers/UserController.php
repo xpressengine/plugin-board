@@ -15,10 +15,10 @@ namespace Xpressengine\Plugins\Board\Controllers;
 
 use XeDocument;
 use XePresenter;
+use XeFrontend;
 use Auth;
 use Gate;
-use XeFrontend;
-use Keygen;
+use Event;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Xpressengine\Category\Models\Category;
@@ -103,13 +103,13 @@ class UserController extends Controller
      * @param Handler $handler
      * @param ConfigHandler $configHandler
      * @param UrlHandler $urlHandler
-     * @param BoardPermissionhandler $boardPermission
+     * @param BoardPermissionHandler $boardPermission
      */
     public function __construct(
         Handler $handler,
         ConfigHandler $configHandler,
         UrlHandler $urlHandler,
-        BoardPermissionhandler $boardPermission
+        BoardPermissionHandler $boardPermission
     ) {
         $instanceConfig = InstanceConfig::instance();
         $this->instanceId = $instanceConfig->getInstanceId();
@@ -144,13 +144,12 @@ class UserController extends Controller
     /**
      * index
      *
-     * @param Request           $request    request
-     * @param PermissionHandler $permission board permission handler
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws AccessDeniedHttpException
      */
-    //public function index(Request $request, PermissionHandler $permission)
-    public function index(Request $request, BoardPermissionhandler $boardPermission)
+    public function index(Request $request, BoardPermissionHandler $boardPermission)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
@@ -170,10 +169,8 @@ class UserController extends Controller
      */
     protected function listDataImporter(Request $request)
     {
-        $query = $this->handler->getModel($this->config)->where('instanceId', $this->instanceId)
-        ->where('status', Document::STATUS_PUBLIC)
-        ->where('display', Document::DISPLAY_VISIBLE)
-        ->where('published', Document::PUBLISHED_PUBLISHED);
+        $query = $this->handler->getModel($this->config)
+            ->where('instanceId', $this->instanceId)->visible();
 
         if ($this->config->get('category') === true) {
             $query = $query->leftJoin(
@@ -186,6 +183,8 @@ class UserController extends Controller
 
         $query = $this->handler->makeWhere($query, $request, $this->config);
         $query = $this->handler->makeOrder($query, $request, $this->config);
+
+        Event::fire('xe.plugin.board.list', [$query]);
 
         $paginate = $query->paginate($this->config->get('perPage'))->appends($request->except('page'));
 
@@ -203,13 +202,14 @@ class UserController extends Controller
 
     /**
      * show
-     * @param Request $request
-     * @param BoardPermissionhandler $permission
-     * @param $id
+     *
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
      * @return mixed
      */
-    //public function show(Request $request, PermissionHandler $permission, $id)
-    public function show(Request $request, BoardPermissionhandler $boardPermission, $menuUrl, $id)
+    public function show(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
@@ -259,13 +259,16 @@ class UserController extends Controller
     }
 
     /**
-     * @param $boardId
-     * @param $slug
+     * show by slug
+     *
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $strSlug         document slug
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws Exception
      */
-    //public function slug(Request $request, PermissionHandler $permission, $strSlug)
-    public function slug(Request $request, BoardPermissionhandler $boardPermission, $menuUrl, $strSlug)
+    public function slug(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $strSlug)
     {
         $slug = BoardSlug::where('slug', $strSlug)->where('instanceId', $this->instanceId)->first();
 
@@ -277,7 +280,14 @@ class UserController extends Controller
         return $this->show($request, $boardPermission, $menuUrl, $slug->targetId);
     }
 
-    //public function create(Request $request, PermissionHandler $permission, Validator $validator)
+    /**
+     * create
+     *
+     * @param Request                $request         request
+     * @param Validator              $validator       validator
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @return mixed
+     */
     public function create(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
     {
         if (Gate::denies(
@@ -314,7 +324,15 @@ class UserController extends Controller
         ]);
     }
 
-    //public function store(Request $request, PermissionHandler $permission)
+    /**
+     * create
+     *
+     * @param Request                $request         request
+     * @param Validator              $validator       validator
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param IdentifyManager        $identifyManager identify manager
+     * @return mixed
+     */
     public function store(
         Request $request,
         Validator $validator,
@@ -348,7 +366,6 @@ class UserController extends Controller
 
         $board = $this->handler->add($inputs, $user, $this->config);
 
-        // 답글인 경우 부모글이 있는 곳으로 이동한다.(최대한..)
         if ($request->get('parentId') != '') {
             return redirect()->to(
                 $this->urlHandler->get('index', $this->urlHandler->queryStringToArray($request->get('queryString')))
@@ -371,13 +388,22 @@ class UserController extends Controller
     /**
      * edit
      *
-     * @param string $url url
-     * @param string $id  document id
+     * @param Request                $request         request
+     * @param Validator              $validator       validator
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param IdentifyManager        $identifyManager identify manager
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    //public function edit(Request $request, PermissionHandler $permission, Validator $validator, $id)
-    public function edit(Request $request, Validator $validator, BoardPermissionHandler $boardPermission, IdentifyManager $identifyManager, $menuUrl, $id)
-    {
+    public function edit(
+        Request $request,
+        Validator $validator,
+        BoardPermissionHandler $boardPermission,
+        IdentifyManager $identifyManager,
+        $menuUrl,
+        $id
+    ) {
         $user = Auth::user();
 
         $item = $this->handler->getModel($this->config)->find($id);
@@ -420,8 +446,6 @@ class UserController extends Controller
 
         $parent = null;
 
-        //$formColumns = $this->configHandler->formColumns($this->instanceId);
-
         return XePresenter::make('edit', [
             'config' => $this->config,
             'handler' => $this->handler,
@@ -436,11 +460,18 @@ class UserController extends Controller
     /**
      * update
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request                $request         request
+     * @param Validator              $validator       validator
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param IdentifyManager        $identifyManager identify manager
+     * @return \Xpressengine\Presenter\RendererInterface
      */
-    //public function update(Request $request, PermissionHandler $permission)
-    public function update(Request $request, Validator $validator, IdentifyManager $identifyManager)
-    {
+    public function update(
+        Request $request,
+        Validator $validator,
+        BoardPermissionHandler $boardPermission,
+        IdentifyManager $identifyManager
+    ) {
         $user = Auth::user();
         $id = $request->get('id');
 
@@ -454,6 +485,7 @@ class UserController extends Controller
 
         // 비회원이 작성 한 글 인증
         // 비회원이 작성 한 글일 때 인증페이지로 이동
+        // ?? edit 과 동일한 코드로 처리해야하는것 아닌가? 문제 있어 보임
         if (
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
@@ -493,29 +525,40 @@ class UserController extends Controller
         }
 
         return redirect()->to(
-            $this->urlHandler->getSlug($item->boardSlug->slug, $this->urlHandler->queryStringToArray($request->get('queryString')))
+            $this->urlHandler->getSlug(
+                $item->boardSlug->slug,
+                $this->urlHandler->queryStringToArray($request->get('queryString'))
+            )
         );
     }
 
     /**
      * 비회원 인증 페이지
-     * @param Board $board board model
-     * @param null|string $referer referer url (return page url)
+     *
+     * @param Board       $board    board model
+     * @param null|string $referrer referrer url (return page url)
      * @return \Xpressengine\Presenter\RendererInterface
      * @internal param DocumentEntity $doc document entity
      */
-    public function identify(Board $board, $referer = null)
+    public function identify(Board $board, $referrer = null)
     {
         // 레퍼러는 현재 url
-        if ($referer == null) {
-            $referer = app('url')->current();
+        if ($referrer == null) {
+            $referrer = app('url')->current();
         }
         return XePresenter::make('identify', [
             'board' => $board,
-            'referer' => $referer,
+            'referrer' => $referrer,
         ]);
     }
 
+    /**
+     * 비회원 인증 처리
+     *
+     * @param Request         $request         request
+     * @param IdentifyManager $identifyManager identify manager
+     * @return mixed
+     */
     public function identificationConfirm(Request $request, IdentifyManager $identifyManager)
     {
         $item = $this->handler->getModel($this->config)->find($request->get('id'));
@@ -539,18 +582,21 @@ class UserController extends Controller
         // 인증 되었다면 DB의 인증키를 세션에 저장
         $identifyManager->create($item);
 
-        return redirect()->to($request->get('referer', 'edit'));
+        return redirect()->to($request->get('referrer', 'edit'));
     }
 
     /**
      * 미리보기
      *
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Xpressengine\Keygen\UnknownGeneratorException
+     * @param Request                $request         request
+     * @param Validator              $validator       validator
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @return mixed
      */
-    public function preview(Request $request, Validator $validator, BoardPermissionhandler $boardPermission)
+    public function preview(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
     {
-        if (Gate::denies(
+        if (
+            Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
             new Instance($boardPermission->name($this->instanceId)))
         ) {
@@ -598,11 +644,13 @@ class UserController extends Controller
     }
 
     /**
-     * delete document
+     * destroy
      *
-     * @param string $url url
-     * @param string $id  document id
-     * @return \Illuminate\Http\RedirectResponse|\Xpressengine\Presenter\RendererInterface
+     * @param Request         $request         request
+     * @param IdentifyManager $identifyManager identify manager
+     * @param string          $menuUrl         first segment
+     * @param string          $id              document id
+     * @return \Xpressengine\Presenter\RendererInterface
      */
     public function destroy(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
     {
@@ -628,9 +676,10 @@ class UserController extends Controller
     }
 
     /**
-     * 관리자 휴지통 이동
+     * trash
      *
-     * @return \Illuminate\Http\RedirectResponse|\Xpressengine\Presenter\RendererInterface
+     * @param Request $request request
+     * @return mixed
      */
     public function trash(Request $request)
     {
@@ -656,13 +705,15 @@ class UserController extends Controller
 
         $this->handler->trash($item, $this->config);
 
-        return redirect()->to($this->urlHandler->get('index'))->with(['alert' => ['type' => 'success', 'message' => xe_trans('xe::complete')]]);
+        return redirect()->to($this->urlHandler->get('index'))->with(
+            ['alert' => ['type' => 'success', 'message' => xe_trans('xe::complete')]]
+        );
     }
 
     /**
      * 투표 정보
      *
-     * @param Request $request
+     * @param Request $request request
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function showVote(Request $request)
@@ -700,9 +751,9 @@ class UserController extends Controller
     /**
      * 찬성
      *
-     * @param Request $request
-     * @param $menuUrl
-     * @param $option
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function addVote(Request $request, $menuUrl, $option)
@@ -726,9 +777,9 @@ class UserController extends Controller
     /**
      * 반대
      *
-     * @param Request $request
-     * @param $menuUrl
-     * @param $option
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function removeVote(Request $request, $menuUrl, $option)
@@ -747,9 +798,9 @@ class UserController extends Controller
     /**
      * get voted user list
      *
-     * @param Request $request
-     * @param $menuUrl
-     * @param $option
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
      * @return
      */
     public function votedUsers(Request $request, $menuUrl, $option)
@@ -780,10 +831,9 @@ class UserController extends Controller
     /**
      * file upload
      *
-     * @return string|\Xpressengine\Presenter\RendererInterface
-     * @throws Exception
-     * @throws \Xpressengine\Media\Exceptions\NotAvailableException
-     * @throws \Xpressengine\Storage\Exceptions\InvalidFileException
+     * @param Request $request request
+     * @param Storage $storage storage
+     * @return mixed
      */
     public function fileUpload(Request $request, Storage $storage)
     {
@@ -823,11 +873,11 @@ class UserController extends Controller
     }
 
     /**
-     * get file's source
+     * get file source
      *
-     * @param string $url url
-     * @param string $id  id
-     * @return void
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
      */
     public function fileSource(BoardPermissionHandler $boardPermission, $menuUrl, $id)
     {
@@ -855,15 +905,17 @@ class UserController extends Controller
         }
 
         header('Content-type: ' . $media->mime);
-        echo $file->getContent();
+        echo $media->getContent();
     }
 
     /**
      * 해시태그 suggestion 리스트
      *
-     * @param string $url url
-     * @param string $id  id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @param Request    $request request
+     * @param TagHandler $tag     tag handler
+     * @param string     $menuUrl first segment
+     * @param string     $id      document id
+     * @return mixed
      */
     public function suggestionHashTag(Request $request, TagHandler $tag, $menuUrl, $id = null)
     {
@@ -883,9 +935,10 @@ class UserController extends Controller
     /**
      * 멘션 suggestion 리스트
      *
-     * @param string $url url
-     * @param string $id  id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $id      document id
+     * @return mixed
      */
     public function suggestionMention(Request $request, $menuUrl, $id = null)
     {
