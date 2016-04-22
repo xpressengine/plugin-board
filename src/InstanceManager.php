@@ -124,45 +124,9 @@ class InstanceManager
 
         $this->permissionHandler->set($params['boardId'], new Grant());
 
-        // category dynamic field create
-        //$this->createDefaultDynamicField($config);
-
         $this->conn->commit();
 
         return $config;
-    }
-
-    /**
-     * create default dynamic field
-     *
-     * @param ConfigEntity $boardConfig board config entity
-     * @deprecated
-     */
-    protected function createDefaultDynamicField(ConfigEntity $boardConfig)
-    {
-        $category = Category::create(['name' => 'board-default']);
-
-        $config = new ConfigEntity;
-        foreach ([
-                     'group' => $boardConfig->get('documentGroup'),
-                     'revision' => $boardConfig->get('revision'),
-                     'id' => 'category',
-                     'typeId' => 'FieldType/xpressengine@Category',
-                     'label' => 'board::category',
-                     'skinId' => 'FieldType/xpressengine@Category/FieldSkin/xpressengine@default',
-                     'use' => true,
-                     'searchable' => true,
-                     'required' => true,
-                     'sortable' => false,
-                     'tableMethod' => false,
-                     'categoryId' => $category->id,
-                     'colorSet' => 'default',
-                     'joinColumnName' => 'id'
-                 ] as $key => $value) {
-            $config->set($key, $value);
-        }
-
-        $this->dynamicField->create($config);
     }
 
     /**
@@ -182,11 +146,16 @@ class InstanceManager
             throw new InvalidConfigException;
         }
 
+        $configHandler = $this->document->getConfigHandler();
+        $documentConfig = $configHandler->get($params['boardId']);
+        foreach ($params as $key => $value) {
+            $config->set($key, $value);
+            $documentConfig->set($key, $value);
+        }
+
         $this->conn->beginTransaction();
 
-        $config = $this->configHandler->put($params);
-        $configHandler = $this->document->getConfigHandler();
-        $documentConfig = $configHandler->make($params['boardId'], $params);
+        $config = $this->configHandler->put($config->getPureAll());
         $this->document->getInstanceManager()->put($documentConfig);
 
         $this->conn->commit();
