@@ -72,11 +72,21 @@ class Board extends Document implements CommentUsable
         return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardCategory', 'targetId');
     }
 
+    /**
+     * get files
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function files()
     {
         return $this->belongsToMany(File::class, 'fileables', 'fileableId', 'fileId');
     }
 
+    /**
+     * get users
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function user()
     {
         return $this->hasOne('Xpressengine\User\Models\User', 'id', 'userId');
@@ -92,12 +102,22 @@ class Board extends Document implements CommentUsable
         return $this->hasMany('Xpressengine\Comment\Models\Comment', 'targetId');
     }
 
+    /**
+     * get slug
+     *
+     * @return string
+     */
     public function getSlug()
     {
         $slug = $this->boardSlug;
         return $slug === null ? '' : $slug->slug;
     }
 
+    /**
+     * get file ids
+     *
+     * @return array
+     */
     public function getFileIds()
     {
         $files = $this->files;
@@ -157,5 +177,17 @@ class Board extends Document implements CommentUsable
     public function getLink(InstanceRoute $route)
     {
         return $route->url . '/show/' . $this->getKey();
+    }
+
+    /**
+     * visible
+     *
+     * @param $query
+     */
+    public function scopeVisible($query)
+    {
+        $query->where('status', Document::STATUS_PUBLIC)
+            ->where('display', Document::DISPLAY_VISIBLE)
+            ->where('published', Document::PUBLISHED_PUBLISHED);
     }
 }

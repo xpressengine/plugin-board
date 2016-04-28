@@ -65,6 +65,17 @@ class DefaultSkin extends AbstractSkin
     {
     }
 
+
+    /**
+     * get setting view
+     *
+     * @param array $config config
+     */
+    public static function getSettingView($config = [])
+    {
+       return '';
+    }
+
     /**
      * index customizer
      *

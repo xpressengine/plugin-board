@@ -162,12 +162,12 @@ return [
         'en' => 'You can set the number of page links to move pages in a bottom of the page.',
     ],
     'newArticleTime' => [
-        'ko' => '새글 기준 시간(단위: 시간)',
-        'en' => 'New article time(Measure: Hour)',
+        'ko' => '새글 기준 시간',
+        'en' => 'New article time',
     ],
     'newArticleTimeDescription' => [
-        'ko' => '새글 표시를 위한 시간을 설정할 수 있습니다.',
-        'en' => 'You can set the time for show new article icon.',
+        'ko' => '단위: 시간',
+        'en' => 'Measure: Hour',
     ],
     'adminEmail' => [
         'ko' => '관리자 메일',

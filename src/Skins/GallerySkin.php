@@ -13,12 +13,21 @@
  */
 namespace Xpressengine\Plugins\Board\Skins;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Xpressengine\Http\Request;
+use Xpressengine\Media\Models\Image;
+use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
 use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
+use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Skin\AbstractSkin;
+use XeSkin;
 use View;
+use Event;
+use Xpressengine\Storage\File;
+use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 
 /**
  * GallerySkin
@@ -30,8 +39,175 @@ use View;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-class GallerySkin extends AbstractSkin
+class GallerySkin extends DefaultSkin
 {
+    static protected $thumbSkins = [];
+
+    /**
+     * Register 에 등록될 때
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        static::addThumbSkin(static::getId());
+        static::interceptSetSkinTargetId();
+    }
+
+    /**
+     * set using thumbnail skin id
+     *
+     * @param $skinId
+     */
+    public static function addThumbSkin($skinId)
+    {
+        static::$thumbSkins[] = $skinId;
+    }
+
+    /**
+     * get thumbnail skin ids
+     *
+     * @return array
+     */
+    public static function getThumbSkins()
+    {
+        return static::$thumbSkins;
+    }
+
+    /**
+     * skin 설정할 때 thumbnail table 을 join 할 수 있도록 intercept 등록
+     *
+     * @return void
+     */
+    protected static function interceptSetSkinTargetId()
+    {
+        intercept(
+            sprintf('%s@setSkinTargetId', Presenter::class),
+            'board_gallery_skin::set_skin_target_id',
+            function ($func, $skinTargetId) {
+                $func($skinTargetId);
+
+                $request = app('request');
+                $instanceConfig = InstanceConfig::instance();
+
+                if ($request instanceof Request) {
+                    $isMobile = $request->isMobile();
+                } else {
+                    $isMobile = false;
+                }
+                $assignedSkin = XeSkin::getAssigned(
+                    [$skinTargetId, $instanceConfig->getInstanceId()],
+                    $isMobile ? 'mobile' : 'desktop'
+                );
+
+                // target 의 스킨이 현재 skin 의 아이디와 일치하는지 확인
+                if (in_array($assignedSkin->getId(), static::getThumbSkins())) {
+                    // 리스트 출력할 때 gallery thumbnail 확인을 위한 table join 이벤트 등록
+                    Event::listen('xe.plugin.board.list', function ($query) {
+                        $query->leftJoin(
+                            'board_gallery_thumbs',
+                            sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                            '=',
+                            sprintf('%s.%s', 'board_gallery_thumbs', 'targetId')
+                        );
+                    });
+                }
+            }
+        );
+    }
+
+    /**
+     * attach thumbnail for list
+     *
+     * @param array $list list of board model
+     * @return void
+     */
+    public static function attachThumbnail($list)
+    {
+        /** @var \Xpressengine\Media\MediaManager $mediaManager */
+        $mediaManager = \App::make('xe.media');
+
+        foreach ($list as $item) {
+            // board gallery thumbnails 에 항목이 없는 경우
+            if ($item->boardThumbnailFileId === null && $item->boardThumbnailPath === null) {
+                // find file by document id
+                $files = File::getByFileable($item->id);
+                $fileId = '';
+                $externalPath = '';
+                $thumbnailPath = '';
+
+                if (count($files) == 0) {
+                    // find file by contents link or path
+                    $externalPath = static::getImagePathFromContent($item->content);
+
+                    // make thumbnail
+                    $thumbnailPath = $externalPath;
+                } else {
+                    foreach ($files as $file) {
+                        if ($mediaManager->is($file) !== true) {
+                            continue;
+                        }
+                        // 어떤 크기의 썸네일을 사용할 것인지 스킨 설정을 통해 결정(두배 이미지가 좋다함)
+                        $dimension = 'L';
+
+                        $media = Image::getThumbnail(
+                            $mediaManager->make($file),
+                            BoardModule::THUMBNAIL_TYPE,
+                            $dimension
+                        );
+
+                        if ($media === null) {
+                            continue;
+                        }
+
+                        $fileId = $file->id;
+                        $thumbnailPath = $media->url();
+                        break;
+                    }
+                }
+
+                $item->boardThumbnailFileId = $fileId;
+                $item->boardThumbnailExternalPath = $externalPath;
+                $item->boardThumbnailPath = $thumbnailPath;
+
+                $model = new BoardGalleryThumb;
+                $model->fill([
+                    'targetId' => $item->id,
+                    'boardThumbnailFileId' => $fileId,
+                    'boardThumbnailExternalPath' => $externalPath,
+                    'boardThumbnailPath' => $thumbnailPath,
+                ]);
+                $model->save();
+            }
+
+            // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
+            if ($item->boardThumbnailPath == '') {
+                $item->boardThumbnailPath = 'http://placehold.it/300x200';
+            }
+        }
+    }
+
+    /**
+     * get path from content image tag source
+     *
+     * @param string $content document content
+     * @return string
+     */
+    protected static function getImagePathFromContent($content)
+    {
+        $path = '';
+
+        $pattern = '/<img[^>]*src="([^"]+)"[^>][^>]*>/';
+        $matches = [];
+
+        preg_match_all($pattern, $content, $matches);
+        if (isset($matches[1][0])) {
+            $path= $matches[1][0];
+        }
+
+        return $path;
+    }
+
     /**
      * render
      *
@@ -49,6 +225,9 @@ class GallerySkin extends AbstractSkin
         // 리스팅을 제외한 모든 디자인은 기본 스킨의 디자인 사용
         $view = View::make('board::views.defaultSkin._frame', $this->data);
         if ($this->view === 'index') {
+
+            static::attachThumbnail($this->data['paginate']);
+
             $view->content = View::make(
                 sprintf('board::views.gallerySkin.%s', $this->view),
                 $this->data
@@ -70,104 +249,5 @@ class GallerySkin extends AbstractSkin
      */
     public static function getSettingsURI()
     {
-    }
-
-    /**
-     * index customizer
-     *
-     * @return void
-     */
-    protected function indexCustomizer()
-    {
-        $this->setDynamicFieldSkins();
-        //$this->setBoardOrderItems();
-        $this->setPaginationPresenter();
-        $this->setBoardList();
-    }
-
-    /**
-     * show customizer
-     *
-     * @return void
-     */
-    protected function showCustomizer()
-    {
-        $this->setDynamicFieldSkins();
-        //$this->setBoardOrderItems();
-        $this->setPaginationPresenter();
-        $this->setBoardList();
-    }
-
-    /**
-     * create customizer
-     *
-     * @return void
-     */
-    protected function createCustomizer()
-    {
-        $this->setDynamicFieldSkins();
-    }
-
-    /**
-     * create customizer
-     *
-     * @return void
-     */
-    protected function editCustomizer()
-    {
-        $this->setDynamicFieldSkins();
-    }
-
-    /**
-     * replace dynamicField skins
-     *
-     * @return void
-     */
-    protected function setDynamicFieldSkins()
-    {
-        // replace dynamicField skin registered information
-        /** @var \Xpressengine\Register\Container $register */
-        $register = app('xe.register');
-        $register->set('FieldType/xpressengine@Category/FieldSkin/xpressengine@default', DesignSelectSkin::class);
-    }
-
-    /**
-     * set pagination presenter
-     *
-     * @return void
-     */
-    protected function setPaginationPresenter()
-    {
-        $this->data['paginate']->setPath($this->data['urlHandler']->get('index'));
-        $this->data['paginationPresenter'] = new PaginationPresenter($this->data['paginate']);
-        $this->data['paginationMobilePresenter'] = new PaginationMobilePresenter($this->data['paginate']);
-    }
-
-    /**
-     * set board list
-     *
-     * @return void
-     */
-    protected function setBoardList()
-    {
-        $instanceConfig = InstanceConfig::instance();
-        $instanceId = $instanceConfig->getInstanceId();
-
-        $configHandler = app('xe.board.config');
-        $boards = $configHandler->gets();
-        $boardList = [];
-        /** @var ConfigEntity $config */
-        foreach ($boards as $config) {
-            // 현재의 게시판은 리스트에서 제외
-            if ($instanceId === $config->get('boardId')) {
-                continue;
-            }
-
-            $boardList[] = [
-                'value' => $config->get('boardId'),
-                'text' => $config->get('boardName'),
-            ];
-        }
-        $this->data['boardList'] = $boardList;
     }
 }

@@ -4,7 +4,7 @@
 
     <form method="post" action="{{ $urlHandler->get('identificationConfirm') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
-        <input type="hidden" name="referer" class="form-control" value="{{$referer}}" />
+        <input type="hidden" name="referrer" class="form-control" value="{{$referrer}}" />
         <input type="hidden" name="id" class="form-control" value="{{$board->id}}" />
 
         <input type="email" name="email" class="form-control" value="" placeholder="{{ xe_trans('xe::email') }}"/>

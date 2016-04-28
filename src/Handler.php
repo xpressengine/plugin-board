@@ -22,12 +22,14 @@ use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
+use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Tag\Tag;
 use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
+
 
 
 /**
@@ -107,6 +109,7 @@ class Handler
         $model = $this->getModel($config);
         $model->getConnection()->beginTransaction();
 
+        $args['type'] = BoardModule::getId();
         $args['userId'] = $user->getId();
         if ($args['userId'] === null) {
             $args['userId'] = '';

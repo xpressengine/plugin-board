@@ -114,7 +114,7 @@
                     <!-- 확장 필드 검색 -->
                     @foreach($fieldTypes as $typeConfig)
                         @if($typeConfig->get('searchable') === true)
-                        <dt>{{ $typeConfig->get('label') }}</dt>
+                        <dt>{{ xe_trans($typeConfig->get('label')) }}</dt>
                         <dd>
                             {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Input::all()) !!}
                         </dd>

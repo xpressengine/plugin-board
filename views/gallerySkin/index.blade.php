@@ -114,7 +114,7 @@
                                 <!-- 확장 필드 검색 -->
                                 @foreach($fieldTypes as $typeConfig)
                                     @if($typeConfig->get('searchable') === true)
-                                        <dt>{{ $typeConfig->get('label') }}</dt>
+                                        <dt>{{ xe_trans($typeConfig->get('label')) }}</dt>
                                         <dd>
                                             {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Input::all()) !!}
                                         </dd>
@@ -144,7 +144,7 @@
                 <li>
                     <div class="thumb_area">
                         <a href="#">
-                            <img src="http://placehold.it/300x200" alt="">
+                            <img src="{{ $item->boardThumbnailPath }}" alt="">
                             @if($item->isNew($config->get('newTime')))
                             <span class="ribbon new"><span class="bd_hidden">new</span></span>
                             @endif
@@ -152,7 +152,7 @@
                     </div>
                     <div class="cont_area">
                         @if ($config->get('category') == true && $item->boardCategory !== null)
-                            <span class="category">{!! $item->boardCategory->categoryItem->word !!}</span>
+                            <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
                         @endif
                             <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">{!! $item->title !!}</a>
                             <div class="more_info">
