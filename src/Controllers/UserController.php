@@ -51,6 +51,7 @@ use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
+use Xpressengine\Support\Exceptions\XpressengineException;
 use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;

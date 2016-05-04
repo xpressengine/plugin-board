@@ -318,7 +318,30 @@
                                 <button type="button" class="btn btn-primary"><i class="xi-download"></i>저장</button>
                             </div>
                         </div>
+                    </div>
+                </div>
 
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <h3 class="panel-title">{{xe_trans('xe::editor')}}</h3>
+                        </div>
+                        <div class="pull-right">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="btn-link panel-toggle pull-right"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">메뉴닫기</span></a>
+                        </div>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            스킨 설정과 거의 같은 기능으로 구현하면 될듯
+
+                            {!! $editorSection !!}
+                        </div>
+                        <div class="panel-footer">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-default">취소</button>
+                                <button type="button" class="btn btn-primary"><i class="xi-download"></i>저장</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

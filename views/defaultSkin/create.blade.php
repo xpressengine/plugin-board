@@ -35,7 +35,7 @@
 
     <div class="write_body">
         <div class="write_form_editor __xe_content __xe_temp_container">
-            {!! uio('editor', [
+            {!! XeEditor::render($config->get('boardId'), [
               'content' => Input::old('content'),
               'editorConfig' => [
                 'fileUpload' => [

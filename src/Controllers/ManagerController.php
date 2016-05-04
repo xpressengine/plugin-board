@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Controllers;
 
+use App\Sections\EditorSection;
 use XeDB;
 use Redirect;
 use XePresenter;
@@ -216,6 +217,8 @@ class ManagerController extends Controller
 
         $toggleMenuSection = (new ToggleMenuSection())->setting(BoardModule::getId(), $boardId);
 
+        $editorSection = (new EditorSection())->setting($boardId);
+
         $perms = $boardPermission->getPerms($boardId);
 
         return $this->presenter->make('edit', [
@@ -228,6 +231,7 @@ class ManagerController extends Controller
             'commentSection' => $commentSection,
             'dynamicFieldSection' => $dynamicFieldSection,
             'toggleMenuSection' => $toggleMenuSection,
+            'editorSection' => $editorSection,
             'perms' => $perms,
         ]);
     }
