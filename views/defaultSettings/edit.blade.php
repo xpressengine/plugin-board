@@ -332,8 +332,6 @@
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse in">
                         <div class="panel-body">
-                            스킨 설정과 거의 같은 기능으로 구현하면 될듯
-
                             {!! $editorSection !!}
                         </div>
                         <div class="panel-footer">
