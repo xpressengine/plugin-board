@@ -131,8 +131,6 @@ class UserController extends Controller
             };
         }
 
-        // set Skin
-        XePresenter::setSkinTargetId(BoardModule::getId());
         XePresenter::share('handler', $handler);
         XePresenter::share('configHandler', $configHandler);
         XePresenter::share('urlHandler', $urlHandler);
