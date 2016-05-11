@@ -193,4 +193,8 @@ return [
         'ko' => '작성일',
         'en' => 'Write Date',
     ],
+    'selectPost' => [
+        'ko' => '선택된 게시물이 없습니다.',
+        'en' => 'There is no posts selected',
+    ]
 ];

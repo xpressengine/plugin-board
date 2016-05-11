@@ -106,5 +106,5 @@
 @endif
 
 <!-- 리스트 -->
-@include('board::views.defaultSkin.index')
+@include($skinAlias.'.index')
 

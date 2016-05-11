@@ -334,7 +334,7 @@ $(function($) {
 
     var hasChecked = function() {
         if ($('.bd_manage_check:checked').length == 0) {
-            XE.toast('info', 'There is no checked post');
+            XE.toast('info', XE.Lang.trans('board::selectPost'));
             return false;
         }
         return true;

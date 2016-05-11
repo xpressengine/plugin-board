@@ -32,6 +32,8 @@ use View;
  */
 class DefaultSkin extends AbstractSkin
 {
+    protected static $skinAlias = 'board::views.defaultSkin';
+
     /**
      * render
      *
@@ -46,10 +48,12 @@ class DefaultSkin extends AbstractSkin
             $this->$customizer();
         }
 
+        $this->data['skinAlias'] = static::$skinAlias;
+
         // wrapped by _frame.blade.php
-        $view = View::make('board::views.defaultSkin._frame', $this->data);
+        $view = View::make(sprintf('%s._frame', static::$skinAlias), $this->data);
         $view->content = View::make(
-            sprintf('board::views.defaultSkin.%s', $this->view),
+            sprintf('%s.%s', static::$skinAlias, $this->view),
             $this->data
         )->render();
 

@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Skins;
 
+use App\Facades\XeFrontend;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Image;
@@ -41,7 +42,59 @@ use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
  */
 class GallerySkin extends DefaultSkin
 {
+    protected static $skinAlias = 'board::views.gallerySkin';
+
     static protected $thumbSkins = [];
+
+    /**
+     * render
+     *
+     * @return \Illuminate\View\View
+     */
+    public function render()
+    {
+        // call customizer
+        // view 아이디를 기준으로 Customizer 호출
+        $customizer = $this->view . 'Customizer';
+        if (method_exists($this, $customizer)) {
+            $this->$customizer();
+        }
+
+        $this->data['skinAlias'] = static::$skinAlias;
+
+        // 리스팅을 제외한 모든 디자인은 기본 스킨의 디자인 사용
+        $view = View::make('board::views.defaultSkin._frame', $this->data);
+        if ($this->view === 'index') {
+
+            static::attachThumbnail($this->data['paginate']);
+
+            $view->content = View::make(
+                sprintf('%s.%s', static::$skinAlias, $this->view),
+                $this->data
+            )->render();
+        } else {
+
+            if ($this->view === 'show') {
+                static::attachThumbnail($this->data['paginate']);
+            }
+
+            $view->content = View::make(
+                sprintf('%s.%s', parent::$skinAlias, $this->view),
+                $this->data
+            )->render();
+        }
+
+        return $view;
+    }
+
+    /**
+     * get manage URI
+     *
+     * @return string
+     */
+    public static function getSettingsURI()
+    {
+    }
 
     /**
      * Register 에 등록될 때
@@ -206,48 +259,5 @@ class GallerySkin extends DefaultSkin
         }
 
         return $path;
-    }
-
-    /**
-     * render
-     *
-     * @return \Illuminate\View\View
-     */
-    public function render()
-    {
-        // call customizer
-        // view 아이디를 기준으로 Customizer 호출
-        $customizer = $this->view . 'Customizer';
-        if (method_exists($this, $customizer)) {
-            $this->$customizer();
-        }
-
-        // 리스팅을 제외한 모든 디자인은 기본 스킨의 디자인 사용
-        $view = View::make('board::views.defaultSkin._frame', $this->data);
-        if ($this->view === 'index') {
-
-            static::attachThumbnail($this->data['paginate']);
-
-            $view->content = View::make(
-                sprintf('board::views.gallerySkin.%s', $this->view),
-                $this->data
-            )->render();
-        } else {
-            $view->content = View::make(
-                sprintf('board::views.defaultSkin.%s', $this->view),
-                $this->data
-            )->render();
-        }
-
-        return $view;
-    }
-
-    /**
-     * get manage URI
-     *
-     * @return string
-     */
-    public static function getSettingsURI()
-    {
     }
 }
