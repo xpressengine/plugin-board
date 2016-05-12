@@ -27,5 +27,5 @@ use Xpressengine\Support\Exceptions\HttpXpressengineException;
  */
 class HttpBoardException extends HttpXpressengineException
 {
-    protected $message = 'xe::boardError';
+    protected $message = 'board::boardError';
 }

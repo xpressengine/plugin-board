@@ -3,7 +3,10 @@
 @if($visible == true)
 <div class="board_read">
     <div class="read_header">
-        @if($config->get('category') == true && $showCategoryItem)
+
+        @if($item->status == $item::STATUS_NOTICE)
+        <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $showCategoryItem){{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}@endif</span>
+        @elseif($config->get('category') == true && $showCategoryItem)
         <span class="category">{{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}</span>
         @endif
 
@@ -92,13 +95,13 @@
     </div>
 </div>
 
-<!-- 댓글 -->
-@if ($config->get('comment') === true)
-<div class="__xe_comment">
-    {!! uio('comment', ['target' => $item]) !!}
-</div>
-@endif
-<!-- // 댓글 -->
+    <!-- 댓글 -->
+    @if ($config->get('comment') === true)
+    <div class="__xe_comment">
+        {!! uio('comment', ['target' => $item]) !!}
+    </div>
+    @endif
+    <!-- // 댓글 -->
 @else
     <script>
         XE.toast('alert', '{{xe_trans('board::notFoundDocument')}}');

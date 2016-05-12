@@ -196,5 +196,13 @@ return [
     'selectPost' => [
         'ko' => '선택된 게시물이 없습니다.',
         'en' => 'There is no posts selected',
-    ]
+    ],
+    'HaveNoWritePermission' => [
+        'ko' => '":name" 게시물을 작성할 권한이 없습니다.',
+        'en' => 'Have no permission for ":name"',
+    ],
+    'boardError' => [
+        'ko' => '게시판 오류',
+        'en' => 'Board error',
+    ],
 ];
