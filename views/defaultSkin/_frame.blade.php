@@ -99,20 +99,20 @@
 
             // on class 가 없다면 list 를 보기 위한 click
             if ($target.hasClass('on') === false) {
-                var $modal = $('#myModal-list');
+                var $modal = $('#xe-modal-list');
 
                 if ($modal.length != 0) {
                     $modal.empty();
                 }
 
-                $modal = $('<div class="modal fade" id="myModal-list">');
-                $modal.modal({show:false});
+                $modal = $('<div class="modal fade" id="xe-Modal-list">');
+                $modal.xeModal({show:false});
                 $('body').append($modal);
 
                 getUsers.currentPage = 1;
                 getUsers.get($(event.target).attr('href'), function(json) {
                     // modal css load
-                    XE.cssLoad('/assets/vendor/core/css/modal.css');
+                    //XE.cssLoad('/assets/vendor/core/css/modal.css');
 
                     // draw list
                     var $ul = $('<ul>').addClass('list-group');
@@ -134,13 +134,13 @@
                             $('<div class="modal-header bg_blue">').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="xi-close-thin"></i></button> <p class="modal-title">이 게시물을 좋아하는 사람들</p>')
                     ).append($ul)));
 
-                    $modal.modal({show:true});
+                    $modal.xeModal({show:true});
                 });
 
             } else {
-                var $modal = $('#myModal-list');
+                var $modal = $('#xe-modal-list');
                 if ($modal.length != 0) {
-                    $modal.modal({show: false});
+                    $modal.xeModal({show: false});
                 }
                 $target.removeClass('on');
             }
