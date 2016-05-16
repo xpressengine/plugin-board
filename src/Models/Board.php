@@ -17,6 +17,7 @@ use Xpressengine\Document\Models\Document;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\Storage\File;
+use Xpressengine\User\Models\Guest;
 
 /**
  * Board
@@ -30,6 +31,21 @@ use Xpressengine\Storage\File;
  */
 class Board extends Document implements CommentUsable
 {
+    /**
+     * get user id
+     *
+     * @return string
+     */
+    public function getUserId()
+    {
+        $userId = $this->getAttribute('userId');
+        if ($this->getAttribute('userType') === self::USER_TYPE_ANONYMITY) {
+            $userId = '';
+        }
+
+        return $userId;
+    }
+
     /**
      * Return is new
      *
@@ -165,7 +181,7 @@ class Board extends Document implements CommentUsable
      */
     public function getAuthor()
     {
-        return $this->user;
+        return $this->user ? : new Guest;
     }
 
     /**

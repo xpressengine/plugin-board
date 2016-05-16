@@ -30,45 +30,13 @@ use View;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-class BlogSkin extends DefaultSkin
+class BlogSkin extends GallerySkin
 {
+    protected static $skinAlias = 'board::views.blogSkin';
+
     public static function boot()
     {
-        GallerySkin::addThumbSkin(static::getId());
-    }
-
-    /**
-     * render
-     *
-     * @return \Illuminate\View\View
-     */
-    public function render()
-    {
-        // call customizer
-        // view 아이디를 기준으로 Customizer 호출
-        $customizer = $this->view . 'Customizer';
-        if (method_exists($this, $customizer)) {
-            $this->$customizer();
-        }
-
-        // 리스팅을 제외한 모든 디자인은 기본 스킨의 디자인 사용
-        $view = View::make('board::views.defaultSkin._frame', $this->data);
-        if ($this->view === 'index') {
-
-            GallerySkin::attachThumbnail($this->data['paginate']);
-
-            $view->content = View::make(
-                sprintf('board::views.blogSkin.%s', $this->view),
-                $this->data
-            )->render();
-        } else {
-            $view->content = View::make(
-                sprintf('board::views.defaultSkin.%s', $this->view),
-                $this->data
-            )->render();
-        }
-
-        return $view;
+        self::addThumbSkin(static::getId());
     }
 
     /**

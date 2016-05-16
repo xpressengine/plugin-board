@@ -181,14 +181,14 @@
                                     <span class="bd_ico_file" data-count="{{ $item->fileCount }}"><i class="xi-clip"></i><span class="bd_hidden">file</span></span>
                                 @endif
                                 <div class="more_info pc_hidden">
-                                    <a href="#" class="mb_autohr" class="__xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
+                                    <a href="#" class="mb_autohr" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
                                     <span class="mb_time"><i class="xi-time"></i> {!! sprintf('‘%s', str_replace('-', '.', substr($item->createdAt, 2, 8))) !!}</span>
                                     <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                                     <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                                 </div>
                             </td>
                         @elseif ($columnName == 'writer')
-                            <td class="author mb_hidden column-{{$columnName}}""><a href="#" class="__xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a></td>
+                            <td class="author mb_hidden column-{{$columnName}}""><a href="#" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
                         @elseif ($columnName == 'readCount')
                             <td class="read_num mb_hidden">{{ $item->{$columnName} }}</td>
                         @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
@@ -248,14 +248,14 @@
                                     <span class="bd_ico_file" data-count="{{ $item->fileCount }}"><i class="xi-clip"></i><span class="bd_hidden">file</span></span>
                                 @endif
                                 <div class="more_info pc_hidden">
-                                    <a href="#" class="mb_autohr" class="__xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
+                                    <a href="#" class="mb_autohr" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
                                     <span class="mb_time"><i class="xi-time"></i> {!! sprintf('‘%s', str_replace('-', '.', substr($item->createdAt, 2, 8))) !!}</span>
                                     <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                                     <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                                 </div>
                             </td>
                         @elseif ($columnName == 'writer')
-                            <td class="author mb_hidden column-{{$columnName}}""><a href="#" class="__xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a></td>
+                            <td class="author mb_hidden column-{{$columnName}}""><a href="#" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
                         @elseif ($columnName == 'readCount')
                             <td class="read_num mb_hidden">{{ $item->{$columnName} }}</td>
                         @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))

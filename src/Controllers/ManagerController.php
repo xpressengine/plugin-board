@@ -18,9 +18,9 @@ use XeDB;
 use Redirect;
 use XePresenter;
 use App\Http\Controllers\Controller;
-use App\Sections\DynamicFieldSection;
-use App\Sections\ToggleMenuSection;
-use App\Sections\SkinSection;
+use App\Http\Sections\DynamicFieldSection;
+use App\Http\Sections\ToggleMenuSection;
+use App\Http\Sections\SkinSection;
 use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Grant;
@@ -208,14 +208,17 @@ class ManagerController extends Controller
 
         $formColumns = $this->configHandler->formColumns($boardId);
 
-        $skinSection = (new SkinSection())->setting(BoardModule::getId(), $boardId);
+        $skinSection = new SkinSection(BoardModule::getId(), $boardId);
 
         $commentSection = (new CommentSection())->setting($boardId);
 
-        $dynamicFieldSection = (new DynamicFieldSection($config->get('documentGroup')))
-            ->setting(XeDB::connection(), $config->get('revision'));
+        $dynamicFieldSection = new DynamicFieldSection(
+            $config->get('documentGroup'),
+            XeDB::connection(),
+            $config->get('revision')
+        );
 
-        $toggleMenuSection = (new ToggleMenuSection())->setting(BoardModule::getId(), $boardId);
+        $toggleMenuSection = new ToggleMenuSection(BoardModule::getId(), $boardId);
 
         $editorSection = (new EditorSection())->setting($boardId);
 

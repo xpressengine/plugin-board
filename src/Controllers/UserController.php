@@ -31,6 +31,7 @@ use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidIdentifyException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidRequestException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidRequestHttpException;
@@ -51,7 +52,6 @@ use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
-use Xpressengine\Support\Exceptions\XpressengineException;
 use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
@@ -356,8 +356,8 @@ class UserController extends Controller
         $inputs['content'] = $request->originAll()['content'];
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 
-        if ($request->get('status') == 'notice' && $this->isManager) {
-            $inputs['status'] = null;
+        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
+            throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
         // 암호 설정
@@ -504,9 +504,14 @@ class UserController extends Controller
         $inputs['content'] = $request->originAll()['content'];
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 
-        // 공지
-        if ($request->get('status') == 'notice' && $this->isManager) {
+        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
+            throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
+        }
+
+        if ($request->get('status') == Board::STATUS_NOTICE) {
             $item->status = Board::STATUS_NOTICE;
+        } else if ($request->get('status') != Board::STATUS_NOTICE && $item->status == Board::STATUS_NOTICE) {
+            $item->status = Board::STATUS_PUBLIC;
         }
 
         // 암호 설정

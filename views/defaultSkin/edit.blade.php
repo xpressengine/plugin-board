@@ -71,7 +71,7 @@
 
             <div class="write_form_option">
                 @if($isManager === true)
-                <input type="checkbox" id="notice" name="notice" value="{{$item::STATUS_NOTICE}}" @if($item->status == $item::STATUS_NOTICE) checked="checked" @endif /><label for="notice">{{xe_trans('xe::notice')}}</label>
+                <input type="checkbox" id="notice" name="status" value="{{$item::STATUS_NOTICE}}" @if($item->status == $item::STATUS_NOTICE) checked="checked" @endif /><label for="notice">{{xe_trans('xe::notice')}}</label>
                 @endif
             </div>
             <div class="write_form_btn">
