@@ -32,6 +32,21 @@ use Xpressengine\User\Models\Guest;
 class Board extends Document implements CommentUsable
 {
     /**
+     * get user id
+     *
+     * @return string
+     */
+    public function getUserId()
+    {
+        $userId = $this->getAttribute('userId');
+        if ($this->getAttribute('userType') === self::USER_TYPE_ANONYMITY) {
+            $userId = '';
+        }
+
+        return $userId;
+    }
+
+    /**
      * Return is new
      *
      * @param int $hour hour config value
