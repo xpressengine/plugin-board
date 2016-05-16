@@ -17,6 +17,7 @@ use Xpressengine\Document\Models\Document;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\Storage\File;
+use Xpressengine\User\Models\Guest;
 
 /**
  * Board
@@ -165,7 +166,7 @@ class Board extends Document implements CommentUsable
      */
     public function getAuthor()
     {
-        return $this->user;
+        return $this->user ? : new Guest;
     }
 
     /**

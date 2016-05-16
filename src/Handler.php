@@ -121,6 +121,11 @@ class Handler
             $args['userType'] = Board::USER_TYPE_GUEST;
         }
 
+        if ($config->get('anonymity') === true) {
+            $args['writer'] = $config->get('anonymityName');
+            $args['userType'] = Board::USER_TYPE_ANONYMITY;
+        }
+
         // save Document
         $doc = $this->documentHandler->add($args);
 
