@@ -8,7 +8,7 @@
     <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
 
     <div class="write_header">
-        <div class="write_category form-group">
+        <div class="write_category xe-form-group">
             @if($config->get('category') == true)
             <input type="hidden" name="categoryItemId" value="" placeholder="{{ xe_trans('xe::category') }}"/>
             <a href="#" class="bd_select __xe_select_box_show">{{ xe_trans('xe::category') }}</a>

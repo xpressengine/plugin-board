@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-sm-12">
-        <div class="form-group">
+        <div class="xe-form-group">
             <label for="">{{xe_trans('xe::list')}}</label>
             <label><input type="checkbox" class="inheritCheck" data-select=".listColumns" @if($config->getPure('listColumns') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
             <div class="form-inline listColumns">
-                <div class="form-group">
-                    <select class="form-control" id="list_options" size="8" multiple="multiple">
+                <div class="xe-form-group">
+                    <select class="xe-form-control" id="list_options" size="8" multiple="multiple">
                         @foreach ($listOptions as $columnName)
                             <option value="{{$columnName}}">{{$columnName}}</option>
                         @endforeach
@@ -15,8 +15,8 @@
                     </div>
 
                 </div>
-                <div class="form-group">
-                    <select class="form-control" id="list_selected" size="8" multiple="multiple" @if($config->getPure('listColumns') == null) disabled="disabled" @endif>
+                <div class="xe-form-group">
+                    <select class="xe-form-control" id="list_selected" size="8" multiple="multiple" @if($config->getPure('listColumns') == null) disabled="disabled" @endif>
                         @foreach ($listColumns as $columnName)
                             <option value="{{$columnName}}">{{$columnName}}</option>
                         @endforeach
@@ -34,11 +34,11 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="form-group">
+        <div class="xe-form-group">
             <label for="">{{xe_trans('xe::input')}}</label>
             <label><input type="checkbox" class="inheritCheck" data-select=".formColumns" @if($config->getPure('formColumns') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
-            <div class="form-group formColumns">
-                <select class="form-control" id="form_order" size="8" multiple="multiple" @if($config->getPure('formColumns') == null) disabled="disabled" @endif>
+            <div class="xe-form-group formColumns">
+                <select class="xe-form-control" id="form_order" size="8" multiple="multiple" @if($config->getPure('formColumns') == null) disabled="disabled" @endif>
                     @foreach ($formColumns as $columnName)
                         <option value="{{$columnName}}">{{$columnName}}</option>
                     @endforeach

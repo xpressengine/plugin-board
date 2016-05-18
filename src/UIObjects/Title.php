@@ -35,7 +35,7 @@ class Title extends AbstractUIObject
         }
 
         if (empty($args['titleClassName'])) {
-            $args['titleClassName'] = 'form-control title';
+            $args['titleClassName'] = 'xe-form-control title';
         }
 
         $args['scriptInit'] = false;
