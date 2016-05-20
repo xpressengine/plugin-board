@@ -145,6 +145,16 @@ class Board extends Document implements CommentUsable
     }
 
     /**
+     * get favorite
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function favorite()
+    {
+        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardFavorite', 'targetId');
+    }
+
+    /**
      * 비회원이 작성 글 여부 반환
      *
      * @return bool

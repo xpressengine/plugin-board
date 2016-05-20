@@ -19,8 +19,11 @@ use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\Board\Exceptions\AlreadyExistFavoriteHttpException;
+use Xpressengine\Plugins\Board\Exceptions\NotFoundFavoriteHttpException;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
+use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Storage\File;
@@ -665,5 +668,31 @@ class Handler
     public function hasVote(Board $board, $user, $option)
     {
         return $this->voteCounter->has($board->id, $user, $option);
+    }
+
+    public function hasFavorite($boardId, $userId)
+    {
+        return BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->exists();
+    }
+
+    public function addFavorite($boardId, $userId)
+    {
+        if ($this->hasFavorite($boardId, $userId) === true) {
+            throw new AlreadyExistFavoriteHttpException;
+        }
+
+        $favorite = new BoardFavorite;
+        $favorite->targetId = $boardId;
+        $favorite->userId = $userId;
+        $favorite->save();
+    }
+
+    public function removeFavorite($boardId, $userId)
+    {
+        if ($this->hasFavorite($boardId, $userId) === false) {
+            throw new NotFoundFavoriteHttpException;
+        }
+
+        BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->delete();
     }
 }

@@ -205,4 +205,16 @@ return [
         'ko' => '게시판 오류',
         'en' => 'Board error',
     ],
+    'favoriteAlreadyExist' => [
+        'ko' => '이미 즐겨찾기 되었습니다.',
+        'en' => 'Already been favorites.',
+    ],
+    'notFoundFavorite' => [
+        'ko' => '즐겨찾기 되어있지 않습니다.',
+        'en' => 'It does not have favorites.',
+    ],
+    'favoriteFilter' => [
+        'ko' => '즐겨찾기 보기',
+        'en' => 'favorites',
+    ],
 ];

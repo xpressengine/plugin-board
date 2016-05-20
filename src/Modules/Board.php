@@ -139,6 +139,7 @@ class Board extends AbstractModule
             Route::get('/slug/{slug}', ['as' => 'slug2', 'uses' => 'UserController@slug']);
             Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'UserController@hasSlug']);
             Route::get('/{slug}', ['as' => 'slug', 'uses' => 'UserController@slug']);
+            Route::post('/favorite/{id}', ['as' => 'favorite', 'uses' => 'UserController@favorite']);
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
 
         BoardSlug::setReserved([

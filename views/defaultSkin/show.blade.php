@@ -58,6 +58,8 @@
                 </a>
                 <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num">{{$item->assentCount}}</a>
 
+                <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif xe-favorite"><i class="xi-star"></i><span class="xe-sr-only">즐겨찾기</span></a>
+
                 <div class="bd_share_area">
                     <!-- [D] 클릭시 클래스 on 적용 -->
                     <a href="#" class="bd_ico bd_share"><i class="xi-external-link"></i><span class="bd_hidden">{{ trans('board::share') }}</span></a>

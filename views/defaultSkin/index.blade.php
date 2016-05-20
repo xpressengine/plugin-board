@@ -140,6 +140,7 @@
             <!-- LIST HEADER -->
             <tr>
                 <th scope="col" style="width:44px"><span><input type="checkbox" title="{{ xe_trans('xe::checkAll') }}" class="bd_btn_manage_check_all"></span></th>
+                <th scope="col" class="favorite"><span><a href="{{ $urlHandler->get('index', ['favorite' => '1']) }}" class=" @if(Input::has('favorite') === true) on @endif " title="{{ xe_trans('board::favoriteFilter') }}"><i class="xi-star-o"></i><span class="bd_hidden">{{ xe_trans('board::favoriteFilter') }}</span></a></span></th>
 
                 @foreach ($config->get('listColumns') as $columnName)
                     @if ($columnName == 'title')
@@ -159,7 +160,8 @@
             <!-- NOTICE -->
             @foreach($handler->getsNotice($config) as $item)
                 <tr class="notice">
-                    <td class="check"></td>
+                    <td class="check"><input type="checkbox" title="{{xe_trans('xe::manage')}}" class="bd_manage_check" value="{{ $item->id }}"></td>
+                    <td class="favorite mb_hidden"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif xe-favorite" title="{{xe_trans('board::favorite')}}" data-id="{{ $item->id }}"><i class="xi-star"></i><span class="bd_hidden">{{xe_trans('board::favorite')}}</span></a></td>
 
                     @foreach ($config->get('listColumns') as $columnName)
                         @if ($columnName == 'title')
@@ -188,7 +190,7 @@
                                 </div>
                             </td>
                         @elseif ($columnName == 'writer')
-                            <td class="author mb_hidden column-{{$columnName}}""><a href="#" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
+                            <td class="author mb_hidden column-{{$columnName}}"><a href="#" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
                         @elseif ($columnName == 'readCount')
                             <td class="read_num mb_hidden">{{ $item->{$columnName} }}</td>
                         @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
@@ -222,7 +224,8 @@
             <!-- LIST -->
             @foreach($paginate as $item)
                 <tr class="how-to-do-haveto-readed">
-                    <td class="check"><input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}"></td>
+                    <td class="check"><input type="checkbox" title="{{xe_trans('xe::manage')}}" class="bd_manage_check" value="{{ $item->id }}"></td>
+                    <td class="favorite mb_hidden"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif xe-favorite" title="{{xe_trans('board::favorite')}}" data-id="{{ $item->id }}"><i class="xi-star"></i><span class="bd_hidden">{{xe_trans('board::favorite')}}</span></a></td>
 
                     @foreach ($config->get('listColumns') as $columnName)
                         @if ($columnName == 'title')
@@ -255,7 +258,7 @@
                                 </div>
                             </td>
                         @elseif ($columnName == 'writer')
-                            <td class="author mb_hidden column-{{$columnName}}""><a href="#" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
+                            <td class="author mb_hidden column-{{$columnName}}"><a href="#" class="__xe_user" data-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
                         @elseif ($columnName == 'readCount')
                             <td class="read_num mb_hidden">{{ $item->{$columnName} }}</td>
                         @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
