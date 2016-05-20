@@ -13,7 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Controllers;
 
-use App\Sections\EditorSection;
+use App\Http\Sections\EditorSection;
 use XeDB;
 use Redirect;
 use XePresenter;
@@ -220,7 +220,7 @@ class ManagerController extends Controller
 
         $toggleMenuSection = new ToggleMenuSection(BoardModule::getId(), $boardId);
 
-        $editorSection = (new EditorSection())->setting($boardId);
+        $editorSection = new EditorSection($boardId);
 
         $perms = $boardPermission->getPerms($boardId);
 
