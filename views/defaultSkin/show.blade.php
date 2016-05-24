@@ -25,7 +25,7 @@
 
     <div class="read_body">
         <div class="xe_content">
-            {!! uio('contentCompiler', ['content' => $item->content]) !!}
+            {!! compile($item->instanceId, $item->content) !!}
         </div>
     </div>
 
