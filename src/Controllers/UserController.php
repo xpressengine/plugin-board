@@ -202,14 +202,26 @@ class UserController extends Controller
 
         $fieldTypes = (array)$this->configHandler->getDynamicFields($this->config);
 
-        $categoryItem = null;
-        $categoryItems = null;
+        $categories = [];
         if ($this->config->get('category') === true) {
-            $categoryItem = CategoryItem::find($request->get('categoryItemId'));
             $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
         }
 
-        return compact('notices', 'paginate', 'fieldTypes', 'categoryItem', 'categoryItems');
+        $terms = [
+            ['value' => '1week', 'text' => 'board::1week'],
+            ['value' => '2week', 'text' => 'board::2week'],
+            ['value' => '1month', 'text' => 'board::1month'],
+            ['value' => '3month', 'text' => 'board::3month'],
+            ['value' => '6month', 'text' => 'board::6month'],
+            ['value' => '1year', 'text' => 'board::1year'],
+        ];
+        return compact('notices', 'paginate', 'fieldTypes','categories', 'terms');
     }
 
     /**
@@ -317,9 +329,15 @@ class UserController extends Controller
             $head = $item->head;
         }
 
-        $categoryItems = null;
+        $categories = [];
         if ($this->config->get('category') === true) {
             $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
         }
 
         /** @var UserInterface $user */
@@ -331,7 +349,7 @@ class UserController extends Controller
             'handler' => $this->handler,
             'parentId' => $parentId,
             'head' => $head,
-            'categoryItems' => $categoryItems,
+            'categories' => $categories,
             'rules' => $rules,
         ]);
     }
@@ -792,12 +810,37 @@ class UserController extends Controller
     }
 
     /**
+     * 좋아요 추가, 삭제
+     *
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function vote(Request $request, $menuUrl, $option, $id)
+    {
+        $author = Auth::user();
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        try {
+            $this->handler->vote($item, $author, $option);
+        } catch (GuestNotSupportException $e) {
+            throw new AccessDeniedHttpException;
+        }
+
+        return $this->showVote($request);
+    }
+
+    /**
      * 찬성
      *
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
      * @return \Xpressengine\Presenter\RendererInterface
+     * @deprecated
      */
     public function addVote(Request $request, $menuUrl, $option)
     {
@@ -824,6 +867,7 @@ class UserController extends Controller
      * @param string  $menuUrl first segment
      * @param string  $option  options
      * @return \Xpressengine\Presenter\RendererInterface
+     * @deprecated
      */
     public function removeVote(Request $request, $menuUrl, $option)
     {

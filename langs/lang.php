@@ -129,6 +129,14 @@ return [
         'ko' => '휴지통으로 이동',
         'en' => 'Move to Trash',
     ],
+    'postsMoveToTrash' => [
+        'ko' => '게시글을 휴지통으로 이동합니다.',
+        'en' => 'Posts will moved to trash.',
+    ],
+    'postsDelete' => [
+        'ko' => '게시글을 삭제합니다.',
+        'en' => 'Delete the posts.',
+    ],
     'assentCount' => [
         'ko' => '추천수',
         'en' => 'Recommend',
@@ -136,6 +144,18 @@ return [
     'dissentCount' => [
         'ko' => '비추천수',
         'en' => 'Disapprove',
+    ],
+    'boardSearch' => [
+        'ko' => '게시판 검색',
+        'en' => 'Board search',
+    ],
+    'detailSearch' => [
+        'ko' => '상세 검색',
+        'en' => 'Detail search',
+    ],
+    'boardDetailSearch' => [
+        'ko' => '게시판 상세 검색',
+        'en' => 'Board detail search',
     ],
     'perPage' => [
         'ko' => '목록 수',
@@ -216,5 +236,73 @@ return [
     'favoriteFilter' => [
         'ko' => '즐겨찾기 보기',
         'en' => 'favorites',
+    ],
+    'favorite' => [
+        'ko' => '즐겨찾기',
+        'en' => 'favorite',
+    ],
+    'facebook' => [
+        'ko' => '페이스북',
+        'en' => 'facebook',
+    ],
+    'twitter' => [
+        'ko' => '트위터',
+        'en' => 'twitter',
+    ],
+    'assentThisPosts' => [
+        'ko' => '님 외 :count 명이 이 글을 좋아합니다.',
+        'en' => 'and :count others like this posts.',
+    ],
+    'secretPost' => [
+        'ko' => '비밀글',
+        'en' => 'Secret post',
+    ],
+    'enterTitle' => [
+        'ko' => '제목을 입력하세요.',
+        'en' => 'Please enter a title.',
+    ],
+    'allowComment' => [
+        'ko' => '댓글 허용.',
+        'en' => 'Allow comment.',
+    ],
+    'useAlarm' => [
+        'ko' => '알림.',
+        'en' => 'Alarm.',
+    ],
+    'period' => [
+        'ko' => '기간',
+        'en' => 'Period',
+    ],
+    '1week' => [
+        'ko' => '1주',
+        'en' => '1 Week',
+    ],
+    '2week' => [
+        'ko' => '2주',
+        'en' => '2 Weeks',
+    ],
+    '1month' => [
+        'ko' => '1개월',
+        'en' => '1 month',
+    ],
+    '3month' => [
+        'ko' => '3개월',
+        'en' => '3 months',
+    ],
+    '6month' => [
+        'ko' => '6개월',
+        'en' => '6 months',
+    ],
+    '1year' => [
+        'ko' => '1년',
+        'en' => '1 year',
+    ],
+    'startDate' => [
+        'ko' => '시작 날짜',
+        'en' => 'Start date',
+    ],
+    'endDate' => [
+        'ko' => '끝 날짜',
+        'en' => 'End date',
     ],
 ];

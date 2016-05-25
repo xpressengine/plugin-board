@@ -1,5 +1,4 @@
 {{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
-{{ XeFrontend::js('plugins/board/assets/js/userSkin.js')->appendTo('body')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/board.css')->load() }}
 
 @if($isManager === true)
@@ -123,7 +122,7 @@ $(function($) {
 </script>
 @endif
 <style>
-    .bd_function .bd_like.invoked{color:#FE381E}
+    .bd_function .bd_like.voted{color:#FE381E}
 </style>
 
 <!-- BOARD -->

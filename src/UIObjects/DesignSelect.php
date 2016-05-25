@@ -66,6 +66,10 @@ class DesignSelect extends AbstractUIObject
             $args['label'] = xe_trans('xe::select');
         }
 
+        if (empty($args['default'])) {
+            $args['default'] = '';
+        }
+
         if (empty($args['value'])) {
             $args['value'] = '';
             $args['text'] = '';

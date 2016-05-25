@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Models;
 
+use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
@@ -66,6 +67,16 @@ class Board extends Document implements CommentUsable
     public function scopeNotice($query)
     {
         return $query->whereStatus(self::STATUS_NOTICE);
+    }
+
+    /**
+     * get assent counter log
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function assents()
+    {
+        return $this->hasMany(CounterLog::class, 'targetId')->where('counterName', 'vote')->where('counterOption', 'assent');
     }
 
     /**

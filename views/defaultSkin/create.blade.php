@@ -2,27 +2,22 @@
 
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
-    <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
-    <input type="hidden" name="parentId" value="{{$parentId}}" />
-    <input type="hidden" name="head" value="{{$head}}" />
-    <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
+        <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
+        <input type="hidden" name="parentId" value="{{$parentId}}" />
+        <input type="hidden" name="head" value="{{$head}}" />
+        <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
 
     <div class="write_header">
-        <div class="write_category xe-form-group">
+        <div class="write_category">
             @if($config->get('category') == true)
-            <input type="hidden" name="categoryItemId" value="" placeholder="{{ xe_trans('xe::category') }}"/>
-            <a href="#" class="bd_select __xe_select_box_show">{{ xe_trans('xe::category') }}</a>
-            <div class="bd_select_list" data-name="categoryItemId">
-                <ul>
-                    <li><a href="#" data-value="">{{xe_trans('xe::category')}}</a></li>
-                    @foreach ($categoryItems as $item)
-                        <li><a href="#" data-value="{{$item->id}}">{{xe_trans($item->word)}}</a></li>
-                    @endforeach
-                </ul>
-            </div>
+                {!! uio('uiobject/board@select', [
+                    'name' => 'categoryItemId',
+                    'label' => xe_trans('xe::category'),
+                    'value' => '',
+                    'items' => $categories,
+                ]) !!}
             @endif
         </div>
-
         <div class="write_title">
             {!! uio('titleWithSlug', [
             'title' => Input::old('title'),
@@ -32,9 +27,8 @@
             ]) !!}
         </div>
     </div>
-
     <div class="write_body">
-        <div class="write_form_editor __xe_content __xe_temp_container">
+        <div class="write_form_editor">
             {!! uio('editor', [
               'content' => Input::old('content'),
               'editorConfig' => [
@@ -52,80 +46,67 @@
         </div>
     </div>
 
-    <div class="write_footer">
-
+    <div class="dynamic-field">
         @foreach ($configHandler->formColumns($instanceId) as $columnName)
-        @if ($columnName != 'category')
-            <div class="__xe_{{$columnName}} __xe_section">
-                {!! dfCreate($config->get('documentGroup'), $columnName, Input::all()) !!}
-            </div>
-        @endif
+            @if ($columnName != 'category')
+                <div class="__xe_{{$columnName}} __xe_section">
+                    {!! dfCreate($config->get('documentGroup'), $columnName, Input::all()) !!}
+                </div>
+            @endif
         @endforeach
-
-        @if (Auth::guest() === true)
-        <div class="write_form_input">
-            <input type="text" name="writer" class="bd_input" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer') }}">
-            <input type="password" name="certifyKey" class="bd_input" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
-            <input type="email" name="email" class="bd_input v2" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email') }}">
-        </div>
-        @endif
-
-        <div class="write_form_option">
-            @if($isManager === true)
-            <input type="checkbox" id="notice" name="status" value="{{\Xpressengine\Document\Models\Document::STATUS_NOTICE}}" /><label for="notice">{{xe_trans('xe::notice')}}</label>
-            @endif
-        </div>
-        <div class="write_form_btn">
-            @if (Auth::guest() !== true)
-            {{--<a href="#" class="bd_btn btn_temp_save __xe_temp_btn_load">{{ xe_trans('comment_service::tempLoad') }}</a>--}}
-            {{--<a href="#" class="bd_btn btn_preview __xe_temp_btn_save">{{ xe_trans('comment_service::tempSave') }}</a>--}}
-            @endif
-
-            <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
-            <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
-            {{--<a href="{{ $urlHandler->get('index', Input::except('id', 'parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>--}}
-        </div>
-
-        <!-- 게시판 addon -->
     </div>
+    <!-- 비로그인 -->
+    <div class="write_footer">
+        <div class="write_form_input">
+            @if (Auth::guest() === true)
+            <div class="xe-form-inline">
+                <input type="text" class="xe-form-control" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer') }}">
+                <input type="password" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                <input type="email" class="xe-form-control" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email') }}">
+            </div>
+            @endif
+        </div>
+        <div class="write_form_option">
+            <div class="xe-form-inline">
+                @if($config->get('comment') === true)
+                <label class="xe-label">
+                    <input type="checkbox" name="allowComment" value="true">
+                    <span class="xe-input-helper"></span>
+                    <span class="xe-label-text">{{xe_trans('board::allowComment')}}</span>
+                </label>
+                @endif
+
+                @if (Auth::guest() === true)
+                <label class="xe-label">
+                    <input type="checkbox" name="useAlarm" value="true">
+                    <span class="xe-input-helper"></span>
+                    <span class="xe-label-text">{{xe_trans('board::useAlarm')}}</span>
+                </label>
+                @endif
+
+                <label class="xe-label">
+                    <input type="checkbox" name="display" value="{{\Xpressengine\Document\Models\Document::DISPLAY_SECRET}}">
+                    <span class="xe-input-helper"></span>
+                    <span class="xe-label-text">{{xe_trans('board::secretPost')}}</span>
+                </label>
+
+                @if($isManager === true)
+                <label class="xe-label">
+                    <input type="checkbox" name="status" value="{{\Xpressengine\Document\Models\Document::STATUS_NOTICE}}">
+                    <span class="xe-input-helper"></span>
+                    <span class="xe-label-text">{{xe_trans('xe::notice')}}</span>
+                </label>
+                @endif
+            </div>
+        </div>
+        <div class="write_form_btn @if (Auth::guest() === true) nologin @endif">
+            {{--<a href="#" class="bd_btn btn_temp_save">임시저장</a>--}}
+            <a href="{{ $urlHandler->get('preview') }}" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
+            <a href="{{ $urlHandler->get('store') }}" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
+        </div>
+    </div>
+    <!-- /비로그인 -->
+
     </form>
+
 </div>
-
-{{ XeFrontend::css('/assets/core/common/css/temporary.css')->load() }}
-{{ XeFrontend::js('assets/core/common/js/temporary.js')->appendTo('body')->load() }}
-
-<script>
-    {{--$(function() {--}}
-        {{--var form = $('#board_form');--}}
-        {{--var temporary = $('textarea', form).temporary({--}}
-            {{--key: 'document|{{$instanceId}}',--}}
-            {{--btnLoad: $('.__xe_temp_btn_load', form),--}}
-            {{--btnSave: $('.__xe_temp_btn_save', form),--}}
-            {{--container: $('.__xe_temp_container', form),--}}
-            {{--withForm: true,--}}
-            {{--callback: function (data) {--}}
-                {{--console.log(data);--}}
-                {{--if (xe3CkEditors['xeContentEditor']) {--}}
-                    {{--xe3CkEditors['xeContentEditor'].setData($('textarea', this.dom).val());--}}
-                {{--}--}}
-            {{--}--}}
-        {{--});--}}
-    {{--});--}}
-
-
-    {{--$(function() {--}}
-        {{--$('.board-container .__xe_btn_temporary').bind('click', function() {--}}
-            {{--var f = $('#board_form').clone();--}}
-
-            {{--var status = $('<input>').attr('name', 'status').attr('type', 'hidden').val('temp');--}}
-            {{--f.append(status);--}}
-            {{--f.attr('action', '{{ $urlHandler->get('temporary') }}');--}}
-            {{--f.submit();--}}
-        {{--});--}}
-
-
-        {{--new Temporary($('#board_form [name="content"]'), 'board|{{$instanceId}}}', function (data) {--}}
-            {{--form.editorSync();--}}
-        {{--}, true);--}}
-    {{--});--}}
-</script>

@@ -1,16 +1,30 @@
 @if($scriptInit === true)
     <script>
-        // 여기에 스크립트를 넣으면 좋은데. 지금은 밖에서 처리하고 있음
+        $(function($) {
+            $('.__xe-dropdown-form .xe-dropdown-menu a').on('click touchstart', function(event) {
+                var $target = $(event.target),
+                    $container = $target.closest('.__xe-dropdown-form'),
+                    name = $target.closest('.xe-dropdown-menu').data('name'),
+                    $input = $container.find('[name="'+name+'"]');
+
+                $input.val($target.data('value'));
+                $container.find('button').text($target.text());
+
+
+                // event trigger for third parties
+                $input.trigger( "change" );
+            });
+        });
     </script>
 @endif
 
-<input type="hidden" name="{{ $name }}" value="{{ $value }}" />
-<a href="#" class="bd_select __xe_select_box_show">{{ $value ? xe_trans($text) : xe_trans($label) }}</a>
-<div class="bd_select_list" data-name="{{ $name }}">
-    <ul>
-        <li><a href="#" data-value="">{{ xe_trans($label) }}</a></li>
-        @foreach ($items as $key=>$item)
-            <li><a href="#" data-value="{{$item['value']}}">{{xe_trans($item['text'])}}</a></li>
+<div class="xe-dropdown __xe-dropdown-form">
+    <input type="hidden" name="{{ $name }}" value="{{ $value }}" />
+    <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">{{ $value != $default ? xe_trans($text) : xe_trans($label) }}</button>
+    <ul class="xe-dropdown-menu" data-name="{{ $name }}">
+        <li @if($value == $default) class="on" @endif><a href="#">{{ xe_trans($label) }}</a></li>
+        @foreach ($items as $item)
+            <li @if($value == $item['value']) class="on" @endif><a href="#" data-value="{{$item['value']}}">{{xe_trans($item['text'])}}</a></li>
         @endforeach
     </ul>
 </div>

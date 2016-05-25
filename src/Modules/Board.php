@@ -122,10 +122,11 @@ class Board extends AbstractModule
             Route::post('/trash', ['as' => 'trash', 'uses' => 'UserController@trash']);
             Route::post('/identificationConfirm', ['as' => 'identificationConfirm', 'uses' => 'UserController@identificationConfirm']);
             Route::post('/update', ['as' => 'update', 'uses' => 'UserController@update']);
+            Route::post('/vote/{option}/{id}', ['as' => 'vote', 'uses' => 'UserController@vote']);
             Route::get('/vote/show', ['as' => 'showVote', 'uses' => 'UserController@showVote']);
             Route::get('/vote/users/{option}', ['as' => 'votedUsers', 'uses' => 'UserController@votedUsers']);
-            Route::post('/vote/add/{option}', ['as' => 'addVote', 'uses' => 'UserController@addVote']);
-            Route::post('/vote/remove/{option}', ['as' => 'removeVote', 'uses' => 'UserController@removeVote']);
+//            Route::post('/vote/add/{option}', ['as' => 'addVote', 'uses' => 'UserController@addVote']);
+//            Route::post('/vote/remove/{option}', ['as' => 'removeVote', 'uses' => 'UserController@removeVote']);
             Route::post('/manageMenus/{id}', ['as' => 'manageMenus', 'uses' => 'UserController@manageMenus']);
             Route::get('/comment/list', ['as' => 'comment.index', 'uses' => 'UserController@pageCommentIndex']);
             Route::post('/comment/store', ['as' => 'comment.store', 'uses' => 'UserController@pageCommentStore']);

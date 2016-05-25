@@ -9,21 +9,16 @@
         <div class="write_header">
             <div class="write_category">
                 @if($config->get('category') == true)
-                <input type="hidden" name="categoryItemId" value="{{ $categoryItem ? $categoryItem->id : '' }}" placeholder="{{ xe_trans('xe::category') }}"/>
-                    <a href="#" class="bd_select __xe_select_box_show">{{ $categoryItem ? xe_trans($categoryItem->word) : xe_trans('xe::category') }}</a>
-                <div class="bd_select_list" data-name="categoryItemId">
-                    <ul>
-                        <li><a href="#" data-value="">{{xe_trans('xe::category')}}</a></li>
-                        @foreach ($categoryItems as $cateItem)
-                            <li><a href="#" data-value="{{$cateItem->id}}">{{xe_trans($cateItem->word)}}</a></li>
-                        @endforeach
-                    </ul>
-                </div>
+                    {!! uio('uiobject/board@select', [
+                        'name' => 'categoryItemId',
+                        'label' => xe_trans('xe::category'),
+                        'value' => $item->boardCategory != null ? $item->boardCategory->id : '',
+                        'items' => $categories,
+                    ]) !!}
                 @endif
             </div>
             <div class="write_title">
                 {!! uio('titleWithSlug', [
-                'id' => $item->id,
                 'title' => Input::old('title', $item->title),
                 'slug' => $item->getSlug(),
                 'titleClassName' => 'bd_input',
@@ -31,9 +26,8 @@
                 ]) !!}
             </div>
         </div>
-
         <div class="write_body">
-            <div class="write_form_editor __xe_content">
+            <div class="write_form_editor">
                 {!! uio('editor', [
                   'content' => Input::old('content', $item->content),
                   'editorConfig' => [
@@ -51,8 +45,7 @@
             </div>
         </div>
 
-        <div class="write_footer">
-
+        <div class="dynamic-field">
             @foreach ($configHandler->formColumns($instanceId) as $columnName)
                 @if (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                     <div class="__xe_{{$columnName}} __xe_section">
@@ -60,45 +53,59 @@
                     </div>
                 @endif
             @endforeach
-
-            @if ($item->userType == $item::USER_TYPE_GUEST)
-                <div class="write_form_input">
-                    <input type="text" name="writer" class="bd_input" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer', $item->writer) }}">
-                    <input type="password" name="certifyKey" class="bd_input" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
-                    <input type="email" name="email" class="bd_input v2" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email', $item->email) }}">
-                </div>
-            @endif
-
-            <div class="write_form_option">
-                @if($isManager === true)
-                <input type="checkbox" id="notice" name="status" value="{{$item::STATUS_NOTICE}}" @if($item->status == $item::STATUS_NOTICE) checked="checked" @endif /><label for="notice">{{xe_trans('xe::notice')}}</label>
+        </div>
+        <!-- 비로그인 -->
+        <div class="write_footer">
+            <div class="write_form_input">
+                @if ($item->userType == $item::USER_TYPE_GUEST)
+                    <div class="xe-form-inline">
+                        <input type="text" class="xe-form-control" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer') }}">
+                        <input type="password" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                        <input type="email" class="xe-form-control" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email') }}">
+                    </div>
                 @endif
             </div>
-            <div class="write_form_btn">
-                <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
-                <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
-                {{--<a href="{{ $urlHandler->getShow($item, Input::except('parentId')) }}" class="bd_btn btn_cancel"><i class="xi-undo"></i> {{ xe_trans('xe::back') }}</a>--}}
+            <div class="write_form_option">
+                <div class="xe-form-inline">
+                    @if($config->get('comment') === true)
+                        <label class="xe-label">
+                            <input type="checkbox" name="allowComment" value="true">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text">{{xe_trans('board::allowComment')}}</span>
+                        </label>
+                    @endif
+
+                    @if (Auth::guest() === true)
+                        <label class="xe-label">
+                            <input type="checkbox" name="useAlarm" value="true">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text">{{xe_trans('board::useAlarm')}}</span>
+                        </label>
+                    @endif
+
+                    <label class="xe-label">
+                        <input type="checkbox" name="display" value="{{$item::DISPLAY_SECRET}}" @if($item->display == $item::DISPLAY_SECRET) checked="checked" @endif>
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text">{{xe_trans('board::secretPost')}}</span>
+                    </label>
+
+                    @if($isManager === true)
+                        <label class="xe-label">
+                            <input type="checkbox" name="status" value="{{$item::STATUS_NOTICE}}" @if($item->status == $item::STATUS_NOTICE) checked="checked" @endif>
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text">{{xe_trans('xe::notice')}}</span>
+                        </label>
+                    @endif
+                </div>
             </div>
-
+            <div class="write_form_btn @if (Auth::guest() === true) nologin @endif">
+                {{--<a href="#" class="bd_btn btn_temp_save">임시저장</a>--}}
+                <a href="{{ $urlHandler->get('preview') }}" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
+                <a href="{{ $urlHandler->get('update') }}" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
+            </div>
         </div>
+        <!-- /비로그인 -->
+
     </form>
+
 </div>
-
-{{ XeFrontend::js('assets/core/common/js/temporary.js')->appendTo('body')->load() }}
-{{--<script>--}}
-    {{--$(function() {--}}
-        {{--$('.board-container .__xe_btn_temporary').bind('click', function() {--}}
-            {{--var f = $('#board_form').clone();--}}
-
-            {{--var status = $('<input>').attr('name', 'status').attr('type', 'hidden').val('temp');--}}
-            {{--f.append(status);--}}
-            {{--f.attr('action', '{{ $urlHandler->get('temporary') }}');--}}
-            {{--f.submit();--}}
-        {{--});--}}
-
-
-        {{--new Temporary($('#board_form [name="content"]'), 'board|{{$boardId}}}', function (data) {--}}
-            {{--form.editorSync();--}}
-        {{--}, true);--}}
-    {{--});--}}
-{{--</script>--}}

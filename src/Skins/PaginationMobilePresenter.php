@@ -63,7 +63,7 @@ class PaginationMobilePresenter implements PresenterContract
     {
         if ($this->hasPages()) {
             return sprintf(
-                '<div class="bd_paginate v2 pc_hidden">%s %s %s</div>',
+                '<div class="bd_paginate v2 xe-visible-xs">%s %s %s</div>',
                 $this->getPreviousButton(),
                 $this->getCurrentPosition(),
                 $this->getNextButton()

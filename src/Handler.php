@@ -537,6 +537,13 @@ class Handler
      */
     public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
     {
+        if ($request->get('title_pureContent', '') !== '') {
+            $query = $query->whereNested(function ($query) use ($request) {
+                $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_pureContent')))
+                    ->orWhere('pureContent', 'like', sprintf('%%%s%%', $request->get('title_pureContent')));
+            });
+        }
+
         if ($request->get('title_content', '') !== '') {
             $query = $query->whereNested(function ($query) use ($request) {
                 $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_content')))
@@ -550,6 +557,14 @@ class Handler
 
         if ($request->get('categoryItemId', '') !== '') {
             $query = $query->where('itemId', $request->get('categoryItemId'));
+        }
+
+        if ($request->get('startCreatedAt', '') !== '') {
+            $query = $query->where('createdAt', '>=', $request->get('startCreatedAt') . ' 00:00:00');
+        }
+
+        if ($request->get('endCreatedAt', '') !== '') {
+            $query = $query->where('createdAt', '<=', $request->get('endCreatedAt') . ' 23:59:59');
         }
 
         $query->getProxyManager()->wheres($query->getQuery(), $request->all());
@@ -614,6 +629,23 @@ class Handler
     }
 
     /**
+     * vote
+     *
+     * @param Board         $board  board model
+     * @param UserInterface $user   user
+     * @param string        $option 'assent' or 'dissent'
+     * @return void
+     */
+    public function vote(Board $board, UserInterface $user, $option)
+    {
+        if ($this->voteCounter->has($board->id, $user, $option) === false) {
+            $this->incrementVoteCount($board, $user, $option);
+        } else {
+            $this->decrementVoteCount($board, $user, $option);
+        }
+    }
+
+    /**
      * increment vote count
      *
      * @param Board         $board  board model
@@ -623,9 +655,7 @@ class Handler
      */
     public function incrementVoteCount(Board $board, UserInterface $user, $option)
     {
-        if ($this->voteCounter->has($board->id, $user, $option) === false) {
-            $this->voteCounter->add($board->id, $user, $option);
-        }
+        $this->voteCounter->add($board->id, $user, $option);
 
         $columnName = 'assentCount';
         if ($option == 'dissent') {
@@ -645,9 +675,7 @@ class Handler
      */
     public function decrementVoteCount(Board $board, UserInterface $user, $option)
     {
-        if ($this->voteCounter->has($board->id, $user, $option) === true) {
-            $this->voteCounter->remove($board->id, $user, $option);
-        }
+        $this->voteCounter->remove($board->id, $user, $option);
 
         $columnName = 'assentCount';
         if ($option == 'dissent') {
