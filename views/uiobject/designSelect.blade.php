@@ -2,6 +2,7 @@
     <script>
         $(function($) {
             $('.__xe-dropdown-form .xe-dropdown-menu a').on('click touchstart', function(event) {
+                event.preventDefault();
                 var $target = $(event.target),
                     $container = $target.closest('.__xe-dropdown-form'),
                     name = $target.closest('.xe-dropdown-menu').data('name'),
@@ -9,7 +10,6 @@
 
                 $input.val($target.data('value'));
                 $container.find('button').text($target.text());
-
 
                 // event trigger for third parties
                 $input.trigger( "change" );

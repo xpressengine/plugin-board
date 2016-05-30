@@ -221,6 +221,12 @@ class UserController extends Controller
             ['value' => '6month', 'text' => 'board::6month'],
             ['value' => '1year', 'text' => 'board::1year'],
         ];
+
+        XeFrontend::translation([
+            'board::selectPost',
+            'board::selectBoard',
+        ]);
+
         return compact('notices', 'paginate', 'fieldTypes','categories', 'terms');
     }
 
@@ -460,14 +466,15 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $categoryItem = null;
-        $categoryItems = null;
+        $categories = [];
         if ($this->config->get('category') === true) {
-            $boardCategory = $item->boardCategory;
-            if ($boardCategory) {
-                $categoryItem = $boardCategory->categoryItem;
-            }
             $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
         }
 
         /** @var \Xpressengine\Plugins\Board\Validator $validator */
@@ -481,8 +488,7 @@ class UserController extends Controller
             'handler' => $this->handler,
             'item' => $item,
             'parent' => $parent,
-            'categoryItem' => $categoryItem,
-            'categoryItems' => $categoryItems,
+            'categories' => $categories,
             'rules' => $rules,
         ]);
     }
@@ -777,7 +783,7 @@ class UserController extends Controller
      * @param Request $request request
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function showVote(Request $request)
+    public function showVote(Request $request, $id)
     {
         // display 설정
         $display =['assent' => true, 'dissent' => true];
@@ -789,7 +795,6 @@ class UserController extends Controller
             $display['dissent'] = false;
         }
 
-        $id = $request->get('id');
         $user = Auth::user();
 
         $board = $this->handler->getModel($this->config)->find($id);
@@ -830,7 +835,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return $this->showVote($request);
+        return $this->showVote($request, $id);
     }
 
     /**

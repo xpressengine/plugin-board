@@ -262,12 +262,12 @@ return [
         'en' => 'Please enter a title.',
     ],
     'allowComment' => [
-        'ko' => '댓글 허용.',
-        'en' => 'Allow comment.',
+        'ko' => '댓글 허용',
+        'en' => 'Allow comment',
     ],
     'useAlarm' => [
-        'ko' => '알림.',
-        'en' => 'Alarm.',
+        'ko' => '알림',
+        'en' => 'Alarm',
     ],
     'period' => [
         'ko' => '기간',
@@ -304,5 +304,9 @@ return [
     'endDate' => [
         'ko' => '끝 날짜',
         'en' => 'End date',
+    ],
+    'selectBoard' => [
+        'ko' => '게시판을 선택해 주세요.',
+        'en' => 'Please select the board.',
     ],
 ];

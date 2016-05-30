@@ -79,6 +79,11 @@ class Board extends Document implements CommentUsable
         return $this->hasMany(CounterLog::class, 'targetId')->where('counterName', 'vote')->where('counterOption', 'assent');
     }
 
+    public function boardData()
+    {
+        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardData', 'targetId');
+    }
+
     /**
      * get slug
      *

@@ -17,8 +17,13 @@ use Route;
 use XeSkin;
 use View;
 use Xpressengine\Module\AbstractModule;
+use Xpressengine\Plugins\Board\Handler as BoardHandler;
+use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\Models\Board as BoardModel;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
+use Xpressengine\Plugins\Comment\Handler as CommentHandler;
+use Xpressengine\Plugins\Comment\Models\Target as CommentTarget;
 
 /**
  * Board
@@ -50,6 +55,7 @@ class Board extends AbstractModule
         self::registerInstanceRoute();
         self::registerToggleMenu();
         self::registerSettingsMenu();
+        self::registerCommentIntercept();
     }
 
     /**
@@ -201,6 +207,29 @@ class Board extends AbstractModule
         }
     }
 
+    public static function registerCommentIntercept()
+    {
+        intercept(
+            sprintf('%s@create', CommentHandler::class),
+            static::class.'-comment-create',
+            function($func, $inputs, $user = null) {
+                $comment = $func($inputs, $user);
+
+                /** @var BoardHandler $handler */
+                $handler = app('xe.board.handler');
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+
+                $board = BoardModel::find($comment->target->targetId);
+                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+
+                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->save();
+                return $comment;
+            }
+        );
+    }
+
     /**
      * get manage URI
      *
@@ -286,6 +315,9 @@ class Board extends AbstractModule
     public function updateMenu($instanceId, $menuTypeParams, $itemParams)
     {
         $menuTypeParams['boardId'] = $instanceId;
+        if ($menuTypeParams['boardName'] == '') {
+            $menuTypeParams['boardName'] = $itemParams['title'];
+        }
         app('xe.board.instance')->updateConfig($menuTypeParams);
     }
 

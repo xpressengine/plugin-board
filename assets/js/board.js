@@ -68,6 +68,10 @@ $(function($) {
 
     });
 
+    $('.__xe-bd-manage').on('click', function() {
+        $('.bd_manage_detail').toggle();
+    });
+
     $('.__xe-bd-search').on('click', function() {
         event.preventDefault();
         $(this).toggleClass("on");
@@ -388,4 +392,113 @@ $(function($) {
         var form = $(this).closest('form');
         form.trigger('submit');
     });
+});
+
+// manage
+$(function($) {
+    // copy documents
+    $('.__xe_copy .__xe_btn_submit').on('click', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
+        }
+
+        var ids = getCheckedIds(),
+            instanceId = $('.__xe_copy').find('[name="copyTo"]').val();
+
+        if (instanceId == '') {
+            XE.toast('info', XE.Lang.trans('board::selectBoard'));
+            return;
+        }
+
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids, instanceId: instanceId},
+            url: $(event.target).data('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_move .__xe_btn_submit').on('click', function(event) {
+        if (hasChecked() === false) {
+            return;
+        }
+
+        event.preventDefault();
+
+        var ids = getCheckedIds(),
+            instanceId = $('.__xe_move').find('[name="moveTo"]').val();
+
+        if (instanceId == '') {
+            XE.toast('info', XE.Lang.trans('board::selectBoard'));
+            return;
+        }
+
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids, instanceId: instanceId},
+            url: $(event.target).data('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_to_trash').on('click', 'a:first', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
+        }
+
+        var ids = getCheckedIds();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids},
+            url: $(event.target).prop('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_delete').on('click', 'a:first', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
+        }
+
+        var ids = getCheckedIds();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids},
+            url: $(event.target).prop('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+
+    var hasChecked = function() {
+        if ($('.bd_manage_check:checked').length == 0) {
+            XE.toast('info', XE.Lang.trans('board::selectPost'));
+            return false;
+        }
+        return true;
+    };
+
+    var getCheckedIds = function() {
+        var checkedIds = [];
+        $('.bd_manage_check:checked').each(function() {
+            checkedIds.push($(this).val());
+        });
+
+        return checkedIds;
+    }
 });

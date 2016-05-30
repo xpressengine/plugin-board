@@ -23,6 +23,7 @@ use Xpressengine\Plugins\Board\Exceptions\AlreadyExistFavoriteHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundFavoriteHttpException;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
+use Xpressengine\Plugins\Board\Models\BoardData;
 use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
@@ -151,6 +152,7 @@ class Handler
         $board = $model->find($doc->id);
         $this->setModelConfig($board, $config);
 
+        $this->saveData($board, $args);
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
         $this->setFiles($board, $args);
@@ -159,6 +161,38 @@ class Handler
         $model->getConnection()->commit();
 
         return $board;
+    }
+
+    /**
+     * save data
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return void
+     */
+    protected function saveData(Board $board, array $args)
+    {
+        $allowComment = 1;
+        if (empty($args['allowComment']) || $args['allowComment'] !== '1') {
+            $allowComment = 0;
+        }
+        $useAlarm = 1;
+        if (empty($args['useAlarm']) || $args['useAlarm'] !== '1') {
+            $useAlarm = 0;
+        }
+
+        $data = $board->boardData;
+        if ($data === null) {
+            $data = new BoardData([
+                'allowComment' => $allowComment,
+                'useAlarm' => $useAlarm,
+            ]);
+        } else {
+            $data->allowComment = $allowComment;
+            $data->useAlarm = $useAlarm;
+        }
+
+        $board->boardData()->save($data);
     }
 
     /**
@@ -298,6 +332,7 @@ class Handler
 
         $doc = $this->documentHandler->put($board);
 
+        $this->saveData($board, $args);
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
         $fileIds = $this->setFiles($board, $args);
@@ -473,7 +508,11 @@ class Handler
         $args['id'] = null;
         $args['instanceId'] = $config->get('boardId');
         $args['slug'] = $board->boardSlug->slug;
-        $args['categoryItemId'] = $board->boardCategory->itemId;
+        $args['categoryItemId'] = '';
+        $boardCategory = $board->boardCategory;
+        if ($boardCategory != null) {
+            $args['categoryItemId'] = $boardCategory->itemId;
+        }
 
         $this->add($args, $user, $config);
 

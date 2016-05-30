@@ -2,7 +2,7 @@
     @if ($isManager === true)
     <div class="bd_manage_area">
         <!-- [D] 클릭시 클래스 on 추가 및 bd_manage_detail 영역 노출 -->
-        <button type="button" class="xe-btn xe-btn-primary-outline bd_manage">{{ xe_trans('xe::manage') }}</button>
+        <button type="button" class="xe-btn xe-btn-primary-outline bd_manage __xe-bd-manage">{{ xe_trans('xe::manage') }}</button>
     </div>
     @endif
 
@@ -44,7 +44,7 @@
     <div class="bd_manage_detail">
         <div class="xe-row">
             <div class="xe-col-sm-6">
-                <div class="xe-row">
+                <div class="xe-row __xe_copy">
                     <div class="xe-col-sm-3">
                         <label class="xe-control-label">{{ xe_trans('xe::copy') }}</label>
                     </div>
@@ -55,8 +55,7 @@
                                 'label' => xe_trans('xe::select'),
                                 'items' => $boardList,
                             ]) !!}
-                            <a href="{{ $urlHandler->managerUrl('copy') }}" class="btn btn_primary __xe_btn_submit" style="display:none;"><i class="xi-check"></i> {{ xe_trans('xe::copy') }}</a>
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" href="{{ $urlHandler->managerUrl('copy') }}">{{ xe_trans('xe::copy') }}</button>
+                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-href="{{ $urlHandler->managerUrl('copy') }}">{{ xe_trans('xe::copy') }}</button>
                         </div>
                     </div>
                 </div>
@@ -64,7 +63,7 @@
         </div>
         <div class="xe-row">
             <div class="xe-col-sm-6">
-                <div class="xe-row">
+                <div class="xe-row __xe_move">
                     <div class="xe-col-sm-3">
                         <label class="xe-control-label">{{ xe_trans('xe::move') }}</label>
                     </div>
@@ -75,7 +74,7 @@
                                 'label' => xe_trans('xe::select'),
                                 'items' => $boardList,
                             ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" href="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
+                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-href="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
                         </div>
                     </div>
                 </div>
@@ -83,7 +82,7 @@
         </div>
         <div class="xe-row">
             <div class="xe-col-sm-6">
-                <div class="xe-row">
+                <div class="xe-row __xe_to_trash">
                     <div class="xe-col-sm-3">
                         <label class="xe-control-label">{{ xe_trans('xe::trash') }}</label>
                     </div>
@@ -95,7 +94,7 @@
         </div>
         <div class="xe-row">
             <div class="xe-col-sm-6">
-                <div class="xe-row">
+                <div class="xe-row __xe_delete">
                     <div class="xe-col-sm-3">
                         <label class="xe-control-label">{{ xe_trans('xe::delete') }}</label>
                     </div>
@@ -256,7 +255,7 @@
             @foreach ($config->get('listColumns') as $columnName)
                 @if ($columnName == 'title')
                     @if ($config->get('category') == true)
-                        <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? $item->boardCategory->categoryItem->word : '' !!}</td>
+                        <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                     @endif
                         <td class="title column-{{$columnName}}">
                             <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
@@ -320,7 +319,7 @@
             @foreach ($config->get('listColumns') as $columnName)
                 @if ($columnName == 'title')
                     @if ($config->get('category') == true)
-                        <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? $item->boardCategory->categoryItem->word : '' !!}</td>
+                        <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                     @endif
                     <td class="title column-{{$columnName}}">
                         <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>

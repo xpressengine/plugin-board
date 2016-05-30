@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Controllers;
 use XeDB;
 use Redirect;
 use XePresenter;
+use Session;
 use App\Http\Controllers\Controller;
 use App\Http\Sections\DynamicFieldSection;
 use App\Http\Sections\ToggleMenuSection;
@@ -504,6 +505,8 @@ class ManagerController extends Controller
             $this->handler->remove($item, $this->configHandler->get($item->instanceId));
         }
 
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
+
         return $this->presenter->makeApi([]);
     }
 
@@ -523,6 +526,8 @@ class ManagerController extends Controller
             $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->trash($item, $this->configHandler->get($item->instanceId));
         }
+
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
 
         return $this->presenter->makeApi([]);
     }
@@ -570,6 +575,8 @@ class ManagerController extends Controller
             $this->handler->move($item, $config);
         }
 
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
+
         return $this->presenter->makeApi([]);
     }
 
@@ -600,6 +607,8 @@ class ManagerController extends Controller
 
             $this->handler->copy($item, $user, $config);
         }
+
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
 
         return $this->presenter->makeApi([]);
     }

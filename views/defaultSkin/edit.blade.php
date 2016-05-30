@@ -5,14 +5,13 @@
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="id" value="{{$item->id}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
-
         <div class="write_header">
             <div class="write_category">
                 @if($config->get('category') == true)
                     {!! uio('uiobject/board@select', [
                         'name' => 'categoryItemId',
                         'label' => xe_trans('xe::category'),
-                        'value' => $item->boardCategory != null ? $item->boardCategory->id : '',
+                        'value' => $item->boardCategory != null ? $item->boardCategory->itemId : '',
                         'items' => $categories,
                     ]) !!}
                 @endif
@@ -69,15 +68,15 @@
                 <div class="xe-form-inline">
                     @if($config->get('comment') === true)
                         <label class="xe-label">
-                            <input type="checkbox" name="allowComment" value="true">
+                            <input type="checkbox" name="allowComment" value="1" @if($item->boardData->allowComment) checked="checked" @endif>
                             <span class="xe-input-helper"></span>
                             <span class="xe-label-text">{{xe_trans('board::allowComment')}}</span>
                         </label>
                     @endif
 
-                    @if (Auth::guest() === true)
+                    @if (Auth::check() === true)
                         <label class="xe-label">
-                            <input type="checkbox" name="useAlarm" value="true">
+                            <input type="checkbox" name="useAlarm" value="1" @if($item->boardData->useAlarm) checked="checked" @endif>
                             <span class="xe-input-helper"></span>
                             <span class="xe-label-text">{{xe_trans('board::useAlarm')}}</span>
                         </label>

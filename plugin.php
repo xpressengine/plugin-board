@@ -52,6 +52,8 @@ class Plugin extends AbstractPlugin
     {
         $this->createDefaultConfig();
 
+        $this->createDataTable();
+
         $this->createFavoriteTable();
 
         $this->createSlugTable();
@@ -97,27 +99,14 @@ class Plugin extends AbstractPlugin
      */
     protected function createDataTable()
     {
-        if (Schema::hasTable('board_datas') === false) {
-            Schema::create('board_datas', function (Blueprint $table) {
+        if (Schema::hasTable('board_data') === false) {
+            Schema::create('board_data', function (Blueprint $table) {
                 $table->string('targetId', 255);
 
-                // for slug
-                $table->string('instanceId', 255);
-                $table->string('slug', 255);
-                $table->string('title', 255);
-
-                // for category
-                $table->string('categoryItemId', 255);
-
-                // for gallery thumbnail
-                $table->string('boardThumbnailFileId', 255);
-                $table->string('boardThumbnailExternalPath', 255);
-                $table->string('boardThumbnailPath', 255);
+                $table->integer('allowComment')->default(1);
+                $table->integer('useAlarm')->default(1);
 
                 $table->primary(array('targetId'));
-
-                $table->index(array('slug'));
-                $table->index(array('title'));
             });
         }
     }
