@@ -839,55 +839,6 @@ class UserController extends Controller
     }
 
     /**
-     * 찬성
-     *
-     * @param Request $request request
-     * @param string  $menuUrl first segment
-     * @param string  $option  options
-     * @return \Xpressengine\Presenter\RendererInterface
-     * @deprecated
-     */
-    public function addVote(Request $request, $menuUrl, $option)
-    {
-        $id = $request->get('id');
-        $author = Auth::user();
-
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
-
-        try {
-            $this->handler->incrementVoteCount($item, $author, $option);
-        } catch (GuestNotSupportException $e) {
-            throw new AccessDeniedHttpException;
-        }
-
-
-        return $this->showVote($request);
-    }
-
-    /**
-     * 반대
-     *
-     * @param Request $request request
-     * @param string  $menuUrl first segment
-     * @param string  $option  options
-     * @return \Xpressengine\Presenter\RendererInterface
-     * @deprecated
-     */
-    public function removeVote(Request $request, $menuUrl, $option)
-    {
-        $id = $request->get('id');
-        $author = Auth::user();
-
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
-
-        $this->handler->decrementVoteCount($item, $author, $option);
-
-        return $this->showVote($request);
-    }
-
-    /**
      * get voted user list
      *
      * @param Request $request request
