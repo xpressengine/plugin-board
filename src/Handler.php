@@ -560,7 +560,7 @@ class Handler
         $query = $this->getModel($config)
             ->where('instanceId', $config->get('boardId'))
             ->where('status', Document::STATUS_NOTICE)
-            ->where('display', Document::DISPLAY_VISIBLE)
+            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED);
 
         return $query->get();
