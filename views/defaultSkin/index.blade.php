@@ -18,7 +18,9 @@
             <!-- [D] 클릭시 클래스 on 및 추가 bd_search_area 영역 활성화 -->
             <li><a href="#" class="bd_search __xe-bd-search"><span class="xe-sr-only">{{ xe_trans('xe::search') }}</span><i class="xi-magnifier"></i></a></li>
             <li><a href="{{ $urlHandler->get('create') }}"><span class="xe-sr-only">{{ xe_trans('board::newPost') }}</span><i class="xi-pen-o"></i></a></li>
+            @if ($isManager === true)
             <li><a href="{{ route('manage.board.board.edit', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
+            @endif
         </ul>
     </div>
     <div class="xe-form-inline xe-hidden-xs __xe-forms">
