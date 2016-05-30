@@ -12,10 +12,10 @@
 
             <div class="more_info">
                 <!-- [D] 클릭시 클래스 on 적용 -->
-                @if ($item->userId != '' && $config->get('anonymity') === 'false')
+                @if ($item->userId != '' && $config->get('anonymity') === false)
                     <a href="{{ sprintf('/@%s', $item->user->getAuthIdentifier()) }}" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{{ $item->writer }}</a>
                 @else
-                    <a href="#" class="mb_autohr">{{ $item->writer }}</a>
+                    <a class="mb_autohr">{{ $item->writer }}</a>
                 @endif
 
                 <span class="mb_time" title="{{$item->createdAt}}"><i class="xi-time"></i> <span data-xe-timeago="{{$item->createdAt}}">{{$item->createdAt}}</span></span>
@@ -54,7 +54,7 @@
                     <a href="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-heart"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
                     <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num">{{$item->assentCount}}</a>
 
-                    <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif xe-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
+                    <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
 
                     <div class="bd_share_area">
                         <!-- [D] 클릭시 클래스 on 적용 -->
@@ -103,7 +103,7 @@
     </div>
 
     <!-- 댓글 -->
-    @if ($config->get('comment') === true)
+    @if ($config->get('comment') === true && $item->boardData->allowComment === 1)
     <div class="__xe_comment">
         {!! uio('comment', ['target' => $item]) !!}
     </div>

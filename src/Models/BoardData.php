@@ -36,4 +36,9 @@ class BoardData extends DynamicModel
     protected $primaryKey = 'targetId';
 
     protected $fillable = ['allowComment', 'useAlarm'];
+
+    public function isAlarm()
+    {
+        return $this->getAttribute('useAlarm') == 1;
+    }
 }

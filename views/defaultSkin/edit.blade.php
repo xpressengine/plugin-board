@@ -53,14 +53,14 @@
                 @endif
             @endforeach
         </div>
-        <!-- 비로그인 -->
+
         <div class="write_footer">
             <div class="write_form_input">
                 @if ($item->userType == $item::USER_TYPE_GUEST)
                     <div class="xe-form-inline">
-                        <input type="text" class="xe-form-control" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer') }}">
-                        <input type="password" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
-                        <input type="email" class="xe-form-control" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email') }}">
+                        <input type="text" name="writer" class="xe-form-control" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer', $item->writer) }}">
+                        <input type="password" name="certifyKey" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                        <input type="email" name="email" class="xe-form-control" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email', $item->email) }}">
                     </div>
                 @endif
             </div>
@@ -68,7 +68,7 @@
                 <div class="xe-form-inline">
                     @if($config->get('comment') === true)
                         <label class="xe-label">
-                            <input type="checkbox" name="allowComment" value="1" @if($item->boardData->allowComment) checked="checked" @endif>
+                            <input type="checkbox" name="allowComment" value="1" @if($item->boardData->allowComment == 1) checked="checked" @endif>
                             <span class="xe-input-helper"></span>
                             <span class="xe-label-text">{{xe_trans('board::allowComment')}}</span>
                         </label>
@@ -76,7 +76,7 @@
 
                     @if (Auth::check() === true)
                         <label class="xe-label">
-                            <input type="checkbox" name="useAlarm" value="1" @if($item->boardData->useAlarm) checked="checked" @endif>
+                            <input type="checkbox" name="useAlarm" value="1" @if($item->boardData->useAlarm == 1) checked="checked" @endif>
                             <span class="xe-input-helper"></span>
                             <span class="xe-label-text">{{xe_trans('board::useAlarm')}}</span>
                         </label>
@@ -97,13 +97,12 @@
                     @endif
                 </div>
             </div>
-            <div class="write_form_btn @if (Auth::guest() === true) nologin @endif">
+            <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
                 {{--<a href="#" class="bd_btn btn_temp_save">임시저장</a>--}}
                 <a href="{{ $urlHandler->get('preview') }}" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
                 <a href="{{ $urlHandler->get('update') }}" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
             </div>
         </div>
-        <!-- /비로그인 -->
 
     </form>
 

@@ -314,7 +314,7 @@
                     <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
                 </label>
             </td>
-            <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
+            <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
             @foreach ($config->get('listColumns') as $columnName)
                 @if ($columnName == 'title')

@@ -16,6 +16,8 @@ namespace Xpressengine\Plugins\Board\Modules;
 use Route;
 use XeSkin;
 use View;
+use Mail;
+use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Module\AbstractModule;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
@@ -55,7 +57,9 @@ class Board extends AbstractModule
         self::registerInstanceRoute();
         self::registerToggleMenu();
         self::registerSettingsMenu();
-        self::registerCommentIntercept();
+        self::registerCommentCountIntercept();
+        self::registerCommentAlarmIntercept();
+        self::registerManagerAlarmIntercept();
     }
 
     /**
@@ -207,7 +211,7 @@ class Board extends AbstractModule
         }
     }
 
-    public static function registerCommentIntercept()
+    public static function registerCommentCountIntercept()
     {
         intercept(
             sprintf('%s@create', CommentHandler::class),
@@ -215,16 +219,179 @@ class Board extends AbstractModule
             function($func, $inputs, $user = null) {
                 $comment = $func($inputs, $user);
 
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
+                }
+
                 /** @var BoardHandler $handler */
                 $handler = app('xe.board.handler');
                 /** @var ConfigHandler $configHandler */
                 $configHandler = app('xe.board.config');
 
-                $board = BoardModel::find($comment->target->targetId);
                 $handler->setModelConfig($board, $configHandler->get($board->instanceId));
-
                 $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                 $board->save();
+
+                // send alarm
+                if ($board->boardData->isAlarm() === true) {
+
+                }
+
+                return $comment;
+            }
+        );
+    }
+
+    public static function registerCommentAlarmIntercept()
+    {
+        intercept(
+            sprintf('%s@create', CommentHandler::class),
+            static::class.'-comment-alarm',
+            function($func, $inputs, $user = null) {
+                $comment = $func($inputs, $user);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
+                }
+                if ($board->userId == $comment->userId) {
+                    return $comment;
+                }
+                if ($board->userId == '') {
+                    return $comment;
+                }
+                if ($board->boardData->isAlarm() === false) {
+                    return $comment;
+                }
+
+                // link 도 추가해야함
+                $data = [
+                    'contents' => xe_trans(
+                        'board::newCommentRegisteredBy',
+                        ['displayName' => $comment->author->getDisplayName()]
+                    ),
+                ];
+
+                Mail::send('emails.alarm', $data, function ($m) use ($board) {
+                    $writer = $board->user;
+
+                    $fromEmail = app('config')->get('mail.from.address');
+                    $applicationName = 'XE3';
+
+                    $menuItem = MenuItem::find($board->instanceId);
+                    $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
+
+                    $m->from($fromEmail, $applicationName);
+                    $m->to($writer->email, $writer->getDisplayName());
+                    $m->subject($subject);
+                });
+
+                return $comment;
+            }
+        );
+    }
+
+    public static function registerManagerAlarmIntercept()
+    {
+        intercept(
+            sprintf('%s@add', BoardHandler::class),
+            static::class.'-manager-board-alarm',
+            function($func, $args, $user, $config) {
+                $board = $func($args, $user, $config);
+
+                // link 도 추가해야함
+                $data = [
+                    'contents' => $board->pureContent,
+                ];
+
+                /** @var ConfigHandler $boardHandler */
+                $boardHandler = app('xe.board.config');
+                $config = $boardHandler->get($board->instanceId);
+                if ($config->get('managerEmail') === null) {
+                    return $board;
+                }
+
+                $managerEmails = explode(',', $config->get('managerEmail'));
+                if (count($managerEmails) == 0) {
+                    return $board;
+                }
+
+                foreach ($managerEmails as $toMail) {
+                    Mail::send('emails.alarm', $data, function ($m) use ($toMail, $board) {
+                        $fromEmail = app('config')->get('mail.from.address');
+                        $applicationName = 'XE3';
+
+                        $menuItem = MenuItem::find($board->instanceId);
+                        $subject = sprintf(
+                            '[%s - %s] %s',
+                            $applicationName,
+                            xe_trans($menuItem->title),
+                            xe_trans('board::newPostsRegistered')
+                        );
+
+                        $m->from($fromEmail, $applicationName);
+                        $m->to($toMail, 'Board manager');
+                        $m->subject($subject);
+                    });
+
+                }
+
+                return $board;
+            }
+        );
+
+        intercept(
+            sprintf('%s@create', CommentHandler::class),
+            static::class.'-manager-comment-alarm',
+            function($func, $inputs, $user = null) {
+                $comment = $func($inputs, $user);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
+                }
+
+                // link 도 추가해야함
+                $data = [
+                    'contents' => $comment->pureContent,
+                ];
+
+                /** @var ConfigHandler $boardHandler */
+                $boardHandler = app('xe.board.config');
+                $config = $boardHandler->get($board->instanceId);
+                if ($config->get('managerEmail') === null) {
+                    return $comment;
+                }
+
+                $managerEmails = explode(',', $config->get('managerEmail'));
+                if (count($managerEmails) == 0) {
+                    return $comment;
+                }
+
+                foreach ($managerEmails as $toMail) {
+                    Mail::send('emails.alarm', $data, function ($m) use ($toMail, $board) {
+                        $fromEmail = app('config')->get('mail.from.address');
+                        $applicationName = 'XE3';
+
+                        $menuItem = MenuItem::find($board->instanceId);
+                        $subject = sprintf(
+                            '[%s - %s] %s',
+                            $applicationName,
+                            xe_trans($menuItem->title),
+                            xe_trans('board::newCommentRegistered')
+                        );
+
+                        $m->from($fromEmail, $applicationName);
+                        $m->to($toMail, 'Board manager');
+                        $m->subject($subject);
+                    });
+
+                }
+
                 return $comment;
             }
         );

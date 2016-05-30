@@ -309,4 +309,16 @@ return [
         'ko' => '게시판을 선택해 주세요.',
         'en' => 'Please select the board.',
     ],
+    'newCommentRegisteredBy' => [
+        'ko' => '":displayName" 님이 새 댓글을 등록했습니다.',
+        'en' => 'A new comment has been registered by ":displayName".',
+    ],
+    'newPostsRegistered' => [
+        'ko' => '새로운 게시물이 작성되었습니다',
+        'en' => 'A new posts has been registered.',
+    ],
+    'newCommentRegistered' => [
+        'ko' => '새로운 댓글이 작성되었습니다',
+        'en' => 'A new comment has been registered.',
+    ],
 ];
