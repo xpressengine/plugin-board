@@ -229,7 +229,7 @@ class Board extends Document implements CommentUsable
     public function scopeVisible($query)
     {
         $query->where('status', Document::STATUS_PUBLIC)
-            ->where('display', Document::DISPLAY_VISIBLE)
+            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED);
     }
 }
