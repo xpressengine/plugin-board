@@ -105,6 +105,7 @@ class Plugin extends AbstractPlugin
 
                 $table->integer('allowComment')->default(1);
                 $table->integer('useAlarm')->default(1);
+                $table->integer('fileCount')->default(0);
 
                 $table->primary(array('targetId'));
             });

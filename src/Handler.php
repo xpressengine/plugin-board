@@ -33,6 +33,7 @@ use Xpressengine\Tag\Tag;
 use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
+use Xpressengine\Storage\File as FileModel;
 
 /**
  * Board handler
@@ -152,11 +153,11 @@ class Handler
         $board = $model->find($doc->id);
         $this->setModelConfig($board, $config);
 
-        $this->saveData($board, $args);
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
         $this->setFiles($board, $args);
         $this->setTags($board, $args);
+        $this->saveData($board, $args);
 
         $model->getConnection()->commit();
 
@@ -180,16 +181,19 @@ class Handler
         if (empty($args['useAlarm']) || $args['useAlarm'] !== '1') {
             $useAlarm = 0;
         }
+        $fileCount = FileModel::getByFileable($board->id)->count();
 
         $data = $board->boardData;
         if ($data === null) {
             $data = new BoardData([
                 'allowComment' => $allowComment,
                 'useAlarm' => $useAlarm,
+                'fileCount' => $fileCount,
             ]);
         } else {
             $data->allowComment = $allowComment;
             $data->useAlarm = $useAlarm;
+            $data->fileCount = $fileCount;
         }
 
         $board->boardData()->save($data);
@@ -332,13 +336,13 @@ class Handler
 
         $doc = $this->documentHandler->put($board);
 
-        $this->saveData($board, $args);
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
         $fileIds = $this->setFiles($board, $args);
         $this->unsetFiles($board, $fileIds);
         $this->setTags($board, $args);
         $this->unsetTags($board, $args);
+        $this->saveData($board, $args);
 
         $board->getConnection()->commit();
 

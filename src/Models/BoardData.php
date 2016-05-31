@@ -35,7 +35,7 @@ class BoardData extends DynamicModel
 
     protected $primaryKey = 'targetId';
 
-    protected $fillable = ['allowComment', 'useAlarm'];
+    protected $fillable = ['allowComment', 'useAlarm', 'fileCount'];
 
     public function isAlarm()
     {

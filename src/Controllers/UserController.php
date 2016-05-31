@@ -40,6 +40,7 @@ use Xpressengine\Plugins\Board\Exceptions\NotFoundUploadFileException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueHttpException;
+use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -268,6 +269,9 @@ class UserController extends Controller
                 $visible = true;
             } elseif ($user->getId() == $item->getAuthor()->getId()) {
                 $visible = true;
+            }
+            if ($visible === false) {
+                throw new SecretDocumentHttpException;
             }
         }
 
@@ -949,6 +953,22 @@ class UserController extends Controller
 
         header('Content-type: ' . $media->mime);
         echo $media->getContent();
+    }
+
+    public function fileDownload(BoardPermissionHandler $boardPermission, $menuUrl, $id)
+    {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_READ,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        $file = File::find($id);
+
+        /** @var \Xpressengine\Storage\Storage $storage */
+        $storage = \App::make('xe.storage');
+        $storage->download($file);
     }
 
     /**
