@@ -54,7 +54,7 @@
                 <div class="bd_function_l">
                     <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
                     <a href="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-heart"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
-                    <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num">{{$item->assentCount}}</a>
+                    <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">{{$item->assentCount}}</a>
 
                     <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
 
@@ -87,19 +87,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bd_like_more">
-                    <ul>
-                    @foreach ($item->assents as $counterLog)
-                        <li @if($counterLog->userId == Auth::user()->getId()) class="on" @endif><img src="{{$counterLog->user->getProfileImage()}}" alt="{{$counterLog->user->getDisplayName()}}" title="$counterLog->user->getDisplayName()"></li>
-                    @endforeach
-                    </ul>
-                    <!-- [D] 최대 10명까지 노출하고 나머지 사용자는 modal에서 처리 -->
-                    @if ($item->assentCount > 10)
-                        <p class="bd_like_more_text">{!! xe_trans('board::assentThisPosts', [
-                        'count'=> sprintf('<a href="#" data-toggle="xe-modal" data-target="#Modal2">%s</a>', $item->assentCount - 1),
-                        ]) !!}}</p>
-                    @endif
-                </div>
+                <div class="bd_like_more" data-id="{{$item->id}}"></div>
             </div>
         </div>
     </div>

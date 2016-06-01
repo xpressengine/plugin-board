@@ -13,9 +13,12 @@
  */
 namespace Xpressengine\Plugins\Board\Skins;
 
+use XePresenter;
+
 use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
 use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
+use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Skin\AbstractSkin;
 use View;
@@ -50,12 +53,17 @@ class DefaultSkin extends AbstractSkin
 
         $this->data['skinAlias'] = static::$skinAlias;
 
-        // wrapped by _frame.blade.php
-        $view = View::make(sprintf('%s._frame', static::$skinAlias), $this->data);
-        $view->content = View::make(
+        $contentView = View::make(
             sprintf('%s.%s', static::$skinAlias, $this->view),
             $this->data
-        )->render();
+        );
+        if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
+            $view = $contentView;
+        } else {
+            // wrapped by _frame.blade.php
+            $view = View::make(sprintf('%s._frame', static::$skinAlias), $this->data);
+            $view->content = $contentView->render();
+        }
 
         return $view;
     }

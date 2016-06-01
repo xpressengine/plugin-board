@@ -1,3 +1,16 @@
+var getVotedUserList = function(page) {
+    if (page == undefined) {
+        page = 1;
+    }
+    var $modal = $('.xe-modal-content'),
+        $container = $modal.find('.xe-list-group');
+    XE.page($container.data('url'), '.xe-list-group', {
+        data: {
+            page: page
+        }
+    });
+};
+
 $(function($) {
     $('.__xe-bd-favorite').on('click', function(event) {
         event.preventDefault();
@@ -150,7 +163,22 @@ $(function($) {
         if (parseInt($(event.target).text()) == 0) {
             return;
         }
-        $('.bd_like_more').toggle();
+        var $target = $(event.target).closest('a');
+        var url = $target.prop('href');
+        XE.page(url, '.bd_like_more', {}, function() {
+            $('.bd_like_more[data-id="'+$target.data('id')+'"]').show();
+        });
+    });
+
+    // 안됨
+    $('.bd_like_more_text a').on('click touchstart', function(event) {
+        event.preventDefault();
+        if (parseInt($(event.target).text()) == 0) {
+            return;
+        }
+        var $target = $(event.target).closest('a');
+        var url = $target.prop('href');
+        XE.pageModal(url);
     });
 
         // click like number. show like member list

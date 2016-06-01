@@ -1,3 +1,4 @@
+{{ XeFrontend::js('assets/core/xe-ui-component/js/xe-page.js')->appendTo('body')->load() }}
 <div class="board_header">
     @if ($isManager === true)
     <div class="bd_manage_area">

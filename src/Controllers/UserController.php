@@ -848,30 +848,74 @@ class UserController extends Controller
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
-     * @return
      */
     public function votedUsers(Request $request, $menuUrl, $option)
     {
         $id = $request->get('id');
         $author = Auth::user();
+        $limit = $request->get('limit', 10);
 
         $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 
-        $users = $this->handler->getVoteCounter()->getUsers($item->id, $option);
+        $counter = $this->handler->getVoteCounter();
+        $logModel = $counter->newModel();
+        $logs = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
+            ->where('counterOption', $option)->take($limit)->get();
 
-        $userList = [];
-        foreach ($users as $user) {
-            $userList[] = [
-                'id' => $user->id,
-                'displayName' => $user->displayName,
-                'profileImage' => $user->getProfileImage(),
-            ];
-        }
+        return apiRender('votedUsers', [
+            'urlHandler' => $this->urlHandler,
+            'option' => $option,
+            'item' => $item,
+            'logs' => $logs,
+        ]);
+    }
 
-        return XePresenter::makeApi([
-            'current_page' => $request->get('page'),
-            'users' => $userList
+    /**
+     * get voted user list
+     *
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
+     */
+    public function votedModal(Request $request, $menuUrl, $option)
+    {
+        $id = $request->get('id');
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        $counter = $this->handler->getVoteCounter();
+        $logModel = $counter->newModel();
+        $count = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
+            ->where('counterOption', $option)->count();
+
+        return apiRender('votedModal', [
+            'urlHandler' => $this->urlHandler,
+            'option' => $option,
+            'item' => $item,
+            'count' => $count,
+        ]);
+    }
+
+    public function votedUserList(Request $request, $menuUrl, $option)
+    {
+        $id = $request->get('id');
+        $limit = $request->get('limit', 10);
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        $counter = $this->handler->getVoteCounter();
+        $logModel = $counter->newModel();
+        $paginate = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
+            ->where('counterOption', $option)->orderBy('id', 'desc')->paginate($limit);
+
+        return apiRender('votedUserList', [
+            'urlHandler' => $this->urlHandler,
+            'option' => $option,
+            'item' => $item,
+            'paginate' => $paginate,
         ]);
     }
 

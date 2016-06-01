@@ -63,12 +63,10 @@ class GallerySkin extends DefaultSkin
         $this->data['skinAlias'] = static::$skinAlias;
 
         // 리스팅을 제외한 모든 디자인은 기본 스킨의 디자인 사용
-        $view = View::make('board::views.defaultSkin._frame', $this->data);
         if ($this->view === 'index') {
-
             static::attachThumbnail($this->data['paginate']);
 
-            $view->content = View::make(
+            $contentView = View::make(
                 sprintf('%s.%s', static::$skinAlias, $this->view),
                 $this->data
             )->render();
@@ -78,10 +76,18 @@ class GallerySkin extends DefaultSkin
                 static::attachThumbnail($this->data['paginate']);
             }
 
-            $view->content = View::make(
+            $contentView = View::make(
                 sprintf('%s.%s', parent::$skinAlias, $this->view),
                 $this->data
             )->render();
+        }
+
+        if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
+            $view = $contentView;
+        } else {
+            // wrapped by _frame.blade.php
+            $view = View::make(sprintf('%s._frame', static::$skinAlias), $this->data);
+            $view->content = $contentView->render();
         }
 
         return $view;
