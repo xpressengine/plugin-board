@@ -8,13 +8,13 @@
   },
   "authors": [
     {
-      "name": "XE Team",
+      "name": "XE Developers",
       "email": "developers@xpressengine.com",
       "homepage": "http://xpressengine.io",
       "role": "Developer"
     }
   ],
-  "license": "LGPL",
+  "license": "LGPL-2.1",
   "type": "xpressengine-plugin",
   "extra": {
     "xpressengine": {
