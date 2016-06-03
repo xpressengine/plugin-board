@@ -2,15 +2,15 @@
 /**
  * Plugin
  *
- * PHP version 5
- *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     LGPL-2.1
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @link        https://xpressengine.io
  */
+
 namespace Xpressengine\Plugins\Board;
 
 use Schema;
@@ -28,10 +28,6 @@ use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
  */
 class Plugin extends AbstractPlugin
 {
@@ -51,9 +47,13 @@ class Plugin extends AbstractPlugin
     public function install()
     {
         $this->createDefaultConfig();
+
+        $this->createFavoriteTable();
+
         $this->createSlugTable();
         $this->createCategoryTable();
         $this->createGalleryThumbnailTable();
+
         $this->putLang();
     }
 
@@ -86,6 +86,49 @@ class Plugin extends AbstractPlugin
         /** @var Translator $trans */
         $trans = app('xe.translator');
         $trans->putFromLangDataSource('board', base_path('plugins/board/langs/lang.php'));
+    }
+
+    /**
+     * @deprecated
+     */
+    protected function createDataTable()
+    {
+        if (Schema::hasTable('board_datas') === false) {
+            Schema::create('board_datas', function (Blueprint $table) {
+                $table->string('targetId', 255);
+
+                // for slug
+                $table->string('instanceId', 255);
+                $table->string('slug', 255);
+                $table->string('title', 255);
+
+                // for category
+                $table->string('categoryItemId', 255);
+
+                // for gallery thumbnail
+                $table->string('boardThumbnailFileId', 255);
+                $table->string('boardThumbnailExternalPath', 255);
+                $table->string('boardThumbnailPath', 255);
+
+                $table->primary(array('targetId'));
+
+                $table->index(array('slug'));
+                $table->index(array('title'));
+            });
+        }
+    }
+
+    protected function createFavoriteTable()
+    {
+        if (Schema::hasTable('board_favorites') === false) {
+            Schema::create('board_favorites', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('targetId', 255);
+                $table->string('userId', 255);
+
+                $table->index(array('targetId', 'userId'));
+            });
+        }
     }
 
     protected function createSlugTable()

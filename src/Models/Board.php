@@ -2,15 +2,15 @@
 /**
  * Board
  *
- * PHP version 5
- *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     LGPL-2.1
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @link        https://xpressengine.io
  */
+
 namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Document\Models\Document;
@@ -24,10 +24,6 @@ use Xpressengine\User\Models\Guest;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
  */
 class Board extends Document implements CommentUsable
 {
@@ -142,6 +138,16 @@ class Board extends Document implements CommentUsable
             $ids[] = $file->id;
         }
         return $ids;
+    }
+
+    /**
+     * get favorite
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function favorite()
+    {
+        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardFavorite', 'targetId');
     }
 
     /**

@@ -2,15 +2,15 @@
 /**
  * Board
  *
- * PHP version 5
- *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     LGPL-2.1
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @link        https://xpressengine.io
  */
+
 namespace Xpressengine\Plugins\Board\Modules;
 
 use Route;
@@ -29,10 +29,6 @@ use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
  */
 class Board extends AbstractModule
 {
@@ -139,6 +135,7 @@ class Board extends AbstractModule
             Route::get('/slug/{slug}', ['as' => 'slug2', 'uses' => 'UserController@slug']);
             Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'UserController@hasSlug']);
             Route::get('/{slug}', ['as' => 'slug', 'uses' => 'UserController@slug']);
+            Route::post('/favorite/{id}', ['as' => 'favorite', 'uses' => 'UserController@favorite']);
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
 
         BoardSlug::setReserved([
@@ -323,7 +320,7 @@ class Board extends AbstractModule
     {
         return route('manage.board.board.edit', $instanceId);
     }
-    
+
     /**
      * Get menu type's item object
      *

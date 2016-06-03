@@ -4,11 +4,11 @@
 
     <form method="post" action="{{ $urlHandler->get('identificationConfirm') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
-        <input type="hidden" name="referrer" class="form-control" value="{{$referrer}}" />
-        <input type="hidden" name="id" class="form-control" value="{{$board->id}}" />
+        <input type="hidden" name="referrer" class="xe-form-control" value="{{$referrer}}" />
+        <input type="hidden" name="id" class="xe-form-control" value="{{$board->id}}" />
 
-        <input type="email" name="email" class="form-control" value="" placeholder="{{ xe_trans('xe::email') }}"/>
-        <input type="password" name="certifyKey" class="form-control" value="" placeholder="{{ xe_trans('xe::password') }}"/>
+        <input type="email" name="email" class="xe-form-control" value="" placeholder="{{ xe_trans('xe::email') }}"/>
+        <input type="password" name="certifyKey" class="xe-form-control" value="" placeholder="{{ xe_trans('xe::password') }}"/>
 
         <div class="btns">
             <div class="btn-left">

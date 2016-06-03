@@ -2,15 +2,15 @@
 /**
  * UserController
  *
- * PHP version 5
- *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     LGPL-2.1
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @link        https://xpressengine.io
  */
+
 namespace Xpressengine\Plugins\Board\Controllers;
 
 use XeDocument;
@@ -43,6 +43,7 @@ use Xpressengine\Plugins\Board\Exceptions\RequiredValueHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
@@ -62,10 +63,6 @@ use Xpressengine\User\Models\Guest;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
  */
 class UserController extends Controller
 {
@@ -180,6 +177,16 @@ class UserController extends Controller
                 '=',
                 sprintf('%s.%s', 'board_category', 'targetId')
             );
+        }
+
+        if ($request->has('favorite') === true) {
+            $query = $query->leftJoin(
+                'board_favorites',
+                sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                '=',
+                sprintf('%s.%s', 'board_favorites', 'targetId')
+            );
+            $query->where('board_favorites.userId', Auth::user()->getId());
         }
 
         $query = $this->handler->makeWhere($query, $request, $this->config);
@@ -714,6 +721,32 @@ class UserController extends Controller
         return redirect()->to($this->urlHandler->get('index'))->with(
             ['alert' => ['type' => 'success', 'message' => xe_trans('xe::complete')]]
         );
+    }
+
+    /**
+     * 즐겨찾기 등록, 삭제
+     *
+     * @param string $menuUrl first segment
+     * @param string $id      document id
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function favorite($menuUrl, $id)
+    {
+        if (Auth::check() === false) {
+            throw new AccessDeniedHttpException;
+        }
+        $board = $this->handler->getModel($this->config)->find($id);
+
+        $userId = Auth::user()->getId();
+        $favorite = false;
+        if ($this->handler->hasFavorite($board->id, $userId) === false) {
+            $this->handler->addFavorite($board->id, $userId);
+            $favorite = true;
+        } else {
+            $this->handler->removeFavorite($board->id, $userId);
+        }
+
+        return XePresenter::makeApi(['favorite' => $favorite]);
     }
 
     /**

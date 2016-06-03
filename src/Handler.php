@@ -2,15 +2,15 @@
 /**
  * Board handler
  *
- * PHP version 5
- *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     LGPL-2.1
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @link        https://xpressengine.io
  */
+
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Config\ConfigEntity;
@@ -19,8 +19,11 @@ use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\Board\Exceptions\AlreadyExistFavoriteHttpException;
+use Xpressengine\Plugins\Board\Exceptions\NotFoundFavoriteHttpException;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
+use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Storage\File;
@@ -30,17 +33,11 @@ use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
 
-
-
 /**
  * Board handler
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
- * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
  */
 class Handler
 {
@@ -60,16 +57,25 @@ class Handler
      */
     protected $tag;
 
+    /**
+     * @var Counter
+     */
     protected $readCounter;
 
+    /**
+     * @var Counter
+     */
     protected $voteCounter;
 
 
     /**
-     * create instance
+     * Handler constructor.
      *
-     * @param DocumentHandler  $documentHandler  document handler(Interception Proxy)
-     * @param Storage          $storage          storage
+     * @param DocumentHandler $documentHandler document handler(Interception Proxy)
+     * @param Storage         $storage         storage
+     * @param TagHandler      $tag             tag
+     * @param Counter         $readCounter     read counter
+     * @param Counter         $voteCounter     vote counter
      */
     public function __construct(
         DocumentHandler $documentHandler,
@@ -85,11 +91,21 @@ class Handler
         $this->voteCounter = $voteCounter;
     }
 
+    /**
+     * get read counter
+     *
+     * @return Counter
+     */
     public function getReadCounter()
     {
         return $this->readCounter;
     }
 
+    /**
+     * get vote counter
+     *
+     * @return Counter
+     */
     public function getVoteCounter()
     {
         return $this->voteCounter;
@@ -101,7 +117,6 @@ class Handler
      *
      * @param array         $args arguments
      * @param UserInterface $user
-     *
      * @return Board
      */
     public function add(array $args, UserInterface $user, ConfigEntity $config)
@@ -128,44 +143,145 @@ class Handler
 
         // save Document
         $doc = $this->documentHandler->add($args);
-
         $model = $this->getModel($config);
         $board = $model->find($doc->id);
-
         $this->setModelConfig($board, $config);
 
-        // save Slug
-        $slug = new BoardSlug([
-            'slug' => $args['slug'],
-            'title' => $args['title'],
-            'instanceId' => $args['instanceId'],
-        ]);
-        $board->boardSlug()->save($slug);
-
-        // save Category
-        if (empty($args['categoryItemId']) == false) {
-            $boardCategory = new BoardCategory([
-                'targetId' => $doc->id,
-                'itemId' => $args['categoryItemId'],
-            ]);
-            $boardCategory->save();
-        }
-
-        if (empty($args['_files']) === false) {
-            foreach (File::whereIn('id', $args['_files'])->get() as $file) {
-                $this->storage->bind($doc->id, $file);
-            }
-        }
-
-        if (empty($args['_hashTags']) === false) {
-            $this->tag->set($doc->id, $args['_hashTags'], $doc->instanceId);
-        }
+        $this->saveSlug($board, $args);
+        $this->saveCategory($board, $args);
+        $this->setFiles($board, $args);
+        $this->setTags($board, $args);
 
         $model->getConnection()->commit();
 
         return $board;
     }
 
+    /**
+     * save slug
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return void
+     */
+    protected function saveSlug(Board $board, array $args)
+    {
+        $slug = $board->boardSlug;
+        if ($slug === null) {
+            $slug = new BoardSlug([
+                'slug' => $args['slug'],
+                'title' => $args['title'],
+                'instanceId' => $args['instanceId'],
+            ]);
+        } else {
+            $slug->slug = $args['slug'];
+            $slug->title = $board->title;
+        }
+
+        $board->boardSlug()->save($slug);
+    }
+
+    /**
+     * save category
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return void
+     */
+    protected function saveCategory(Board $board, array $args)
+    {
+        // save Category
+        if (empty($args['categoryItemId']) == false) {
+            // update 처리
+            $boardCategory = $board->boardCategory;
+            if ($boardCategory == null) {
+                $boardCategory = new BoardCategory([
+                    'targetId' => $board->id,
+                    'itemId' => $args['categoryItemId'],
+                ]);
+            } else {
+                $boardCategory->itemId = $args['categoryItemId'];
+            }
+
+            $boardCategory->save();
+        }
+    }
+
+    /**
+     * set files
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return array
+     * @todo 업데이트 할 때 중복 bind 되어 fileable 이 계속 증가하는 오류가 있음
+     */
+    protected function setFiles(Board $board, array $args)
+    {
+        $fileIds = [];
+        if (empty($args['_files']) === false) {
+            foreach (File::whereIn('id', $args['_files'])->get() as $file) {
+                $fileIds[] = $file->id;
+                if ($this->storage->has($board->id, $file) === false) {
+                    $this->storage->bind($board->id, $file);
+                }
+            }
+        }
+        return $fileIds;
+    }
+
+    /**
+     * unset files
+     *
+     * @param Board $board   board model
+     * @param array $fileIds current uploaded file ids
+     * @retunr void
+     */
+    protected function unsetFiles(Board $board, array $fileIds)
+    {
+        $files = File::whereIn('id', array_diff($board->getFileIds(), $fileIds))->get();
+        foreach ($files as $file) {
+            $this->storage->unBind($board->id, $file, true);
+        }
+    }
+
+    /**
+     * set tags
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return void
+     */
+    protected function setTags(Board $board, array $args)
+    {
+        if (empty($args['_hashTags']) === false) {
+            $this->tag->set($board->id, $args['_hashTags'], $board->instanceId);
+        }
+    }
+
+    /**
+     * unset tags
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return void
+     */
+    protected function unsetTags(Board $board, array $args)
+    {
+        $tags = Tag::getByTaggable($board->id);
+        foreach ($tags as $tag) {
+            if (in_array($tag->word, $args['_hashTags']) === false) {
+                $tags->delete();
+            }
+        }
+    }
+
+    /**
+     * update document
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return mixed
+     */
     public function put(Board $board, array $args)
     {
         $board->getConnection()->beginTransaction();
@@ -178,52 +294,12 @@ class Handler
 
         $doc = $this->documentHandler->put($board);
 
-        $boardSlug = $board->boardSlug;
-        $boardSlug->slug = $args['slug'];
-        $boardSlug->title = $board->title;
-        $board->boardSlug()->save($boardSlug);
-
-        // save Category
-        if (empty($args['categoryItemId']) == false) {
-            $boardCategory = $board->boardCategory;
-            if ($boardCategory == null) {
-                $boardCategory = new BoardCategory([
-                    'targetId' => $doc->id,
-                    'itemId' => $args['categoryItemId'],
-                ]);
-            } else {
-                $boardCategory->itemId = $args['categoryItemId'];
-            }
-            $boardCategory->save();
-        }
-
-        // bind files
-        // 업데이트 할 때 중복 bind 되어 fileable 이 계속 증가하는 오류가 있음
-        $fileIds = [];
-        if (empty($args['_files']) === false) {
-            foreach (File::whereIn('id', $args['_files'])->get() as $file) {
-                $fileIds[] = $file->id;
-                if ($this->storage->has($doc->id, $file) === false) {
-                    $this->storage->bind($doc->id, $file);
-                }
-            }
-        }
-
-        $files = File::whereIn('id', array_diff($board->getFileIds(), $fileIds))->get();
-        foreach ($files as $file) {
-            $this->storage->unBind($board->id, $file, true);
-        }
-
-        if (empty($args['_hashTags']) === false) {
-            $this->tag->set($doc->id, $args['_hashTags'], $doc->instanceId);
-        }
-
-        $tags = Tag::getByTaggable($doc->id);
-        foreach ($tags as $tag) {
-            if (in_array($tag->word, $args['_hashTags']) === false) {
-                $tags->delete();
-            }
-        }
+        $this->saveSlug($board, $args);
+        $this->saveCategory($board, $args);
+        $fileIds = $this->setFiles($board, $args);
+        $this->unsetFiles($board, $fileIds);
+        $this->setTags($board, $args);
+        $this->unsetTags($board, $args);
 
         $board->getConnection()->commit();
 
@@ -233,8 +309,8 @@ class Handler
     /**
      * 문서 삭제
      *
-     * @param Board $board
-     * @param ConfigEntity $config
+     * @param Board        $board  board model
+     * @param ConfigEntity $config board config entity
      * @return void
      * @throws \Exception
      */
@@ -288,8 +364,8 @@ class Handler
     /**
      * 문서 휴지통 이동
      *
-     * @param Board $board
-     * @param ConfigEntity $config
+     * @param Board        $board  board model
+     * @param ConfigEntity $config board config entity
      * @return void
      */
     public function trash(Board $board, ConfigEntity $config)
@@ -315,7 +391,11 @@ class Handler
     }
 
     /**
-     * 문서 복원
+     * 휴지통에서 문서 복원
+     *
+     * @param Board        $board  board model
+     * @param ConfigEntity $config board config entity
+     * @return void
      */
     public function restore(Board $board, ConfigEntity $config)
     {
@@ -343,9 +423,9 @@ class Handler
      * 게시판 이동
      * Document Package 에서 comment 를 지원하지 않아서 사용할 수 있는 인터페이스가 없음
      *
-     * @param string         $id             document id
-     * @param ConfigEntity   $config         destination board config entity
-     * @param CommentHandler $commentHandler comment handler
+     * @param Board        $board  board model
+     * @param ConfigEntity $config board config entity
+     * @return void
      */
     public function move(Board $board, ConfigEntity $config)
     {
@@ -374,11 +454,11 @@ class Handler
     }
 
     /**
-     * 복사
+     * copy
      *
-     * @param string       $id     document id
-     * @param ConfigEntity $config destination board config entity
-     * @param string       $newId  new document id
+     * @param Board         $board  board model
+     * @param UserInterface $user   user
+     * @param ConfigEntity  $config board config entity
      * @return void
      */
     public function copy(Board $board, UserInterface $user, ConfigEntity $config)
@@ -414,7 +494,7 @@ class Handler
     /**
      * set model's config
      *
-     * @param Board $board board model
+     * @param Board        $board  board model
      * @param ConfigEntity $config board config entity
      * @return Board
      */
@@ -446,9 +526,9 @@ class Handler
     /**
      * 인터셥센을 이용해 서드파티가 처리할 수 있도록 메소드 사용
      *
-     * @param Builder $query
-     * @param Request $request
-     * @param ConfigEntity $config
+     * @param Builder      $query   board model query builder
+     * @param Request      $request request
+     * @param ConfigEntity $config  board config entity
      * @return Builder
      */
     public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
@@ -476,9 +556,9 @@ class Handler
     /**
      * 인터셥센을 이용해 서드파티가 처리할 수 있도록 메소드 사용
      *
-     * @param Builder $query
-     * @param Request $request
-     * @param ConfigEntity $config
+     * @param Builder      $query   board model query builder
+     * @param Request      $request request
+     * @param ConfigEntity $config  board config entity
      * @return Builder
      */
     public function makeOrder(Builder $query, Request $request, ConfigEntity $config)
@@ -498,6 +578,11 @@ class Handler
         return $query;
     }
 
+    /**
+     * get orders
+     *
+     * @return array
+     */
     public function getOrders()
     {
         return [
@@ -507,8 +592,14 @@ class Handler
         ];
     }
 
-
-    public function incrementReadCount(Board $board, $user)
+    /**
+     * increment read count
+     *
+     * @param Board         $board board model
+     * @param UserInterface $user  user
+     * @return void
+     */
+    public function incrementReadCount(Board $board, UserInterface $user)
     {
         if ($this->readCounter->has($board->id, $user) === false) {
             $this->readCounter->add($board->id, $user);
@@ -518,7 +609,15 @@ class Handler
         $board->save();
     }
 
-    public function incrementVoteCount(Board $board, $user, $option)
+    /**
+     * increment vote count
+     *
+     * @param Board         $board  board model
+     * @param UserInterface $user   user
+     * @param string        $option 'assent' or 'dissent'
+     * @return void
+     */
+    public function incrementVoteCount(Board $board, UserInterface $user, $option)
     {
         if ($this->voteCounter->has($board->id, $user, $option) === false) {
             $this->voteCounter->add($board->id, $user, $option);
@@ -532,7 +631,15 @@ class Handler
         $board->save();
     }
 
-    public function decrementVoteCount(Board $board, $user, $option)
+    /**
+     * decrement vote count
+     *
+     * @param Board         $board  board model
+     * @param UserInterface $user   user
+     * @param string        $option 'assent' or 'dissent'
+     * @return void
+     */
+    public function decrementVoteCount(Board $board, UserInterface $user, $option)
     {
         if ($this->voteCounter->has($board->id, $user, $option) === true) {
             $this->voteCounter->remove($board->id, $user, $option);
@@ -546,8 +653,42 @@ class Handler
         $board->save();
     }
 
+    /**
+     * has vote
+     *
+     * @param Board         $board  board model
+     * @param UserInterface $user   user
+     * @param string        $option 'assent' or 'dissent'
+     * @return bool
+     */
     public function hasVote(Board $board, $user, $option)
     {
         return $this->voteCounter->has($board->id, $user, $option);
+    }
+
+    public function hasFavorite($boardId, $userId)
+    {
+        return BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->exists();
+    }
+
+    public function addFavorite($boardId, $userId)
+    {
+        if ($this->hasFavorite($boardId, $userId) === true) {
+            throw new AlreadyExistFavoriteHttpException;
+        }
+
+        $favorite = new BoardFavorite;
+        $favorite->targetId = $boardId;
+        $favorite->userId = $userId;
+        $favorite->save();
+    }
+
+    public function removeFavorite($boardId, $userId)
+    {
+        if ($this->hasFavorite($boardId, $userId) === false) {
+            throw new NotFoundFavoriteHttpException;
+        }
+
+        BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->delete();
     }
 }
