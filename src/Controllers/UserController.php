@@ -40,6 +40,7 @@ use Xpressengine\Plugins\Board\Exceptions\NotFoundUploadFileException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueHttpException;
+use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -198,14 +199,32 @@ class UserController extends Controller
 
         $fieldTypes = (array)$this->configHandler->getDynamicFields($this->config);
 
-        $categoryItem = null;
-        $categoryItems = null;
+        $categories = [];
         if ($this->config->get('category') === true) {
-            $categoryItem = CategoryItem::find($request->get('categoryItemId'));
             $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
         }
 
-        return compact('notices', 'paginate', 'fieldTypes', 'categoryItem', 'categoryItems');
+        $terms = [
+            ['value' => '1week', 'text' => 'board::1week'],
+            ['value' => '2week', 'text' => 'board::2week'],
+            ['value' => '1month', 'text' => 'board::1month'],
+            ['value' => '3month', 'text' => 'board::3month'],
+            ['value' => '6month', 'text' => 'board::6month'],
+            ['value' => '1year', 'text' => 'board::1year'],
+        ];
+
+        XeFrontend::translation([
+            'board::selectPost',
+            'board::selectBoard',
+        ]);
+
+        return compact('notices', 'paginate', 'fieldTypes','categories', 'terms');
     }
 
     /**
@@ -247,6 +266,9 @@ class UserController extends Controller
             } elseif ($user->getId() == $item->getAuthor()->getId()) {
                 $visible = true;
             }
+            if ($visible === false) {
+                throw new SecretDocumentHttpException;
+            }
         }
 
         if ($visible === true) {
@@ -261,9 +283,7 @@ class UserController extends Controller
             }
         }
 
-        $formColumns = $this->configHandler->formColumns($this->instanceId);
-
-        return compact('item', 'visible', 'formColumns', 'showCategoryItem');
+        return compact('item', 'visible', 'showCategoryItem');
     }
 
     /**
@@ -313,9 +333,15 @@ class UserController extends Controller
             $head = $item->head;
         }
 
-        $categoryItems = null;
+        $categories = [];
         if ($this->config->get('category') === true) {
             $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
         }
 
         /** @var UserInterface $user */
@@ -327,7 +353,7 @@ class UserController extends Controller
             'handler' => $this->handler,
             'parentId' => $parentId,
             'head' => $head,
-            'categoryItems' => $categoryItems,
+            'categories' => $categories,
             'rules' => $rules,
         ]);
     }
@@ -438,14 +464,15 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $categoryItem = null;
-        $categoryItems = null;
+        $categories = [];
         if ($this->config->get('category') === true) {
-            $boardCategory = $item->boardCategory;
-            if ($boardCategory) {
-                $categoryItem = $boardCategory->categoryItem;
-            }
             $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
         }
 
         /** @var \Xpressengine\Plugins\Board\Validator $validator */
@@ -459,8 +486,7 @@ class UserController extends Controller
             'handler' => $this->handler,
             'item' => $item,
             'parent' => $parent,
-            'categoryItem' => $categoryItem,
-            'categoryItems' => $categoryItems,
+            'categories' => $categories,
             'rules' => $rules,
         ]);
     }
@@ -642,12 +668,9 @@ class UserController extends Controller
             $showCategoryItem = CategoryItem::find($request->get('categoryItemId'));
         }
 
-        $formColumns = $this->configHandler->formColumns($this->instanceId);
-
         return XePresenter::make('preview', [
             'config' => $this->config,
             'handler' => $this->handler,
-            'formColumns' => $formColumns,
             'currentDate' => date('Y-m-d H:i:s'),
             'title' => $title,
             'content' => $content,
@@ -755,7 +778,7 @@ class UserController extends Controller
      * @param Request $request request
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function showVote(Request $request)
+    public function showVote(Request $request, $id)
     {
         // display 설정
         $display =['assent' => true, 'dissent' => true];
@@ -767,7 +790,6 @@ class UserController extends Controller
             $display['dissent'] = false;
         }
 
-        $id = $request->get('id');
         $user = Auth::user();
 
         $board = $this->handler->getModel($this->config)->find($id);
@@ -788,50 +810,27 @@ class UserController extends Controller
     }
 
     /**
-     * 찬성
+     * 좋아요 추가, 삭제
      *
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function addVote(Request $request, $menuUrl, $option)
+    public function vote(Request $request, $menuUrl, $option, $id)
     {
-        $id = $request->get('id');
         $author = Auth::user();
 
         $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 
         try {
-            $this->handler->incrementVoteCount($item, $author, $option);
+            $this->handler->vote($item, $author, $option);
         } catch (GuestNotSupportException $e) {
             throw new AccessDeniedHttpException;
         }
 
-
-        return $this->showVote($request);
-    }
-
-    /**
-     * 반대
-     *
-     * @param Request $request request
-     * @param string  $menuUrl first segment
-     * @param string  $option  options
-     * @return \Xpressengine\Presenter\RendererInterface
-     */
-    public function removeVote(Request $request, $menuUrl, $option)
-    {
-        $id = $request->get('id');
-        $author = Auth::user();
-
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
-
-        $this->handler->decrementVoteCount($item, $author, $option);
-
-        return $this->showVote($request);
+        return $this->showVote($request, $id);
     }
 
     /**
@@ -840,30 +839,70 @@ class UserController extends Controller
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
-     * @return
      */
-    public function votedUsers(Request $request, $menuUrl, $option)
+    public function votedUsers(Request $request, $menuUrl, $option, $id)
     {
-        $id = $request->get('id');
-        $author = Auth::user();
+        $limit = $request->get('limit', 10);
 
         $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 
-        $users = $this->handler->getVoteCounter()->getUsers($item->id, $option);
+        $counter = $this->handler->getVoteCounter();
+        $logModel = $counter->newModel();
+        $logs = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
+            ->where('counterOption', $option)->take($limit)->get();
 
-        $userList = [];
-        foreach ($users as $user) {
-            $userList[] = [
-                'id' => $user->id,
-                'displayName' => $user->displayName,
-                'profileImage' => $user->getProfileImage(),
-            ];
-        }
+        return apiRender('votedUsers', [
+            'urlHandler' => $this->urlHandler,
+            'option' => $option,
+            'item' => $item,
+            'logs' => $logs,
+        ]);
+    }
 
-        return XePresenter::makeApi([
-            'current_page' => $request->get('page'),
-            'users' => $userList
+    /**
+     * get voted user list
+     *
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
+     */
+    public function votedModal(Request $request, $menuUrl, $option, $id)
+    {
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        $counter = $this->handler->getVoteCounter();
+        $logModel = $counter->newModel();
+        $count = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
+            ->where('counterOption', $option)->count();
+
+        return apiRender('votedModal', [
+            'urlHandler' => $this->urlHandler,
+            'option' => $option,
+            'item' => $item,
+            'count' => $count,
+        ]);
+    }
+
+    public function votedUserList(Request $request, $menuUrl, $option)
+    {
+        $id = $request->get('id');
+        $limit = $request->get('limit', 10);
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        $counter = $this->handler->getVoteCounter();
+        $logModel = $counter->newModel();
+        $paginate = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
+            ->where('counterOption', $option)->orderBy('id', 'desc')->paginate($limit);
+
+        return apiRender('votedUserList', [
+            'urlHandler' => $this->urlHandler,
+            'option' => $option,
+            'item' => $item,
+            'paginate' => $paginate,
         ]);
     }
 
@@ -945,6 +984,22 @@ class UserController extends Controller
 
         header('Content-type: ' . $media->mime);
         echo $media->getContent();
+    }
+
+    public function fileDownload(BoardPermissionHandler $boardPermission, $menuUrl, $id)
+    {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_READ,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        $file = File::find($id);
+
+        /** @var \Xpressengine\Storage\Storage $storage */
+        $storage = \App::make('xe.storage');
+        $storage->download($file);
     }
 
     /**

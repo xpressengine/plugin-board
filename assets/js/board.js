@@ -1,14 +1,18 @@
-$(function($) {
-    $('.bd_select_list').on('click', 'a', function(event) {
-        event.preventDefault();
-        var $target = $(event.target),
-            $select = $target.closest('.bd_select_list');
-
-        $select.prev('.bd_select').text($target.text());
-        $target.closest('form').find('[name="'+$select.data('name')+'"]').val($target.data('value'));
+var getVotedUserList = function(page) {
+    if (page == undefined) {
+        page = 1;
+    }
+    var $modal = $('.xe-modal-content'),
+        $container = $modal.find('.xe-list-group');
+    XE.page($container.data('url'), '.xe-list-group', {
+        data: {
+            page: page
+        }
     });
+};
 
-    $('.xe-favorite').on('click', function(event) {
+$(function($) {
+    $('.__xe-bd-favorite').on('click', function(event) {
         event.preventDefault();
         var $target = $(event.target),
             $anchor = $target.closest('a'),
@@ -30,37 +34,77 @@ $(function($) {
         });
     });
 
-    $(document).on('click touchstart', function(event) {
-        var $target = $(event.target);
+    $('.__xe-forms .__xe-dropdown-form input').on('change', function(event) {
+        var $target = $(event.target),
+            $frm = $('.__xe_search');
 
-        open_select_box($target, event);
-        open_select_area($target, event);
-    });
-
-    // category change
-    $('.__xe_category_change').on('click', 'li', function(event) {
-        var $input = $(this).closest('.__xe_category_change').find('input'),
-            name = $input.prop('name'),
-            categoryId = $(event.target).data('value');
-
-        // search submit
-        var $frm = $('.__xe_search');
-        $frm.find('[name="'+name+'"]').val(categoryId);
+        $frm.find('[name="'+$target.attr('name')+'"]').val($target.val());
         $frm.submit();
     });
 
-    // order change
-    $('.__xe_order_change').on('click', 'li', function(event) {
-        var $input = $(this).closest('.__xe_order_change').find('input'),
-            name = $input.prop('name'),
-            order = $(event.target).data('value');
+    $('.__xe-period .__xe-dropdown-form input').on('change', function(event) {
+        var $target = $(event.target),
+            $frm = $('.__xe_search'),
+            period = $target.val();
 
-        // search submit
-        var $frm = $('.__xe_search');
-        $frm.find('[name="'+name+'"]').val(order);
-        $frm.submit();
+        System.import('vendor:/moment').then(function(moment) {
+            var startDate = '',
+                endDate = moment().format('YYYY-MM-DD'),
+                $startDate = $(event.target).closest('.__xe-period').find('[name="startCreatedAt"]'),
+                $endDate = $(event.target).closest('.__xe-period').find('[name="endCreatedAt"]');
+
+            switch (period) {
+                case '1week' :
+                    startDate = moment().add(-1, 'weeks').format('YYYY-MM-DD');
+                    break;
+                case '2week' :
+                    startDate = moment().add(-2, 'weeks').format('YYYY-MM-DD');
+                    break;
+                case '1month' :
+                    startDate = moment().add(-1, 'months').format('YYYY-MM-DD');
+                    break;
+                case '3month' :
+                    startDate = moment().add(-3, 'months').format('YYYY-MM-DD');
+                    break;
+                case '6month' :
+                    startDate = moment().add(-6, 'months').format('YYYY-MM-DD');
+                    break;
+                case '1year' :
+                    startDate = moment().add(-1, 'years').format('YYYY-MM-DD');
+                    break;
+            }
+
+            $startDate.val(startDate);
+            $endDate.val(endDate);
+        });
+
+
     });
 
+    $('.__xe-bd-manage').on('click', function() {
+        $('.bd_manage_detail').toggle();
+    });
+
+    $('.__xe-bd-search').on('click', function() {
+        event.preventDefault();
+        $(this).toggleClass("on");
+
+        if($(this).hasClass("on")){
+            $(".bd_search_area").show();
+            $(".bd_search_input").focus();
+        } else{
+            $(".bd_search_area").hide();
+        }
+
+        $(".bd_btn_detail").on("click", function(e){
+            $(this).toggleClass("on");
+            if($(this).hasClass("on")){
+                $(".bd_search_detail").show();
+            } else{
+                $(".bd_search_detail").hide();
+            }
+        });
+    });
     // submit title content search form
     $('.__xe_simple_search').on('submit', function(event) {
         event.preventDefault();
@@ -96,30 +140,49 @@ $(function($) {
     // click like button
     $('.bd_like').on('click touchstart', function(event) {
         event.preventDefault();
-        var $target = $(event.target).closest('a'),
-            params = {
-                id: $target.data('id')
-            };
+        var $target = $(event.target).closest('a');
 
-        var url = $target.data('add-url');
-        if ($target.hasClass('invoked')) {
-            url = $target.data('remove-url');
-        }
+        var url = $target.prop('href');
+        //if ($target.hasClass('voted')) {
+        //    url = $target.data('remove-url');
+        //}
 
         XE.ajax({
             url: url,
             type: 'post',
-            dataType: 'json',
-            data: params
+            dataType: 'json'
         }).done(function (json) {
-            $target.toggleClass('invoked');
+            $target.toggleClass('voted');
             $('.bd_like_num').text(json.counts.assent);
         });
 
     });
 
-    // click like number. show like member list
     $('.bd_like_num').on('click touchstart', function(event) {
+        event.preventDefault();
+        if (parseInt($(event.target).text()) == 0) {
+            return;
+        }
+        var $target = $(event.target).closest('a');
+        var url = $target.prop('href');
+        XE.page(url, '.bd_like_more', {}, function() {
+            $('.bd_like_more[data-id="'+$target.data('id')+'"]').show();
+        });
+    });
+
+    // 안됨
+    $('.bd_like_more_text a').on('click touchstart', function(event) {
+        event.preventDefault();
+        if (parseInt($(event.target).text()) == 0) {
+            return;
+        }
+        var $target = $(event.target).closest('a');
+        var url = $target.prop('href');
+        XE.pageModal(url);
+    });
+
+        // click like number. show like member list
+    $('.bd_like_num-notuse').on('click touchstart', function(event) {
         event.preventDefault();
         var $target = $('.bd_like_more');
 
@@ -208,50 +271,262 @@ $(function($) {
             });
         }
     }
+});
 
-    // open select box - design select box
-    function open_select_box($target, event)
-    {
-        if ($target.hasClass('__xe_select_box_show')) {
-            event.preventDefault();
-            var $dst = $target.next('.bd_select_list');
+var XeBoardSkin = {
+    VoteBox: React.createClass({
+        getInitialState: function () {
+            this.request('show', '');
 
-            if ($dst.length === 0) {
-                $dst = $target.closest('.bd_select_area').next('.bd_select_list');
+            return {
+                data: {
+                    display: {assent: false, dissent: false},
+                    counts: {assent:0, dissent:0},
+                    voteAt: null  // 참여 안됨
+                }
+            };
+        },
+
+        request: function (action, option) {
+            var self = this;
+
+            if (action == undefined) {
+                action = 'show';
             }
 
-            var isVisible = false;
-            if ($dst.is(':visible')) {
-                isVisible = true;
+            var type = 'post';
+            if (action == 'show' || action == 'users') {
+                type = 'get';
             }
 
-            $('.bd_select_list').hide();
-
-            if (isVisible !== true) {
-                $dst.show();
+            if (option == undefined) {
+                option = '';
             }
 
-        } else {
-            $('.bd_select_list').hide();
+            var params = {id:this.props.id};
+
+            var url = this.props.url + '/' + action;
+            if (option != '') {
+                url = url + '/' + option;
+            }
+
+            XE.ajax({
+                url: url,
+                type: type,
+                dataType: 'json',
+                data: params
+            }).done(function (json) {
+                self.setState({data: json});
+            });
+
+        },
+
+        componentDidMount: function() {
+        },
+
+        render: function () {
+            return React.DOM.div({
+                    className:'board_document_votebox btn-group'
+                },
+                React.createElement(XeBoardSkin.VoteButton, $.extend({}, this.state.data, {option:'assent', cb:this.request})),
+                React.createElement(XeBoardSkin.VoteButton, $.extend({}, this.state.data, {option:'dissent', cb:this.request}))
+            )
         }
+    }),
 
-        if ($target.hasClass('__xe_search_box_show')) {
-            $('.__xe_search_area').toggle();
+    VoteButton: React.createClass({
+        onclick: function(e) {
+            var action = 'add';
+            if (this.props.voteAt == this.props.option) {
+                action = 'remove';
+            }
+
+            this.props.cb(action, this.props.option);
+        },
+
+        render: function() {
+
+            var classNames = ['btn', 'btn-'+this.props.option];
+
+            if (this.props.voteAt == this.props.option) {
+                classNames.push('voted');
+            } else if (this.props.voteAt != null) {
+                classNames.push('disabled');
+            }
+
+            var iconClassName = 'glyphicon-chevron-' + (this.props.option == 'assent' ? 'up' : 'down');
+            var count = this.props.option == 'assent' ? this.props.counts.assent : this.props.counts.dissent;
+            var display = this.props.display[this.props.option] == false ? 'none' : 'block';
+
+            return React.DOM.button({
+                    className: classNames.join(' '),
+                    onClick: this.onclick,
+                    style:{display: display}
+                }
+                , React.DOM.span({className:'glyphicon ' + iconClassName})
+                , React.DOM.br({})
+                , React.DOM.span({style:{margin:'10px 10px'}}, count)
+            );
         }
+    })
+};
+
+$(function($) {
+    if ($('.__xe_vote_document').length) {
+        React.render(
+            React.createElement(XeBoardSkin.VoteBox, {
+                url: $('.__xe_vote_document').attr('data-url'),
+                id: $('.__xe_vote_document').attr('data-id')
+            }),
+            $('.__xe_vote_document')[0]
+        );
     }
 
-    // open select area
-    function open_select_area($target, event)
-    {
-        if ($target.hasClass('__xe_select_area_show')) {
-            event.preventDefault();
-            var $dst = $($target.data('selector'));
+    if ($('.__xe_manage_menu_document').length) {
+        React.render(
+            React.createElement(ToggleMenu, {
+                type: "module/board@board/" +  $('.__xe_manage_menu_document').attr('data-instance-id'),
+                identifier: $('.__xe_manage_menu_document').attr('data-id'),
+                align: 'right',
+                //class: '',
+                //text: ' • • • ',
+                //itemClass: '',
+                html: $('.__xe_manage_menu_document').html(),
+                data: {
+                    id: $('.__xe_manage_menu_document').attr('data-id')
+                }
+            }),
+            $('.__xe_manage_menu_document')[0]
+        );
+    }
 
-            if ($dst.is(':visible')) {
-                $dst.hide();
-            } else {
-                $dst.show();
-            }
+    $('.__board_form').on('click', '.__xe_btn_preview', function(event) {
+        event.preventDefault();
+
+        var form = $(this).parents('form');
+
+        var currentUrl = form.attr('action');
+        var currentTarget = form.attr('target');
+        var pieces = currentUrl.split('/');
+        pieces[pieces.length-1] = 'preview';
+        form.attr('action', pieces.join('/'));
+        form.attr('target', '_blank');
+        form.submit();
+
+        form.attr('action', currentUrl);
+        form.attr('target', currentTarget === undefined ? '' : currentTarget);
+    }).on('click', '.__xe_btn_submit', function(event) {
+        event.preventDefault();
+        var form = $(this).closest('form');
+        form.trigger('submit');
+    });
+});
+
+// manage
+$(function($) {
+    // copy documents
+    $('.__xe_copy .__xe_btn_submit').on('click', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
         }
+
+        var ids = getCheckedIds(),
+            instanceId = $('.__xe_copy').find('[name="copyTo"]').val();
+
+        if (instanceId == '') {
+            XE.toast('info', XE.Lang.trans('board::selectBoard'));
+            return;
+        }
+
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids, instanceId: instanceId},
+            url: $(event.target).data('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_move .__xe_btn_submit').on('click', function(event) {
+        if (hasChecked() === false) {
+            return;
+        }
+
+        event.preventDefault();
+
+        var ids = getCheckedIds(),
+            instanceId = $('.__xe_move').find('[name="moveTo"]').val();
+
+        if (instanceId == '') {
+            XE.toast('info', XE.Lang.trans('board::selectBoard'));
+            return;
+        }
+
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids, instanceId: instanceId},
+            url: $(event.target).data('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_to_trash').on('click', 'a:first', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
+        }
+
+        var ids = getCheckedIds();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids},
+            url: $(event.target).prop('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_delete').on('click', 'a:first', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
+        }
+
+        var ids = getCheckedIds();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids},
+            url: $(event.target).prop('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+
+    var hasChecked = function() {
+        if ($('.bd_manage_check:checked').length == 0) {
+            XE.toast('info', XE.Lang.trans('board::selectPost'));
+            return false;
+        }
+        return true;
+    };
+
+    var getCheckedIds = function() {
+        var checkedIds = [];
+        $('.bd_manage_check:checked').each(function() {
+            checkedIds.push($(this).val());
+        });
+
+        return checkedIds;
     }
 });

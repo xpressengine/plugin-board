@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Controllers;
 use XeDB;
 use Redirect;
 use XePresenter;
+use Session;
 use App\Http\Controllers\Controller;
 use App\Http\Sections\DynamicFieldSection;
 use App\Http\Sections\ToggleMenuSection;
@@ -114,21 +115,10 @@ class ManagerController extends Controller
     {
         $config = $this->configHandler->getDefault();
 
-        $listOptions = $this->configHandler->getDefaultListColumns();
-        $listColumns = $config->get('listColumns');
-
-        // 현재 선택된건 제외 시키고 보여줌
-        $listOptions = array_diff($listOptions, $listColumns);
-
-        $formColumns = $this->configHandler->getDefaultFormColumns();
-
         $perms = $boardPermission->getDefaultPerms();
 
         return $this->presenter->make('global.edit', [
             'config' => $config,
-            'listOptions' => $listOptions,
-            'listColumns' => $listColumns,
-            'formColumns' => $formColumns,
             'perms' => $perms,
         ]);
     }
@@ -195,14 +185,6 @@ class ManagerController extends Controller
     {
         $config = $this->configHandler->get($boardId);
 
-        $listOptions = $this->configHandler->listColumns($boardId);
-        $listColumns = $config->get('listColumns');
-
-        // 현재 선택된건 제외 시키고 보여줌
-        $listOptions = array_diff($listOptions, $listColumns);
-
-        $formColumns = $this->configHandler->formColumns($boardId);
-
         $skinSection = new SkinSection(BoardModule::getId(), $boardId);
 
         $commentSection = (new CommentSection())->setting($boardId);
@@ -220,9 +202,6 @@ class ManagerController extends Controller
         return $this->presenter->make('edit', [
             'config' => $config,
             'boardId' => $boardId,
-            'listOptions' => $listOptions,
-            'listColumns' => $listColumns,
-            'formColumns' => $formColumns,
             'skinSection' => $skinSection,
             'commentSection' => $commentSection,
             'dynamicFieldSection' => $dynamicFieldSection,
@@ -500,6 +479,8 @@ class ManagerController extends Controller
             $this->handler->remove($item, $this->configHandler->get($item->instanceId));
         }
 
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
+
         return $this->presenter->makeApi([]);
     }
 
@@ -519,6 +500,8 @@ class ManagerController extends Controller
             $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->trash($item, $this->configHandler->get($item->instanceId));
         }
+
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
 
         return $this->presenter->makeApi([]);
     }
@@ -566,6 +549,8 @@ class ManagerController extends Controller
             $this->handler->move($item, $config);
         }
 
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
+
         return $this->presenter->makeApi([]);
     }
 
@@ -596,6 +581,8 @@ class ManagerController extends Controller
 
             $this->handler->copy($item, $user, $config);
         }
+
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
 
         return $this->presenter->makeApi([]);
     }
