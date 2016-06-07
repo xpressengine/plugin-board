@@ -232,11 +232,14 @@ class DefaultSkin extends AbstractSkin
             ];
         }
 
+        $arr = explode(':', request()->get('instanceId'));
+        $instanceId = $arr[1];
+
         return View::make(
             sprintf('%s.%s', static::$skinAlias, 'setting'),
             [
-                'sortListColumns' => $this->getSortListColumns($config, request()->get('instanceId')),
-                'sortFormColumns' => $this->getSortFormColumns($config, request()->get('instanceId')),
+                'sortListColumns' => $this->getSortListColumns($config, $instanceId),
+                'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
                 'config' => $config
             ]
         );
