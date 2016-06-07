@@ -25,6 +25,7 @@ use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Skin\AbstractSkin;
 use XeSkin;
+use XePresenter;
 use View;
 use Event;
 use Xpressengine\Storage\File;
@@ -65,7 +66,7 @@ class GallerySkin extends DefaultSkin
             $contentView = View::make(
                 sprintf('%s.%s', static::$skinAlias, $this->view),
                 $this->data
-            )->render();
+            );
         } else {
 
             if ($this->view === 'show') {
@@ -75,14 +76,14 @@ class GallerySkin extends DefaultSkin
             $contentView = View::make(
                 sprintf('%s.%s', parent::$skinAlias, $this->view),
                 $this->data
-            )->render();
+            );
         }
 
         if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
-            $view = $contentView;
+            $view = $contentView->render();
         } else {
             // wrapped by _frame.blade.php
-            $view = View::make(sprintf('%s._frame', static::$skinAlias), $this->data);
+            $view = View::make(sprintf('%s._frame', parent::$skinAlias), $this->data);
             $view->content = $contentView->render();
         }
 

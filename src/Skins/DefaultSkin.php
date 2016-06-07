@@ -75,16 +75,6 @@ class DefaultSkin extends AbstractSkin
 
         $this->data['skinAlias'] = static::$skinAlias;
 
-        // 기본 설정
-        if (empty($this->config['listColumns'])) {
-            $this->config['listColumns'] = $this->defaultSelectedListColumns;
-        }
-        if (empty($this->config['formColumns'])) {
-            $this->config['formColumns'] = $this->defaultSelectedFormColumns;
-        }
-        $this->data['skinConfig'] = $this->config;
-
-
         $contentView = View::make(
             sprintf('%s.%s', static::$skinAlias, $this->view),
             $this->data
@@ -116,6 +106,7 @@ class DefaultSkin extends AbstractSkin
      */
     protected function indexCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
         $this->setPaginationPresenter();
         $this->setBoardList();
@@ -128,6 +119,7 @@ class DefaultSkin extends AbstractSkin
      */
     protected function showCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
         $this->setPaginationPresenter();
         $this->setBoardList();
@@ -140,6 +132,7 @@ class DefaultSkin extends AbstractSkin
      */
     protected function createCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
     }
 
@@ -150,7 +143,25 @@ class DefaultSkin extends AbstractSkin
      */
     protected function editCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
+    }
+
+    /**
+     * set skin config to data
+     *
+     * @return void
+     */
+    protected function setSkinConfig()
+    {
+        // 기본 설정
+        if (empty($this->config['listColumns'])) {
+            $this->config['listColumns'] = $this->defaultSelectedListColumns;
+        }
+        if (empty($this->config['formColumns'])) {
+            $this->config['formColumns'] = $this->defaultSelectedFormColumns;
+        }
+        $this->data['skinConfig'] = $this->config;
     }
 
     /**
@@ -224,8 +235,8 @@ class DefaultSkin extends AbstractSkin
         return View::make(
             sprintf('%s.%s', static::$skinAlias, 'setting'),
             [
-                'sortListColumns' => $this->getSortListColumns($config, 'aacad4df'),
-                'sortFormColumns' => $this->getSortFormColumns($config, 'aacad4df'),
+                'sortListColumns' => $this->getSortListColumns($config, request()->get('instanceId')),
+                'sortFormColumns' => $this->getSortFormColumns($config, request()->get('instanceId')),
                 'config' => $config
             ]
         );
