@@ -93,50 +93,6 @@
                                 <input type="text" name="managerEmail" class="form-control" value="{{ Input::old('managerEmail', $config->get('managerEmail')) }}" />
                             </div>
 
-                            <div class="form-group">
-                                <label for="">{{xe_trans('xe::list')}}</label>
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <select class="form-control" id="list_options" size="8" multiple="multiple">
-                                            @foreach ($listOptions as $columnName)
-                                                <option value="{{$columnName}}">{{$columnName}}</option>
-                                            @endforeach
-                                        </select>
-                                        <div>
-                                            <button type="button" class="btn btn-default list-option-add">추가</button>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="list_selected" size="8" multiple="multiple">
-                                            @foreach ($listColumns as $columnName)
-                                                <option value="{{$columnName}}">{{$columnName}}</option>
-                                            @endforeach
-                                        </select>
-                                        <div>
-                                            <button type="button" class="btn btn-default list-option-up">위로</button>
-                                            <button type="button" class="btn btn-default list-option-down">아래로</button>
-                                            <button type="button" class="btn btn-default list-option-delete">삭제</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">{{xe_trans('xe::input')}}</label>
-                                <div class="form-group">
-                                    <select class="form-control" id="form_order" size="8" multiple="multiple">
-                                        @foreach ($formColumns as $columnName)
-                                            <option value="{{$columnName}}">{{$columnName}}</option>
-                                        @endforeach
-                                    </select>
-                                    <div>
-                                        <button type="button" class="btn btn-default form-order-up">위로</button>
-                                        <button type="button" class="btn btn-default form-order-down">아래로</button>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Permission -->
                             @foreach ($perms as $perm)
                                 <div class="form-group">

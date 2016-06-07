@@ -7,54 +7,65 @@
         <input type="hidden" name="head" value="{{$head}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
 
-    <div class="write_header">
-        <div class="write_category">
-            @if($config->get('category') == true)
-                {!! uio('uiobject/board@select', [
-                    'name' => 'categoryItemId',
-                    'label' => xe_trans('xe::category'),
-                    'value' => '',
-                    'items' => $categories,
-                ]) !!}
-            @endif
-        </div>
-        <div class="write_title">
-            {!! uio('titleWithSlug', [
-            'title' => Input::old('title'),
-            'slug' => '',
-            'titleClassName' => 'bd_input',
-            'config' => $config
-            ]) !!}
-        </div>
-    </div>
-    <div class="write_body">
-        <div class="write_form_editor">
-            {!! uio('editor', [
-              'content' => Input::old('content'),
-              'editorConfig' => [
-                'fileUpload' => [
-                  'upload_url' => $urlHandler->get('upload'),
-                  'source_url' => $urlHandler->get('source'),
-                  'download_url' => $urlHandler->get('download'),
-                ],
-                'suggestion' => [
-                  'hashtag_api' => $urlHandler->get('hashTag'),
-                  'mention_api' => $urlHandler->get('mention'),
-                ],
-              ]
-            ]) !!}
-        </div>
-    </div>
-
-    <div class="dynamic-field">
-        @foreach ($configHandler->formColumns($instanceId) as $columnName)
-            @if ($columnName != 'category')
+        @foreach ($skinConfig['formColumns'] as $columnName)
+            @if($columnName === 'title')
+                <div class="write_header">
+                    <div class="write_category">
+                        @if($config->get('category') == true)
+                            {!! uio('uiobject/board@select', [
+                                'name' => 'categoryItemId',
+                                'label' => xe_trans('xe::category'),
+                                'value' => '',
+                                'items' => $categories,
+                            ]) !!}
+                        @endif
+                    </div>
+                    <div class="write_title">
+                        {!! uio('titleWithSlug', [
+                        'title' => Input::old('title'),
+                        'slug' => '',
+                        'titleClassName' => 'bd_input',
+                        'config' => $config
+                        ]) !!}
+                    </div>
+                </div>
+            @elseif($columnName === 'content')
+                <div class="write_body">
+                    <div class="write_form_editor">
+                        {!! uio('editor', [
+                          'content' => Input::old('content'),
+                          'editorConfig' => [
+                            'fileUpload' => [
+                              'upload_url' => $urlHandler->get('upload'),
+                              'source_url' => $urlHandler->get('source'),
+                              'download_url' => $urlHandler->get('download'),
+                            ],
+                            'suggestion' => [
+                              'hashtag_api' => $urlHandler->get('hashTag'),
+                              'mention_api' => $urlHandler->get('mention'),
+                            ],
+                          ]
+                        ]) !!}
+                    </div>
+                </div>
+            @else
                 <div class="__xe_{{$columnName}} __xe_section">
                     {!! dfCreate($config->get('documentGroup'), $columnName, Input::all()) !!}
                 </div>
             @endif
         @endforeach
+
+
+    <div class="dynamic-field">
+        @foreach ($configHandler->getDynamicFields($config) as $dynamicFieldConfig)
+            @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null)
+                <div class="__xe_{{$dynamicFieldConfig->get('id')}} __xe_section">
+                    {!! dfCreate($dynamicFieldConfig->get('group'), $dynamicFieldConfig->get('id'), Input::all()) !!}
+                </div>
+            @endif
+        @endforeach
     </div>
+
     <!-- 비로그인 -->
     <div class="write_footer">
         <div class="write_form_input">

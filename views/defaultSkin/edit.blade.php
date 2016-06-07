@@ -5,49 +5,58 @@
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="id" value="{{$item->id}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
-        <div class="write_header">
-            <div class="write_category">
-                @if($config->get('category') == true)
-                    {!! uio('uiobject/board@select', [
-                        'name' => 'categoryItemId',
-                        'label' => xe_trans('xe::category'),
-                        'value' => $item->boardCategory != null ? $item->boardCategory->itemId : '',
-                        'items' => $categories,
-                    ]) !!}
-                @endif
-            </div>
-            <div class="write_title">
-                {!! uio('titleWithSlug', [
-                'title' => Input::old('title', $item->title),
-                'slug' => $item->getSlug(),
-                'titleClassName' => 'bd_input',
-                'config' => $config
-                ]) !!}
-            </div>
-        </div>
-        <div class="write_body">
-            <div class="write_form_editor">
-                {!! uio('editor', [
-                  'content' => Input::old('content', $item->content),
-                  'editorConfig' => [
-                    'fileUpload' => [
-                      'upload_url' => $urlHandler->get('upload'),
-                      'source_url' => $urlHandler->get('source'),
-                      'download_url' => $urlHandler->get('download'),
-                    ],
-                    'suggestion' => [
-                      'hashtag_api' => $urlHandler->get('hashTag'),
-                      'mention_api' => $urlHandler->get('mention'),
-                    ],
-                  ]
-                ]) !!}
-            </div>
-        </div>
+        @foreach ($skinConfig['formColumns'] as $columnName)
+            @if($columnName === 'title')
+                <div class="write_header">
+                    <div class="write_category">
+                        @if($config->get('category') == true)
+                            {!! uio('uiobject/board@select', [
+                                'name' => 'categoryItemId',
+                                'label' => xe_trans('xe::category'),
+                                'value' => $item->boardCategory != null ? $item->boardCategory->itemId : '',
+                                'items' => $categories,
+                            ]) !!}
+                        @endif
+                    </div>
+                    <div class="write_title">
+                        {!! uio('titleWithSlug', [
+                        'title' => Input::old('title', $item->title),
+                        'slug' => $item->getSlug(),
+                        'titleClassName' => 'bd_input',
+                        'config' => $config
+                        ]) !!}
+                    </div>
+                </div>
+            @elseif($columnName === 'content')
+                <div class="write_body">
+                    <div class="write_form_editor">
+                        {!! uio('editor', [
+                          'content' => Input::old('content', $item->content),
+                          'editorConfig' => [
+                            'fileUpload' => [
+                              'upload_url' => $urlHandler->get('upload'),
+                              'source_url' => $urlHandler->get('source'),
+                              'download_url' => $urlHandler->get('download'),
+                            ],
+                            'suggestion' => [
+                              'hashtag_api' => $urlHandler->get('hashTag'),
+                              'mention_api' => $urlHandler->get('mention'),
+                            ],
+                          ]
+                        ]) !!}
+                    </div>
+                </div>
+            @else
+                <div class="__xe_{{$columnName}} __xe_section">
+                    {!! dfEdit($config->get('documentGroup'), $columnName, $item->getAttributes()) !!}
+                </div>
+            @endif
+        @endforeach
 
         <div class="dynamic-field">
-            @foreach ($configHandler->formColumns($instanceId) as $columnName)
-                @if (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
-                    <div class="__xe_{{$columnName}} __xe_section">
+            @foreach ($configHandler->getDynamicFields($config) as $dynamicFieldConfig)
+                @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null)
+                    <div class="__xe_{{$dynamicFieldConfig->get('id')}} __xe_section">
                         {!! $fieldType->getSkin()->edit($item->getAttributes()) !!}
                     </div>
                 @endif

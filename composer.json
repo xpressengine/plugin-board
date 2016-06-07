@@ -62,6 +62,11 @@
           "description": "게시판 관리자 기본스킨",
           "screenshot" : []
         },
+        "FieldType/xpressengine@Category/FieldSkin/xpressengine@default": {
+          "class": "Xpressengine\\Plugins\\Board\\Skins\\DynamicField\\DesignSelectSkin",
+          "name": "Category Design select",
+          "description": ""
+        },
         "uiobject/board@select": {
           "class": "Xpressengine\\Plugins\\Board\\UIObjects\\DesignSelect",
           "name": "Design select",

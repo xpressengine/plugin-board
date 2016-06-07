@@ -287,9 +287,7 @@ class UserController extends Controller
             }
         }
 
-        $formColumns = $this->configHandler->formColumns($this->instanceId);
-
-        return compact('item', 'visible', 'formColumns', 'showCategoryItem');
+        return compact('item', 'visible', 'showCategoryItem');
     }
 
     /**
@@ -674,12 +672,9 @@ class UserController extends Controller
             $showCategoryItem = CategoryItem::find($request->get('categoryItemId'));
         }
 
-        $formColumns = $this->configHandler->formColumns($this->instanceId);
-
         return XePresenter::make('preview', [
             'config' => $this->config,
             'handler' => $this->handler,
-            'formColumns' => $formColumns,
             'currentDate' => date('Y-m-d H:i:s'),
             'title' => $title,
             'content' => $content,
@@ -849,10 +844,8 @@ class UserController extends Controller
      * @param string  $menuUrl first segment
      * @param string  $option  options
      */
-    public function votedUsers(Request $request, $menuUrl, $option)
+    public function votedUsers(Request $request, $menuUrl, $option, $id)
     {
-        $id = $request->get('id');
-        $author = Auth::user();
         $limit = $request->get('limit', 10);
 
         $item = $this->handler->getModel($this->config)->find($id);
@@ -878,10 +871,8 @@ class UserController extends Controller
      * @param string  $menuUrl first segment
      * @param string  $option  options
      */
-    public function votedModal(Request $request, $menuUrl, $option)
+    public function votedModal(Request $request, $menuUrl, $option, $id)
     {
-        $id = $request->get('id');
-
         $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 

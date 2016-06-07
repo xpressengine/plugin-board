@@ -94,9 +94,6 @@ class Plugin extends AbstractPlugin
         $trans->putFromLangDataSource('board', base_path('plugins/board/langs/lang.php'));
     }
 
-    /**
-     * @deprecated
-     */
     protected function createDataTable()
     {
         if (Schema::hasTable('board_data') === false) {

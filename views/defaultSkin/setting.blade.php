@@ -1,32 +1,38 @@
 <div class="row">
     <div class="col-sm-12">
-        <div class="xe-form-group">
+        <div class="form-group">
             <label for="">{{xe_trans('xe::list')}}</label>
-            <label><input type="checkbox" class="inheritCheck" data-select=".listColumns" @if($config->getPure('listColumns') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
-            <div class="form-inline listColumns">
-                <div class="xe-form-group">
-                    <select class="xe-form-control" id="list_options" size="8" multiple="multiple">
-                        @foreach ($listOptions as $columnName)
-                            <option value="{{$columnName}}">{{$columnName}}</option>
-                        @endforeach
-                    </select>
-                    <div>
-                        <button type="button" class="btn btn-default list-option-add">추가</button>
-                    </div>
 
-                </div>
-                <div class="xe-form-group">
-                    <select class="xe-form-control" id="list_selected" size="8" multiple="multiple" @if($config->getPure('listColumns') == null) disabled="disabled" @endif>
-                        @foreach ($listColumns as $columnName)
-                            <option value="{{$columnName}}">{{$columnName}}</option>
-                        @endforeach
-                    </select>
-                    <div>
-                        <button type="button" class="btn btn-default list-option-up">위로</button>
-                        <button type="button" class="btn btn-default list-option-down">아래로</button>
-                        <button type="button" class="btn btn-default list-option-delete">삭제</button>
-                    </div>
-                </div>
+            <div class="table-responsive item-setting">
+                <table class="table table-sortable">
+                    <colgroup>
+                        <col width="200">
+                        <col>
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    @foreach($sortListColumns as $columnName)
+                        <tr>
+                            <td>
+                                <button class="btn handler"><i class="xi-bullet-point"></i></button>
+                                <em class="item-title">{{ $columnName }}</em>
+                            </td>
+                            <td>
+                                <span class="item-subtext">{{ $columnName }}</span>
+                            </td>
+                            <td>
+                                <div class="xe-btn-toggle pull-right">
+                                    <label>
+                                        <span class="sr-only">toggle</span>
+                                        <input type="checkbox" name="listColumns[]" value="{{ $columnName }}" @if(in_array($columnName, $config['listColumns'])) checked="checked" @endif @if(in_array($columnName, ['title']))  @endif />
+                                        <span class="toggle"></span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -34,20 +40,74 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="xe-form-group">
+        <div class="form-group">
             <label for="">{{xe_trans('xe::input')}}</label>
-            <label><input type="checkbox" class="inheritCheck" data-select=".formColumns" @if($config->getPure('formColumns') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}</label>
-            <div class="xe-form-group formColumns">
-                <select class="xe-form-control" id="form_order" size="8" multiple="multiple" @if($config->getPure('formColumns') == null) disabled="disabled" @endif>
-                    @foreach ($formColumns as $columnName)
-                        <option value="{{$columnName}}">{{$columnName}}</option>
+
+            <div class="table-responsive item-setting">
+                <table class="table table-sortable">
+                    <colgroup>
+                        <col width="200">
+                        <col>
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    @foreach($sortFormColumns as $columnName)
+                        <tr>
+                            <td>
+                                <button class="btn handler"><i class="xi-bullet-point"></i></button>
+                                <em class="item-title">{{ $columnName }}</em>
+                            </td>
+                            <td>
+                                <span class="item-subtext">{{ $columnName }}</span>
+                            </td>
+                            <td>
+                                <div class="xe-btn-toggle pull-right">
+                                    <label>
+                                        <span class="sr-only">toggle</span>
+                                        <input type="checkbox" name="formColumns[]" value="{{ $columnName }}" @if(in_array($columnName, $config['formColumns'])) checked="checked" @endif @if(in_array($columnName, ['title', 'content']))  @endif />
+                                        <span class="toggle"></span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
-                </select>
-                <div>
-                    <button type="button" class="btn btn-default form-order-up">위로</button>
-                    <button type="button" class="btn btn-default form-order-down">아래로</button>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    $(function() {
+        // sortable 한 table 구현해야 함
+        $(".table-sortable tbody").sortable({
+            handle: '.handler',
+            cancel: '',
+            update: function( event, ui ) {
+            }
+        }).disableSelection();
+
+        $(".table-sortable tbody").closest('form').bind('submit', function(event) {
+            var list = [];
+
+            $('[name="listColumns[]"]').each(function() {
+                list.push($(this).val());
+            });
+
+            for (var i in list) {
+                $(this).append($('<input type="hidden" name="sortListColumns[]">').val(list[i]));
+            }
+
+            list = [];
+            $('[name="formColumns[]"]').each(function() {
+                list.push($(this).val());
+            });
+
+            for (var i in list) {
+                $(this).append($('<input type="hidden" name="sortFormColumns[]">').val(list[i]));
+            }
+        });
+    });
+</script>

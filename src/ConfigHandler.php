@@ -56,20 +56,6 @@ class ConfigHandler
     /**
      * @var array
      */
-    protected $defaultListColumns = [
-        'title', 'writer', 'createdAt', 'assentCount', 'dissentCount', 'readCount', 'updatedAt',
-    ];
-
-    /**
-     * @var array
-     */
-    protected $defaultFormColumns = [
-        'title', 'content',
-    ];
-
-    /**
-     * @var array
-     */
     protected $defaultConfig = [
         'boardId' => null,
         'boardName' => null,
@@ -85,8 +71,6 @@ class ConfigHandler
         'anonymityName' => 'Anonymity',
         'division' => false,
         'revision' => true,
-        'listColumns' => null,
-        'formColumns' => null,
         'dynamicFieldList' => [],
         'recursiveDelete' => true,
     ];
@@ -106,71 +90,6 @@ class ConfigHandler
         $this->configManager = $configManager;
         $this->dynamicField = $dynamicField;
         $this->document = $document;
-    }
-
-    /**
-     * get list columns information
-     *
-     * @param string $boardId board id
-     * @return array
-     */
-    public function listColumns($boardId)
-    {
-        $columns = $this->getDefaultListColumns();
-        $configs = $this->getDynamicFields($this->get($boardId));
-        /**
-         * @var ConfigEntity $config
-         */
-        foreach ($configs as $config) {
-            if ($config->get('sortable') == true || $config->get('searchable') == true) {
-                $columns[] = $config->get('id');
-            }
-        }
-        return $columns;
-    }
-
-    /**
-     * get form column names
-     *
-     * @param string $boardId board id
-     * @return array
-     */
-    public function formColumns($boardId)
-    {
-        $config = $this->get($boardId);
-        $columns = $config->get('formColumns');
-
-        $configs = $this->getDynamicFields($config);
-
-        $dynamicFieldIds = [];
-        /** @var ConfigEntity $config */
-        foreach ($configs as $config) {
-            if ($config->get('use') === true) {
-                $dynamicFieldIds[] = $config->get('id');
-            }
-        }
-
-        // 없는 dynamic field 제거
-        foreach (array_diff($columns, $this->getDefaultFormColumns()) as $columnName) {
-            if (in_array($columnName, $dynamicFieldIds) === false) {
-                $key = array_search($columnName, $columns);
-                if ($key !== false) {
-                    unset($columns[$key]);
-                }
-            }
-        }
-
-        // 설정 안된.. 새로 생성된 df 넣어줌
-        /**
-         * @var ConfigEntity $config
-         */
-        foreach ($configs as $config) {
-            if (in_array($config->get('id'), $columns) === false && $config->get('use') === true) {
-                $columns[] = $config->get('id');
-            }
-        }
-
-        return $columns;
     }
 
     /**
@@ -199,10 +118,6 @@ class ConfigHandler
 
         if ($parent == null) {
             $default = $this->defaultConfig;
-
-            $default['listColumns'] = $this->getDefaultListColumns();
-            $default['formColumns'] = $this->getDefaultFormColumns();
-
             $parent = $this->configManager->add(self::CONFIG_NAME, $default);
         }
 
@@ -229,26 +144,6 @@ class ConfigHandler
     public function putDefault(array $args)
     {
         return $this->configManager->put(self::CONFIG_NAME, $args);
-    }
-
-    /**
-     * get default list columns
-     *
-     * @return array
-     */
-    public function getDefaultListColumns()
-    {
-        return $this->defaultListColumns;
-    }
-
-    /**
-     * get default form columns
-     *
-     * @return array
-     */
-    public function getDefaultFormColumns()
-    {
-        return $this->defaultFormColumns;
     }
 
     /**

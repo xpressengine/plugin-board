@@ -2,36 +2,45 @@
 
 @if($visible == true)
     <div class="board_read">
-        <div class="read_header">
-            @if($item->status == $item::STATUS_NOTICE)
-                <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $showCategoryItem){{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}@endif</span>
-            @elseif($config->get('category') == true && $showCategoryItem)
-                <span class="category">{{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}</span>
+        @foreach ($skinConfig['formColumns'] as $columnName)
+            @if($columnName === 'title')
+                <div class="read_header">
+                    @if($item->status == $item::STATUS_NOTICE)
+                        <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $showCategoryItem){{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}@endif</span>
+                    @elseif($config->get('category') == true && $showCategoryItem)
+                        <span class="category">{{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}</span>
+                    @endif
+                    <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
+
+                    <div class="more_info">
+                        <!-- [D] 클릭시 클래스 on 적용 -->
+                        @if ($item->userId != '' && $config->get('anonymity') === false)
+                            <a href="{{ sprintf('/@%s', $item->user->getAuthIdentifier()) }}" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{{ $item->writer }}</a>
+                        @else
+                            <a class="mb_autohr">{{ $item->writer }}</a>
+                        @endif
+
+                        <span class="mb_time" title="{{$item->createdAt}}"><i class="xi-time"></i> <span data-xe-timeago="{{$item->createdAt}}">{{$item->createdAt}}</span></span>
+                        <span class="mb_readnum"><i class="xi-eye"></i> {{$item->readCount}}</span>
+                    </div>
+                </div>
+            @elseif($columnName === 'content')
+                <div class="read_body">
+                    <div class="xe_content">
+                        {!! uio('contentCompiler', ['content' => $item->content]) !!}
+                    </div>
+                </div>
+            @else
+                <div class="__xe_{{$columnName}} __xe_section">
+                    {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
+                </div>
             @endif
-            <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
+        @endforeach
 
-            <div class="more_info">
-                <!-- [D] 클릭시 클래스 on 적용 -->
-                @if ($item->userId != '' && $config->get('anonymity') === false)
-                    <a href="{{ sprintf('/@%s', $item->user->getAuthIdentifier()) }}" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{{ $item->writer }}</a>
-                @else
-                    <a class="mb_autohr">{{ $item->writer }}</a>
-                @endif
-
-                <span class="mb_time" title="{{$item->createdAt}}"><i class="xi-time"></i> <span data-xe-timeago="{{$item->createdAt}}">{{$item->createdAt}}</span></span>
-                <span class="mb_readnum"><i class="xi-eye"></i> {{$item->readCount}}</span>
-            </div>
-        </div>
-        <div class="read_body">
-            <div class="xe_content">
-                {!! uio('contentCompiler', ['content' => $item->content]) !!}
-            </div>
-        </div>
-
-        <div class="dynamic_fields">
-            @foreach ($configHandler->formColumns($instanceId) as $columnName)
-                @if (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
-                    <div class="__xe_{{$columnName}} __xe_section">
+        <div class="dynamic-field">
+            @foreach ($configHandler->getDynamicFields($config) as $dynamicFieldConfig)
+                @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null)
+                    <div class="__xe_{{$dynamicFieldConfig->get('id')}} __xe_section">
                         {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
                     </div>
                 @endif

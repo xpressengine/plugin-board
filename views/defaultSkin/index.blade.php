@@ -167,7 +167,7 @@
                     <div class="xe-col-sm-6">
                         <div class="xe-row __xe-period">
                             <div class="xe-col-sm-3">
-                                <label class="xe-control-label">{{xe_trans('xe::period')}}</label>
+                                <label class="xe-control-label">{{xe_trans('board::period')}}</label>
                             </div>
                             <div class="xe-col-sm-9">
                                 <div class="xe-form-group">
@@ -229,7 +229,7 @@
                 </label>
             </th>
             <th scope="col" class="favorite"><span><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></span></th>
-            @foreach ($config->get('listColumns') as $columnName)
+            @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'title')
                     @if ($config->get('category') == true)
                         <th scope="col" class="column-th-category"><span>{{ xe_trans('board::category') }}</span></th>
@@ -255,7 +255,7 @@
             </td>
             <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
-            @foreach ($config->get('listColumns') as $columnName)
+            @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'title')
                     @if ($config->get('category') == true)
                         <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
@@ -302,7 +302,7 @@
                 <!-- NO ARTICLE -->
         <tr class="no_article">
             <!-- [D] 컬럼수에 따라 colspan 적용 -->
-            <td colspan="{{ count($config->get('listColumns')) + 2 }}">
+            <td colspan="{{ count($skinConfig['listColumns']) + 2 }}">
                 <img src="/plugins/board/assets/img/@no.jpg" alt="">
                 <p>{{ xe_trans('xe::noPost') }}</p>
             </td>
@@ -322,7 +322,7 @@
             </td>
             <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
-            @foreach ($config->get('listColumns') as $columnName)
+            @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'title')
                     @if ($config->get('category') == true)
                         <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
