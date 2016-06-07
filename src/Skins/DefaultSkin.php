@@ -38,7 +38,7 @@ class DefaultSkin extends AbstractSkin
      * @var array
      */
     protected $defaultListColumns = [
-        'title', 'writer', 'createdAt', 'assentCount', 'dissentCount', 'readCount', 'updatedAt',
+        'title', 'writer', 'assentCount', 'readCount', 'createdAt', 'updatedAt', 'dissentCount',
     ];
 
     protected $defaultSelectedListColumns = [
