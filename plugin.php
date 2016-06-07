@@ -49,9 +49,7 @@ class Plugin extends AbstractPlugin
         $this->createDefaultConfig();
 
         $this->createDataTable();
-
         $this->createFavoriteTable();
-
         $this->createSlugTable();
         $this->createCategoryTable();
         $this->createGalleryThumbnailTable();
@@ -94,6 +92,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_data') === false) {
             Schema::create('board_data', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->string('targetId', 255);
 
                 $table->integer('allowComment')->default(1);
@@ -109,6 +109,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_favorites') === false) {
             Schema::create('board_favorites', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->bigIncrements('id');
                 $table->string('targetId', 255);
                 $table->string('userId', 255);
@@ -122,6 +124,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_slug') === false) {
             Schema::create('board_slug', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->bigIncrements('id');
                 $table->string('targetId', 255);
                 $table->string('instanceId', 255);
@@ -139,6 +143,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_category') === false) {
             Schema::create('board_category', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->string('targetId', 255);
                 $table->string('itemId', 255);
 
@@ -151,6 +157,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_gallery_thumbs') === false) {
             Schema::create('board_gallery_thumbs', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->string('targetId', 255);
                 $table->string('boardThumbnailFileId', 255);
                 $table->string('boardThumbnailExternalPath', 255);
