@@ -251,7 +251,7 @@ class DefaultSkin extends AbstractSkin
         $configHandler = app('xe.board.config');
 
         if (empty($config['sortListColumns'])) {
-            $sortListColumns = $this->defaultSelectedListColumns;
+            $sortListColumns = $this->defaultListColumns;
         } else {
             $sortListColumns = $config['sortListColumns'];
         }
@@ -290,7 +290,7 @@ class DefaultSkin extends AbstractSkin
         $configHandler = app('xe.board.config');
 
         if (empty($config['sortFormColumns'])) {
-            $sortFormColumns = $this->defaultSelectedFormColumns;
+            $sortFormColumns = $this->defaultFormColumns;
         } else {
             $sortFormColumns = $config['sortFormColumns'];
         }
