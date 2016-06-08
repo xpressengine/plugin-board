@@ -132,7 +132,8 @@ class Board extends AbstractModule
             Route::get('/vote/show/{id}', ['as' => 'showVote', 'uses' => 'UserController@showVote']);
             Route::get('/vote/users/{option}/{id}', ['as' => 'votedUsers', 'uses' => 'UserController@votedUsers']);
             Route::get('/vote/modal/{option}/{id}', ['as' => 'votedModal', 'uses' => 'UserController@votedModal']);
-            Route::get('/vote/userList/{option}', ['as' => 'votedUserList', 'uses' => 'UserController@votedUserList']);
+            Route::get('/vote/userList/{option}/{id}', ['as' => 'votedUserList', 'uses' => 'UserController@votedUserList']);
+            Route::get('/vote/userList2/{option}/{id}', ['as' => 'votedUserList2', 'uses' => 'UserController@votedUserList2']);
 
 //            Route::post('/vote/add/{option}', ['as' => 'addVote', 'uses' => 'UserController@addVote']);
 //            Route::post('/vote/remove/{option}', ['as' => 'removeVote', 'uses' => 'UserController@removeVote']);

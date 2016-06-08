@@ -14,7 +14,6 @@
 namespace Xpressengine\Plugins\Board\Skins;
 
 use XePresenter;
-
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;

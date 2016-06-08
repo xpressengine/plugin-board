@@ -607,11 +607,11 @@ class UserController extends Controller
         }
 
         if ($request->get('email') == '') {
-            throw new RequiredValueHttpException(['key' => xe_trans('xe::email')]);
+            throw new RequiredValueHttpException(['name' => xe_trans('xe::email')]);
         }
 
         if ($request->get('certifyKey') == '') {
-            throw new RequiredValueHttpException(['key' => xe_trans('xe::password')]);
+            throw new RequiredValueHttpException(['name' => xe_trans('xe::password')]);
         }
 
         if ($identifyManager->verify($item, $request->get('email'), $request->get('certifyKey')) === false) {
@@ -885,9 +885,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function votedUserList(Request $request, $menuUrl, $option)
+    public function votedUserList(Request $request, $menuUrl, $option, $id)
     {
-        $id = $request->get('id');
         $limit = $request->get('limit', 10);
 
         $item = $this->handler->getModel($this->config)->find($id);
@@ -903,6 +902,37 @@ class UserController extends Controller
             'option' => $option,
             'item' => $item,
             'paginate' => $paginate,
+        ]);
+    }
+
+    public function votedUserList2(Request $request, $menuUrl, $option, $id)
+    {
+        $startId = $request->get('startId');
+        $limit = $request->get('limit', 10);
+
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
+
+        $counter = $this->handler->getVoteCounter();
+        $logModel = $counter->newModel();
+        $query = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
+            ->where('counterOption', $option);
+
+        if ($startId != null) {
+            $query->where('id', '<', $startId);
+        }
+
+        $logs = $query->orderBy('id', 'desc')->take($limit)->get();
+
+        $nextStartId = 0;
+        if (count($logs) == $limit) {
+            $nextStartId = $logs->last()->id;
+        }
+
+        return XePresenter::makeApi([
+            'item' => $item,
+            'list' => $logs,
+            'nextStartId' => $nextStartId,
         ]);
     }
 
