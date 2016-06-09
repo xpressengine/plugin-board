@@ -923,6 +923,20 @@ class UserController extends Controller
         }
 
         $logs = $query->orderBy('id', 'desc')->take($limit)->get();
+        $list = [];
+        foreach ($logs as $log) {
+//            if (Auth::user()->getId() == $log->userId) {
+//                continue;
+//            }
+
+            $user = $log->user;
+            $list[] = [
+                'id' => $user->getId(),
+                'displayName' => $user->getDisplayName(),
+                'profileImage' => $user->getProfileImage(),
+                'createdAt' => (string)$log->createdAt,
+            ];
+        }
 
         $nextStartId = 0;
         if (count($logs) == $limit) {
@@ -931,7 +945,7 @@ class UserController extends Controller
 
         return XePresenter::makeApi([
             'item' => $item,
-            'list' => $logs,
+            'list' => $list,
             'nextStartId' => $nextStartId,
         ]);
     }

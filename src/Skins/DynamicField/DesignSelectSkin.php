@@ -42,11 +42,6 @@ class DesignSelectSkin extends DefaultSkin
         return 'board::views.dynamicField.category.designSelect.'.$name;
     }
 
-    public function settings(ConfigEntity $config = null)
-    {
-        return parent::search($config->toArray(), $this->getPath('createSkin'));
-    }
-
     public function create(array $inputs)
     {
         $config = $this->config;
