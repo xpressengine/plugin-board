@@ -1,4 +1,11 @@
 {{ XeFrontend::js('/assets/core/common/js/toggleMenu.js')->appendTo('head')->load() }}
+{{ XeFrontend::js('/assets/vendor/jqueryui/jquery.event.drag-2.2.js')->appendTo('head')->load() }}
+{{ XeFrontend::js('/assets/vendor/slickgrid/slick.core.js')->appendTo('head')->load() }}
+{{ XeFrontend::js('/assets/vendor/slickgrid/slick.formatters.js')->appendTo('head')->load() }}
+{{ XeFrontend::js('/assets/vendor/slickgrid/slick.grid.js')->appendTo('head')->load() }}
+{{ XeFrontend::js('/assets/vendor/slickgrid/slick.dataview.js')->appendTo('head')->load() }}
+
+{{ XeFrontend::css('/assets/vendor/slickgrid/slick.grid.css')->load() }}
 
 @if($visible == true)
     <div class="board_read">
