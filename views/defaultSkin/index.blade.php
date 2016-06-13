@@ -228,7 +228,12 @@
                     <span class="xe-label-text xe-sr-only">{{ xe_trans('xe::checkAll') }}</span>
                 </label>
             </th>
-            <th scope="col" class="favorite"><span><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></span></th>
+            @if(Input::has('favorite'))
+                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', Input::except(['favorite', 'page']))}}"><i class="xi-star-o on"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
+            @else
+                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', array_merge(Input::except('page'), ['favorite' => 1]))}}"><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
+            @endif
+
             @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'title')
                     @if ($config->get('category') == true)
@@ -244,7 +249,7 @@
         </thead>
         <tbody>
         <!-- NOTICE -->
-        @foreach($handler->getsNotice($config) as $item)
+        @foreach($handler->getsNotice($config, Auth::user()->getId()) as $item)
         <tr class="notice">
             <td class="check">
                 <label class="xe-label">
@@ -269,7 +274,7 @@
                             @if($item->isNew($config->get('newTime')))
                                 <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
-                            @if ($item->boardData->fileCount > 0)
+                            @if ($item->data->fileCount > 0)
                                 <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
                             @endif
                             @if ($item->display == $item::DISPLAY_SECRET)
@@ -335,7 +340,7 @@
                         @if($item->isNew($config->get('newTime')))
                             <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
-                        @if ($item->boardData->fileCount > 0)
+                        @if ($item->data->fileCount > 0)
                             <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
                         @endif
                         @if ($item->display == $item::DISPLAY_SECRET)

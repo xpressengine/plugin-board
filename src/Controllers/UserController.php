@@ -193,6 +193,11 @@ class UserController extends Controller
         $query = $this->handler->makeWhere($query, $request, $this->config);
         $query = $this->handler->makeOrder($query, $request, $this->config);
 
+        // eager loading
+        $query->with(['favorite' => function($favoriteQuery) {
+            $favoriteQuery->where('userId', Auth::user()->getId());
+        }, 'slug', 'data']);
+
         Event::fire('xe.plugin.board.list', [$query]);
 
         $paginate = $query->paginate($this->config->get('perPage'))->appends($request->except('page'));
@@ -887,26 +892,6 @@ class UserController extends Controller
 
     public function votedUserList(Request $request, $menuUrl, $option, $id)
     {
-        $limit = $request->get('limit', 10);
-
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
-
-        $counter = $this->handler->getVoteCounter();
-        $logModel = $counter->newModel();
-        $paginate = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
-            ->where('counterOption', $option)->orderBy('id', 'desc')->paginate($limit);
-
-        return apiRender('votedUserList', [
-            'urlHandler' => $this->urlHandler,
-            'option' => $option,
-            'item' => $item,
-            'paginate' => $paginate,
-        ]);
-    }
-
-    public function votedUserList2(Request $request, $menuUrl, $option, $id)
-    {
         $startId = $request->get('startId');
         $limit = $request->get('limit', 10);
 
@@ -930,11 +915,16 @@ class UserController extends Controller
 //            }
 
             $user = $log->user;
+            $profilePage = '#';
+            if ($user->getId() != '') {
+                $profilePage = route('member.profile', ['member' => $user->getId()]);
+            }
             $list[] = [
                 'id' => $user->getId(),
                 'displayName' => $user->getDisplayName(),
                 'profileImage' => $user->getProfileImage(),
                 'createdAt' => (string)$log->createdAt,
+                'profilePage' => $profilePage,
             ];
         }
 

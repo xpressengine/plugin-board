@@ -119,7 +119,7 @@ class Plugin extends AbstractPlugin
             Schema::create('board_favorites', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
-                $table->bigIncrements('id');
+                $table->bigIncrements('favoriteId');
                 $table->string('targetId', 255);
                 $table->string('userId', 255);
 

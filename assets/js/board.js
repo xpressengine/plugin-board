@@ -17,7 +17,7 @@ var AssentVirtualGrid = (function() {
                 formatter: function(row, cell, value, columnDef, dataContext) {
                     var tmpl = [
                         '<!--[D] 링크가 아닌 경우 div 로 교체 -->',
-                        '<a href="#" class="list-inner-item">',
+                        '<a href="__profilePage__" class="list-inner-item">',
                         '<!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->',
                             '<div class="img-thumbnail"><img src="__src__" width="48" height="48" alt="__alt__" /></div>',
                             '<div class="list-text">',
@@ -26,7 +26,7 @@ var AssentVirtualGrid = (function() {
                         '</a>',
                     ].join("\n");
 
-                    return tmpl.replace(/__src__/g, dataContext.profileImage).replace(/__alt__/g, dataContext.displayName);
+                    return tmpl.replace(/__src__/g, dataContext.profileImage).replace(/__alt__/g, dataContext.displayName).replace(/__profilePage__/g, dataContext.profilePage);
                 }
             }];
 
@@ -275,8 +275,8 @@ $(function($) {
         }
         var $target = $(event.target).closest('a');
         var url = $target.prop('href');
-        XE.page(url, '.bd_like_more', {}, function() {
-            $('.bd_like_more[data-id="'+$target.data('id')+'"]').show();
+        XE.page(url, '#bd_like_more'+$target.data('id'), {}, function() {
+            $('#bd_like_more'+$target.data('id')).show();
         });
     });
 

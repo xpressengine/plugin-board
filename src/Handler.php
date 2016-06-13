@@ -555,13 +555,18 @@ class Handler
      * @param ConfigEntity $config
      * @return mixed
      */
-    public function getsNotice(ConfigEntity $config)
+    public function getsNotice(ConfigEntity $config, $userId)
     {
         $query = $this->getModel($config)
             ->where('instanceId', $config->get('boardId'))
             ->where('status', Document::STATUS_NOTICE)
             ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED);
+
+        // eager loading
+        $query->with(['favorite' => function($favoriteQuery) use ($userId) {
+            $favoriteQuery->where('userId', $userId);
+        }, 'slug', 'data']);
 
         return $query->get();
     }

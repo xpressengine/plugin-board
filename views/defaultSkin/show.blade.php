@@ -96,14 +96,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="bd_like_more" data-id="{{$item->id}}"></div>
+                <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
             </div>
         </div>
     </div>
 
     <!-- 댓글 -->
     @if ($config->get('comment') === true && $item->boardData->allowComment === 1)
-    <div class="__xe_comment">
+    <div class="__xe_comment board_comment">
         {!! uio('comment', ['target' => $item]) !!}
     </div>
     @endif

@@ -163,7 +163,27 @@ class Board extends Document implements CommentUsable
      */
     public function favorite()
     {
-        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardFavorite', 'targetId');
+        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardFavorite', 'id', 'targetId');
+    }
+
+    /**
+     * get slug
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function slug()
+    {
+        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardSlug', 'id', 'targetId');
+    }
+
+    /**
+     * get slug
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function data()
+    {
+        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardData', 'id', 'targetId');
     }
 
     /**

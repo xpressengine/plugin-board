@@ -253,9 +253,13 @@ return [
         'ko' => '라인',
         'en' => 'Line',
     ],
-    'assentThisPosts' => [
+    'assentThisPostsOthers' => [
         'ko' => '님 외 :count 명이 이 글을 좋아합니다.',
         'en' => 'and :count others like this posts.',
+    ],
+    'assentThisPosts' => [
+        'ko' => ':count 명이 이 글을 좋아합니다.',
+        'en' => ':count peoples like this posts.',
     ],
     'secretPost' => [
         'ko' => '비밀글',
