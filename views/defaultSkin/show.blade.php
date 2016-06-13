@@ -74,16 +74,9 @@
 
                     <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
 
-                    <div class="bd_share_area">
-                        <!-- [D] 클릭시 클래스 on 적용 -->
-                        <a href="#" class="bd_ico bd_share"><i class="xi-external-link"></i><span class="xe-sr-only">{{ trans('board::share') }}</span></a>
-                        <div class="ly_popup">
-                            <ul>
-                                <li><a href="http://www.facebook.com/sharer/sharer.php?u={{urlencode(Request::url())}}" target="_blank"><i class="xi-facebook"></i> {{ trans('board::facebook') }}</a></li>
-                                <li><a href="https://twitter.com/intent/tweet?url={{urlencode(Request::url())}}" target="_blank"><i class="xi-twitter"></i> {{ trans('board::twitter') }}</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    {!! uio('share', [
+                        'url' => urlencode(Request::url()),
+                    ]) !!}
                 </div>
 
                 <div class="bd_function_r">

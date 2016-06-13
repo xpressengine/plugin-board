@@ -22,6 +22,7 @@ use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Counter\Factory as CounterFactory;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\UIObjects\Share as Share;
 
 /**
  * Plugin
@@ -47,6 +48,7 @@ class Plugin extends AbstractPlugin
     public function install()
     {
         $this->createDefaultConfig();
+        $this->createShareConfig();
 
         $this->createDataTable();
         $this->createFavoriteTable();
@@ -78,6 +80,12 @@ class Plugin extends AbstractPlugin
         // create default permission
         $permission = new BoardPermissionHandler(app('xe.permission'));
         $permission->getDefault();
+    }
+
+    protected function createShareConfig()
+    {
+        $configManager = app('xe.config');
+        $configManager->add(Share::CONFIG_NAME, array_keys(Share::getItems()));
     }
 
     protected function putLang()
@@ -355,5 +363,8 @@ class Plugin extends AbstractPlugin
 
         $register->add(UIObjects\Title::class);
         $uiObjectHandler->setAlias('titleWithSlug', UIObjects\Title::getId());
+
+        $register->add(UIObjects\Share::class);
+        $uiObjectHandler->setAlias('share', UIObjects\Share::getId());
     }
 }

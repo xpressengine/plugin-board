@@ -243,11 +243,15 @@ return [
     ],
     'facebook' => [
         'ko' => '페이스북',
-        'en' => 'facebook',
+        'en' => 'Facebook',
     ],
     'twitter' => [
         'ko' => '트위터',
-        'en' => 'twitter',
+        'en' => 'Twitter',
+    ],
+    'line' => [
+        'ko' => '라인',
+        'en' => 'Line',
     ],
     'assentThisPosts' => [
         'ko' => '님 외 :count 명이 이 글을 좋아합니다.',
