@@ -89,11 +89,8 @@
                     <a href="{{ $urlHandler->get('create', array_merge(Input::all(), ['parentId' => $item->id])) }}" class="bd_ico bd_reply"><i class="xi-reply"></i><span class="xe-sr-only">{{ xe_trans('xe::reply') }}</span></a>
                     <div class="bd_more_area">
                         <!-- [D] 클릭시 클래스 on 적용 -->
-                        <a href="#" class="bd_ico bd_more_view __xe_manage_menu_document" data-instance-id="{{ $item->instanceId }}" data-id="{{ $item->id }}"><i class="xi-ellipsis-h"></i><span class="xe-sr-only">{{ xe_trans('xe::more') }}</span></a>
-                        <div class="ly_popup">
-                            <ul>
-                            </ul>
-                        </div>
+                        <a href="#" class="bd_ico bd_more_view" data-toggle="xe-page-toggle-menu" data-target=".xe-popup-target" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board/'.$item->instanceId]) !!}'><i class="xi-ellipsis-h"></i><span class="xe-sr-only">{{ xe_trans('xe::more') }}</span></a>
+                        <div class="xe-popup-target"></div>
                     </div>
                 </div>
                 <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
