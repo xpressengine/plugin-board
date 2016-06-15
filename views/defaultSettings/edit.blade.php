@@ -104,10 +104,18 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <select id="" name="comment" class="form-control" @if($config->getPure('comment') == null) disabled="disabled" @endif>
-                                                    <option value="true" {!! $config->get('comment') == true ? 'selected="selected"' : '' !!} >Use</option>
-                                                    <option value="false" {!! $config->get('comment') == false ? 'selected="selected"' : '' !!} >Disuse</option>
-                                                </select>
+                                                <div class="row">
+                                                    <div class="col-sm-9">
+                                                        <select id="" name="comment" class="form-control" @if($config->getPure('comment') == null) disabled="disabled" @endif>
+                                                            <option value="true" {!! $config->get('comment') == true ? 'selected="selected"' : '' !!} >Use</option>
+                                                            <option value="false" {!! $config->get('comment') == false ? 'selected="selected"' : '' !!} >Disuse</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="{{route('manage.comment.setting', ['targetInstanceId' => $config->get('boardId')])}}" class="btn">{{xe_trans('xe::settings')}}</a>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -272,26 +280,6 @@
                     <div id="collapseTwo" class="panel-collapse collapse in">
                         <div class="panel-body">
                             {!! $toggleMenuSection !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div class="pull-left">
-                            <h3 class="panel-title">{{xe_trans('xe::comment')}}</h3>
-                        </div>
-                        <div class="pull-right">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="btn-link panel-toggle pull-right"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">{{xe_trans('fold')}}</span></a>
-                        </div>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            @if($config->get('comment') == true)
-                                {!! $commentSection !!}
-                            @else
-                                {{xe_trans('xe::disUse')}}
-                            @endif
                         </div>
                     </div>
                 </div>

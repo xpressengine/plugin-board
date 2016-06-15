@@ -734,10 +734,11 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $id = Input::get('id');
+        $id = $request->get('id');
         $author = Auth::user();
 
-        $item = $this->handler->get($id, $this->boardId);
+        $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
 
         // 관리자 또는 본인 글이 아니면 접근 할 수 없음
         if ($author->getRating() !== 'super' && $author->getId() != $item->id) {

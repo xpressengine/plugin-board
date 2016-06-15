@@ -76,7 +76,7 @@ class TrashItem extends AbstractToggleMenu
 
     public function getText()
     {
-        return '휴지통';
+        return xe_trans('xe::moveToTrash');
     }
 
     public function getType()

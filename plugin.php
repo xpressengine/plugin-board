@@ -22,7 +22,10 @@ use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Counter\Factory as CounterFactory;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
 use Xpressengine\Plugins\Board\UIObjects\Share as Share;
+use Xpressengine\Plugins\Claim\ToggleMenus\BoardClaimItem;
+use XeToggleMenu;
 
 /**
  * Plugin
@@ -80,6 +83,12 @@ class Plugin extends AbstractPlugin
         // create default permission
         $permission = new BoardPermissionHandler(app('xe.permission'));
         $permission->getDefault();
+
+        // create toggle menu
+        XeToggleMenu::setActivates(BoardModule::getId(), null, [
+            BoardClaimItem::getId(),
+            TrashItem::getId(),
+        ]);
     }
 
     protected function createShareConfig()

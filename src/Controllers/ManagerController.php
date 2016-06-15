@@ -187,8 +187,6 @@ class ManagerController extends Controller
 
         $skinSection = new SkinSection(BoardModule::getId(), $boardId);
 
-        $commentSection = (new CommentSection())->setting($boardId);
-
         $dynamicFieldSection = new DynamicFieldSection(
             $config->get('documentGroup'),
             XeDB::connection(),
@@ -203,7 +201,6 @@ class ManagerController extends Controller
             'config' => $config,
             'boardId' => $boardId,
             'skinSection' => $skinSection,
-            'commentSection' => $commentSection,
             'dynamicFieldSection' => $dynamicFieldSection,
             'toggleMenuSection' => $toggleMenuSection,
             'perms' => $perms,
