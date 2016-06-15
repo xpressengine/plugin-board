@@ -241,12 +241,8 @@
                             <span class="autohr_area">
                                 <a href="#" class="mb_autohr __xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
                             </span>
-                        @if (in_array('createdAt', $config->get('listColumns')) == true)
                             <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{$item->createdAt}}</span></span>
-                        @endif
-                        @if (in_array('readCount', $config->get('listColumns')) == true)
                             <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->readCount }}</span>
-                        @endif
                         <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                     </div>
                 </div>

@@ -241,17 +241,11 @@
                             <div class="more_info">
                                 <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
                                 <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
-                                @if (in_array('writer', $config->get('listColumns')) == true)
                                 <span class="autohr_area">
                                     <a href="#" class="mb_autohr __xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
                                 </span>
-                                @endif
-                                @if (in_array('createdAt', $config->get('listColumns')) == true)
                                 <span class="mb_time"><i class="xi-time" data-xe-timeago="{{ $item->createdAt }}"></i></span>
-                                @endif
-                                @if (in_array('readCount', $config->get('listColumns')) == true)
                                 <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->readCount }}</span>
-                                @endif
                                 <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                             </div>
                     </div>
