@@ -135,7 +135,6 @@ $(function($) {
             dataType: 'json',
             data: {id:id}
         }).done(function (json) {
-            console.log(json);
             if (json.favorite === true) {
                 $anchor.addClass('on');
             } else {
