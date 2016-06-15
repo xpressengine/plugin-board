@@ -13,8 +13,11 @@
 
 namespace Xpressengine\Plugins\Board\ToggleMenus;
 
+use Gate;
 use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
+use Xpressengine\Permission\Instance;
 
 /**
  * TrashItem
@@ -39,6 +42,26 @@ class TrashItem extends AbstractToggleMenu
     {
         $this->type = $type;
         $this->documentId = $documentId;
+    }
+
+    public function allows() {
+        $doc = Board::find($this->documentId);
+        $configHandler = app('xe.board.config');
+        $boardPermission = app('xe.board.permission');
+
+        $config = $configHandler->get($doc->instanceId);
+        $isManger = false;
+        if ($config !== null) {
+
+            if (Gate::allows(
+                BoardPermissionHandler::ACTION_MANAGE,
+                new Instance($boardPermission->name($doc->instanceId)))
+            ) {
+                $isManger = true;
+            };
+        }
+
+        return $isManger;
     }
 
     public static function getName()
