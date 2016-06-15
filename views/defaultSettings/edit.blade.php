@@ -25,18 +25,9 @@
                         <div class="panel-body">
                             <div class="panel">
 
-                                <div class="form-group">
-                                    <div class="checkbox font-size-large">
-                                        <label>
-                                            <input type="checkbox">
-                                            상위 설정으로 지정하시겠습니까?
-                                        </label>
-                                    </div>
-                                </div>
-
                                 <div class="panel-heading">
                                     <div class="pull-left">
-                                        <h4 class="panel-title">게시판 상세</h4>
+                                        <h4 class="panel-title">{{xe_trans('xe::settings')}}</h4>
                                     </div>
                                 </div>
                                 <div class="panel-body">
