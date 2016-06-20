@@ -17,7 +17,6 @@ use Route;
 use XeSkin;
 use View;
 use Mail;
-use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Module\AbstractModule;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
@@ -277,7 +276,7 @@ class Board extends AbstractModule
                     $fromEmail = app('config')->get('mail.from.address');
                     $applicationName = 'XE3';
 
-                    $menuItem = MenuItem::find($board->instanceId);
+                    $menuItem = app('xe.menu')->getItem($board->instanceId);
                     $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
 
                     $m->from($fromEmail, $applicationName);
@@ -319,8 +318,8 @@ class Board extends AbstractModule
                     Mail::send('emails.alarm', $data, function ($m) use ($toMail, $board) {
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = 'XE3';
-
-                        $menuItem = MenuItem::find($board->instanceId);
+                        
+                        $menuItem = app('xe.menu')->getItem($board->instanceId);
                         $subject = sprintf(
                             '[%s - %s] %s',
                             $applicationName,
@@ -373,7 +372,7 @@ class Board extends AbstractModule
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = 'XE3';
 
-                        $menuItem = MenuItem::find($board->instanceId);
+                        $menuItem = app('xe.menu')->getItem($board->instanceId);
                         $subject = sprintf(
                             '[%s - %s] %s',
                             $applicationName,
