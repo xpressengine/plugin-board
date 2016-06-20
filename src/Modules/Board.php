@@ -38,7 +38,7 @@ use Xpressengine\Plugins\Comment\Models\Target as CommentTarget;
  */
 class Board extends AbstractModule
 {
-    const FILE_UPLOAD_PATH = 'attached/board';
+    const FILE_UPLOAD_PATH = 'public/plugin/board';
     const THUMBNAIL_TYPE = 'spill';
 
     /**

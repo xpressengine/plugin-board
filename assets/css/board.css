@@ -125,16 +125,7 @@
     display: block;
 }
 .board .xe-form-control {
-    /* width: 300px; */
-    /* height: 38px; */
-    /* padding: 0 0 0 5px; */
-    /* border: 1px solid #ddd; */
-    /* border-radius: 0; */
-    font-size: 14px;
-    -webkit-appearance: none;
-    appearance: none;
-    color: #2c2e37;
-    line-height: 38px;
+
 }
 .board .xe-form-control:focus,
 .board .xe-form-control:active {
@@ -1258,10 +1249,10 @@
 }
 .write_form_input .xe-form-control {
     /* width: 120px; */
-    height: 38px;
+    /*height: 38px;
     padding-left: 16px;
     font-size: 13px;
-    line-height: 38px;
+    line-height: 38px;*/
 }
 .write_form_input .xe-form-control:first-child {
     /* margin-left: 0; */
@@ -2550,4 +2541,16 @@
     border-radius:50%;
     width: 48px;
     height: 48px;
+}
+
+.board .board-title{
+    text-align: center;
+    padding-bottom: 37px;
+    color:#383838;
+}
+
+.board .board-title>strong{
+    display: block;
+    font-size: 34px;
+    font-weight: normal;
 }
