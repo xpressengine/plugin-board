@@ -961,7 +961,7 @@ class UserController extends Controller
             throw new NotFoundUploadFileException;
         }
 
-        $file = $storage->upload($uploadedFile, BoardModule::FILE_UPLOAD_PATH);
+        $file = $storage->upload($uploadedFile, BoardModule::FILE_UPLOAD_PATH, null, 'plugin');
 
         /** @var \Xpressengine\Media\MediaManager $mediaManager */
         $mediaManager = \App::make('xe.media');
