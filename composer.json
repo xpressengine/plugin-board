@@ -2,7 +2,7 @@
   "name": "xpressengine-plugin/board",
   "description": "XpressEngine's plugin for bundle (XE)",
   "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
-  "version": "0.3.0",
+  "version": "0.9.0",
   "support": {
     "email": "developers@xpressengine.com"
   },
@@ -62,10 +62,20 @@
           "description": "게시판 관리자 기본스킨",
           "screenshot" : []
         },
+        "FieldType/xpressengine@Category/FieldSkin/xpressengine@default": {
+          "class": "Xpressengine\\Plugins\\Board\\Skins\\DynamicField\\DesignSelectSkin",
+          "name": "Category Design select",
+          "description": ""
+        },
         "uiobject/board@select": {
           "class": "Xpressengine\\Plugins\\Board\\UIObjects\\DesignSelect",
           "name": "Design select",
           "description": "디자인 셀렉트"
+        },
+        "uiobject/board@share": {
+          "class": "Xpressengine\\Plugins\\Board\\UIObjects\\Share",
+          "name": "Share",
+          "description": "share"
         }
       }
     }

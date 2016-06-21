@@ -1,22 +1,23 @@
-<div class="board-contents">
-    <h2>{{ xe_trans('xe::identification') }}</h2>
-    <p>{{ xe_trans('xe::enterYourPassword') }}</p>
+{!! XeFrontend::css('assets/core/member/auth.css')->load() !!}
+<div class="member">
+    <h1>{{ xe_trans('xe::identification') }}</h1>
+    <form action="{{ $urlHandler->get('identificationConfirm') }}" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="referrer" value="{{$referrer}}" />
+        <input type="hidden" name="id" value="{{$board->id}}" />
 
-    <form method="post" action="{{ $urlHandler->get('identificationConfirm') }}">
-        <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
-        <input type="hidden" name="referrer" class="xe-form-control" value="{{$referrer}}" />
-        <input type="hidden" name="id" class="xe-form-control" value="{{$board->id}}" />
-
-        <input type="email" name="email" class="xe-form-control" value="" placeholder="{{ xe_trans('xe::email') }}"/>
-        <input type="password" name="certifyKey" class="xe-form-control" value="" placeholder="{{ xe_trans('xe::password') }}"/>
-
-        <div class="btns">
-            <div class="btn-left">
-                <a class="btn btn-default" href="{{ URL::previous() }}">{{ xe_trans('xe::back') }}</a>
+        <fieldset>
+            <legend>{{ xe_trans('xe::identification') }}</legend>
+            <div class="auth-group">
+                <label for="name" class="sr-only">{{ xe_trans('xe::email') }}</label>
+                <input name="email" type="email" class="xe-form-control" value="{{ old('email') }}" placeholder="{{ xe_trans('xe::email') }}">
             </div>
-            <div class="btn-right">
-                <button type="submit" class="btn btn-defalut">{{ xe_trans('xe::confirm') }}</button>
+            <div class="auth-group">
+                <label for="pwd" class="sr-only">{{ xe_trans('xe::password') }}</label>
+                <input name="certifyKey" type="password" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}">
             </div>
-        </div>
+
+            <button type="submit" class="xe-btn xe-btn-primary">{{ xe_trans('xe::confirm') }}</button>
+        </fieldset>
     </form>
 </div>

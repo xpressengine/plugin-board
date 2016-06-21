@@ -25,6 +25,7 @@ use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Skin\AbstractSkin;
 use XeSkin;
+use XePresenter;
 use View;
 use Event;
 use Xpressengine\Storage\File;
@@ -59,25 +60,31 @@ class GallerySkin extends DefaultSkin
         $this->data['skinAlias'] = static::$skinAlias;
 
         // 리스팅을 제외한 모든 디자인은 기본 스킨의 디자인 사용
-        $view = View::make('board::views.defaultSkin._frame', $this->data);
         if ($this->view === 'index') {
-
             static::attachThumbnail($this->data['paginate']);
 
-            $view->content = View::make(
+            $contentView = View::make(
                 sprintf('%s.%s', static::$skinAlias, $this->view),
                 $this->data
-            )->render();
+            );
         } else {
 
             if ($this->view === 'show') {
                 static::attachThumbnail($this->data['paginate']);
             }
 
-            $view->content = View::make(
+            $contentView = View::make(
                 sprintf('%s.%s', parent::$skinAlias, $this->view),
                 $this->data
-            )->render();
+            );
+        }
+
+        if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
+            $view = $contentView->render();
+        } else {
+            // wrapped by _frame.blade.php
+            $view = View::make(sprintf('%s._frame', parent::$skinAlias), $this->data);
+            $view->content = $contentView->render();
         }
 
         return $view;

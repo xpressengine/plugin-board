@@ -23,6 +23,7 @@ use Xpressengine\Plugins\Board\Exceptions\AlreadyExistFavoriteHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundFavoriteHttpException;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
+use Xpressengine\Plugins\Board\Models\BoardData;
 use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
@@ -32,6 +33,7 @@ use Xpressengine\Tag\Tag;
 use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
+use Xpressengine\Storage\File as FileModel;
 
 /**
  * Board handler
@@ -151,10 +153,46 @@ class Handler
         $this->saveCategory($board, $args);
         $this->setFiles($board, $args);
         $this->setTags($board, $args);
+        $this->saveData($board, $args);
 
         $model->getConnection()->commit();
 
         return $board;
+    }
+
+    /**
+     * save data
+     *
+     * @param Board $board board model
+     * @param array $args  arguments
+     * @return void
+     */
+    protected function saveData(Board $board, array $args)
+    {
+        $allowComment = 1;
+        if (empty($args['allowComment']) || $args['allowComment'] !== '1') {
+            $allowComment = 0;
+        }
+        $useAlarm = 1;
+        if (empty($args['useAlarm']) || $args['useAlarm'] !== '1') {
+            $useAlarm = 0;
+        }
+        $fileCount = FileModel::getByFileable($board->id)->count();
+
+        $data = $board->boardData;
+        if ($data === null) {
+            $data = new BoardData([
+                'allowComment' => $allowComment,
+                'useAlarm' => $useAlarm,
+                'fileCount' => $fileCount,
+            ]);
+        } else {
+            $data->allowComment = $allowComment;
+            $data->useAlarm = $useAlarm;
+            $data->fileCount = $fileCount;
+        }
+
+        $board->boardData()->save($data);
     }
 
     /**
@@ -300,6 +338,7 @@ class Handler
         $this->unsetFiles($board, $fileIds);
         $this->setTags($board, $args);
         $this->unsetTags($board, $args);
+        $this->saveData($board, $args);
 
         $board->getConnection()->commit();
 
@@ -469,7 +508,11 @@ class Handler
         $args['id'] = null;
         $args['instanceId'] = $config->get('boardId');
         $args['slug'] = $board->boardSlug->slug;
-        $args['categoryItemId'] = $board->boardCategory->itemId;
+        $args['categoryItemId'] = '';
+        $boardCategory = $board->boardCategory;
+        if ($boardCategory != null) {
+            $args['categoryItemId'] = $boardCategory->itemId;
+        }
 
         $this->add($args, $user, $config);
 
@@ -512,13 +555,18 @@ class Handler
      * @param ConfigEntity $config
      * @return mixed
      */
-    public function getsNotice(ConfigEntity $config)
+    public function getsNotice(ConfigEntity $config, $userId)
     {
         $query = $this->getModel($config)
             ->where('instanceId', $config->get('boardId'))
             ->where('status', Document::STATUS_NOTICE)
-            ->where('display', Document::DISPLAY_VISIBLE)
+            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED);
+
+        // eager loading
+        $query->with(['favorite' => function($favoriteQuery) use ($userId) {
+            $favoriteQuery->where('userId', $userId);
+        }, 'slug', 'data']);
 
         return $query->get();
     }
@@ -533,6 +581,13 @@ class Handler
      */
     public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
     {
+        if ($request->get('title_pureContent', '') !== '') {
+            $query = $query->whereNested(function ($query) use ($request) {
+                $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_pureContent')))
+                    ->orWhere('pureContent', 'like', sprintf('%%%s%%', $request->get('title_pureContent')));
+            });
+        }
+
         if ($request->get('title_content', '') !== '') {
             $query = $query->whereNested(function ($query) use ($request) {
                 $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_content')))
@@ -546,6 +601,14 @@ class Handler
 
         if ($request->get('categoryItemId', '') !== '') {
             $query = $query->where('itemId', $request->get('categoryItemId'));
+        }
+
+        if ($request->get('startCreatedAt', '') !== '') {
+            $query = $query->where('createdAt', '>=', $request->get('startCreatedAt') . ' 00:00:00');
+        }
+
+        if ($request->get('endCreatedAt', '') !== '') {
+            $query = $query->where('createdAt', '<=', $request->get('endCreatedAt') . ' 23:59:59');
         }
 
         $query->getProxyManager()->wheres($query->getQuery(), $request->all());
@@ -610,6 +673,23 @@ class Handler
     }
 
     /**
+     * vote
+     *
+     * @param Board         $board  board model
+     * @param UserInterface $user   user
+     * @param string        $option 'assent' or 'dissent'
+     * @return void
+     */
+    public function vote(Board $board, UserInterface $user, $option)
+    {
+        if ($this->voteCounter->has($board->id, $user, $option) === false) {
+            $this->incrementVoteCount($board, $user, $option);
+        } else {
+            $this->decrementVoteCount($board, $user, $option);
+        }
+    }
+
+    /**
      * increment vote count
      *
      * @param Board         $board  board model
@@ -619,9 +699,7 @@ class Handler
      */
     public function incrementVoteCount(Board $board, UserInterface $user, $option)
     {
-        if ($this->voteCounter->has($board->id, $user, $option) === false) {
-            $this->voteCounter->add($board->id, $user, $option);
-        }
+        $this->voteCounter->add($board->id, $user, $option);
 
         $columnName = 'assentCount';
         if ($option == 'dissent') {
@@ -641,9 +719,7 @@ class Handler
      */
     public function decrementVoteCount(Board $board, UserInterface $user, $option)
     {
-        if ($this->voteCounter->has($board->id, $user, $option) === true) {
-            $this->voteCounter->remove($board->id, $user, $option);
-        }
+        $this->voteCounter->remove($board->id, $user, $option);
 
         $columnName = 'assentCount';
         if ($option == 'dissent') {

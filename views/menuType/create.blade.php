@@ -3,11 +3,11 @@
         <div class="panel-heading">
             <div class="pull-left">
                 <h4 class="panel-title">
-                    게시판 기본 설정
+                    {{xe_trans('board::boardBasicSetting')}}
                 </h4>
             </div>
             <div class="pull-right">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseMenuType" class="btn-link panel-toggle pull-right"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">메뉴닫기</span></a>
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseMenuType" class="btn-link panel-toggle pull-right"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">{{xe_trans('xe::fold')}}</span></a>
             </div>
         </div>
         <div id="collapseMenuType" class="panel-collapse">
@@ -28,12 +28,12 @@
 
                 <div class="form-group">
 
-                    <p><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> For web master's<br>이 설정은 등록 할 때만 처리 됩니다. 설정 변경 시 이 항목은 제공되지 않습니다.</p>
+                    <p><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> For web master's<br>{{xe_trans('board::msgCannotChangeThisSetting')}}</p>
 
                     <label>Table Division {{ $config->get('boardId') }}</label>
                     <select name="division" class="form-control">
-                        <option value="true" {{($config->get('division') == true) ? 'selected="selected"' : ''}}>Use</option>
-                        <option value="false" {{($config->get('division') == false) ? 'selected="selected"' : ''}}>Disuse</option>
+                        <option value="true" {{($config->get('division') == true) ? 'selected="selected"' : ''}}>{{xe_trans('xe::use')}}</option>
+                        <option value="false" {{($config->get('division') == false) ? 'selected="selected"' : ''}}>{{xe_trans('xe::disuse')}}</option>
                     </select>
 
                 </div>
@@ -41,8 +41,8 @@
 
                     <label>Revision</label>
                     <select name="revision" class="form-control">
-                        <option value="true" {{($config->get('revision') == true) ? 'selected="selected"' : ''}}>Use</option>
-                        <option value="false" {{($config->get('revision') == false) ? 'selected="selected"' : ''}}>Disuse</option>
+                        <option value="true" {{($config->get('revision') == true) ? 'selected="selected"' : ''}}>{{xe_trans('xe::use')}}</option>
+                        <option value="false" {{($config->get('revision') == false) ? 'selected="selected"' : ''}}>{{xe_trans('xe::disuse')}}</option>
                     </select>
                 </div>
 

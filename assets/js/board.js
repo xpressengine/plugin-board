@@ -1,14 +1,128 @@
+var AssentVirtualGrid = (function() {
+
+    var self, grid, dataView;
+
+    var ajaxRunning = false;    //ajax중인지
+
+    var startId,
+        limit,
+        isLastRow = false;      //마지막 row인지
+
+    return {
+        init: function() {
+
+            var self = AssentVirtualGrid;
+            var columns = [{
+                //selectable: false,
+                formatter: function(row, cell, value, columnDef, dataContext) {
+                    var tmpl = [
+                        '<!--[D] 링크가 아닌 경우 div 로 교체 -->',
+                        '<a href="__profilePage__" class="list-inner-item">',
+                        '<!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->',
+                            '<div class="img-thumbnail"><img src="__src__" width="48" height="48" alt="__alt__" /></div>',
+                            '<div class="list-text">',
+                                '<p>__alt__</p>',
+                            '</div>',
+                        '</a>',
+                    ].join("\n");
+
+                    return tmpl.replace(/__src__/g, dataContext.profileImage).replace(/__alt__/g, dataContext.displayName).replace(/__profilePage__/g, dataContext.profilePage);
+                }
+            }];
+
+            var options = {
+                editable: false,
+                enableAddRow: true,
+                enableColumnReorder: false,
+                enableCellNavigation: false,
+                // asyncEditorLoading: false,
+                // autoEdit: false,
+                rowHeight: 80,
+                headerHeight: 0,
+                showHeaderRow: false
+            };
+
+            // var data = [];
+            $(".xe-list-group").css("height", "365px");
+            dataView = new Slick.Data.DataView();
+            grid = new Slick.Grid(".xe-list-group", dataView, columns, options);
+            grid.setHeaderRowVisibility(false);
+
+            $(".slick-header").hide();
+
+
+            id= 0;
+            ajaxRunning = false;
+            isLastRow = false;
+            startId = 0;
+            limit = 10;
+
+            self.getRows();
+            self.bindEvent();
+
+            return self;
+        },
+        bindEvent: function() {
+            grid.onScroll.subscribe(function(e, args) {
+
+                var $viewport = $(".xe-modal").find(".slick-viewport"),
+                    loadBlockCnt = 3;   //3 page 정도 남으면 reload함, 1page - modal body height 기준.
+
+                if(!ajaxRunning && !isLastRow && ($viewport[0].scrollHeight - $viewport.scrollTop()) < ($viewport.outerHeight() * loadBlockCnt)) {
+                    AssentVirtualGrid.getRows();
+                }
+
+            });
+
+            dataView.onRowCountChanged.subscribe(function (e, args) {
+                grid.updateRowCount();
+                grid.render();
+            });
+
+            dataView.onRowsChanged.subscribe(function (e, args) {
+                grid.invalidateRows(args.rows);
+                grid.render();
+            });
+        },
+        getRows: function() {
+
+            ajaxRunning = true;
+
+            var data = {
+                limit: limit
+            };
+
+            if(startId !== 0) {
+                data.startId = startId;
+            }
+
+            XE.ajax({
+                url: $(".xe-list-group").data('url'),
+                type: 'get',
+                dataType: 'json',
+                data: data,
+                success: function(data) {
+
+                    if(data.nextStartId === 0) {
+                        isLastRow = true;
+                    }
+
+                    startId = data.nextStartId;
+
+                    for(var k = 0, max = data.list.length; k < max; k += 1) {
+                        dataView.addItem(data.list[k]);
+                    }
+
+                }
+            }).done(function() {
+                ajaxRunning = false;
+            });
+        }
+    }
+})();
+
 $(function($) {
-    $('.bd_select_list').on('click', 'a', function(event) {
-        event.preventDefault();
-        var $target = $(event.target),
-            $select = $target.closest('.bd_select_list');
-
-        $select.prev('.bd_select').text($target.text());
-        $target.closest('form').find('[name="'+$select.data('name')+'"]').val($target.data('value'));
-    });
-
-    $('.xe-favorite').on('click', function(event) {
+    $('.__xe-bd-favorite').on('click', function(event) {
         event.preventDefault();
         var $target = $(event.target),
             $anchor = $target.closest('a'),
@@ -21,7 +135,6 @@ $(function($) {
             dataType: 'json',
             data: {id:id}
         }).done(function (json) {
-            console.log(json);
             if (json.favorite === true) {
                 $anchor.addClass('on');
             } else {
@@ -30,37 +143,77 @@ $(function($) {
         });
     });
 
-    $(document).on('click touchstart', function(event) {
-        var $target = $(event.target);
+    $('.__xe-forms .__xe-dropdown-form input').on('change', function(event) {
+        var $target = $(event.target),
+            $frm = $('.__xe_search');
 
-        open_select_box($target, event);
-        open_select_area($target, event);
-    });
-
-    // category change
-    $('.__xe_category_change').on('click', 'li', function(event) {
-        var $input = $(this).closest('.__xe_category_change').find('input'),
-            name = $input.prop('name'),
-            categoryId = $(event.target).data('value');
-
-        // search submit
-        var $frm = $('.__xe_search');
-        $frm.find('[name="'+name+'"]').val(categoryId);
+        $frm.find('[name="'+$target.attr('name')+'"]').val($target.val());
         $frm.submit();
     });
 
-    // order change
-    $('.__xe_order_change').on('click', 'li', function(event) {
-        var $input = $(this).closest('.__xe_order_change').find('input'),
-            name = $input.prop('name'),
-            order = $(event.target).data('value');
+    $('.__xe-period .__xe-dropdown-form input').on('change', function(event) {
+        var $target = $(event.target),
+            $frm = $('.__xe_search'),
+            period = $target.val();
 
-        // search submit
-        var $frm = $('.__xe_search');
-        $frm.find('[name="'+name+'"]').val(order);
-        $frm.submit();
+        System.import('vendor:/moment').then(function(moment) {
+            var startDate = '',
+                endDate = moment().format('YYYY-MM-DD'),
+                $startDate = $(event.target).closest('.__xe-period').find('[name="startCreatedAt"]'),
+                $endDate = $(event.target).closest('.__xe-period').find('[name="endCreatedAt"]');
+
+            switch (period) {
+                case '1week' :
+                    startDate = moment().add(-1, 'weeks').format('YYYY-MM-DD');
+                    break;
+                case '2week' :
+                    startDate = moment().add(-2, 'weeks').format('YYYY-MM-DD');
+                    break;
+                case '1month' :
+                    startDate = moment().add(-1, 'months').format('YYYY-MM-DD');
+                    break;
+                case '3month' :
+                    startDate = moment().add(-3, 'months').format('YYYY-MM-DD');
+                    break;
+                case '6month' :
+                    startDate = moment().add(-6, 'months').format('YYYY-MM-DD');
+                    break;
+                case '1year' :
+                    startDate = moment().add(-1, 'years').format('YYYY-MM-DD');
+                    break;
+            }
+
+            $startDate.val(startDate);
+            $endDate.val(endDate);
+        });
+
+
     });
 
+    $('.__xe-bd-manage').on('click', function() {
+        $('.bd_manage_detail').toggle();
+    });
+
+    $('.__xe-bd-search').on('click', function() {
+        event.preventDefault();
+        $(this).toggleClass("on");
+
+        if($(this).hasClass("on")){
+            $(".bd_search_area").show();
+            $(".bd_search_input").focus();
+        } else{
+            $(".bd_search_area").hide();
+        }
+
+        $(".bd_btn_detail").on("click", function(e){
+            $(this).toggleClass("on");
+            if($(this).hasClass("on")){
+                $(".bd_search_detail").show();
+            } else{
+                $(".bd_search_detail").hide();
+            }
+        });
+    });
     // submit title content search form
     $('.__xe_simple_search').on('submit', function(event) {
         event.preventDefault();
@@ -96,30 +249,49 @@ $(function($) {
     // click like button
     $('.bd_like').on('click touchstart', function(event) {
         event.preventDefault();
-        var $target = $(event.target).closest('a'),
-            params = {
-                id: $target.data('id')
-            };
+        var $target = $(event.target).closest('a');
 
-        var url = $target.data('add-url');
-        if ($target.hasClass('invoked')) {
-            url = $target.data('remove-url');
-        }
+        var url = $target.prop('href');
+        //if ($target.hasClass('voted')) {
+        //    url = $target.data('remove-url');
+        //}
 
         XE.ajax({
             url: url,
             type: 'post',
-            dataType: 'json',
-            data: params
+            dataType: 'json'
         }).done(function (json) {
-            $target.toggleClass('invoked');
+            $target.toggleClass('voted');
             $('.bd_like_num').text(json.counts.assent);
         });
 
     });
 
-    // click like number. show like member list
     $('.bd_like_num').on('click touchstart', function(event) {
+        event.preventDefault();
+        if (parseInt($(event.target).text()) == 0) {
+            return;
+        }
+        var $target = $(event.target).closest('a');
+        var url = $target.prop('href');
+        XE.page(url, '#bd_like_more'+$target.data('id'), {}, function() {
+            $('#bd_like_more'+$target.data('id')).show();
+        });
+    });
+
+    // 안됨
+    $('.bd_like_more_text a').on('click touchstart', function(event) {
+        event.preventDefault();
+        if (parseInt($(event.target).text()) == 0) {
+            return;
+        }
+        var $target = $(event.target).closest('a');
+        var url = $target.prop('href');
+        XE.pageModal(url);
+    });
+
+        // click like number. show like member list
+    $('.bd_like_num-notuse').on('click touchstart', function(event) {
         event.preventDefault();
         var $target = $('.bd_like_more');
 
@@ -208,50 +380,136 @@ $(function($) {
             });
         }
     }
+});
 
-    // open select box - design select box
-    function open_select_box($target, event)
-    {
-        if ($target.hasClass('__xe_select_box_show')) {
-            event.preventDefault();
-            var $dst = $target.next('.bd_select_list');
+$(function($) {
+    $('.__board_form').on('click', '.__xe_btn_preview', function(event) {
+        event.preventDefault();
 
-            if ($dst.length === 0) {
-                $dst = $target.closest('.bd_select_area').next('.bd_select_list');
-            }
+        var form = $(this).parents('form');
 
-            var isVisible = false;
-            if ($dst.is(':visible')) {
-                isVisible = true;
-            }
+        var currentUrl = form.attr('action');
+        var currentTarget = form.attr('target');
+        var pieces = currentUrl.split('/');
+        pieces[pieces.length-1] = 'preview';
+        form.attr('action', pieces.join('/'));
+        form.attr('target', '_blank');
+        form.submit();
 
-            $('.bd_select_list').hide();
+        form.attr('action', currentUrl);
+        form.attr('target', currentTarget === undefined ? '' : currentTarget);
+    }).on('click', '.__xe_btn_submit', function(event) {
+        event.preventDefault();
+        var form = $(this).closest('form');
+        form.trigger('submit');
+    });
+});
 
-            if (isVisible !== true) {
-                $dst.show();
-            }
-
-        } else {
-            $('.bd_select_list').hide();
+// manage
+$(function($) {
+    // copy documents
+    $('.__xe_copy .__xe_btn_submit').on('click', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
         }
 
-        if ($target.hasClass('__xe_search_box_show')) {
-            $('.__xe_search_area').toggle();
+        var ids = getCheckedIds(),
+            instanceId = $('.__xe_copy').find('[name="copyTo"]').val();
+
+        if (instanceId == '') {
+            XE.toast('info', XE.Lang.trans('board::selectBoard'));
+            return;
         }
-    }
 
-    // open select area
-    function open_select_area($target, event)
-    {
-        if ($target.hasClass('__xe_select_area_show')) {
-            event.preventDefault();
-            var $dst = $($target.data('selector'));
-
-            if ($dst.is(':visible')) {
-                $dst.hide();
-            } else {
-                $dst.show();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids, instanceId: instanceId},
+            url: $(event.target).data('href'),
+            success: function(response) {
+                document.location.reload();
             }
+        });
+    });
+
+    $('.__xe_move .__xe_btn_submit').on('click', function(event) {
+        if (hasChecked() === false) {
+            return;
         }
+
+        event.preventDefault();
+
+        var ids = getCheckedIds(),
+            instanceId = $('.__xe_move').find('[name="moveTo"]').val();
+
+        if (instanceId == '') {
+            XE.toast('info', XE.Lang.trans('board::selectBoard'));
+            return;
+        }
+
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids, instanceId: instanceId},
+            url: $(event.target).data('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_to_trash').on('click', 'a:first', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
+        }
+
+        var ids = getCheckedIds();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids},
+            url: $(event.target).prop('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+    $('.__xe_delete').on('click', 'a:first', function(event) {
+        event.preventDefault();
+        if (hasChecked() === false) {
+            return;
+        }
+
+        var ids = getCheckedIds();
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            data: {id:ids},
+            url: $(event.target).prop('href'),
+            success: function(response) {
+                document.location.reload();
+            }
+        });
+    });
+
+
+    var hasChecked = function() {
+        if ($('.bd_manage_check:checked').length == 0) {
+            XE.toast('info', XE.Lang.trans('board::selectPost'));
+            return false;
+        }
+        return true;
+    };
+
+    var getCheckedIds = function() {
+        var checkedIds = [];
+        $('.bd_manage_check:checked').each(function() {
+            checkedIds.push($(this).val());
+        });
+
+        return checkedIds;
     }
 });

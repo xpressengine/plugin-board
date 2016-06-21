@@ -22,6 +22,10 @@ use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Counter\Factory as CounterFactory;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
+use Xpressengine\Plugins\Board\UIObjects\Share as Share;
+use Xpressengine\Plugins\Claim\ToggleMenus\BoardClaimItem;
+use XeToggleMenu;
 
 /**
  * Plugin
@@ -47,9 +51,10 @@ class Plugin extends AbstractPlugin
     public function install()
     {
         $this->createDefaultConfig();
+        $this->createShareConfig();
 
+        $this->createDataTable();
         $this->createFavoriteTable();
-
         $this->createSlugTable();
         $this->createCategoryTable();
         $this->createGalleryThumbnailTable();
@@ -78,6 +83,18 @@ class Plugin extends AbstractPlugin
         // create default permission
         $permission = new BoardPermissionHandler(app('xe.permission'));
         $permission->getDefault();
+
+        // create toggle menu
+        XeToggleMenu::setActivates(BoardModule::getId(), null, [
+            BoardClaimItem::getId(),
+            TrashItem::getId(),
+        ]);
+    }
+
+    protected function createShareConfig()
+    {
+        $configManager = app('xe.config');
+        $configManager->add(Share::CONFIG_NAME, array_keys(Share::getItems()));
     }
 
     protected function putLang()
@@ -88,32 +105,19 @@ class Plugin extends AbstractPlugin
         $trans->putFromLangDataSource('board', base_path('plugins/board/langs/lang.php'));
     }
 
-    /**
-     * @deprecated
-     */
     protected function createDataTable()
     {
-        if (Schema::hasTable('board_datas') === false) {
-            Schema::create('board_datas', function (Blueprint $table) {
+        if (Schema::hasTable('board_data') === false) {
+            Schema::create('board_data', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->string('targetId', 255);
 
-                // for slug
-                $table->string('instanceId', 255);
-                $table->string('slug', 255);
-                $table->string('title', 255);
-
-                // for category
-                $table->string('categoryItemId', 255);
-
-                // for gallery thumbnail
-                $table->string('boardThumbnailFileId', 255);
-                $table->string('boardThumbnailExternalPath', 255);
-                $table->string('boardThumbnailPath', 255);
+                $table->integer('allowComment')->default(1);
+                $table->integer('useAlarm')->default(1);
+                $table->integer('fileCount')->default(0);
 
                 $table->primary(array('targetId'));
-
-                $table->index(array('slug'));
-                $table->index(array('title'));
             });
         }
     }
@@ -122,7 +126,9 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_favorites') === false) {
             Schema::create('board_favorites', function (Blueprint $table) {
-                $table->bigIncrements('id');
+                $table->engine = "InnoDB";
+
+                $table->bigIncrements('favoriteId');
                 $table->string('targetId', 255);
                 $table->string('userId', 255);
 
@@ -135,6 +141,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_slug') === false) {
             Schema::create('board_slug', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->bigIncrements('id');
                 $table->string('targetId', 255);
                 $table->string('instanceId', 255);
@@ -152,6 +160,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_category') === false) {
             Schema::create('board_category', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->string('targetId', 255);
                 $table->string('itemId', 255);
 
@@ -164,6 +174,8 @@ class Plugin extends AbstractPlugin
     {
         if (Schema::hasTable('board_gallery_thumbs') === false) {
             Schema::create('board_gallery_thumbs', function (Blueprint $table) {
+                $table->engine = "InnoDB";
+
                 $table->string('targetId', 255);
                 $table->string('boardThumbnailFileId', 255);
                 $table->string('boardThumbnailExternalPath', 255);
@@ -360,5 +372,8 @@ class Plugin extends AbstractPlugin
 
         $register->add(UIObjects\Title::class);
         $uiObjectHandler->setAlias('titleWithSlug', UIObjects\Title::getId());
+
+        $register->add(UIObjects\Share::class);
+        $uiObjectHandler->setAlias('share', UIObjects\Share::getId());
     }
 }

@@ -13,9 +13,12 @@
 
 namespace Xpressengine\Plugins\Board\Skins;
 
+use XePresenter;
+use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
 use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
+use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Skin\AbstractSkin;
 use View;
@@ -29,6 +32,31 @@ use View;
 class DefaultSkin extends AbstractSkin
 {
     protected static $skinAlias = 'board::views.defaultSkin';
+
+    /**
+     * @var array
+     */
+    protected $defaultListColumns = [
+        'title', 'writer', 'assentCount', 'readCount', 'createdAt', 'updatedAt', 'dissentCount',
+    ];
+
+    protected $defaultSelectedListColumns = [
+        'title', 'writer',  'assentCount', 'readCount', 'createdAt',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $defaultFormColumns = [
+        'title', 'content',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $defaultSelectedFormColumns = [
+        'title', 'content',
+    ];
 
     /**
      * render
@@ -46,12 +74,17 @@ class DefaultSkin extends AbstractSkin
 
         $this->data['skinAlias'] = static::$skinAlias;
 
-        // wrapped by _frame.blade.php
-        $view = View::make(sprintf('%s._frame', static::$skinAlias), $this->data);
-        $view->content = View::make(
+        $contentView = View::make(
             sprintf('%s.%s', static::$skinAlias, $this->view),
             $this->data
-        )->render();
+        );
+        if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
+            $view = $contentView;
+        } else {
+            // wrapped by _frame.blade.php
+            $view = View::make(sprintf('%s._frame', static::$skinAlias), $this->data);
+            $view->content = $contentView->render();
+        }
 
         return $view;
     }
@@ -65,17 +98,6 @@ class DefaultSkin extends AbstractSkin
     {
     }
 
-
-    /**
-     * get setting view
-     *
-     * @param array $config config
-     */
-    public static function getSettingView($config = [])
-    {
-       return '';
-    }
-
     /**
      * index customizer
      *
@@ -83,8 +105,8 @@ class DefaultSkin extends AbstractSkin
      */
     protected function indexCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
-        //$this->setBoardOrderItems();
         $this->setPaginationPresenter();
         $this->setBoardList();
     }
@@ -96,8 +118,8 @@ class DefaultSkin extends AbstractSkin
      */
     protected function showCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
-        //$this->setBoardOrderItems();
         $this->setPaginationPresenter();
         $this->setBoardList();
     }
@@ -109,6 +131,7 @@ class DefaultSkin extends AbstractSkin
      */
     protected function createCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
     }
 
@@ -119,7 +142,25 @@ class DefaultSkin extends AbstractSkin
      */
     protected function editCustomizer()
     {
+        $this->setSkinConfig();
         $this->setDynamicFieldSkins();
+    }
+
+    /**
+     * set skin config to data
+     *
+     * @return void
+     */
+    protected function setSkinConfig()
+    {
+        // 기본 설정
+        if (empty($this->config['listColumns'])) {
+            $this->config['listColumns'] = $this->defaultSelectedListColumns;
+        }
+        if (empty($this->config['formColumns'])) {
+            $this->config['formColumns'] = $this->defaultSelectedFormColumns;
+        }
+        $this->data['skinConfig'] = $this->config;
     }
 
     /**
@@ -173,5 +214,110 @@ class DefaultSkin extends AbstractSkin
             ];
         }
         $this->data['boardList'] = $boardList;
+    }
+
+    /**
+     * get setting view
+     *
+     * @param array $config config
+     * @return \Illuminate\Contracts\Support\Renderable|string
+     */
+    public function getSettingView($config = [])
+    {
+        if ($config === []) {
+            $config = [
+                'listColumns' => $this->defaultSelectedListColumns,
+                'formColumns' => $this->defaultSelectedFormColumns,
+            ];
+        }
+
+        $arr = explode(':', request()->get('instanceId'));
+        $instanceId = $arr[1];
+
+        return View::make(
+            sprintf('%s.%s', static::$skinAlias, 'setting'),
+            [
+                'sortListColumns' => $this->getSortListColumns($config, $instanceId),
+                'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
+                'config' => $config
+            ]
+        );
+    }
+
+    protected function getSortListColumns(array $config, $instanceId)
+    {
+        /** @var \Xpressengine\Plugins\Board\ConfigHandler $configHandler */
+        $configHandler = app('xe.board.config');
+
+        if (empty($config['sortListColumns'])) {
+            $sortListColumns = $this->defaultListColumns;
+        } else {
+            $sortListColumns = $config['sortListColumns'];
+        }
+
+        $dynamicFields = $configHandler->getDynamicFields($configHandler->get($instanceId));
+        $currentDynamicFields = [];
+        /**
+         * @var ConfigEntity $dynamicFieldConfig
+         */
+        foreach ($dynamicFields as $dynamicFieldConfig) {
+            if ($dynamicFieldConfig->get('use') === true) {
+                $currentDynamicFields[] = $dynamicFieldConfig->get('id');
+            }
+
+            if (
+                $dynamicFieldConfig->get('use') === true &&
+                in_array($dynamicFieldConfig->get('id'), $sortListColumns) === false
+            ) {
+                $sortListColumns[] = $dynamicFieldConfig->get('id');
+            }
+        }
+
+        $usableColumns = array_merge($this->defaultListColumns, $currentDynamicFields);
+        foreach ($sortListColumns as $index => $column) {
+            if (in_array($column, $usableColumns) === false) {
+                unset($sortListColumns[$index]);
+            }
+        }
+
+        return $sortListColumns;
+    }
+
+    protected function getSortFormColumns(array $config, $instanceId)
+    {
+        /** @var \Xpressengine\Plugins\Board\ConfigHandler $configHandler */
+        $configHandler = app('xe.board.config');
+
+        if (empty($config['sortFormColumns'])) {
+            $sortFormColumns = $this->defaultFormColumns;
+        } else {
+            $sortFormColumns = $config['sortFormColumns'];
+        }
+        $dynamicFields = $configHandler->getDynamicFields($configHandler->get($instanceId));
+        $currentDynamicFields = [];
+        /**
+         * @var ConfigEntity $dynamicFieldConfig
+         */
+        foreach ($dynamicFields as $dynamicFieldConfig) {
+            if ($dynamicFieldConfig->get('use') === true) {
+                $currentDynamicFields[] = $dynamicFieldConfig->get('id');
+            }
+
+            if (
+                $dynamicFieldConfig->get('use') === true &&
+                in_array($dynamicFieldConfig->get('id'), $sortFormColumns) === false
+            ) {
+                $sortFormColumns[] = $dynamicFieldConfig->get('id');
+            }
+        }
+
+        $usableColumns = array_merge($this->defaultFormColumns, $currentDynamicFields);
+        foreach ($sortFormColumns as $index => $column) {
+            if (in_array($column, $usableColumns) === false) {
+                unset($sortFormColumns[$index]);
+            }
+        }
+
+        return $sortFormColumns;
     }
 }

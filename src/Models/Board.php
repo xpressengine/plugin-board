@@ -13,6 +13,7 @@
 
 namespace Xpressengine\Plugins\Board\Models;
 
+use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
@@ -62,6 +63,21 @@ class Board extends Document implements CommentUsable
     public function scopeNotice($query)
     {
         return $query->whereStatus(self::STATUS_NOTICE);
+    }
+
+    /**
+     * get assent counter log
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function assents()
+    {
+        return $this->hasMany(CounterLog::class, 'targetId')->where('counterName', 'vote')->where('counterOption', 'assent');
+    }
+
+    public function boardData()
+    {
+        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardData', 'targetId');
     }
 
     /**
@@ -147,7 +163,27 @@ class Board extends Document implements CommentUsable
      */
     public function favorite()
     {
-        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardFavorite', 'targetId');
+        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardFavorite', 'id', 'targetId');
+    }
+
+    /**
+     * get slug
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function slug()
+    {
+        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardSlug', 'id', 'targetId');
+    }
+
+    /**
+     * get slug
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function data()
+    {
+        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardData', 'id', 'targetId');
     }
 
     /**
@@ -209,7 +245,7 @@ class Board extends Document implements CommentUsable
     public function scopeVisible($query)
     {
         $query->where('status', Document::STATUS_PUBLIC)
-            ->where('display', Document::DISPLAY_VISIBLE)
+            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED);
     }
 }
