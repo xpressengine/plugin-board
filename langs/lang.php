@@ -22,12 +22,18 @@ return [
         'ko' => '사용자 기본 스킨',
         'en' => 'Default User Skin',
     ],
-
+    'msgCannotChangeThisSetting' => [
+        'ko' => '이 설정은 변경할 수 없습니다.',
+        'en' => 'You can not change this setting.',
+    ],
     'defaultUserSkinDescription' => [
         'ko' => '게시판용 사용자 기본 스킨 입니다.',
         'en' => 'This is the default user skin for the Board.',
     ],
-
+    'boardBasicSetting' => [
+        'ko' => '게시판 기본 설정',
+        'en' => 'Board basic settings',
+    ],
     'boardDetailConfigures' => [
         'ko' => '게시판 상세 설정',
         'en' => 'Board detail configures',
