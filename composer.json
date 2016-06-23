@@ -67,6 +67,11 @@
           "name": "Category Design select",
           "description": ""
         },
+        "module/board@board/toggleMenu/xpressengine@trashItem": {
+          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\TrashItem",
+          "name": "휴지통",
+          "description": "선택한 문서를 휴지통으로 보냅니다."
+        },
         "uiobject/board@select": {
           "class": "Xpressengine\\Plugins\\Board\\UIObjects\\DesignSelect",
           "name": "Design select",

@@ -50,7 +50,6 @@ class Board extends AbstractModule
     {
         self::registerManageRoute();
         self::registerInstanceRoute();
-        self::registerToggleMenu();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
         self::registerCommentAlarmIntercept();
@@ -152,16 +151,6 @@ class Board extends AbstractModule
             'index', 'create', 'edit', 'destroy', 'show', 'identify', 'revision', 'store', 'preview', 'temporary',
             'trash', 'certify', 'update', 'vote', 'manageMenus', 'comment', 'file', 'suggestion', 'slug', 'hasSlug'
         ]);
-    }
-
-    /**
-     * Register toggle menu
-     *
-     * @return void
-     */
-    protected static function registerToggleMenu()
-    {
-        app('xe.pluginRegister')->add(TrashItem::class);
     }
 
     /**
