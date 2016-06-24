@@ -21,9 +21,6 @@
                         @endif
                     </div>
                     <div class="write_title">
-                        {{--<div class="temp_save">--}}
-                            {{--<a href="#" class="temp_save_num" data-toggle="xe-modal" data-target="#Modal"><strong>3</strong>개의 임시 저장 글</a>--}}
-                        {{--</div>--}}
                         {!! uio('titleWithSlug', [
                         'title' => Input::old('title'),
                         'slug' => '',
@@ -114,7 +111,7 @@
             </div>
         </div>
         <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
-            <a href="#" class="bd_btn btn_temp_save __xe_temp_btn_save">임시저장</a>
+            {{--<a href="#" class="bd_btn btn_temp_save __xe_temp_btn_save">임시저장</a>--}}
             <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
             <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
         </div>

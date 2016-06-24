@@ -401,20 +401,20 @@ $(function($) {
         form.attr('action', currentUrl);
         form.attr('target', currentTarget === undefined ? '' : currentTarget);
     }).on('click', '.__xe_temp_btn_save', function (event) {
-        var form = $('#board_form');
-        var temporary = $('textarea', form).temporary({
-            key: 'document|' + form.data('instanceId'),
-            btnLoad: $('.__xe_temp_btn_load', form),
-            btnSave: $('.__xe_temp_btn_save', form),
-            container: $('.__xe_temp_container', form),
-            withForm: true,
-            callback: function (data) {
-                console.log(data);
-                if (xe3CkEditors['xeContentEditor']) {
-                    xe3CkEditors['xeContentEditor'].setData($('textarea', this.dom).val());
-                }
-            }
-        });
+        //var form = $('#board_form');
+        //var temporary = $('textarea', form).temporary({
+        //    key: 'document|' + form.data('instanceId'),
+        //    btnLoad: $('.__xe_temp_btn_load', form),
+        //    btnSave: $('.__xe_temp_btn_save', form),
+        //    container: $('.__xe_temp_container', form),
+        //    withForm: true,
+        //    callback: function (data) {
+        //        console.log(data);
+        //        if (xe3CkEditors['xeContentEditor']) {
+        //            xe3CkEditors['xeContentEditor'].setData($('textarea', this.dom).val());
+        //        }
+        //    }
+        //});
     });
 });
 
