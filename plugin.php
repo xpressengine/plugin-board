@@ -26,6 +26,7 @@ use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
 use Xpressengine\Plugins\Board\UIObjects\Share as Share;
 use Xpressengine\Plugins\Claim\ToggleMenus\BoardClaimItem;
 use XeToggleMenu;
+use XeConfig;
 
 /**
  * Plugin
@@ -85,9 +86,9 @@ class Plugin extends AbstractPlugin
         $permission->getDefault();
 
         // create toggle menu
-        XeToggleMenu::setActivates(BoardModule::getId(), null, [
-            BoardClaimItem::getId(),
-            TrashItem::getId(),
+        XeToggleMenu::setActivates('module/board@board', null, [
+            'module/board@board/toggleMenu/claim@boardClaimItem',
+            'module/board@board/toggleMenu/xpressengine@trashItem',
         ]);
     }
 
