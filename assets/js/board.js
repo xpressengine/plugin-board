@@ -418,7 +418,7 @@ $(function($) {
             instanceId = $('.__xe_copy').find('[name="copyTo"]').val();
 
         if (instanceId == '') {
-            XE.toast('xe-success', XE.Lang.trans('board::selectBoard'));
+            XE.toast('xe-warning', XE.Lang.trans('board::selectBoard'));
             return;
         }
 
@@ -444,7 +444,7 @@ $(function($) {
             instanceId = $('.__xe_move').find('[name="moveTo"]').val();
 
         if (instanceId == '') {
-            XE.toast('xe-success', XE.Lang.trans('board::selectBoard'));
+            XE.toast('xe-warning', XE.Lang.trans('board::selectBoard'));
             return;
         }
 
@@ -498,7 +498,7 @@ $(function($) {
 
     var hasChecked = function() {
         if ($('.bd_manage_check:checked').length == 0) {
-            XE.toast('xe-success', XE.Lang.trans('board::selectPost'));
+            XE.toast('xe-warning', XE.Lang.trans('board::selectPost'));
             return false;
         }
         return true;
