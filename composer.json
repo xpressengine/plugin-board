@@ -85,12 +85,6 @@
       }
     }
   },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packagist.xpressengine.io"
-    }
-  ],
   "require-dev": {
     "phpunit/phpunit": "~4.0",
     "mockery/mockery": "dev-master@dev"
