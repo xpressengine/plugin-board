@@ -30,6 +30,8 @@ use Xpressengine\Http\Request;
  */
 class BoardFavorite extends DynamicModel
 {
+    protected $connection = 'document';
+
     public $timestamps = false;
 
     protected $primaryKey = 'favoriteId';
