@@ -31,6 +31,9 @@ use Xpressengine\Http\Request;
 class BoardData extends DynamicModel
 {
     protected $table = 'board_data';
+
+    protected $connection = 'document';
+
     public $timestamps = false;
 
     protected $primaryKey = 'targetId';

@@ -23,6 +23,8 @@ use Xpressengine\Database\Eloquent\DynamicModel;
  */
 class BoardGalleryThumb extends DynamicModel
 {
+    protected $connection = 'document';
+
     public $timestamps = false;
 
     protected $primaryKey = 'targetId';

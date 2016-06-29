@@ -4,7 +4,6 @@
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.formatters.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.grid.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.dataview.js')->appendTo('head')->load() }}
-
 {{ XeFrontend::css('/assets/vendor/slickgrid/slick.grid.css')->load() }}
 
 @if($visible == true)
@@ -136,6 +135,9 @@
 @endif
 {{--end if visible == true --}}
 
-<!-- 리스트 -->
-@include($skinAlias.'.index')
+@if (isset($withoutList) === false || $withoutList === false)
+    <!-- 리스트 -->
+    @include($skinAlias.'.index')
+@endif
+
 

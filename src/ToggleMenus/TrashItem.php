@@ -32,8 +32,6 @@ use Xpressengine\Permission\Instance;
  */
 class TrashItem extends AbstractToggleMenu
 {
-    public static $id = 'module/board@board/toggleMenu/xpressengine@trashItem';
-
     protected $type;
 
     protected $documentId;
@@ -62,16 +60,6 @@ class TrashItem extends AbstractToggleMenu
         }
 
         return $isManger;
-    }
-
-    public static function getName()
-    {
-        return '휴지통';
-    }
-
-    public static function getDescription()
-    {
-        return '선택한 문서를 휴지통으로 보냅니다.';
     }
 
     public function getText()

@@ -118,9 +118,12 @@ class ManagerController extends Controller
 
         $perms = $boardPermission->getDefaultPerms();
 
+        $toggleMenuSection = new ToggleMenuSection(BoardModule::getId());
+
         return $this->presenter->make('global.edit', [
             'config' => $config,
             'perms' => $perms,
+            'toggleMenuSection' => $toggleMenuSection,
         ]);
     }
 

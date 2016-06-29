@@ -1,7 +1,7 @@
 {{ XeFrontend::rule('board', $rules) }}
 
 <div class="board_write">
-    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
+    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="parentId" value="{{$parentId}}" />
         <input type="hidden" name="head" value="{{$head}}" />
@@ -99,12 +99,10 @@
             </div>
         </div>
         <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
-            {{--<a href="#" class="bd_btn btn_temp_save">임시저장</a>--}}
-            <a href="{{ $urlHandler->get('preview') }}" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
-            <a href="{{ $urlHandler->get('store') }}" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
+            {{--<a href="#" class="bd_btn btn_temp_save __xe_temp_btn_save">임시저장</a>--}}
+            <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
+            <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
         </div>
     </div>
-
     </form>
-
 </div>
