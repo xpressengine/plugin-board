@@ -34,17 +34,6 @@
                     <div class="write_form_editor">
                         {!! editor($config->get('boardId'), [
                           'content' => Input::old('content'),
-                          'editorOptions' => [
-                            'fileUpload' => [
-                              'upload_url' => $urlHandler->get('upload'),
-                              'source_url' => $urlHandler->get('source'),
-                              'download_url' => $urlHandler->get('download'),
-                            ],
-                            'suggestion' => [
-                              'hashtag_api' => $urlHandler->get('hashTag'),
-                              'mention_api' => $urlHandler->get('mention'),
-                            ],
-                          ]
                         ]) !!}
                     </div>
                 </div>

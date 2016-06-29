@@ -151,7 +151,7 @@ class Handler
 
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
-        $this->setFiles($board, $args);
+//        $this->setFiles($board, $args);
         $this->setTags($board, $args);
         $this->saveData($board, $args);
 
@@ -245,42 +245,42 @@ class Handler
         }
     }
 
-    /**
-     * set files
-     *
-     * @param Board $board board model
-     * @param array $args  arguments
-     * @return array
-     * @todo 업데이트 할 때 중복 bind 되어 fileable 이 계속 증가하는 오류가 있음
-     */
-    protected function setFiles(Board $board, array $args)
-    {
-        $fileIds = [];
-        if (empty($args['_files']) === false) {
-            foreach (File::whereIn('id', $args['_files'])->get() as $file) {
-                $fileIds[] = $file->id;
-                if ($this->storage->has($board->id, $file) === false) {
-                    $this->storage->bind($board->id, $file);
-                }
-            }
-        }
-        return $fileIds;
-    }
-
-    /**
-     * unset files
-     *
-     * @param Board $board   board model
-     * @param array $fileIds current uploaded file ids
-     * @retunr void
-     */
-    protected function unsetFiles(Board $board, array $fileIds)
-    {
-        $files = File::whereIn('id', array_diff($board->getFileIds(), $fileIds))->get();
-        foreach ($files as $file) {
-            $this->storage->unBind($board->id, $file, true);
-        }
-    }
+//    /**
+//     * set files
+//     *
+//     * @param Board $board board model
+//     * @param array $args  arguments
+//     * @return array
+//     * @todo 업데이트 할 때 중복 bind 되어 fileable 이 계속 증가하는 오류가 있음
+//     */
+//    protected function setFiles(Board $board, array $args)
+//    {
+//        $fileIds = [];
+//        if (empty($args['_files']) === false) {
+//            foreach (File::whereIn('id', $args['_files'])->get() as $file) {
+//                $fileIds[] = $file->id;
+//                if ($this->storage->has($board->id, $file) === false) {
+//                    $this->storage->bind($board->id, $file);
+//                }
+//            }
+//        }
+//        return $fileIds;
+//    }
+//
+//    /**
+//     * unset files
+//     *
+//     * @param Board $board   board model
+//     * @param array $fileIds current uploaded file ids
+//     * @retunr void
+//     */
+//    protected function unsetFiles(Board $board, array $fileIds)
+//    {
+//        $files = File::whereIn('id', array_diff($board->getFileIds(), $fileIds))->get();
+//        foreach ($files as $file) {
+//            $this->storage->unBind($board->id, $file, true);
+//        }
+//    }
 
     /**
      * set tags
@@ -334,8 +334,8 @@ class Handler
 
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
-        $fileIds = $this->setFiles($board, $args);
-        $this->unsetFiles($board, $fileIds);
+//        $fileIds = $this->setFiles($board, $args);
+//        $this->unsetFiles($board, $fileIds);
         $this->setTags($board, $args);
         $this->unsetTags($board, $args);
         $this->saveData($board, $args);

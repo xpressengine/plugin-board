@@ -34,7 +34,7 @@
             @elseif($columnName === 'content')
                 <div class="read_body">
                     <div class="xe_content">
-                        {!! compile($item->instanceId, $item->content) !!}
+                        {!! compile($item->instanceId, $item->content, $item->id) !!}
                     </div>
                 </div>
             @else
@@ -55,17 +55,17 @@
         </div>
 
         <div class="read_footer">
-            @if ($item->boardData->fileCount > 0)
-            <div class="bd_file_list">
-                <!-- [D] 클릭시 클래스 on 적용 -->
-                <a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->fileCount }}</strong></a>
-                <ul>
-                    @foreach($item->files as $file)
-                        <li><a href="{{$urlHandler->get('download', ['id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
+            {{--@if ($item->boardData->fileCount > 0)--}}
+            {{--<div class="bd_file_list">--}}
+                {{--<!-- [D] 클릭시 클래스 on 적용 -->--}}
+                {{--<a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->fileCount }}</strong></a>--}}
+                {{--<ul>--}}
+                    {{--@foreach($item->files as $file)--}}
+                        {{--<li><a href="{{$urlHandler->get('download', ['id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>--}}
+                    {{--@endforeach--}}
+                {{--</ul>--}}
+            {{--</div>--}}
+            {{--@endif--}}
             <div class="bd_function">
                 <div class="bd_function_l">
                     <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
