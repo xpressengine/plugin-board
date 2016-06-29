@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Controllers;
 use XeDocument;
 use XePresenter;
 use XeFrontend;
+use XeEditor;
 use Auth;
 use Gate;
 use Event;
@@ -403,10 +404,14 @@ class UserController extends Controller
         if (empty($inputs['certifyKey']) === false) {
             $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
         }
+        
+        /** @var \Xpressengine\Editor\AbstractEditor $editor */
+        $editor = XeEditor::get($this->instanceId);
+        $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
 
         $board = $this->handler->add($inputs, $user, $this->config);
 
-        \XeEditor::terminate($this->instanceId, $board->getKey(), $inputs);
+        XeEditor::terminate($this->instanceId, $board->getKey(), $inputs);
 
         if ($request->get('parentId') != '') {
             return redirect()->to(
@@ -514,6 +519,7 @@ class UserController extends Controller
         BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager
     ) {
+        dd($request->all());
         $user = Auth::user();
         $id = $request->get('id');
 
@@ -563,9 +569,13 @@ class UserController extends Controller
             $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
         }
 
+        /** @var \Xpressengine\Editor\AbstractEditor $editor */
+        $editor = XeEditor::get($this->instanceId);
+        $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
+
         $board = $this->handler->put($item, $inputs);
 
-        \XeEditor::terminate($this->instanceId, $board->getKey(), $inputs);
+        XeEditor::terminate($this->instanceId, $board->getKey(), $inputs);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
         if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {
