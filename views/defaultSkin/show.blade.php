@@ -130,7 +130,7 @@
     <!-- // 댓글 -->
 @else
     <script>
-        XE.toast('danger', '{{xe_trans('board::notFoundDocument')}}');
+        XE.toast('xe-danger', '{{xe_trans('board::notFoundDocument')}}');
     </script>
 @endif
 {{--end if visible == true --}}

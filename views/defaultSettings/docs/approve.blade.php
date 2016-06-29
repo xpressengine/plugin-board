@@ -179,7 +179,7 @@
                 },
                 error: function(response) {
                     var responseText = $.parseJSON(response.responseText);
-                    var type = 'danger';
+                    var type = 'xe-danger';
                     var errorMessage = responseText.message;
                     XE.toast(type, errorMessage);
                     self.openStep('close');
