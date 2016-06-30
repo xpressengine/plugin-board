@@ -435,6 +435,7 @@ class Board extends AbstractModule
         }
 
         app('xe.board.instance')->create($input);
+        app('xe.editor')->setInstance($instanceId, 'editor/ckeditor@ckEditor');
     }
 
     /**

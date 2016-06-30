@@ -11,6 +11,8 @@ class Share extends AbstractUIObject
 
     const CONFIG_NAME = 'share';
 
+    protected static $id = 'uiobject/board@share';
+
     /**
      * boot
      *
