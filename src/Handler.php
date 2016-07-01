@@ -206,6 +206,7 @@ class Handler
     {
         $slug = $board->boardSlug;
         if ($slug === null) {
+            $args['slug'] = BoardSlug::make($args['slug'], $board->id);
             $slug = new BoardSlug([
                 'slug' => $args['slug'],
                 'title' => $args['title'],
