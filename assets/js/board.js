@@ -240,12 +240,6 @@ $(function($) {
         $('.bd_manage_check').prop('checked', $(event.target).prop('checked'));
     });
 
-    // open file
-    $('.bd_btn_file').on('click touchstart', function(event) {
-        event.preventDefault();
-        $(event.target).closest('a').toggleClass('on');
-    });
-
     // click like button
     $('.bd_like').on('click touchstart', function(event) {
         event.preventDefault();
