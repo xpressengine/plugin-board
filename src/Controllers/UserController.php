@@ -24,6 +24,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
+use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Counter\Counter;
 use Xpressengine\Counter\Exceptions\GuestNotSupportException;
 use Xpressengine\Document\Models\Document;
@@ -519,7 +520,6 @@ class UserController extends Controller
         BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager
     ) {
-        dd($request->all());
         $user = Auth::user();
         $id = $request->get('id');
 
