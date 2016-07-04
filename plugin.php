@@ -90,7 +90,6 @@ class Plugin extends AbstractPlugin
 
         // create toggle menu
         XeToggleMenu::setActivates('module/board@board', null, [
-            'module/board@board/toggleMenu/claim@boardClaimItem',
             'module/board@board/toggleMenu/xpressengine@trashItem',
         ]);
     }
