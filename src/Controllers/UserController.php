@@ -17,6 +17,8 @@ use XeDocument;
 use XePresenter;
 use XeFrontend;
 use XeEditor;
+use XeStorage;
+use XeTag;
 use Auth;
 use Gate;
 use Event;
@@ -411,8 +413,11 @@ class UserController extends Controller
         $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
 
         $board = $this->handler->add($inputs, $user, $this->config);
-
-        XeEditor::terminate($this->instanceId, $board->getKey(), $inputs);
+        
+        // file 처리
+        XeStorage::sync($board->getKey(), array_get($inputs, $editor->getFileInputName(), []));
+        // tag 처리
+        XeTag::set($board->getKey(), array_get($inputs, $editor->getTagInputName(), []), $this->instanceId);
 
         if ($request->get('parentId') != '') {
             return redirect()->to(
@@ -575,7 +580,10 @@ class UserController extends Controller
 
         $board = $this->handler->put($item, $inputs);
 
-        XeEditor::terminate($this->instanceId, $board->getKey(), $inputs);
+        // file 처리
+        XeStorage::sync($board->getKey(), array_get($inputs, $editor->getFileInputName(), []));
+        // tag 처리
+        XeTag::set($board->getKey(), array_get($inputs, $editor->getTagInputName(), []), $this->instanceId);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
         if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {
