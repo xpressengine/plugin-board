@@ -13,20 +13,6 @@
         <div id="collapseMenuTypeBoard" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div class="form-group">
-                    <label>Board Name</label>
-                    <input type="text" name="boardName" class="form-control" value="{{Input::old('boardName', $config->get('boardName'))}}"/>
-                </div>
-                <div class="form-group">
-                    <label>Skin</label>
-
-                    <select name="skinId" class="form-control">
-                        @foreach($skins as $key=>$skin)
-                        <option value="{{$skin->getId()}}">{{$skin->getTitle()}}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <label>Table Division<br><small>{{($config->get('division') == true) ? xe_trans('xe::use') : xe_trans('xe::disuse')}}</small></label>
                 </div>
 

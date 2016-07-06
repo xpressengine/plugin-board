@@ -430,9 +430,6 @@ class Board extends AbstractModule
     {
         $input = $menuTypeParams;
         $input['boardId'] = $instanceId;
-        if ($input['boardName'] == '') {
-            $input['boardName'] = $itemParams['title'];
-        }
 
         app('xe.board.instance')->create($input);
         app('xe.editor')->setInstance($instanceId, 'editor/ckeditor@ckEditor');
@@ -467,9 +464,7 @@ class Board extends AbstractModule
     public function updateMenu($instanceId, $menuTypeParams, $itemParams)
     {
         $menuTypeParams['boardId'] = $instanceId;
-        if ($menuTypeParams['boardName'] == '') {
-            $menuTypeParams['boardName'] = $itemParams['title'];
-        }
+
         app('xe.board.instance')->updateConfig($menuTypeParams);
     }
 

@@ -15,6 +15,7 @@ namespace Xpressengine\Plugins\Board\Skins;
 
 use XePresenter;
 use Xpressengine\Config\ConfigEntity;
+use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
 use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
@@ -208,9 +209,15 @@ class DefaultSkin extends AbstractSkin
                 continue;
             }
 
+            $boardName = $config->get('boardName');
+            if ($boardName === null || $boardName === '') {
+                $menuItem = MenuItem::find($config->get('boardId'));
+                $boardName = $menuItem->title;
+            }
+
             $boardList[] = [
                 'value' => $config->get('boardId'),
-                'text' => $config->get('boardName'),
+                'text' => $boardName,
             ];
         }
         $this->data['boardList'] = $boardList;
