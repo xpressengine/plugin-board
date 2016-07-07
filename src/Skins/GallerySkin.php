@@ -15,9 +15,11 @@ namespace Xpressengine\Plugins\Board\Skins;
 
 use App\Facades\XeFrontend;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
+use Xpressengine\Plugins\Board\Handler as BoardHandler;
 use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
 use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
@@ -28,6 +30,7 @@ use XeSkin;
 use XePresenter;
 use View;
 use Event;
+use Input;
 use Xpressengine\Storage\File;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 
@@ -50,6 +53,8 @@ class GallerySkin extends DefaultSkin
      */
     public function render()
     {
+        $this->registerGetOrdersIntercept();
+
         // call customizer
         // view 아이디를 기준으로 Customizer 호출
         $customizer = $this->view . 'Customizer';
@@ -88,6 +93,42 @@ class GallerySkin extends DefaultSkin
         }
 
         return $view;
+    }
+
+    /**
+     * register board handler intercept
+     * intercept BoardHandler getOrder(), getsNotice()
+     *
+     * @return void
+     */
+    protected function registerGetOrdersIntercept()
+    {
+        intercept(
+            sprintf('%s@getOrders', BoardHandler::class),
+            static::class.'-board-getOrders',
+            function($func) {
+                $orders = $func();
+                $orders[] = ['value' => 'exceptNotice', 'text' => 'board::exceptNotice'];
+                return $orders;
+            }
+        );
+
+        intercept(
+            sprintf('%s@getsNotice', BoardHandler::class),
+            static::class.'-board-getsNotice',
+            function($func, ConfigEntity $config, $userId) {
+                $notice = [];
+                if (Input::get('orderType') != 'exceptNotice') {
+                    $notice = $func($config, $userId);
+                    foreach ($notice as $item) {
+                        $thumbItem = BoardGalleryThumb::find($item->id);
+                        $item->boardThumbnailPath = $thumbItem->boardThumbnailPath;
+                    }
+                }
+
+                return $notice;
+            }
+        );
     }
 
     /**
