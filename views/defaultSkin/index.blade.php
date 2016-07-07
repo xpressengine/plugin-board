@@ -282,7 +282,7 @@
                             @endif
                             <div class="more_info xe-visible-xs">
                                 <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
-                                <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->{$columnName} }}">{{ $item->createdAt }}</span></span>
+                                <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
                                 <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                                 <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                             </div>
@@ -348,7 +348,7 @@
                         @endif
                         <div class="more_info xe-visible-xs">
                             <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
-                            <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->{$columnName} }}">{{ $item->createdAt }}</span></span>
+                            <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
                             <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                             <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                         </div>

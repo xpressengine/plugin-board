@@ -244,7 +244,7 @@
                                 <span class="autohr_area">
                                     <a href="#" class="mb_autohr __xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
                                 </span>
-                                <span class="mb_time"><i class="xi-time" data-xe-timeago="{{ $item->createdAt }}"></i></span>
+                                <span class="mb_time"><i class="xi-time" data-xe-timeago="{{ $item->createdAt }}">{{$item->createdAt}}</i></span>
                                 <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                                 <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                             </div>
