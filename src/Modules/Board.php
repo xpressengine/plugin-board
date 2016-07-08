@@ -255,6 +255,7 @@ class Board extends AbstractModule
 
                 $url = app('xe.board.url')->getShow($board);
                 $data = [
+                    'title' => xe_trans('board::newCommentRegistered'),
                     'contents' => sprintf(
                         '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
                         $url,
@@ -295,6 +296,7 @@ class Board extends AbstractModule
 
                 $url = app('xe.board.url')->getShow($board);
                 $data = [
+                    'title' => xe_trans('board::newPostsRegistered'),
                     'contents' => sprintf(
                         '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
                         $url,
