@@ -224,7 +224,12 @@
                     @if ($config->get('category') == true && $item->boardCategory !== null)
                         <span class="category">{!! $item->boardCategory->categoryItem->word !!}</span>
                     @endif
-                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">{!! $item->title !!}</a>
+                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                    @if ($item->display == $item::DISPLAY_SECRET)
+                        <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                    @endif
+                        {!! $item->title !!}
+                    </a>
                 </div>
                 <div class="thumb_area">
                     <a href="#">
@@ -256,7 +261,12 @@
                     @if ($config->get('category') == true && $item->boardCategory !== null)
                         <span class="category">{!! $item->boardCategory->categoryItem->word !!}</span>
                     @endif
-                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">{!! $item->title !!}</a>
+                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                    @if ($item->display == $item::DISPLAY_SECRET)
+                        <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                    @endif
+                        {!! $item->title !!}
+                    </a>
                 </div>
                 <div class="thumb_area">
                     <a href="#">

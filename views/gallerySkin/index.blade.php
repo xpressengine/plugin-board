@@ -238,7 +238,12 @@
                         @if ($config->get('category') == true && $item->boardCategory !== null)
                             <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
                         @endif
-                        <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">{!! $item->title !!}</a>
+                        <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                        @if ($item->display == $item::DISPLAY_SECRET)
+                            <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                        @endif
+                            {!! $item->title !!}
+                        </a>
                         <div class="more_info">
                             <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
                             <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
@@ -267,7 +272,12 @@
                         @if ($config->get('category') == true && $item->boardCategory !== null)
                             <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
                         @endif
-                            <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">{!! $item->title !!}</a>
+                            <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                            @if ($item->display == $item::DISPLAY_SECRET)
+                                <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                            @endif
+                                {!! $item->title !!}
+                            </a>
                             <div class="more_info">
                                 <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
                                 <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>

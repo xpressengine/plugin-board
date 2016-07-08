@@ -519,7 +519,8 @@
     background-color: #f4f4f4;
 }
 .board_list tr.readed td,
-.board_list tr.readed td > a {
+.board_list tr.readed td > a,
+.board_list tr.readed td .bd_ico_lock {
     color: #bebebe;
 }
 .board_list .favorite a {
@@ -591,6 +592,12 @@
     font-size: 13px;
     color: #399cf7;
 }
+.board_list .bd_ico_lock{
+    margin-right: 6px;
+    font-size: 15px;
+    color: #2c2e37;
+}
+
 .board .more_info {
     margin-top: 5px;
 }
@@ -680,6 +687,10 @@
 }
 .board_list.v2 .more_info input[type=checkbox] {
     margin-right: 5px;
+}
+
+.board_list.v2 .bd_ico_lock{
+    font-size: 18px;
 }
 
 .board_list.gallery > ul {
