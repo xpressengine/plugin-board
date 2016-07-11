@@ -24,6 +24,7 @@ use Xpressengine\Plugins\Board\Models\Board as BoardModel;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
 use Xpressengine\Plugins\Comment\Handler as CommentHandler;
+use Xpressengine\Plugins\Comment\Models\Comment;
 use Xpressengine\Plugins\Comment\Models\Target as CommentTarget;
 
 /**
@@ -200,7 +201,7 @@ class Board extends AbstractModule
         intercept(
             sprintf('%s@create', CommentHandler::class),
             static::class.'-comment-create',
-            function($func, $inputs, $user = null) {
+            function($func, array $inputs, $user = null) {
                 $comment = $func($inputs, $user);
 
                 $board = BoardModel::find($comment->target->targetId);
@@ -218,12 +219,82 @@ class Board extends AbstractModule
                 $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                 $board->save();
 
-                // send alarm
-                if ($board->boardData->isAlarm() === true) {
+                return $comment;
+            }
+        );
 
+        intercept(
+            sprintf('%s@trash', CommentHandler::class),
+            static::class.'-comment-trash',
+            function($func, Comment $comment) {
+                $result = $func($comment);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
                 }
 
-                return $comment;
+                /** @var BoardHandler $handler */
+                $handler = app('xe.board.handler');
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+
+                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->save();
+
+                return $result;
+            }
+        );
+
+        intercept(
+            sprintf('%s@remove', CommentHandler::class),
+            static::class.'-comment-remove',
+            function($func, Comment $comment) {
+                $result = $func($comment);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
+                }
+
+                /** @var BoardHandler $handler */
+                $handler = app('xe.board.handler');
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+
+                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->save();
+
+                return $result;
+            }
+        );
+
+        intercept(
+            sprintf('%s@restore', CommentHandler::class),
+            static::class.'-comment-restore',
+            function($func, Comment $comment) {
+                $result = $func($comment);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
+                }
+
+                /** @var BoardHandler $handler */
+                $handler = app('xe.board.handler');
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+
+                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->save();
+
+                return $result;
             }
         );
     }
