@@ -270,15 +270,15 @@
                             @if ($item->display == $item::DISPLAY_SECRET)
                                 <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                             @endif
-                            <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>
+                            <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
                             @if($item->commentCount > 0)
                                 <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                             @endif
-                            @if($item->isNew($config->get('newTime')))
-                                <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
-                            @endif
                             @if ($item->data->fileCount > 0)
                                 <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                            @endif
+                            @if($item->isNew($config->get('newTime')))
+                                <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
                             <div class="more_info xe-visible-xs">
                                 <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
@@ -336,15 +336,15 @@
                         @if ($item->display == $item::DISPLAY_SECRET)
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
-                        <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>
+                        <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
                         @if($item->commentCount > 0)
                             <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                         @endif
-                        @if($item->isNew($config->get('newTime')))
-                            <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
-                        @endif
                         @if ($item->data->fileCount > 0)
                             <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                        @endif
+                        @if($item->isNew($config->get('newTime')))
+                            <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
                         <div class="more_info xe-visible-xs">
                             <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>

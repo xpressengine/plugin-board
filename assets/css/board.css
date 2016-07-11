@@ -19,7 +19,8 @@
 .bd_function .bd_like_more ul,
 .bd_like_more_text,
 .xe-modal .xe-list-group li .list-text > p,
-.read_footer .bd_file_list > ul{
+.read_footer .bd_file_list > ul,
+.board_list.blog .cont_area > p{
     margin:0;
     padding:0;
 }
@@ -535,6 +536,11 @@
     text-align: left;
     word-break: break-all;
 }
+
+.board_list td.title .title_text{
+    margin-right: 5px;
+}
+
 .board_list td.author img {
     position: relative;
     top: -1px;
@@ -581,15 +587,27 @@
     vertical-align: middle;
 }
 .board_list .reply_num {
-    font-size: 12px;
+    margin-right: 2px;
+    font-size: 13px;
     color: #399cf7;
 }
 .board_list .bd_ico_file {
-    color: #bebebe;
-    font-size: 13px;
+    margin-right: 2px;
 }
+.board_list .bd_ico_file i{
+    vertical-align: top;
+    padding-top: 4px;
+    color: #bebebe;
+    font-size: 14px;
+}
+.board_list .bd_ico_new{
+    margin-right: 2px;
+}
+
 .board_list .bd_ico_new i {
-    font-size: 13px;
+    vertical-align: top;
+    padding-top: 4px;
+    font-size: 15px;
     color: #399cf7;
 }
 .board_list .bd_ico_lock{
@@ -629,6 +647,12 @@
     color: #399cf7;
     vertical-align: top;
 }
+
+.board_list.v2.blog .category {
+    /*margin: 0 7px;*/
+    vertical-align: middle;
+}
+
 /*.board_list.v2 .notice {
   display: inline-block;
   margin: 0 5px 5px 0;
@@ -642,8 +666,9 @@
 }*/
 .board_list.v2 .title {
     overflow: hidden;
-    display: block;
+    display: inline;
     max-height: 57px;
+    margin-right: 5px;
     font-size: 19px;
     color: #2c2e37;
 }
@@ -668,20 +693,6 @@
     display: block;
     position: relative;
 }
-.board_list.v2 .thumb_area .ribbon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 56px;
-    height: 32px;
-    background-color: #379cf8;
-    background-size: 27px 10px;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-}
-.board_list.v2 .thumb_area .ribbon.new {
-    background-image: url(../img/ico_new.png);
-}
 .board_list.v2 ~ .board_footer .bd_paginate {
     margin-top: 42px;
 }
@@ -691,6 +702,18 @@
 
 .board_list.v2 .bd_ico_lock{
     font-size: 18px;
+}
+.board_list.v2 .board_category{
+    margin-bottom: 5px;
+}
+
+.board_list.v2 .reply_num{
+    font-size: 18px;
+}
+
+.board_list .bd_ico_file i,
+.board_list .bd_ico_new i{
+    font-size: 17px
 }
 
 .board_list.gallery > ul {
@@ -764,10 +787,10 @@
     padding-left: 30px;
 }
 .board_list.blog .title_area .title {
-    overflow: hidden;
+    /*overflow: hidden;
     margin-bottom: 10px;
     white-space: nowrap;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis;*/
 }
 .board_list.blog .cont_area {
     padding-left: 30px;
@@ -1338,7 +1361,6 @@
     .board_header .bd_btn_area li a:hover {
         color: #bebebe;
     }
-
     .xe-form-control {
         width: 100%;
     }
@@ -1510,6 +1532,9 @@
     .board_list.v2 ~ .board_footer .bd_paginate {
         margin-top: 20px;
     }
+    .board_list.v2 .board_category{
+        margin-bottom: 0;
+    }
     .board_list.gallery {
         padding: 30px 12px 0;
         border-top: 1px solid #ddd;
@@ -1558,7 +1583,6 @@
     .board_list.blog .more_info {
         padding-top: 8px;
     }
-
     .read_header,
     .bd_function {
         padding: 0 12px;
