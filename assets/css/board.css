@@ -541,6 +541,11 @@
     margin-right: 5px;
 }
 
+.board_list td.title .title_text:visited,
+.board_list.v2 .title:visited{
+    color: #bebebe;
+}
+
 .board_list td.author img {
     position: relative;
     top: -1px;
