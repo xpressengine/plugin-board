@@ -32,18 +32,8 @@ use Xpressengine\Permission\Instance;
  */
 class TrashItem extends AbstractToggleMenu
 {
-    protected $type;
-
-    protected $documentId;
-
-    public function __construct($type, $documentId)
-    {
-        $this->type = $type;
-        $this->documentId = $documentId;
-    }
-
     public function allows() {
-        $doc = Board::find($this->documentId);
+        $doc = Board::find($this->identifier);
         $configHandler = app('xe.board.config');
         $boardPermission = app('xe.board.permission');
 
@@ -69,24 +59,19 @@ class TrashItem extends AbstractToggleMenu
 
     public function getType()
     {
-        return 'link';
+        return static::MENUTYPE_LINK;
     }
 
     public function getAction()
     {
-        $doc = Board::find($this->documentId);
+        $doc = Board::find($this->identifier);
 
         $config = app('xe.board.config')->get($doc->instanceId);
 
-        return app('xe.board.url')->get('trash', ['id' => $this->documentId], $config);
+        return app('xe.board.url')->get('trash', ['id' => $this->identifier], $config);
     }
 
     public function getScript()
     {
-    }
-
-    public function getIcon()
-    {
-        return null;
     }
 }
