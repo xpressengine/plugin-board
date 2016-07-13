@@ -339,4 +339,8 @@ return [
         'ko' => '새로운 댓글이 작성되었습니다',
         'en' => 'A new comment has been registered.',
     ],
+    'exceptNotice' => [
+        'ko' => '공지 제외',
+        'en' => 'Except notice',
+    ],
 ];

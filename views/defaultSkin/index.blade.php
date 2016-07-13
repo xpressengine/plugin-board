@@ -267,22 +267,22 @@
                     @endif
                         <td class="title column-{{$columnName}}">
                             <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
-                            <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>
+                            @if ($item->display == $item::DISPLAY_SECRET)
+                                <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                            @endif
+                            <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
                             @if($item->commentCount > 0)
                                 <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
-                            @endif
-                            @if($item->isNew($config->get('newTime')))
-                                <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
                             @if ($item->data->fileCount > 0)
                                 <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
                             @endif
-                            @if ($item->display == $item::DISPLAY_SECRET)
-                                <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                            @if($item->isNew($config->get('newTime')))
+                                <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
                             <div class="more_info xe-visible-xs">
                                 <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
-                                <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->{$columnName} }}">{{ $item->createdAt }}</span></span>
+                                <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
                                 <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                                 <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                             </div>
@@ -333,22 +333,22 @@
                         <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                     @endif
                     <td class="title column-{{$columnName}}">
-                        <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}">{!! $item->title !!}</a>
+                        @if ($item->display == $item::DISPLAY_SECRET)
+                            <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                        @endif
+                        <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
                         @if($item->commentCount > 0)
                             <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
-                        @endif
-                        @if($item->isNew($config->get('newTime')))
-                            <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
                         @if ($item->data->fileCount > 0)
                             <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
                         @endif
-                        @if ($item->display == $item::DISPLAY_SECRET)
-                            <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                        @if($item->isNew($config->get('newTime')))
+                            <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
                         <div class="more_info xe-visible-xs">
                             <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
-                            <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->{$columnName} }}">{{ $item->createdAt }}</span></span>
+                            <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
                             <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                             <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                         </div>

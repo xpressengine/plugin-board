@@ -24,6 +24,7 @@ use Xpressengine\Plugins\Board\Models\Board as BoardModel;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
 use Xpressengine\Plugins\Comment\Handler as CommentHandler;
+use Xpressengine\Plugins\Comment\Models\Comment;
 use Xpressengine\Plugins\Comment\Models\Target as CommentTarget;
 
 /**
@@ -200,7 +201,7 @@ class Board extends AbstractModule
         intercept(
             sprintf('%s@create', CommentHandler::class),
             static::class.'-comment-create',
-            function($func, $inputs, $user = null) {
+            function($func, array $inputs, $user = null) {
                 $comment = $func($inputs, $user);
 
                 $board = BoardModel::find($comment->target->targetId);
@@ -218,12 +219,82 @@ class Board extends AbstractModule
                 $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                 $board->save();
 
-                // send alarm
-                if ($board->boardData->isAlarm() === true) {
+                return $comment;
+            }
+        );
 
+        intercept(
+            sprintf('%s@trash', CommentHandler::class),
+            static::class.'-comment-trash',
+            function($func, Comment $comment) {
+                $result = $func($comment);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
                 }
 
-                return $comment;
+                /** @var BoardHandler $handler */
+                $handler = app('xe.board.handler');
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+
+                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->save();
+
+                return $result;
+            }
+        );
+
+        intercept(
+            sprintf('%s@remove', CommentHandler::class),
+            static::class.'-comment-remove',
+            function($func, Comment $comment) {
+                $result = $func($comment);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
+                }
+
+                /** @var BoardHandler $handler */
+                $handler = app('xe.board.handler');
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+
+                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->save();
+
+                return $result;
+            }
+        );
+
+        intercept(
+            sprintf('%s@restore', CommentHandler::class),
+            static::class.'-comment-restore',
+            function($func, Comment $comment) {
+                $result = $func($comment);
+
+                $board = BoardModel::find($comment->target->targetId);
+
+                if ($board->type != static::getId()) {
+                    return $comment;
+                }
+
+                /** @var BoardHandler $handler */
+                $handler = app('xe.board.handler');
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+
+                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->save();
+
+                return $result;
             }
         );
     }
@@ -251,19 +322,27 @@ class Board extends AbstractModule
                     return $comment;
                 }
 
-                // link 도 추가해야함
+                app('xe.board.url')->setConfig(app('xe.board.config')->get($board->instanceId));
+
+                $url = app('xe.board.url')->getShow($board);
                 $data = [
-                    'contents' => xe_trans(
-                        'board::newCommentRegisteredBy',
-                        ['displayName' => $comment->author->getDisplayName()]
+                    'title' => xe_trans('board::newCommentRegistered'),
+                    'contents' => sprintf(
+                        '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
+                        $url,
+                        $url,
+                        xe_trans(
+                            'board::newCommentRegisteredBy',
+                            ['displayName' => $comment->author->getDisplayName()]
+                        )
                     ),
                 ];
 
-                Mail::send('emails.alarm', $data, function ($m) use ($board) {
+                Mail::send('emails.notice', $data, function ($m) use ($board) {
                     $writer = $board->user;
 
                     $fromEmail = app('config')->get('mail.from.address');
-                    $applicationName = 'XE3';
+                    $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
                     $menuItem = app('xe.menu')->getItem($board->instanceId);
                     $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
@@ -286,9 +365,15 @@ class Board extends AbstractModule
             function($func, $args, $user, $config) {
                 $board = $func($args, $user, $config);
 
-                // link 도 추가해야함
+                $url = app('xe.board.url')->getShow($board);
                 $data = [
-                    'contents' => $board->pureContent,
+                    'title' => xe_trans('board::newPostsRegistered'),
+                    'contents' => sprintf(
+                        '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
+                        $url,
+                        $url,
+                        $board->pureContent
+                    ),
                 ];
 
                 /** @var ConfigHandler $boardHandler */
@@ -304,9 +389,9 @@ class Board extends AbstractModule
                 }
 
                 foreach ($managerEmails as $toMail) {
-                    Mail::send('emails.alarm', $data, function ($m) use ($toMail, $board) {
+                    Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
                         $fromEmail = app('config')->get('mail.from.address');
-                        $applicationName = 'XE3';
+                        $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
                         
                         $menuItem = app('xe.menu')->getItem($board->instanceId);
                         $subject = sprintf(
@@ -324,59 +409,6 @@ class Board extends AbstractModule
                 }
 
                 return $board;
-            }
-        );
-
-        intercept(
-            sprintf('%s@create', CommentHandler::class),
-            static::class.'-manager-comment-alarm',
-            function($func, $inputs, $user = null) {
-                $comment = $func($inputs, $user);
-
-                $board = BoardModel::find($comment->target->targetId);
-
-                if ($board->type != static::getId()) {
-                    return $comment;
-                }
-
-                // link 도 추가해야함
-                $data = [
-                    'contents' => $comment->pureContent,
-                ];
-
-                /** @var ConfigHandler $boardHandler */
-                $boardHandler = app('xe.board.config');
-                $config = $boardHandler->get($board->instanceId);
-                if ($config->get('managerEmail') === null) {
-                    return $comment;
-                }
-
-                $managerEmails = explode(',', $config->get('managerEmail'));
-                if (count($managerEmails) == 0) {
-                    return $comment;
-                }
-
-                foreach ($managerEmails as $toMail) {
-                    Mail::send('emails.alarm', $data, function ($m) use ($toMail, $board) {
-                        $fromEmail = app('config')->get('mail.from.address');
-                        $applicationName = 'XE3';
-
-                        $menuItem = app('xe.menu')->getItem($board->instanceId);
-                        $subject = sprintf(
-                            '[%s - %s] %s',
-                            $applicationName,
-                            xe_trans($menuItem->title),
-                            xe_trans('board::newCommentRegistered')
-                        );
-
-                        $m->from($fromEmail, $applicationName);
-                        $m->to($toMail, 'Board manager');
-                        $m->subject($subject);
-                    });
-
-                }
-
-                return $comment;
             }
         );
     }
@@ -430,9 +462,6 @@ class Board extends AbstractModule
     {
         $input = $menuTypeParams;
         $input['boardId'] = $instanceId;
-        if ($input['boardName'] == '') {
-            $input['boardName'] = $itemParams['title'];
-        }
 
         app('xe.board.instance')->create($input);
         app('xe.editor')->setInstance($instanceId, 'editor/ckeditor@ckEditor');
@@ -467,9 +496,7 @@ class Board extends AbstractModule
     public function updateMenu($instanceId, $menuTypeParams, $itemParams)
     {
         $menuTypeParams['boardId'] = $instanceId;
-        if ($menuTypeParams['boardName'] == '') {
-            $menuTypeParams['boardName'] = $itemParams['title'];
-        }
+
         app('xe.board.instance')->updateConfig($menuTypeParams);
     }
 

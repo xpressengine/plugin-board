@@ -13,21 +13,6 @@
         <div id="collapseMenuType" class="panel-collapse">
             <div class="panel-body">
                 <div class="form-group">
-                    <label>Board Name</label>
-                    <input type="text" name="boardName" class="form-control" value="{{Input::old('boardName', $config->get('boardName'))}}"/>
-                </div>
-                <div class="form-group">
-                    <label>Skin</label>
-                    <select name="skinId" class="form-control">
-                        @foreach($skins as $key=>$skin)
-                        <option value="{{$skin->getId()}}">{{$skin->getTitle()}}</option>
-                        @endforeach
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
                     <p><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> For web master's<br>{{xe_trans('board::msgCannotChangeThisSetting')}}</p>
 
                     <label>Table Division {{ $config->get('boardId') }}</label>

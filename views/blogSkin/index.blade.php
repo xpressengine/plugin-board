@@ -217,20 +217,79 @@
 
 <div class="board_list v2 blog">
     <ul>
-        @foreach($paginate as $item)
+        @foreach($handler->getsNotice($config, Auth::user()->getId()) as $item)
             <li>
                 <div class="title_area">
-                    @if ($config->get('category') == true && $item->boardCategory !== null)
-                        <span class="category">{!! $item->boardCategory->categoryItem->word !!}</span>
+                    <div class="board_category">
+                        <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
+                        @if ($config->get('category') == true && $item->boardCategory !== null)
+                            <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
+                        @endif
+                    </div>
+                    @if ($item->display == $item::DISPLAY_SECRET)
+                        <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                     @endif
-                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">{!! $item->title !!}</a>
+                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                        {!! $item->title !!}
+                    </a>
+                    @if($item->commentCount > 0)
+                        <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
+                    @endif
+                    @if ($item->data->fileCount > 0)
+                        <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                    @endif
+                    @if($item->isNew($config->get('newTime')))
+                        <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    @endif
                 </div>
                 <div class="thumb_area">
                     <a href="#">
                         <img src="{{ $item->boardThumbnailPath }}" alt="">
-                        @if($item->isNew($config->get('newTime')))
-                            <span class="ribbon new"><span class="bd_hidden">new</span></span>
+                    </a>
+                </div>
+                <div class="cont_area">
+                    <p>{!! mb_substr($item->pureContent, 0, 100) !!}</p>
+                    <div class="more_info">
+                        <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
+                        <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                            <span class="autohr_area">
+                                <a href="#" class="mb_autohr __xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
+                            </span>
+                        <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{$item->createdAt}}</span></span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->readCount }}</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
+                    </div>
+                </div>
+            </li>
+        @endforeach
+
+        @foreach($paginate as $item)
+            <li>
+                <div class="title_area">
+                    <div class="board_category">
+                        @if ($config->get('category') == true && $item->boardCategory !== null)
+                            <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
                         @endif
+                    </div>
+                    @if ($item->display == $item::DISPLAY_SECRET)
+                        <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                    @endif
+                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                        {!! $item->title !!}
+                    </a>
+                    @if($item->commentCount > 0)
+                        <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
+                    @endif
+                    @if ($item->data->fileCount > 0)
+                        <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                    @endif
+                    @if($item->isNew($config->get('newTime')))
+                        <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    @endif
+                </div>
+                <div class="thumb_area">
+                    <a href="#">
+                        <img src="{{ $item->boardThumbnailPath }}" alt="">
                     </a>
                 </div>
                 <div class="cont_area">

@@ -1,5 +1,5 @@
 @section('page_title')
-    <h2>{{xe_trans('board::boardDetailConfigures')}} - {{xe_trans($config->get('boardName'))}}</h2>
+    <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
 @endsection
 
 @section('page_description')@endsection
@@ -31,6 +31,17 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::boardName')}} </label>
+                                                </div>
+                                                {!! uio('langText', ['placeholder'=>'', 'langKey'=>Input::old('boardName', $config->get('boardName')), 'name'=>'boardName']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">

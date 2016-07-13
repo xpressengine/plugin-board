@@ -13,7 +13,7 @@
     <tr>
         <th scope="row">#</th>
         <td>{{ $config->get('boardId') }}</td>
-        <td>{{ $config->get('boardName') }}</td>
+        <td>{{ $config->get('boardName', '') }}</td>
         <td><a href="/{{$baseUrl}}/dynamicField/{{ $config->get('boardId') }}">config</a></td>
     </tr>
     @endforeach
