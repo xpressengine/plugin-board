@@ -201,6 +201,8 @@ class Plugin extends AbstractPlugin
                 'module/board@board/toggleMenu/xpressengine@trashItem',
             ]);
         }
+
+        $this->putLang();
     }
 
     /**
