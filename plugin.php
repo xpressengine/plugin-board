@@ -191,21 +191,16 @@ class Plugin extends AbstractPlugin
 
     /**
      * @param null $installedVersion install version
-     * @return bool
-     */
-    public function checkInstalled($installedVersion = null)
-    {
-        if ($installedVersion === null) {
-            return false;
-        }
-    }
-
-    /**
-     * @param null $installedVersion install version
      * @return void
      */
     public function update($installedVersion = null)
     {
+        // ver 0.9.1
+        if (XeConfig::get('toggleMenu@module/board@board') == null) {
+            XeToggleMenu::setActivates('module/board@board', null, [
+                'module/board@board/toggleMenu/xpressengine@trashItem',
+            ]);
+        }
     }
 
     /**
@@ -213,7 +208,12 @@ class Plugin extends AbstractPlugin
      */
     public function checkUpdated($installedVersion = NULL)
     {
-        // TODO: Implement checkUpdate() method.
+        // ver 0.9.1
+        if (XeConfig::get('toggleMenu@module/board@board') == null) {
+            return false;
+        }
+
+        return true;
     }
 
 
