@@ -196,7 +196,7 @@ class Plugin extends AbstractPlugin
     public function update($installedVersion = null)
     {
         // ver 0.9.1
-        if (XeConfig::get('toggleMenu@module/board@board') == null) {
+        if (XeConfig::get(XeToggleMenu::getConfigKey('module/board@board', null)) == null) {
             XeToggleMenu::setActivates('module/board@board', null, [
                 'module/board@board/toggleMenu/xpressengine@trashItem',
             ]);
@@ -209,7 +209,7 @@ class Plugin extends AbstractPlugin
     public function checkUpdated($installedVersion = NULL)
     {
         // ver 0.9.1
-        if (XeConfig::get('toggleMenu@module/board@board') == null) {
+        if (XeConfig::get(XeToggleMenu::getConfigKey('module/board@board', null)) == null) {
             return false;
         }
 
