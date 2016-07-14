@@ -3,10 +3,10 @@ $(document).ready(function(){
     $(".bd_sorting").on("click", function(e){
         $(this).toggleClass("on");
         if($(this).hasClass("on")){
-            $(".bd_sorting_area").removeClass("mb_hidden");
+            $(".board-sorting-area").removeClass("xe-hidden-xs");
             $(".board .bd_dimmed").show();
         } else{
-            $(".bd_sorting_area").addClass("mb_hidden");
+            $(".board-sorting-area").addClass("xe-hidden-xs");
             $(".board .bd_dimmed").hide();
         }
         return false;
@@ -33,6 +33,7 @@ $(document).ready(function(){
 
         if($(this).hasClass("on")){
             $(".bd_search_area").show();
+            $(".bd_search_input").focus();
         } else{
             $(".bd_search_area").hide();
         }
@@ -49,7 +50,7 @@ $(document).ready(function(){
         return false;
     });
 
-    $(".read_header .mb_autohr, .bd_like, .bd_favorite, .bd_btn_file, .bd_share, .bd_more_view, .bd_like_num, .btn_file, .like_num, .like, .share, .reply, .comment_more_view, .author, .mb_autohr").on("click", function(e){
+    $(".read_header .mb_autohr, .bd_like, .bd_favorite, .bd_btn_file, .bd_share, .bd_more_view, .bd_like_num, .btn_file, .like_num, .like, .share, .reply, .comment_more_view, .author, .mb_autohr, .comment_modify").on("click", function(e){
 
         $(this).toggleClass("on");
         if($(this).hasClass("bd_like_num")){
@@ -61,11 +62,21 @@ $(document).ready(function(){
         }
 
         if($(this).hasClass("reply")){
-            $(this).parent().parent().find(".comment_action_area").toggle();
+            var el = $(this).parent().parent().find(".comment_action_area");
+            var el2 = $(this).parent().parent().find(".comment_action_area.modify");
+            el.toggle();
+            el2.toggle();
+        }
+
+        if($(this).hasClass("comment_modify")){
+            $(this).parent().parent().parent().find(".comment_action_area.modify, .xe_content, .comment_action").toggle();
+        }
+
+        if($(this).hasClass("temp_save_num")){
+            $(".temp_save_list").toggle();
         }
 
         return false;
     });
-
 
 })

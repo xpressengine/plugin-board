@@ -194,6 +194,23 @@ $(function($) {
         $('.bd_manage_detail').toggle();
     });
 
+    $('.__xe-bd-mobile-sorting').on('click', function() {
+        event.preventDefault();
+        var $container = $('.__xe-forms');
+        if ($container.hasClass('xe-hidden-xs')) {
+            $container.removeClass('xe-hidden-xs');
+            $(".board .bd_dimmed").show();
+        } else {
+            $container.addClass('xe-hidden-xs');
+            $(".board .bd_dimmed").hide();
+        }
+
+    });
+
+    $('.__xe-bd-manage').on('click', function() {
+        $('.bd_manage_detail').toggle();
+    });
+
     $('.__xe-bd-search').on('click', function() {
         event.preventDefault();
         $(this).toggleClass("on");

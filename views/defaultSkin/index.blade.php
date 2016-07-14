@@ -10,7 +10,7 @@
                 <!-- 모바일뷰에서 노출되는 정렬 버튼 -->
     <div class="bd_manage_area xe-visible-xs">
         <!-- [D] 클릭시 클래스 on 추가 및 bd_align 영역 노출 -->
-        <a href="#" class="btn_mng bd_sorting"><i class="xi-funnel"></i> <span class="xe-sr-only">게시글 정렬</span></a>
+        <a href="#" class="btn_mng bd_sorting __xe-bd-mobile-sorting"><i class="xi-funnel"></i> <span class="xe-sr-only">{{xe_trans('xe::order')}}</span></a>
     </div>
     <!-- /모바일뷰에서 노출되는 정렬 버튼 -->
 
@@ -24,7 +24,7 @@
             @endif
         </ul>
     </div>
-    <div class="xe-form-inline xe-hidden-xs __xe-forms">
+    <div class="xe-form-inline xe-hidden-xs board-sorting-area __xe-forms">
         @if($config->get('category') == true)
         {!! uio('uiobject/board@select', [
             'name' => 'categoryItemId',
