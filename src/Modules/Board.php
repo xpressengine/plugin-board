@@ -229,20 +229,20 @@ class Board extends AbstractModule
             function($func, Comment $comment) {
                 $result = $func($comment);
 
-                $board = BoardModel::find($comment->target->targetId);
+                if ($board = BoardModel::find($comment->target->targetId)) {
+                    if ($board->type != static::getId()) {
+                        return $comment;
+                    }
 
-                if ($board->type != static::getId()) {
-                    return $comment;
+                    /** @var BoardHandler $handler */
+                    $handler = app('xe.board.handler');
+                    /** @var ConfigHandler $configHandler */
+                    $configHandler = app('xe.board.config');
+
+                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->save();
                 }
-
-                /** @var BoardHandler $handler */
-                $handler = app('xe.board.handler');
-                /** @var ConfigHandler $configHandler */
-                $configHandler = app('xe.board.config');
-
-                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
-                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
-                $board->save();
 
                 return $result;
             }
@@ -254,20 +254,20 @@ class Board extends AbstractModule
             function($func, Comment $comment) {
                 $result = $func($comment);
 
-                $board = BoardModel::find($comment->target->targetId);
+                if ($board = BoardModel::find($comment->target->targetId)) {
+                    if ($board->type != static::getId()) {
+                        return $comment;
+                    }
 
-                if ($board->type != static::getId()) {
-                    return $comment;
+                    /** @var BoardHandler $handler */
+                    $handler = app('xe.board.handler');
+                    /** @var ConfigHandler $configHandler */
+                    $configHandler = app('xe.board.config');
+
+                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->save();
                 }
-
-                /** @var BoardHandler $handler */
-                $handler = app('xe.board.handler');
-                /** @var ConfigHandler $configHandler */
-                $configHandler = app('xe.board.config');
-
-                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
-                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
-                $board->save();
 
                 return $result;
             }
@@ -279,21 +279,21 @@ class Board extends AbstractModule
             function($func, Comment $comment) {
                 $result = $func($comment);
 
-                $board = BoardModel::find($comment->target->targetId);
+                if ($board = BoardModel::find($comment->target->targetId)) {
+                    if ($board->type != static::getId()) {
+                        return $comment;
+                    }
 
-                if ($board->type != static::getId()) {
-                    return $comment;
+                    /** @var BoardHandler $handler */
+                    $handler = app('xe.board.handler');
+                    /** @var ConfigHandler $configHandler */
+                    $configHandler = app('xe.board.config');
+
+                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
+                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->save();
                 }
-
-                /** @var BoardHandler $handler */
-                $handler = app('xe.board.handler');
-                /** @var ConfigHandler $configHandler */
-                $configHandler = app('xe.board.config');
-
-                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
-                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
-                $board->save();
-
+                
                 return $result;
             }
         );
@@ -392,7 +392,7 @@ class Board extends AbstractModule
                     Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
-                        
+
                         $menuItem = app('xe.menu')->getItem($board->instanceId);
                         $subject = sprintf(
                             '[%s - %s] %s',
