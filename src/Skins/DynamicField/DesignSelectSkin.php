@@ -13,7 +13,7 @@ use View;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
-use Xpressengine\FieldSkins\Category\DefaultSkin;
+use App\FieldSkins\Category\DefaultSkin;
 
 class DesignSelectSkin extends DefaultSkin
 {
