@@ -173,21 +173,18 @@ class Board extends AbstractModule
                 'title' => 'board::articlesManage',
                 'display' => true,
                 'description' => '',
-                'link' => route('manage.board.board.docs.index'),
                 'ordering' => 2001
             ],
             'contents.board.boardapprove' => [
                 'title' => 'board::articlesApprove',
                 'display' => true,
                 'description' => '',
-                'link' => route('manage.board.board.docs.approve'),
                 'ordering' => 2002
             ],
             'contents.board.boardtrash' => [
                 'title' => 'board::trashManage',
                 'display' => true,
                 'description' => '',
-                'link' => route('manage.board.board.docs.trash'), 'settings_menu' => 'contents.board.boardtrash',
                 'ordering' => 2003
             ],
         ];
@@ -293,7 +290,7 @@ class Board extends AbstractModule
                     $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                     $board->save();
                 }
-                
+
                 return $result;
             }
         );
