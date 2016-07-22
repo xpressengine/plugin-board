@@ -696,6 +696,10 @@ class UserController extends Controller
             $showCategoryItem = CategoryItem::find($request->get('categoryItemId'));
         }
 
+        /** @var \Xpressengine\Editor\AbstractEditor $editor */
+        $editor = XeEditor::get($this->instanceId);
+        $format = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
+
         return XePresenter::make('preview', [
             'config' => $this->config,
             'handler' => $this->handler,
@@ -703,6 +707,7 @@ class UserController extends Controller
             'title' => $title,
             'content' => $content,
             'writer' => $writer,
+            'format' => $format,
             'showCategoryItem' => $showCategoryItem,
         ]);
     }

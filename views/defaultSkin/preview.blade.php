@@ -12,7 +12,7 @@
     </div>
     <div class="read_body">
         <div class="xe_content">
-            {!! uio('contentCompiler', ['content' => $content]) !!}
+            {!! compile($config->get('boardId'), $content, $format === Xpressengine\Plugins\Board\Models\Board::FORMAT_HTML) !!}
         </div>
     </div>
 </div>
