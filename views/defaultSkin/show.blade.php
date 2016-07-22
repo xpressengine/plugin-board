@@ -20,8 +20,8 @@
 
                     <div class="more_info">
                         <!-- [D] 클릭시 클래스 on 적용 -->
-                        @if ($item->userId != '' && $config->get('anonymity') === false)
-                            <a href="{{ sprintf('/@%s', $item->user->getAuthIdentifier()) }}" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{{ $item->writer }}</a>
+                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                            <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{{ $item->writer }}</a>
                         @else
                             <a class="mb_autohr">{{ $item->writer }}</a>
                         @endif

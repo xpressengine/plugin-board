@@ -19,6 +19,7 @@ use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\Storage\File;
 use Xpressengine\User\Models\Guest;
+use Xpressengine\User\Models\UnknownUser;
 
 /**
  * Board
@@ -223,7 +224,23 @@ class Board extends Document implements CommentUsable
      */
     public function getAuthor()
     {
-        return $this->user ? : new Guest;
+        if ($this->user !== null) {
+            return true;
+        } elseif ($this->isGuest() === true) {
+            return new Guest;
+        } else {
+            return new UnknownUser;
+        }
+    }
+
+    /**
+     * has user
+     *
+     * @return bool
+     */
+    public function hasAuthor()
+    {
+        return $this->user !== null;
     }
 
     /**
