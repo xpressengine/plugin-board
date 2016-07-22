@@ -225,7 +225,7 @@ class Board extends Document implements CommentUsable
     public function getAuthor()
     {
         if ($this->user !== null) {
-            return true;
+            return $this->user;
         } elseif ($this->isGuest() === true) {
             return new Guest;
         } else {
