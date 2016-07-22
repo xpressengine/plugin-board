@@ -253,7 +253,11 @@
                         <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
                         <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
-                                <a href="#" class="mb_autohr __xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
+                                @if ($item->hasAuthor())
+                                    <a href="#" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                                @else
+                                    <a class="mb_autohr">{!! $item->writer !!}</a>
+                                @endif
                             </span>
                         <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{$item->createdAt}}</span></span>
                         <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->readCount }}</span>
@@ -298,7 +302,11 @@
                         <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
                         <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
-                                <a href="#" class="mb_autohr __xe_user" data-id="{{$item->userId}}">{!! $item->writer !!}</a>
+                                @if ($item->hasAuthor())
+                                    <a href="#" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                                @else
+                                    <a class="mb_autohr">{!! $item->writer !!}</a>
+                                @endif
                             </span>
                             <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{$item->createdAt}}</span></span>
                             <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->readCount }}</span>

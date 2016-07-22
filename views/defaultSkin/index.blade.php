@@ -281,14 +281,24 @@
                                 <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
                             <div class="more_info xe-visible-xs">
-                                <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                                @if ($item->hasAuthor())
+                                    <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                                @else
+                                    <a class="mb_author">{!! $item->writer !!}</a>
+                                @endif
                                 <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
                                 <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                                 <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                             </div>
                         </td>
                 @elseif ($columnName == 'writer')
-                    <td class="author xe-hidden-xs"><a href="#" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
+                    <td class="author xe-hidden-xs">
+                        @if ($item->hasAuthor())
+                            <a href="#" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                        @else
+                            <a>{!! $item->writer !!}</a>
+                        @endif
+                    </td>
                 @elseif ($columnName == 'readCount')
                     <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
                 @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
@@ -347,14 +357,24 @@
                             <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
                         <div class="more_info xe-visible-xs">
-                            <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                            @if ($item->hasAuthor())
+                                <a href="#" class="mb_author" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                            @else
+                                <a class="mb_author">{!! $item->writer !!}</a>
+                            @endif
                             <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
                             <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
                             <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
                         </div>
                     </td>
                 @elseif ($columnName == 'writer')
-                    <td class="author xe-hidden-xs"><a href="#" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a></td>
+                    <td class="author xe-hidden-xs">
+                        @if ($item->hasAuthor())
+                            <a href="#" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                        @else
+                            <a>{!! $item->writer !!}</a>
+                        @endif
+                    </td>
                 @elseif ($columnName == 'readCount')
                     <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
                 @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
