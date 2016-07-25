@@ -190,10 +190,6 @@ $(function($) {
 
     });
 
-    $('.__xe-bd-manage').on('click', function() {
-        $('.bd_manage_detail').toggle();
-    });
-
     $('.__xe-bd-mobile-sorting').on('click', function() {
         event.preventDefault();
         var $container = $('.__xe-forms');
