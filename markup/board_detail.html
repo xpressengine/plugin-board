@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>XE3 board</title>
+
+    <!-- core -->
+    <link href="../../../assets/core/common/css/xe-common.css" rel="stylesheet" media="all">
+    <link href="../../../assets/core/xe-ui-component/xe-ui-component.css" rel="stylesheet" media="all">
+    <link href="http://cdn.jsdelivr.net/xeicon/2.0.0/xeicon.min.css" rel="stylesheet" media="all">
+    <script>var xeBaseURL = '../../../';</script>
+    <script src="../../../assets/core/common/js/dynamicLoadManager.js"></script>
+    <script src="../../../assets/jspm_packages/system.js"></script>
+    <script src="../../../assets/systemjs.config.js"></script>
+    <script src="../../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/core/common/js/xe.bundle.js"></script>
+
+    <!-- additional -->
+    <link rel="stylesheet" href="../../../assets/core/common/css/webfont.css">        
+    <link rel="stylesheet" href="../assets/css/board.css">   
+    <link rel="stylesheet" href="../../plugin-comment/assets/css/comment.css">    
+    <link rel="stylesheet" href="../../plugin-ckeditor/assets/ckeditor/editor.css">       
+    <script src="../assets/js/markup_test.js"></script>
+</head>
+<body>
+    <div class="xe-container">
+        <!-- BOARD -->
+        <div class="board">            
+            <div class="board_read">
+                <div class="read_header">
+                    <span class="category">여행</span>
+                    <h1><a href="#">기요미즈데라, 교토 청수사 만년필 스케치</a></h1>
+                    <div class="more_info">
+                        <!-- [D] 클릭시 클래스 on 적용 -->
+                        <a href="#" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_readnum"><i class="xi-eye"></i> 78</span>
+                        <div class="ly_popup">
+                            <ul>
+                            <li><a href="#">프로필 보기</a></li>
+                            <li><a href="#">쪽지 보내기</a></li>
+                            <li><a href="#">배포 자료 목록</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="read_body">
+                    <div class="xe_content">
+                        <!--[D] 컨텐츠 요소는 id="xe-editor-content" 랩핑되어야 함 -->
+                        <div class="__xe_contents_compiler" id="xe-editor-content">
+                            <h1>에디터 View 스타일</h1>
+                            <h2>font size</h2>
+                            <blockquote>
+                                <h1>난 h1이다 28px</h1>
+                                <h2>난 h2이다 26px</h2>
+                                <h3>난 h3이다 23px</h3>
+                                <h4>난 h4이다 20px</h4>
+                                <h5>난 h5이다 17px</h5>
+                                <h6>난 h6이다 16px</h6>
+                            </blockquote>
+                            <h2>common</h2>
+                            <p>기본 폰트 크기는 16px</p>
+                            <p>키이스트·FNC·SM ‘1%’대 상승 마감, ‘그녀는 예뻤다’ 박서준·AOA 설현·레드벨벳 슬기…로엔 아이유 컴백 임박·CJ E&M ‘슈퍼스타K7’·‘신서유기’ 불구 하락</p>
+                            <p>코스피와 코스닥 지수가 소폭 상승 마감한 가운데 엔터주 역시 기지개를 켰다.</p>
+                            <p>코스피는 1일 전 거래일 대비 16.51포인트(0.84%) 상승한 1979.32로 마감했다. 코스닥 역시 같은 기간 6.31포인트(0.93%) 오른 684.79에 장을 마쳤다.</p>
+                            <p><a href="">난 링크다</a></p>
+                            
+                            <h2>list</h2>
+                            <ul>
+                                <li>안녕하세요
+                                    <ul>
+                                        <li>안녕하세요</li>
+                                        <li>안녕하세요</li>
+                                        <li>안녕하세요</li>
+                                    </ul>
+                                </li>
+                                <li>안녕하세요</li>
+                                <li>안녕하세요</li>
+                            </ul>
+                            
+                            <ol>
+                                <li>안녕하세요</li>
+                                <li>안녕하세요</li>
+                                <li>안녕하세요</li>
+                            </ol>
+                            
+                            <h2>table</h2>
+                            <table border="1" cellpadding="1" cellspacing="1" style="width:500px;">
+                                <thead>
+                                    <tr>
+                                        <th>타이틀</th>
+                                        <th>타이틀</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="#">ㅇㅇㅇ</a></td>
+                                        <td>ㅇㅇㅇ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ㅇㅇㅇ</td>
+                                        <td>ㅇㅇㅇ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ㅇㅇ</td>
+                                        <td>ㅇㅇㅇ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h2>blockquote</h2>
+                            <blockquote>blockquote 영역</blockquote>
+                            
+                            <h2>pre</h2>
+                            <pre>pre 요소 test</pre>
+                            
+                            <h2>image</h2>
+                            <img src="http://www.mediaus.co.kr/news/photo/201012/15458_28375_5451.jpg">
+                            <img src="http://www.mediaus.co.kr/news/photo/201012/15458_28375_5451.jpg">
+                            <h3>iframe</h3>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/JAAo30-86QA" frameborder="0" allowfullscreen=""></iframe>                                
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="read_footer">
+                    <div class="bd_file_list">
+                        <!-- [D] 클릭시 클래스 on 적용 -->
+                        <a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="xe-sr-only">파일 첨부 리스트</span> <strong class="bd_file_num">4</strong></a>
+                        <ul>
+                        <li><a href="#"><i class="xi-download"></i> 아이유 사진.jpg</a> <span class="bd_file_size">(5Mb)</span></li>
+                        <li><a href="#"><i class="xi-download"></i> 아이유 사진.jpg</a> <span class="bd_file_size">(5Mb)</span></li>
+                        <li><a href="#"><i class="xi-download"></i> 아이유 사진.jpg</a> <span class="bd_file_size">(5Mb)</span></li>
+                        </ul>
+                    </div>
+                    <div class="bd_function">
+                        <div class="bd_function_l">
+                            <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
+                            <a href="#" class="bd_ico bd_like"><i class="xi-heart"></i><span class="xe-sr-only">좋아요</span></a> <a href="#" class="bd_like_num">54</a>
+                            <a href="#" class="bd_ico bd_favorite"><i class="xi-star"></i><span class="xe-sr-only">즐겨찾기</span></a>
+                            <div class="bd_share_area">
+                                <!-- [D] 클릭시 클래스 on 적용 -->
+                                <a href="#" class="bd_ico bd_share"><i class="xi-external-link"></i><span class="xe-sr-only">공유</span></a>
+                                <div class="ly_popup">
+                                    <ul>
+                                    <li><a href="#"><i class="xi-facebook"></i> 페이스북</a></li>
+                                    <li><a href="#"><i class="xi-twitter"></i> 트위터</a></li>
+                                    <li><a href="#"><i class="xi-link"></i> 고유주소</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bd_function_r">
+                            <a href="#" class="bd_ico bd_modify"><i class="xi-eraser"></i><span class="xe-sr-only">수정</span></a>
+                            <a href="#" class="bd_ico bd_delete"><i class="xi-trash"></i><span class="xe-sr-only">삭제</span></a>
+                            <div class="bd_more_area">
+                                <!-- [D] 클릭시 클래스 on 적용 -->
+                                <a href="#" class="bd_ico bd_more_view"><i class="xi-ellipsis-h"></i><span class="xe-sr-only">더보기</span></a>
+                                <div class="ly_popup">
+                                    <ul>
+                                    <li><a href="#">신고</a></li>
+                                    <li><a href="#">스패머관리</a></li>
+                                    <li><a href="#">휴지통</a></li>
+                                    <li><a href="#">등등</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bd_like_more">
+                            <ul>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <!-- [D] 해당글이 본인일 경우 클래스 on 적용 -->
+                            <li class="on"><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                            </ul>
+                            <!-- [D] 최대 10명까지 노출하고 나머지 사용자는 modal에서 처리 -->
+                            <!-- <p class="bd_like_more_text">님 외 <a href="#" data-toggle="xe-modal" data-target="#Modal2">56명</a>이 이 글을 좋아합니다.</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 댓글 -->
+            <div class="board_comment">
+                <div class="comment_header">
+                    <h1 class="xe-sr-only">댓글 리스트</h1>
+                    <p class="total_count"><span class="total_count_num">11</span>개 댓글</p>
+                    <div class="temp_save">
+                        <!-- <a href="#" class="temp_save_num" data-toggle="xe-modal" data-target="#Modal"><strong>3</strong>개의 임시 저장 글</a> -->
+                    </div>            
+                </div>
+                <form action="" class="comment_form">
+                    <div class="comment_form_editor">
+                        <div class="comment_form_ckeditor">
+                            <div class="cke">임시 에디터 영역</div>
+                        </div>                        
+                        <div class="comment_form_controller">
+                            <div class="comment_form_group">
+                                <div class="comment_form_option">
+                                    <label class="xe-label">
+                                        <input type="checkbox">
+                                        <span class="xe-input-helper"></span>
+                                        <span class="xe-label-text">비밀글</span>
+                                    </label>
+                                </div>
+                                <div class="comment_form_btn">
+                                    <a href="#" class="xe-btn xe-btn-secondary">임시저장</a>
+                                    <a href="#" class="xe-btn xe-btn-secondary">미리보기</a>
+                                    <a href="#" class="xe-btn xe-btn-black">등록</a>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </form>
+                <div class="comment_list">
+                    <!-- [D] 댓글 뎁스 적용시 depth1, depth2 추가(현재 6단계지 설정) -->
+                    <div class="comment_entity depth0">
+                        <div class="comment_entity_avatar">
+                            <img src="sample/@iu.jpg" alt="아이유">
+                            <!-- [D] 소셜로그인시 클래스 kakao, google, facebook, github, naver, twitter -->
+                            <span class="social_badge facebook"></span>
+                        </div>
+                        <div class="comment_entity_body">
+                            <div class="comment_entity_body_meta">
+                                <!-- [D] 클릭시 클래스 on 적용 -->
+                                <a href="#" class="author">gunil</a>
+                                <span class="date">12시간전</span>
+                                <div class="ly_popup">
+                                    <ul>
+                                    <li><a href="#">신고</a></li>
+                                    <li><a href="#">스패머관리</a></li>
+                                    <li><a href="#">휴지통</a></li>
+                                    <li><a href="#">등등</a></li>
+                                    </ul>
+                                </div>
+                                <div class="comment_entity_tool">
+                                    <a href="#" class="comment_modify"><i class="xi-eraser"></i><span class="xe-sr-only">수정</span></a>
+                                    <a href="#" class="comment_delete"><i class="xi-trash"></i><span class="xe-sr-only">삭제</span></a>
+                                    <div class="comment_more">
+                                        <!-- [D] 클릭시 클래스 on 적용 -->
+                                        <a href="#" class="comment_more_view"><i class="xi-ellipsis-h"></i><span class="xe-sr-only">더보기</span></a>
+                                        <div class="ly_popup">
+                                            <ul>
+                                            <li><a href="#">신고</a></li>
+                                            <li><a href="#">스패머관리</a></li>
+                                            <li><a href="#">휴지통</a></li>
+                                            <li><a href="#">등등</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="xe_content">
+                                <p>안녕하세요<br>반갑습니다. 반갑습니다. 반갑습니다. 반갑습니다. 반갑습니다. 반갑습니다. 반갑습니다. 반갑습니다</p>
+                                <p>반갑습니다</p>
+                            </div>
+                            <div class="comment_action">
+                                <div class="comment_file_list">
+                                    <!-- [D] 클릭시 클래스 on 적용 -->
+                                    <a href="#" class="btn_file">첨부파일 <strong class="file_num">4</strong></a>
+                                    <ul>
+                                    <li><a href="#"><i class="xi-download"></i> 아이유 사진.jpg <span class="file_size">(5Mb)</span></a></li>
+                                    <li><a href="#"><i class="xi-download"></i> 아이유 사진.jpg <span class="file_size">(5Mb)</span></a></li>
+                                    <li><a href="#"><i class="xi-download"></i> 아이유 사진.jpg <span class="file_size">(5Mb)</span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="vote">
+                                    <!-- [D] 클릭시 클래스 on 적용 -->
+                                    <a href="#" class="btn_share like"><i class="xi-heart"></i> <span class="xe-sr-only">좋아요</span></a>
+                                    <!-- [D] 클릭시 클래스 on 적용 및 vote_list 영역 활성화 -->
+                                    <a href="#" class="btn_share like_num">9</a>
+                                </div>
+                                <!-- [D] 클릭시 클래스 on 적용 및 comment_action_area 활성화 -->
+                                <a href="#" class="btn_share reply"><i class="xi-reply"></i> 답글</a>
+                                <!-- [D] 클릭시 클래스 on 적용 -->
+                                <a href="#" class="btn_share share"><i class="xi-external-link"></i> 공유</a>
+                                <div class="comment_share_area">
+                                    <ul class="share_service">
+                                    <li><a href="#" class="facebook"><i class="xi-facebook"></i> <span class="xe-sr-only">페이스북 공유</span></a></li>
+                                    <li><a href="#" class="twitter"><i class="xi-twitter"></i> <span class="xe-sr-only">트위터 겅유</span></a></li>
+                                    <li><a href="#" class="permalink"><i class="xi-link"></i> <span class="xe-sr-only">링크 복사</span></a> <input type="text" class="sharelink" value="http://www.test.com" readonly></li>
+                                    </ul>
+                                </div>
+                                <div class="vote_list">
+                                    <ul>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <!-- [D] 해당글이 본인일 경우 클래스 on 적용 -->
+                                    <li class="on"><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    <li><img src="sample/@iu.jpg" alt="아이유" title="아이유"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="comment_action_area">
+                                <div class="comment_action_area_avatar">
+                                    <!-- [D] 비로그인 및 프로필 이미지가 없을 경우 기본 이미지 적용 -->
+                                    <img src="../assets/img/defalut_profile.jpg" alt="default profile">
+                                </div>
+                                <form action="" class="comment_form">
+                                    <div class="comment_form_editor">
+                                        <div class="comment_form_ckeditor">
+                                            <div class="cke">임시 에디터 영역</div>
+                                        </div>
+                                        <div class="comment_form_controller">
+                                            <div class="comment_form_input">
+                                                <input type="text" class="xe-form-control" placeholder="이름" title="이름">
+                                                <input type="text" class="xe-form-control" placeholder="비밀번호" title="비밀번호">
+                                                <input type="text" class="xe-form-control v2" placeholder="이메일 주소" title="이메일 주소">
+                                            </div>
+                                            <div class="comment_form_group">
+                                                <div class="comment_form_option">
+                                                    <label class="xe-label">
+                                                        <input type="checkbox">
+                                                        <span class="xe-input-helper"></span>
+                                                        <span class="xe-label-text">비밀글</span>
+                                                    </label>
+                                                </div>
+                                                <div class="comment_form_btn nologin">
+                                                    <a href="#" class="xe-btn xe-btn-secondary">미리보기</a>
+                                                    <a href="#" class="xe-btn xe-btn-black">등록</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment_entity depth1">
+                        <div class="comment_entity_avatar">
+                            <img src="sample/@iu.jpg" alt="naver">
+                            <span class="social_badge naver"></span>
+                        </div>
+                        <div class="comment_entity_body">
+                            <div class="comment_entity_body_meta">
+                                <!-- [D] 클릭시 클래스 on 적용 -->
+                                <a href="#" class="author">naver</a>
+                                <span class="date">12시간전</span>
+                                <div class="ly_popup">
+                                    <ul>
+                                    <li><a href="#">신고</a></li>
+                                    <li><a href="#">스패머관리</a></li>
+                                    <li><a href="#">휴지통</a></li>
+                                    <li><a href="#">등등</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="comment_entity_tool">
+                                <div class="comment_more">
+                                    <!-- [D] 클릭시 클래스 on 적용 -->
+                                    <a href="#" class="comment_more_view"><i class="xi-ellipsis-h"></i><span class="xe-sr-only">더보기</span></a>
+                                    <div class="ly_popup">
+                                        <ul>
+                                        <li><a href="#">신고</a></li>
+                                        <li><a href="#">스패머관리</a></li>
+                                        <li><a href="#">휴지통</a></li>
+                                        <li><a href="#">등등</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="xe_content">
+                                <p>안녕하세요 아이유 입니다.</p>
+                            </div>
+                            <div class="comment_action">
+                                <div class="vote">
+                                    <a href="#" class="btn_share like"><i class="xi-heart"></i> <span class="xe-sr-only">좋아요</span></a>
+                                    <a href="#" class="btn_share like_num">1</a>
+                                </div>
+                                <a href="#" class="btn_share reply"><i class="xi-reply"></i> 답글</a>
+                                <a href="#" class="btn_share share"><i class="xi-external-link"></i> 공유</a>
+                                <div class="comment_share_area">
+                                    <ul class="share_service">
+                                    <li><a href="#" class="facebook"><i class="xi-facebook"></i> <span class="xe-sr-only">페이스북 공유</span></a></li>
+                                    <li><a href="#" class="twitter"><i class="xi-twitter"></i> <span class="xe-sr-only">트위터 겅유</span></a></li>
+                                    <li><a href="#" class="permalink"><i class="xi-link"></i> <span class="xe-sr-only">링크 복사</span></a> <input type="text" class="sharelink" value="http://www.test.com" readonly></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="comment_action_area">
+                                <div class="comment_action_area_avatar">
+                                    <img src="sample/@iu.jpg" alt="아이유">
+                                </div>
+                                <form action="" class="comment_form">
+                                    <div class="comment_form_editor">
+                                        <div class="comment_form_ckeditor">
+                                            <div class="cke">임시 에디터 영역</div>
+                                        </div>
+                                        <div class="comment_form_controller">
+                                            <div class="comment_form_group">
+                                                <div class="comment_form_option">                                                    
+                                                    <input type="checkbox" id=""><label for="">비밀글</label>
+                                                </div>
+                                                <div class="comment_form_btn nologin">
+                                                    <a href="#" class="bd_btn btn_preview">미리보기</a>
+                                                    <a href="#" class="bd_btn btn_submit">등록</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment_entity depth2">
+                        <div class="comment_entity_avatar">
+                            <img src="sample/@iu.jpg" alt="github">
+                            <span class="social_badge github"></span>
+                        </div>
+                        <div class="comment_entity_body">
+                            <div class="comment_entity_body_meta">
+                                 <!-- [D] 클릭시 클래스 on 적용 -->
+                                <a href="#" class="author">github</a>
+                                <span class="date">12시간전</span>
+                                <div class="ly_popup">
+                                    <ul>
+                                    <li><a href="#">신고</a></li>
+                                    <li><a href="#">스패머관리</a></li>
+                                    <li><a href="#">휴지통</a></li>
+                                    <li><a href="#">등등</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="comment_entity_tool">
+                                <div class="comment_more">
+                                    <!-- [D] 클릭시 클래스 on 적용 -->
+                                    <a href="#" class="comment_more_view"><i class="xi-ellipsis-h"></i><span class="xe-sr-only">더보기</span></a>
+                                    <div class="ly_popup">
+                                        <ul>
+                                        <li><a href="#">신고</a></li>
+                                        <li><a href="#">스패머관리</a></li>
+                                        <li><a href="#">휴지통</a></li>
+                                        <li><a href="#">등등</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="xe_content">
+                                <p>안녕하세요 아이유 입니다.</p>
+                            </div>
+                            <div class="comment_action">
+                                <div class="vote">
+                                    <a href="#" class="btn_share like"><i class="xi-heart"></i> <span class="xe-sr-only">좋아요</span></a>
+                                    <a href="#" class="btn_share like_num">1</a>
+                                </div>
+                                <a href="#" class="btn_share share"><i class="xi-external-link"></i> 공유</a>
+                                <div class="comment_share_area">
+                                    <ul class="share_service">
+                                    <li><a href="#" class="facebook"><i class="xi-facebook"></i> <span class="xe-sr-only">페이스북 공유</span></a></li>
+                                    <li><a href="#" class="twitter"><i class="xi-twitter"></i> <span class="xe-sr-only">트위터 겅유</span></a></li>
+                                    <li><a href="#" class="permalink"><i class="xi-link"></i> <span class="xe-sr-only">링크 복사</span></a> <input type="text" class="sharelink" value="http://www.test.com" readonly></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="pagination_seemore">
+                    <a href="#">더보기 (3개의 댓글 더 있음)</a>
+                </div>
+            </div>
+            <!-- // 댓글 -->
+
+            <div class="board_header">
+                <div class="bd_manage_area">
+                    <!-- [D] 클릭시 클래스 on 추가 및 bd_manage_detail 영역 노출 -->
+                    <button type="button" class="xe-btn xe-btn-primary-outline bd_manage">게시글 관리</button>
+                </div>
+                <!-- 모바일뷰에서 노출되는 정렬 버튼 -->
+                <div class="bd_manage_area xe-visible-xs">
+                    <!-- [D] 클릭시 클래스 on 추가 및 bd_align 영역 노출 -->
+                    <a href="#" class="btn_mng bd_sorting"><i class="xi-funnel"></i> <span class="xe-sr-only">게시글 정렬</span></a>
+                </div>
+                <!-- /모바일뷰에서 노출되는 정렬 버튼 -->
+
+                <div class="bd_btn_area">
+                    <ul>
+                    <!-- [D] 클릭시 클래스 on 및 추가 bd_search_area 영역 활성화 -->
+                    <li><a href="#" class="bd_search"><span class="xe-sr-only">검색</span><i class="xi-magnifier"></i></a></li>
+                    <li><a href="#"><span class="xe-sr-only">게시판 글쓰기</span><i class="xi-pen-o"></i></a></li>
+                    <li><a href="#"><span class="xe-sr-only">게시판 설정</span><i class="xi-cog"></i></a></li>
+                    </ul>
+                </div>
+                <div class="xe-form-inline xe-hidden-xs">
+                    <div class="xe-dropdown">
+                        <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">전체보기</button>
+                        <ul class="xe-dropdown-menu">
+                            <li class="on"><a href="#">전체보기</a></li>
+                            <li><a href="#">공지</a></li>
+                            <li><a href="#">기타</a></li>
+                        </ul>
+                    </div>
+                    <div class="xe-dropdown">
+                        <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">최신순</button>
+                        <ul class="xe-dropdown-menu">
+                            <li class="on"><a href="#">최신순</a></li>
+                            <li><a href="#">조회순</a></li>
+                            <li><a href="#">북마크</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 게시글 관리 -->
+                <div class="bd_manage_detail">
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">선택글 복사</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <div class="xe-form-inline">
+                                        <div class="xe-dropdown">
+            	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">게시판1</button>
+            	                            <ul class="xe-dropdown-menu">
+            	                                <li class="on"><a href="#">게시판1</a></li>
+            	                                <li><a href="#">게시판2</a></li>
+            	                            </ul>
+            	                        </div>
+                                        <button type="button" class="xe-btn xe-btn-primary-outline">복사</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">선택글 이동</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <div class="xe-form-inline">
+                                        <div class="xe-dropdown">
+            	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">게시판1</button>
+            	                            <ul class="xe-dropdown-menu">
+            	                                <li class="on"><a href="#">게시판1</a></li>
+            	                                <li><a href="#">게시판2</a></li>
+            	                            </ul>
+            	                        </div>
+                                        <button type="button" class="xe-btn xe-btn-primary-outline">이동</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">휴지통</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <a href="#" class="xe-btn-link">게시글을 휴지통으로 이동합니다.</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">삭제</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <a href="#" class="xe-btn-link">게시글을 삭제합니다.</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /게시글 관리 -->
+
+                <!-- 검색영역 -->
+                <div class="bd_search_area">
+                    <div class="bd_search_box">
+                        <input type="text" class="bd_search_input" title="게시판 검색" placeholder="검색어를 입력하세요">
+                        <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
+                        <a href="#" class="bd_btn_detail" title="게시판 상세검색">상세검색</a>
+                    </div>
+                    <div class="bd_search_detail">
+                        <div class="bd_search_detail_option">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">카테고리</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <div class="xe-dropdown">
+                	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">전체보기</button>
+                	                            <ul class="xe-dropdown-menu">
+                                                    <li><a href="#">전체보기</a></li>
+                                                    <li><a href="#">카테고리</a></li>
+                	                            </ul>
+                	                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">제목 + 내용</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <input type="text" class="xe-form-control" title="제목+내용">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="xe-row">
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">글쓴이</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <input type="text" class="xe-form-control" title="제목+내용">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">기간</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <div class="xe-form-group">
+                                                <div class="xe-dropdown">
+                    	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">1주</button>
+                    	                            <ul class="xe-dropdown-menu">
+                                                        <li><a href="#">2주</a></li>
+                                                        <li><a href="#">1개월</a></li>
+                                                        <li><a href="#">3개월</a></li>
+                                                        <li><a href="#">6개월</a></li>
+                                                        <li><a href="#">1년</a></li>
+                    	                            </ul>
+                    	                        </div>
+                                            </div>
+                                            <div class="xe-form-inline">
+                                                <input type="text" class="xe-form-control" title="시작 날짜 입력" value="20150928"> - <input type="text" class="xe-form-control" title="끝 날짜 입력" value="20151004">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bd_search_footer">
+                            <div class="xe-pull-right">
+                                <button type="button" class="xe-btn xe-btn-primary-outline">검색</button>
+                                <button type="button" class="xe-btn xe-btn-secondary">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /검색영역 -->
+
+            </div>
+
+            <div class="board_list">
+                <table>
+                <!-- [D] 모바일뷰에서 숨겨할 요소 클래스 xe-hidden-xs 추가 -->
+                <thead class="xe-hidden-xs">
+                <!-- LIST HEADER -->
+                <tr>
+                <!-- <th scope="col" style="width:44px"><span><input type="checkbox" title="전부 체크"></span></th> -->
+                <th scope="col" style="width:44px">
+                    <label class="xe-label">
+                        <input type="checkbox">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text xe-sr-only">전체선택</span>
+                    </label>
+                </th>
+                <th scope="col" class="favorite"><span><a href="#" title="즐겨찾기 전부 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 전부 체크</span></a></span></th>
+                <th scope="col"><span>카테고리</span></th>
+                <th scope="col" class="title"><span>제목</span></th>
+                <th scope="col"><span>글쓴이</span></th>
+                <th scope="col"><span><a href="#">조회수</a></span></th>
+                <th scope="col"><span><a href="#">날짜</a></span></th>
+                </tr>
+                <!-- /LIST HEADER -->
+                </thead>
+                <tbody>
+                <!-- NOTICE -->
+                <tr class="notice">
+                <td class="check">
+                    <label class="xe-label">
+                        <input type="checkbox">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text xe-sr-only">선택</span>
+                    </label>
+                </td>
+                <td class="favorite xe-hidden-xs"><a href="#" class="on" title="즐겨찾기 체크"><i class="xi-star"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">공지</td>
+                <td class="title">
+                    <!-- <span class="category">공지</span> -->
+                    <span class="xe-badge xe-primary">공지</span>
+                    <a href="#">안녕하세요. XE3가 출시 되었습니다.</a></span>
+                    <div class="more_info xe-visible-xs">
+                        <a href="#" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_readnum"><i class="xi-eye"></i> 78</span>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#popup_menu_area">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <!-- /NOTICE -->
+                <!-- LIST -->
+                <tr>
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <a href="#">안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요.</a>
+                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">9</a>
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr class="readed">
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <a href="#">읽은 글입니다. 읽은 글입니다.^^</a>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr>
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <a href="#">안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요.</a>
+                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">9</a>
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <!-- /LIST -->
+               </tbody>
+               </table>
+            </div>
+
+            <div class="board_footer">
+                <!-- PAGINATAION PC-->
+                <div class="bd_paginate xe-hidden-xs">
+                    <!-- 비활성화시 a요소를 span으로 변경 -->
+                    <span class="btn_pg btn_prev">
+                        <i class="xi-angle-left"><span class="xe-sr-only">이전</span></i>
+                    </span>
+                    <a href="#">1</a>
+                    <strong>2</strong>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">6</a>
+                    <a href="#">7</a>
+                    <a href="#">8</a>
+                    <span class="more_page">...</span>
+                    <a href="#">100</a>
+                    <a href="#" class="btn_pg btn_next">
+                        <i class="xi-angle-right"><span class="xe-sr-only">다음</span></i>
+                    </a>
+                </div>
+                <!-- /PAGINATION PC-->
+
+                <!-- PAGINATAION Mobile -->
+                <div class="bd_paginate v2 xe-visible-xs">
+                    <!-- 비활성화시 a요소를 span으로 변경 -->
+                    <span class="btn_pg btn_prev">
+                        <i class="xi-angle-left"><span class="xe-sr-only">이전</span></i>
+                    </span>
+                    <span class="pg_box">
+                        <strong>1</strong> / <span>100</span>
+                    </span>
+                    <a href="#" class="btn_pg btn_next">
+                        <i class="xi-angle-right"><span class="xe-sr-only">다음</span></i>
+                    </a>
+                </div>
+                <!-- /PAGINATION Mobile -->
+            </div>
+            <div class="bd_dimmed"></div>
+        </div>
+        <!-- /BOARD -->
+    </div>
+    
+    <div class="xe-modal fade" id="Modal">
+        <div class="xe-modal-dialog">
+            <div class="xe-modal-content">
+                <div class="xe-modal-header">
+                    <button type="button" class="btn-close" data-dismiss="xe-modal" aria-label="Close"><i class="xi-close"></i></button>
+                    <strong class="xe-modal-title">3개의 임시저장 글</strong>
+                </div>
+
+                <div class="temp_save_list board">
+                    <ul>
+                    <li>
+                        <a href="#" class="temp_title">자동저장글입니다.</a>
+                        <div class="temp_info">
+                            <span class="xe-badge xe-primary">자동저장</span>
+                            <span class="temp_date"><span>2015 09 25</span> 21:08</span>
+                            <a href="#" class="btn_temp_delete"><i class="xi-close"></i><span class="xe-sr-only">삭제</span></a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="temp_title">임시저장글입니다.</a>
+                        <div class="temp_info">
+                            <span class="xe-badge xe-primary-outline">임시저장</span>
+                            <span class="temp_date"><span>2015 09 25</span> 21:08</span>
+                            <a href="#" class="btn_temp_delete"><i class="xi-close"></i><span class="xe-sr-only">삭제</span></a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="temp_title">가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하</a>
+                        <div class="temp_info">
+                            <span class="xe-badge xe-primary-outline">임시저장</span>
+                            <span class="temp_date"><span>2015 09 25</span> 21:08</span>
+                            <a href="#" class="btn_temp_delete"><i class="xi-close"></i><span class="xe-sr-only">삭제</span></a>
+                        </div>
+                    </li>
+                    </ul>
+                </div>
+
+                <div class="xe-modal-footer">
+                    <button type="button" class="xe-btn xe-btn-secondary" data-dismiss="xe-modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="xe-modal fade in" id="Modal2">
+        <div class="xe-modal-dialog">
+            <div class="xe-modal-content">
+                <div class="xe-modal-header">
+                    <button type="button" class="btn-close" data-dismiss="xe-modal" aria-label="Close"><i class="xi-close"></i></button>
+                    <strong class="xe-modal-title">100명이 이 글을 좋아합니다.</strong>
+                </div>
+                <div class="xe-list-group slickgrid_944257 ui-widget" data-url="http://blueng.udada.kr:8088/test555/vote/userList2/assent/d77bf637-ac46-44ef-9f87-1f43919ddb3f" style="height: 365px; overflow: hidden; outline: 0px; position: relative;">
+                    <div tabindex="0" hidefocus="" style="position:fixed;width:0;height:0;top:0;left:0;outline:0;"></div>
+                    <div class="slick-header ui-state-default" style="overflow: hidden; position: relative; display: none;">
+                        <div class="slick-header-columns" style="left: -1000px; width: 1080px;" unselectable="on">
+                            <div class="ui-state-default slick-header-column" id="slickgrid_944257undefined" title="" style="width: 71px;"><span class="slick-column-name"></span>
+                                <div class="slick-resizable-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slick-headerrow ui-state-default" style="overflow: hidden; position: relative; display: none;">
+                        <div class="slick-headerrow-columns" style="width: 80px;"></div>
+                        <div style="display: block; height: 1px; position: absolute; top: 0px; left: 0px; width: 80px;"></div>
+                    </div>
+                    <div class="slick-top-panel-scroller ui-state-default" style="overflow: hidden; position: relative; display: none;">
+                        <div class="slick-top-panel" style="width:10000px"></div>
+                    </div>
+                    <div class="slick-viewport" style="width: 100%; overflow: auto; outline: 0px; position: relative; height: 365px;">
+                        <div class="grid-canvas" style="height: 3600px;"> <!--인라인 스타일 width: 80px 제거 -->
+                            <div class="ui-widget-content slick-row even" style="top:0px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row odd" style="top:80px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <a href="#" class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                            <span class="sub-text">3시간 전</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row even" style="top:160px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row odd" style="top:240px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row even" style="top:320px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row odd" style="top:400px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row even" style="top:480px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row odd" style="top:560px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-widget-content slick-row even" style="top:640px">
+                                <div class="slick-cell l0 r0">
+                                    <!--[D] 링크가 아닌 경우 div 로 교체 -->
+                                    <div class="list-inner-item">
+                                        <!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->
+                                        <div class="img-thumbnail"><img src="sample/@iu.jpg" width="48" height="48" alt="admin"></div>
+                                        <div class="list-text">
+                                            <p>admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div tabindex="0" hidefocus="" style="position:fixed;width:0;height:0;top:0;left:0;outline:0;"></div>
+                </div>                
+                <div class="xe-modal-footer">
+                    <button type="button" class="xe-btn xe-btn-secondary" data-dismiss="xe-modal">닫기</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</body>
+</html>

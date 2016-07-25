@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+    <title>XE3 board</title>
+
+    <!-- core -->
+    <link href="../../../assets/core/common/css/xe-common.css" rel="stylesheet" media="all">
+    <link href="../../../assets/core/xe-ui-component/xe-ui-component.css" rel="stylesheet" media="all">
+    <link href="http://cdn.jsdelivr.net/xeicon/2.0.0/xeicon.min.css" rel="stylesheet" media="all">
+    <script>var xeBaseURL = '../../../';</script>
+    <script src="../../../assets/core/common/js/dynamicLoadManager.js"></script>
+    <script src="../../../assets/jspm_packages/system.js"></script>
+    <script src="../../../assets/systemjs.config.js"></script>
+    <script src="../../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/core/common/js/xe.bundle.js"></script>
+
+    <!-- additional -->
+    <link rel="stylesheet" href="../../../assets/core/common/css/webfont.css">        
+    <link rel="stylesheet" href="../assets/css/board.css">   
+    <link rel="stylesheet" href="../../plugin-comment/assets/css/comment.css">    
+    <link rel="stylesheet" href="../../plugin-ckeditor/assets/ckeditor/editor.css">       
+    <script src="../assets/js/markup_test.js"></script>
+</head>
+<body>    
+    <div class="xe-container">
+        <!-- BOARD -->
+        <div class="board">
+            <div class="board_write">
+                <div class="write_header">
+                    <div class="write_category">
+                        <div class="xe-dropdown">
+                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">카테고리</button>
+                            <ul class="xe-dropdown-menu">
+                                <li class="on"><a href="#">카테고리</a></li>
+                                <li><a href="#">카테고리</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="write_title">
+                        <div class="temp_save">
+                            <a href="#" class="temp_save_num"><strong>3</strong>개의 임시 저장 글</a>
+                        </div>
+                        <input type="text" class="xe-form-control" placeholder="제목을 입력하세요" title="제목">
+                    </div>
+                </div>
+                <div class="write_body">
+                    <div class="write_form_editor">
+                        <div class="cke">임시 에디터</div>
+                    </div>
+                </div>                
+                <div class="write_footer">
+                    <div class="write_form_input">
+                        <div class="xe-form-inline">
+                            <input type="text" class="xe-form-control" placeholder="이름" title="이름">
+                            <input type="text" class="xe-form-control" placeholder="비밀번호" title="비밀번호">
+                            <input type="text" class="xe-form-control" placeholder="이메일 주소" title="이메일 주소">
+                        </div>
+                    </div>
+                    <div class="write_form_option">
+                        <div class="xe-form-inline">
+                            <label class="xe-label">
+                                <input type="checkbox">
+                                <span class="xe-input-helper"></span>
+                                <span class="xe-label-text">댓글허용</span>
+                            </label>
+                            <label class="xe-label">
+                                <input type="checkbox">
+                                <span class="xe-input-helper"></span>
+                                <span class="xe-label-text">비밀글</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="write_form_btn nologin">
+                        <a href="#" class="bd_btn btn_preview">미리보기</a>
+                        <a href="#" class="bd_btn btn_submit">등록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /BOARD -->
+    </div>    
+</body>
+</html>
