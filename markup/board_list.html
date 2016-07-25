@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>XE3 board</title>
+
+    <!-- core -->
+    <link href="../../../assets/core/common/css/xe-common.css" rel="stylesheet" media="all">
+    <link href="../../../assets/core/xe-ui-component/xe-ui-component.css" rel="stylesheet" media="all">
+    <link href="http://cdn.jsdelivr.net/xeicon/2.0.0/xeicon.min.css" rel="stylesheet" media="all">
+    <script>var xeBaseURL = '../../../';</script>
+    <script src="../../../assets/core/common/js/dynamicLoadManager.js"></script>
+    <script src="../../../assets/jspm_packages/system.js"></script>
+    <script src="../../../assets/systemjs.config.js"></script>
+    <script src="../../../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../assets/core/common/js/xe.bundle.js"></script>
+
+    <!-- additional -->
+    <link rel="stylesheet" href="../../../assets/core/common/css/webfont.css">        
+    <link rel="stylesheet" href="../assets/css/board.css">   
+    <link rel="stylesheet" href="../../plugin-comment/assets/css/comment.css">    
+    <link rel="stylesheet" href="../../plugin-ckeditor/assets/ckeditor/editor.css">       
+    <script src="../assets/js/markup_test.js"></script>
+</head>
+<body>
+    <div class="xe-container">
+        <!-- BOARD -->
+        <div class="board">
+            <div class="board_header">                    
+                <div class="bd_manage_area">
+                    <!-- [D] 클릭시 클래스 on 추가 및 bd_manage_detail 영역 노출 -->
+                    <button type="button" class="xe-btn xe-btn-primary-outline bd_manage">게시글 관리</button>
+                </div>
+                <!-- 모바일뷰에서 노출되는 정렬 버튼 -->
+                <div class="bd_manage_area xe-visible-xs">
+                    <!-- [D] 클릭시 클래스 on 추가 및 bd_align 영역 노출 -->
+                    <a href="#" class="btn_mng bd_sorting"><i class="xi-funnel"></i> <span class="xe-sr-only">게시글 정렬</span></a>
+                </div>
+                <!-- /모바일뷰에서 노출되는 정렬 버튼 -->
+
+                <div class="bd_btn_area">
+                    <ul>
+                    <!-- [D] 클릭시 클래스 on 및 추가 bd_search_area 영역 활성화 -->
+                    <li><a href="#" class="bd_search"><span class="xe-sr-only">검색</span><i class="xi-magnifier"></i></a></li>
+                    <li><a href="#"><span class="xe-sr-only">게시판 글쓰기</span><i class="xi-pen-o"></i></a></li>
+                    <li><a href="#"><span class="xe-sr-only">게시판 설정</span><i class="xi-cog"></i></a></li>
+                    </ul>
+                </div>
+                <div class="xe-form-inline xe-hidden-xs board-sorting-area">
+                    <div class="xe-dropdown">
+                        <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">전체보기</button>
+                        <ul class="xe-dropdown-menu">
+                            <li class="on"><a href="#">전체보기</a></li>
+                            <li><a href="#">공지</a></li>
+                            <li><a href="#">기타</a></li>
+                        </ul>
+                    </div>
+                    <div class="xe-dropdown">
+                        <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">최신순</button>
+                        <ul class="xe-dropdown-menu">
+                            <li class="on"><a href="#">최신순</a></li>
+                            <li><a href="#">조회순</a></li>
+                            <li><a href="#">북마크</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 게시글 관리 -->
+                <div class="bd_manage_detail">
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">선택글 복사</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <div class="xe-form-inline">
+                                        <div class="xe-dropdown">
+            	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">게시판1</button>
+            	                            <ul class="xe-dropdown-menu">
+            	                                <li class="on"><a href="#">게시판1</a></li>
+            	                                <li><a href="#">게시판2</a></li>
+            	                            </ul>
+            	                        </div>
+                                        <button type="button" class="xe-btn xe-btn-primary-outline">복사</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">선택글 이동</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <div class="xe-form-inline">
+                                        <div class="xe-dropdown">
+            	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">게시판1</button>
+            	                            <ul class="xe-dropdown-menu">
+            	                                <li class="on"><a href="#">게시판1</a></li>
+            	                                <li><a href="#">게시판2</a></li>
+            	                            </ul>
+            	                        </div>
+                                        <button type="button" class="xe-btn xe-btn-primary-outline">이동</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">휴지통</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <a href="#" class="xe-btn-link">게시글을 휴지통으로 이동합니다.</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xe-row">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">삭제</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    <a href="#" class="xe-btn-link">게시글을 삭제합니다.</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /게시글 관리 -->
+
+                <!-- 검색영역 -->
+                <div class="bd_search_area">
+                    <div class="bd_search_box">
+                        <input type="text" class="bd_search_input" title="게시판 검색" placeholder="검색어를 입력하세요">
+                        <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
+                        <a href="#" class="bd_btn_detail" title="게시판 상세검색">상세검색</a>
+                    </div>
+                    <div class="bd_search_detail">
+                        <div class="bd_search_detail_option">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">카테고리</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <div class="xe-dropdown">
+                	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">전체보기</button>
+                	                            <ul class="xe-dropdown-menu">
+                                                    <li><a href="#">전체보기</a></li>
+                                                    <li><a href="#">카테고리</a></li>
+                	                            </ul>
+                	                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">제목 + 내용</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <input type="text" class="xe-form-control" title="제목+내용">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="xe-row">
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">글쓴이</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <input type="text" class="xe-form-control" title="제목+내용">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="xe-col-sm-6">
+                                    <div class="xe-row">
+                                        <div class="xe-col-sm-3">
+                                            <label class="xe-control-label">기간</label>
+                                        </div>
+                                        <div class="xe-col-sm-9">
+                                            <div class="xe-form-group">
+                                                <div class="xe-dropdown">
+                    	                            <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">1주</button>
+                    	                            <ul class="xe-dropdown-menu">
+                                                        <li><a href="#">2주</a></li>
+                                                        <li><a href="#">1개월</a></li>
+                                                        <li><a href="#">3개월</a></li>
+                                                        <li><a href="#">6개월</a></li>
+                                                        <li><a href="#">1년</a></li>
+                    	                            </ul>
+                    	                        </div>
+                                            </div>
+                                            <div class="xe-form-inline">
+                                                <input type="text" class="xe-form-control" title="시작 날짜 입력" value="20150928"> - <input type="text" class="xe-form-control" title="끝 날짜 입력" value="20151004">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bd_search_footer">
+                            <div class="xe-pull-right">
+                                <button type="button" class="xe-btn xe-btn-primary-outline">검색</button>
+                                <button type="button" class="xe-btn xe-btn-secondary">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /검색영역 -->
+
+            </div>
+
+            <div class="board_list">
+                <table>
+                <!-- [D] 모바일뷰에서 숨겨할 요소 클래스 xe-hidden-xs 추가 -->
+                <thead class="xe-hidden-xs">
+                <!-- LIST HEADER -->
+                <tr>
+                <th scope="col">
+                    <label class="xe-label">
+                        <input type="checkbox">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text xe-sr-only">전체 선택</span>
+                    </label>
+                </th>
+                <th scope="col" class="favorite"><span><a href="#" title="즐겨찾기 전부 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 전부 체크</span></a></span></th>
+                <th scope="col"><span>카테고리</span></th>
+                <th scope="col" class="title"><span>제목</span></th>
+                <th scope="col"><span>글쓴이</span></th>
+                <th scope="col"><span><a href="#">조회수</a></span></th>
+                <th scope="col"><span><a href="#">날짜</a></span></th>
+                </tr>
+                <!-- /LIST HEADER -->
+                </thead>
+                <tbody>
+                <!-- NOTICE -->
+                <tr class="notice">
+                <td class="check">
+                    <label class="xe-label">
+                        <input type="checkbox">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text xe-sr-only">선택</span>
+                    </label>
+                </td>
+                <td class="favorite xe-hidden-xs"><a href="#" class="on" title="즐겨찾기 체크"><i class="xi-star"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">공지</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary">공지</span>
+                    <a href="#" class="title_text">안녕하세요. XE3가 출시 되었습니다.</a>
+                    <div class="more_info xe-visible-xs">
+                        <a href="#" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_readnum"><i class="xi-eye"></i> 78</span>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#popup_menu_area">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <!-- /NOTICE -->
+                <!-- LIST -->
+                <tr class="on">
+                <!-- [D] 체크시 부모 tr 요소에 클래스 on 추가 -->
+                <td class="check">
+                    <label class="xe-label">
+                        <input type="checkbox">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text xe-sr-only">선택</span>
+                    </label>
+                </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                    <a href="#" class="title_text">안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요.</a>                        
+                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">9</a>
+                    <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <!-- [D] 답글 뎁스 적용시 depth1 ~ depth6 추가(현재 6단계까지 설정, 코멘트와 동일 스펙)-->                    
+                <tr class="board-reply depth-1">
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <span class="bd_ico_reply"><i class="xi-subdirectory-arrow"></i><span class="xe-sr-only">reply</span></span>                        
+                    <a href="#" class="title_text">RE: 답글입니다.</a>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr class="board-reply depth-2">
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <span class="bd_ico_reply"><i class="xi-subdirectory-arrow"></i><span class="xe-sr-only">reply</span></span>                        
+                    <a href="#" class="title_text">RE: RE: 답글입니다.</a>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr class="board-reply depth-3">
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <span class="bd_ico_reply"><i class="xi-subdirectory-arrow"></i><span class="xe-sr-only">reply</span></span>                        
+                    <a href="#" class="title_text">RE: RE: RE: 답글입니다.</a>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr class="board-reply depth-4">
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <span class="bd_ico_reply"><i class="xi-subdirectory-arrow"></i><span class="xe-sr-only">reply</span></span>                        
+                    <a href="#" class="title_text">RE: RE: RE: RE: 답글입니다.</a>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr class="board-reply depth-5">
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <span class="bd_ico_reply"><i class="xi-subdirectory-arrow"></i><span class="xe-sr-only">reply</span></span>                        
+                    <a href="#" class="title_text">RE: RE: RE: RE: RE: 답글입니다.답글입니다.답글입니다.답글입니다.답글입니다.</a>
+                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">9</a>
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr class="board-reply depth-6">
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <span class="bd_ico_reply"><i class="xi-subdirectory-arrow"></i><span class="xe-sr-only">reply</span></span>                                                
+                    <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>                        
+                    <a href="#" class="title_text">RE: RE: RE: RE: RE: RE: 답글입니다.답글입니다.답글입니다.답글입니다.답글입니다.</a>
+                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">9</a>
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <tr>
+                    <td class="check">
+                        <label class="xe-label">
+                            <input type="checkbox">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">선택</span>
+                        </label>
+                    </td>
+                <td class="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i class="xi-star-o"></i><span class="xe-sr-only">즐겨찾기 체크</span></a></td>
+                <td class="category xe-hidden-xs">Q&amp;A</td>
+                <td class="title">
+                    <span class="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
+                    <a href="#" class="title_text">안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요.</a>
+                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">9</a>
+                    <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                    <div class="more_info xe-visible-xs">
+                        <a href="" class="mb_autohr">XE</a>
+                        <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
+                        <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
+                    </div>
+                </td>
+                <td class="author xe-hidden-xs"><a href="#">XE</a></td>
+                <td class="read_num xe-hidden-xs">78</td>
+                <td class="time xe-hidden-xs">15시간 전</td>
+                </tr>
+                <!-- /LIST -->
+               </tbody>
+               </table>
+            </div>
+
+            <div class="board_footer">
+                <!-- PAGINATAION PC-->
+                <div class="bd_paginate xe-hidden-xs">
+                    <!-- 비활성화시 a요소를 span으로 변경 -->
+                    <span class="btn_pg btn_prev">
+                        <i class="xi-angle-left"><span class="xe-sr-only">이전</span></i>
+                    </span>
+                    <a href="#">1</a>
+                    <strong>2</strong>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">6</a>
+                    <a href="#">7</a>
+                    <a href="#">8</a>
+                    <span class="more_page">...</span>
+                    <a href="#">100</a>
+                    <a href="#" class="btn_pg btn_next">
+                        <i class="xi-angle-right"><span class="xe-sr-only">다음</span></i>
+                    </a>
+                </div>
+                <!-- /PAGINATION PC-->
+
+                <!-- PAGINATAION Mobile -->
+                <div class="bd_paginate v2 xe-visible-xs">
+                    <!-- 비활성화시 a요소를 span으로 변경 -->
+                    <span class="btn_pg btn_prev">
+                        <i class="xi-angle-left"><span class="xe-sr-only">이전</span></i>
+                    </span>
+                    <span class="pg_box">
+                        <strong>1</strong> / <span>100</span>
+                    </span>
+                    <a href="#" class="btn_pg btn_next">
+                        <i class="xi-angle-right"><span class="xe-sr-only">다음</span></i>
+                    </a>
+                </div>
+                <!-- /PAGINATION Mobile -->
+            </div>
+            <div class="bd_dimmed"></div>
+        </div>
+        <!-- /BOARD -->
+    </div>
+</body>
+</html>
