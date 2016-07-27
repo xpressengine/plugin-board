@@ -152,7 +152,7 @@ class Plugin extends AbstractPlugin
                 $table->string('slug', 255);
                 $table->string('title', 255);
 
-                $table->index(array('slug'));
+                $table->unique(array('slug'));
                 $table->index(array('title'));
                 $table->index(array('targetId'));
             });
@@ -202,6 +202,15 @@ class Plugin extends AbstractPlugin
             ]);
         }
 
+        // ver 0.9.2
+        if ($this->hasSlugTableSlugUnique($installedVersion) === false) {
+            $schema = Schema::setConnection(XeDB::connection('document')->master());
+            $schema->table('board_slug', function(Blueprint $table) {
+                $table->dropIndex(array('slug'));
+                $table->unique(array('slug'));
+            });
+        }
+
         $this->putLang();
     }
 
@@ -215,10 +224,27 @@ class Plugin extends AbstractPlugin
             return false;
         }
 
+        // ver 0.9.2
+        if ($this->hasSlugTableSlugUnique($installedVersion) === false) {
+            return false;
+        }
+
         return true;
     }
 
+    /**
+     * 0.9.1 이하 버전은 slug를 unique 하게 해야함
+     *
+     * @return bool
+     */
+    protected function hasSlugTableSlugUnique($installedVersion)
+    {
+        if (version_compare($installedVersion, '0.9.1', '<=')) {
+            return false;
+        }
 
+        return true;
+    }
     /**
      * boot
      *
