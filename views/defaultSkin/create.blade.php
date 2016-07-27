@@ -3,7 +3,6 @@
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
-        <input type="hidden" name="parentId" value="{{$parentId}}" />
         <input type="hidden" name="head" value="{{$head}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
 

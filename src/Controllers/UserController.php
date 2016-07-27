@@ -174,7 +174,7 @@ class UserController extends Controller
             ->where('instanceId', $this->instanceId)->visible();
 
         if ($this->config->get('category') === true) {
-            $query = $query->leftJoin(
+            $query->leftJoin(
                 'board_category',
                 sprintf('%s.%s', $query->getQuery()->from, 'id'),
                 '=',
@@ -183,7 +183,7 @@ class UserController extends Controller
         }
 
         if ($request->has('favorite') === true) {
-            $query = $query->leftJoin(
+            $query->leftJoin(
                 'board_favorites',
                 sprintf('%s.%s', $query->getQuery()->from, 'id'),
                 '=',
@@ -192,8 +192,8 @@ class UserController extends Controller
             $query->where('board_favorites.userId', Auth::user()->getId());
         }
 
-        $query = $this->handler->makeWhere($query, $request, $this->config);
-        $query = $this->handler->makeOrder($query, $request, $this->config);
+        $this->handler->makeWhere($query, $request, $this->config);
+        $this->handler->makeOrder($query, $request, $this->config);
 
         // eager loading
         $query->with(['favorite' => function($favoriteQuery) {
@@ -311,7 +311,6 @@ class UserController extends Controller
             throw new NotFoundDocumentException;
         }
 
-        //return $this->show($request, $permission, $slug->targetId);
         return $this->show($request, $boardPermission, $menuUrl, $slug->targetId);
     }
 
@@ -332,13 +331,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $parentId = '';
         $head = '';
-        if ($request->get('parentId') != null) {
-            $item = $this->handler->getModel($this->config)->find($request->get('parentId'));
-            $parentId = $item->id;
-            $head = $item->head;
-        }
 
         $categories = [];
         if ($this->config->get('category') === true) {
@@ -358,7 +351,6 @@ class UserController extends Controller
         return XePresenter::makeAll('create', [
             'action' => 'create',
             'handler' => $this->handler,
-            'parentId' => $parentId,
             'head' => $head,
             'categories' => $categories,
             'rules' => $rules,
@@ -419,19 +411,13 @@ class UserController extends Controller
         // tag 처리
         XeTag::set($board->getKey(), array_get($inputs, $editor->getTagInputName(), []), $this->instanceId);
 
-        if ($request->get('parentId') != '') {
-            return redirect()->to(
-                $this->urlHandler->get('index', $this->urlHandler->queryStringToArray($request->get('queryString')))
-            );
-        } else {
-            return redirect()->to($this->urlHandler->get('index'));
-        }
+        return redirect()->to($this->urlHandler->getShow($board, $request->query->all()));
     }
 
     public function hasSlug(Request $request)
     {
         $slug = BoardSlug::convert('', $request->get('slug'));
-        $slug = BoardSlug::make($slug, $request->get('id'), $this->instanceId);
+        $slug = BoardSlug::make($slug, $request->get('id'));
 
         return XePresenter::makeApi([
             'slug' => $slug,
