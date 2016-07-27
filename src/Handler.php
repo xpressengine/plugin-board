@@ -484,10 +484,18 @@ class Handler
                 $this->setModelConfig($item, $config);
                 $item->instanceId = $dstInstanceId;
                 $item->save();
+
+                $slug = $board->boardSlug;
+                $slug->instanceId = $dstInstanceId;
+                $slug->save();
             }
         } else {
             $board->instanceId = $dstInstanceId;
             $board->save();
+
+            $slug = $board->boardSlug;
+            $slug->instanceId = $dstInstanceId;
+            $slug->save();
         }
 
         $board->getConnection()->commit();
