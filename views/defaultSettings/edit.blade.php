@@ -84,13 +84,13 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-9">
-                                                        <select id="" name="category" class="form-control" @if($config->getPure('category') == null) disabled="disabled" @endif data-id="{{ $config->get('categoryId') }}" data-url="{{route('manage.board.board.storeCategory', ['boardId' => $config->get('boardId')])}}">
+                                                        <select id="" name="category" class="form-control" @if($config->getPure('category') == null) disabled="disabled" @endif data-id="{{ $config->getPure('categoryId') }}" data-board-id="{{$config->get('boardId')}}" data-url="{{route('manage.board.board.storeCategory')}}">
                                                             <option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >Use</option>
                                                             <option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >Disuse</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') === false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>
+                                                        <button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->getPure('category') == null || $config->getPure('category') == false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,6 +206,22 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('xe::orderType')}} </label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="orderType" @if($config->getPure('anonymity') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="orderType" class="form-control" @if($config->getPure('orderType') == null) disabled="disabled" @endif>
+                                                    <option value="">{{xe_trans('xe::select')}}</option>
+                                                    @foreach ($handler->getOrders() as $value)
+                                                        <option value="{{$value['value']}}" {!! $config->get('orderType') == $value['value'] ? 'selected="selected"' : '' !!} >{{xe_trans($value['text'])}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

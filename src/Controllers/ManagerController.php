@@ -272,16 +272,25 @@ class ManagerController extends Controller
         return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
     }
 
-    public function storeCategory(CategoryHandler $categoryHandler, $boardId)
+    public function storeCategory(CategoryHandler $categoryHandler, Request $request)
     {
+        $boardId = $request->get('boardId');
         $input = [
             'name' => $boardId . '-' . BoardModule::getId(),
         ];
         $category = $categoryHandler->create($input);
 
-        $config = $this->configHandler->get($boardId);
-        $config->set('categoryId', $category->id);
-        $this->instanceManager->updateConfig($config->getPureAll());
+        if ($boardId == '') {
+            // global config
+            $config = $this->configHandler->getDefault();
+            $config->set('categoryId', $category->id);
+            $this->configHandler->putDefault($config->getPureAll());
+        } else {
+            $config = $this->configHandler->get($boardId);
+            $config->set('categoryId', $category->id);
+            $this->instanceManager->updateConfig($config->getPureAll());
+        }
+
 
         return XePresenter::makeApi(
             $category->getAttributes()

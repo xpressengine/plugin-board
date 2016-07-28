@@ -72,11 +72,13 @@ $(function() {
     $('.form-category-select select').bind('change', function(e) {
         var $o = $(this),
             $btn = $o.closest('.form-category-select').find('button');
+
         if ($o.val() == 'true' && $o.data('id') == '') {
             XE.ajax({
                 type: 'post',
                 dataType: 'json',
                 url: $o.data('url'),
+                data: {boardId: $o.data('board-id')},
                 success: function(data) {
                     $o.data('id', data.id);
                     $btn.attr('disabled', false);
@@ -92,7 +94,9 @@ $(function() {
             target = $o.data('target'),
             select = $o.data('select');
         if (target != undefined) {
-            $o.closest('.form-group').find('[name="'+target+'"]').prop('disabled', $o.prop('checked'));
+            $target = $o.closest('.form-group').find('[name="'+target+'"]')
+            $target.prop('disabled', $o.prop('checked'));
+            $target.trigger('change');
         } else if (select != undefined) {
             var $group = $o.closest('.form-group').find(select);
             $group.find('button').prop('disabled', $o.prop('checked'));

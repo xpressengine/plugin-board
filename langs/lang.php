@@ -343,4 +343,8 @@ return [
         'ko' => '공지 제외',
         'en' => 'Except notice',
     ],
+    'orderType' => [
+        'ko' => '정렬 방식',
+        'en' => 'Order type',
+    ],
 ];
