@@ -72,7 +72,7 @@ class ArchivesController extends Controller
 
     /**
      * set current page
-     * 
+     *
      * @param Request       $request       request
      * @param Handler       $handler       handler
      * @param ConfigHandler $configHandler config handler

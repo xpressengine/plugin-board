@@ -49,12 +49,31 @@ class Board extends AbstractModule
      */
     public static function boot()
     {
+        self::registerArchiveRoute();
         self::registerManageRoute();
         self::registerInstanceRoute();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
         self::registerCommentAlarmIntercept();
         self::registerManagerAlarmIntercept();
+    }
+
+    /**
+     *
+     */
+    protected static function registerArchiveRoute()
+    {
+        // set routing
+        config(['xe.routing' => array_merge(
+            config('xe.routing'), ['board_archives' => 'archives']
+        )]);
+
+        Route::group([
+            'prefix' => 'archives',
+            'namespace' => 'Xpressengine\Plugins\Board\Controllers'
+        ], function() {
+            Route::get('/{slug}', ['as' => 'archives', 'uses' => 'ArchivesController@index']);
+        });
     }
 
     /**
