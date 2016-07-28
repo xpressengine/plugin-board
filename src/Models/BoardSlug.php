@@ -185,4 +185,14 @@ class BoardSlug extends DynamicModel
             return false;
         }
     }
+
+    /**
+     * get board
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function board()
+    {
+        return $this->hasOne('Xpressengine\Plugins\Board\Models\Board', 'id', 'targetId');
+    }
 }
