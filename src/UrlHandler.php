@@ -131,40 +131,10 @@ class UrlHandler
         unset($params['id']);
         $params['slug'] = $slug;
 
-        return $this->get('slug', $params);
-    }
+        // 페이지 정보는 넘기지 않음
+        unset($params['page']);
 
-    /**
-     * get slug string
-     *
-     * @param SlugRepository $slugRepository slug repository
-     * @param string         $slug           slug
-     * @param string         $id             document id
-     * @param string         $instanceId     board instance id
-     * @return string
-     * @deprecated
-     */
-    public function makeSlug($slug, $id, $instanceId)
-    {
-        $slugInfo = Slug::where('slug', $slug)->where('instanceId', $instanceId);
-
-        if ($slugInfo === null) {
-            return $slug;
-        }
-
-        if ($slugInfo['id'] == $id) {
-            return $slug;
-        }
-
-        if ($slugInfo['instanceId'] != $instanceId) {
-            return $slug;
-        }
-
-        // slug 에 문자열 추가
-        //$slug = $slugRepository->incrementName($slug, $instanceId);
-
-        //return $this->makeSlug($slugRepository, $slug, $id, $instanceId);
-        return '';
+        return route('archives', $params);
     }
 
     /**
