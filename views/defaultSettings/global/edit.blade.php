@@ -52,22 +52,22 @@
 
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <div class="form-group form-category-select">
-                                                    <div class="clearfix">
-                                                        <label>{{xe_trans('xe::category')}}</label>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-9">
-                                                            <select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-board-id="" data-url="{{route('manage.board.board.storeCategory')}}">
-                                                                <option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >Use</option>
-                                                                <option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >Disuse</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') === false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {{--<div class="form-group form-category-select">--}}
+                                                    {{--<div class="clearfix">--}}
+                                                        {{--<label>{{xe_trans('xe::category')}}</label>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="row">--}}
+                                                        {{--<div class="col-sm-9">--}}
+                                                            {{--<select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-board-id="" data-url="{{route('manage.board.board.storeCategory')}}">--}}
+                                                                {{--<option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >Use</option>--}}
+                                                                {{--<option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >Disuse</option>--}}
+                                                            {{--</select>--}}
+                                                        {{--</div>--}}
+                                                        {{--<div class="col-sm-3">--}}
+                                                            {{--<button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') === false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
                                             </div>
 
                                             <div class="col-sm-6">
