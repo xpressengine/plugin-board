@@ -29,6 +29,7 @@ use Xpressengine\Plugins\Claim\ToggleMenus\BoardClaimItem;
 use XeToggleMenu;
 use XeConfig;
 use XeDB;
+use XePlugin;
 
 /**
  * Plugin
@@ -202,8 +203,10 @@ class Plugin extends AbstractPlugin
             ]);
         }
 
+        $installedVersion = XePlugin::getPlugin(self::getId())->getInstalledVersion();
+
         // ver 0.9.2
-        if ($this->hasSlugTableSlugUnique($installedVersion) === false) {
+        if ($installedVersion !== null && $this->hasSlugTableSlugUnique($installedVersion) === false) {
             $schema = Schema::setConnection(XeDB::connection('document')->master());
             $schema->table('board_slug', function(Blueprint $table) {
                 $table->dropIndex(array('slug'));
@@ -224,8 +227,10 @@ class Plugin extends AbstractPlugin
             return false;
         }
 
+        $installedVersion = XePlugin::getPlugin(self::getId())->getInstalledVersion();
+
         // ver 0.9.2
-        if ($this->hasSlugTableSlugUnique($installedVersion) === false) {
+        if ($installedVersion !== null && $this->hasSlugTableSlugUnique($installedVersion) === false) {
             return false;
         }
 
