@@ -69,6 +69,7 @@ class ConfigHandler
         'revision' => true,
         'dynamicFieldList' => [],
         'recursiveDelete' => true,
+        'orderType' => '',
     ];
 
     /**

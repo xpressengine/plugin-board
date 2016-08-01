@@ -49,12 +49,31 @@ class Board extends AbstractModule
      */
     public static function boot()
     {
+        self::registerArchiveRoute();
         self::registerManageRoute();
         self::registerInstanceRoute();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
         self::registerCommentAlarmIntercept();
         self::registerManagerAlarmIntercept();
+    }
+
+    /**
+     *
+     */
+    protected static function registerArchiveRoute()
+    {
+        // set routing
+        config(['xe.routing' => array_merge(
+            config('xe.routing'), ['board_archives' => 'archives']
+        )]);
+
+        Route::group([
+            'prefix' => 'archives',
+            'namespace' => 'Xpressengine\Plugins\Board\Controllers'
+        ], function() {
+            Route::get('/{slug}', ['as' => 'archives', 'uses' => 'ArchivesController@index']);
+        });
     }
 
     /**
@@ -76,7 +95,7 @@ class Board extends AbstractModule
                 ['as' => 'manage.board.board.global.update', 'uses' => 'ManagerController@globalUpdate']
             );
             Route::get('edit/{boardId}', ['as' => 'manage.board.board.edit', 'uses' => 'ManagerController@edit']);
-            Route::post('storeCategory/{boardId}', ['as' => 'manage.board.board.storeCategory', 'uses' => 'ManagerController@storeCategory']);
+            Route::post('storeCategory/', ['as' => 'manage.board.board.storeCategory', 'uses' => 'ManagerController@storeCategory']);
             Route::post(
                 'update/{boardId}',
                 ['as' => 'manage.board.board.update', 'uses' => 'ManagerController@update']
