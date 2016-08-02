@@ -134,6 +134,24 @@ class UrlHandler
         // 페이지 정보는 넘기지 않음
         unset($params['page']);
 
+        return $this->get('slug', $params);
+    }
+
+    /**
+     * get archives url
+     *
+     * @param string $slug   slug
+     * @param array  $params parameters
+     * @return string
+     */
+    public function getArchives($slug, array $params = [])
+    {
+        unset($params['id']);
+        $params['slug'] = $slug;
+
+        // 페이지 정보는 넘기지 않음
+        unset($params['page']);
+
         return route('archives', $params);
     }
 
