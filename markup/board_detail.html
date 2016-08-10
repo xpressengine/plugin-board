@@ -17,16 +17,16 @@
     <script src="../../../assets/vendor/jquery/jquery.min.js"></script>
     <script src="../../../assets/core/common/js/xe.bundle.js"></script>
 
-    <!-- additional -->    
-    <link rel="stylesheet" href="../assets/css/board.css">   
-    <link rel="stylesheet" href="../../plugin-comment/assets/css/comment.css">    
-    <link rel="stylesheet" href="../../plugin-ckeditor/assets/ckeditor/editor.css">       
+    <!-- additional -->
+    <link rel="stylesheet" href="../assets/css/board.css">
+    <link rel="stylesheet" href="../../comment/assets/css/comment.css">
+    <link rel="stylesheet" href="../../ckeditor/assets/ckeditor/editor.css">
     <script src="sample/markup_test.js"></script>
 </head>
 <body>
     <div class="xe-container">
         <!-- BOARD -->
-        <div class="board">            
+        <div class="board">
             <div class="board_read">
                 <div class="read_header">
                     <span class="category">여행</span>
@@ -65,7 +65,7 @@
                             <p>코스피와 코스닥 지수가 소폭 상승 마감한 가운데 엔터주 역시 기지개를 켰다.</p>
                             <p>코스피는 1일 전 거래일 대비 16.51포인트(0.84%) 상승한 1979.32로 마감했다. 코스닥 역시 같은 기간 6.31포인트(0.93%) 오른 684.79에 장을 마쳤다.</p>
                             <p><a href="">난 링크다</a></p>
-                            
+
                             <h2>list</h2>
                             <ul>
                                 <li>안녕하세요
@@ -78,13 +78,13 @@
                                 <li>안녕하세요</li>
                                 <li>안녕하세요</li>
                             </ul>
-                            
+
                             <ol>
                                 <li>안녕하세요</li>
                                 <li>안녕하세요</li>
                                 <li>안녕하세요</li>
                             </ol>
-                            
+
                             <h2>table</h2>
                             <table border="1" cellpadding="1" cellspacing="1" style="width:500px;">
                                 <thead>
@@ -108,22 +108,22 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            
+
                             <h2>blockquote</h2>
                             <blockquote>blockquote 영역</blockquote>
-                            
+
                             <h2>pre</h2>
                             <pre>pre 요소 test</pre>
-                            
+
                             <h2>image</h2>
                             <img src="http://www.mediaus.co.kr/news/photo/201012/15458_28375_5451.jpg">
                             <img src="http://www.mediaus.co.kr/news/photo/201012/15458_28375_5451.jpg">
                             <h3>iframe</h3>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/JAAo30-86QA" frameborder="0" allowfullscreen=""></iframe>                                
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/JAAo30-86QA" frameborder="0" allowfullscreen=""></iframe>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="read_footer">
                     <div class="bd_file_list">
                         <!-- [D] 클릭시 클래스 on 적용 -->
@@ -195,13 +195,13 @@
                     <p class="total_count"><span class="total_count_num">11</span>개 댓글</p>
                     <div class="temp_save">
                         <!-- <a href="#" class="temp_save_num" data-toggle="xe-modal" data-target="#Modal"><strong>3</strong>개의 임시 저장 글</a> -->
-                    </div>            
+                    </div>
                 </div>
                 <form action="" class="comment_form">
                     <div class="comment_form_editor">
                         <div class="comment_form_ckeditor">
                             <div class="cke">임시 에디터 영역</div>
-                        </div>                        
+                        </div>
                         <div class="comment_form_controller">
                             <div class="comment_form_group">
                                 <div class="comment_form_option">
@@ -217,7 +217,7 @@
                                     <a href="#" class="xe-btn xe-btn-black">등록</a>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </form>
                 <div class="comment_list">
@@ -307,7 +307,7 @@
                             <div class="comment_action_area">
                                 <div class="comment_action_area_avatar">
                                     <!-- [D] 비로그인 및 프로필 이미지가 없을 경우 기본 이미지 적용 -->
-                                    <img src="../assets/img/defalut_profile.jpg" alt="default profile">
+                                    <img src="sample/@iu.jpg" alt="default profile">
                                 </div>
                                 <form action="" class="comment_form">
                                     <div class="comment_form_editor">
@@ -336,7 +336,7 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>                            
+                            </div>
                             <!-- [D] 수정시 활성화 -->
                             <div class="comment_action_area modify">
                                 <form action="" class="comment_form">
@@ -422,7 +422,7 @@
                                         </div>
                                         <div class="comment_form_controller">
                                             <div class="comment_form_group">
-                                                <div class="comment_form_option">                                                    
+                                                <div class="comment_form_option">
                                                     <input type="checkbox" id=""><label for="">비밀글</label>
                                                 </div>
                                                 <div class="comment_form_btn nologin">
@@ -868,7 +868,7 @@
         </div>
         <!-- /BOARD -->
     </div>
-    
+
     <div class="xe-modal fade" id="Modal">
         <div class="xe-modal-dialog">
             <div class="xe-modal-content">
@@ -1050,7 +1050,7 @@
                         </div>
                     </div>
                     <div tabindex="0" hidefocus="" style="position:fixed;width:0;height:0;top:0;left:0;outline:0;"></div>
-                </div>                
+                </div>
                 <div class="xe-modal-footer">
                     <button type="button" class="xe-btn xe-btn-secondary" data-dismiss="xe-modal">닫기</button>
                 </div>
