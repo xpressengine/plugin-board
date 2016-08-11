@@ -76,21 +76,16 @@
                                             <div class="form-group form-category-select">
                                                 <div class="clearfix">
                                                     <label>{{xe_trans('xe::category')}}</label>
-                                                    <div class="checkbox pull-right">
-                                                        <label>
-                                                            <input type="checkbox" class="inheritCheck" data-target="category" @if($config->getPure('category') == null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
-                                                        </label>
-                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-9">
-                                                        <select id="" name="category" class="form-control" @if($config->getPure('category') == null) disabled="disabled" @endif data-id="{{ $config->getPure('categoryId') }}" data-board-id="{{$config->get('boardId')}}" data-url="{{route('manage.board.board.storeCategory')}}">
+                                                        <select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-board-id="{{$config->get('boardId')}}" data-url="{{route('manage.board.board.storeCategory')}}">
                                                             <option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >Use</option>
                                                             <option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >Disuse</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->getPure('category') == null || $config->getPure('category') == false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>
+                                                        <button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') == false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>
                                                     </div>
                                                 </div>
                                             </div>
