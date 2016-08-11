@@ -372,9 +372,6 @@ class UserController extends Controller
         BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager
     ) {
-//        dd($request->all());
-
-
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
             new Instance($boardPermission->name($this->instanceId)))
@@ -404,12 +401,11 @@ class UserController extends Controller
         $editor = XeEditor::get($this->instanceId);
         $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
 
+        // set file, tag
+        $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
+        $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
+
         $board = $this->handler->add($inputs, $user, $this->config);
-        
-        // file 처리
-        XeStorage::sync($board->getKey(), array_get($inputs, $editor->getFileInputName(), []));
-        // tag 처리
-        XeTag::set($board->getKey(), array_get($inputs, $editor->getTagInputName(), []), $this->instanceId);
 
         return redirect()->to($this->urlHandler->getShow($board, $request->query->all()));
     }
@@ -564,12 +560,11 @@ class UserController extends Controller
         $editor = XeEditor::get($this->instanceId);
         $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
 
-        $board = $this->handler->put($item, $inputs);
+        // set file, tag
+        $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
+        $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
 
-        // file 처리
-        XeStorage::sync($board->getKey(), array_get($inputs, $editor->getFileInputName(), []));
-        // tag 처리
-        XeTag::set($board->getKey(), array_get($inputs, $editor->getTagInputName(), []), $this->instanceId);
+        $board = $this->handler->put($item, $inputs);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
         if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {

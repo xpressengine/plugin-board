@@ -54,11 +54,10 @@
         </div>
 
         <div class="read_footer">
-            {{--@if ($item->boardData->fileCount > 0)--}}
             @if (count($item->files) > 0)
             <div class="bd_file_list">
                 <!-- [D] 클릭시 클래스 on 적용 -->
-                <a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->fileCount }}</strong></a>
+                <a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->data->fileCount }}</strong></a>
                 <ul>
                     @foreach($item->files as $file)
                         {{--<li><a href="{{$urlHandler->get('download', ['id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>--}}
