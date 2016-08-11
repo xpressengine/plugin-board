@@ -17,7 +17,7 @@ use Route;
 use XeSkin;
 use View;
 use Mail;
-use Xpressengine\Module\AbstractModule;
+use Xpressengine\Menu\AbstractModule;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Models\Board as BoardModel;
