@@ -117,15 +117,23 @@ class GallerySkin extends DefaultSkin
             sprintf('%s@getsNotice', BoardHandler::class),
             static::class.'-board-getsNotice',
             function($func, ConfigEntity $config, $userId) {
-                $notice = [];
-                if (Input::get('orderType') != 'exceptNotice') {
-                    $notice = $func($config, $userId);
-                    foreach ($notice as $item) {
-                        $thumbItem = BoardGalleryThumb::find($item->id);
+                $notice = $func($config, $userId);
+
+                // 공지 제외하고 보기 옵션 처리
+                if (Input::get('orderType') == 'exceptNotice') {
+                    return [];
+                }
+
+                foreach ($notice as $item) {
+                    $thumbItem = BoardGalleryThumb::find($item->id);
+                    if ($thumbItem !== null) {
+                        $item->boardThumbnailFileId = $thumbItem->boardThumbnailFileId;
+                        $item->boardThumbnailExternalPath = $thumbItem->boardThumbnailExternalPath;
                         $item->boardThumbnailPath = $thumbItem->boardThumbnailPath;
                     }
                 }
 
+                static::attachThumbnail($notice);
                 return $notice;
             }
         );
@@ -221,66 +229,71 @@ class GallerySkin extends DefaultSkin
      */
     public static function attachThumbnail($list)
     {
+        foreach ($list as $item) {
+            static::bindGalleryThumb($item);
+        }
+    }
+
+    protected static function bindGalleryThumb($item)
+    {
         /** @var \Xpressengine\Media\MediaManager $mediaManager */
         $mediaManager = \App::make('xe.media');
 
-        foreach ($list as $item) {
-            // board gallery thumbnails 에 항목이 없는 경우
-            if ($item->boardThumbnailFileId === null && $item->boardThumbnailPath === null) {
-                // find file by document id
-                $files = File::getByFileable($item->id);
-                $fileId = '';
-                $externalPath = '';
-                $thumbnailPath = '';
+        // board gallery thumbnails 에 항목이 없는 경우
+        if ($item->boardThumbnailFileId === null && $item->boardThumbnailPath === null) {
+            // find file by document id
+            $files = File::getByFileable($item->id);
+            $fileId = '';
+            $externalPath = '';
+            $thumbnailPath = '';
 
-                if (count($files) == 0) {
-                    // find file by contents link or path
-                    $externalPath = static::getImagePathFromContent($item->content);
+            if (count($files) == 0) {
+                // find file by contents link or path
+                $externalPath = static::getImagePathFromContent($item->content);
 
-                    // make thumbnail
-                    $thumbnailPath = $externalPath;
-                } else {
-                    foreach ($files as $file) {
-                        if ($mediaManager->is($file) !== true) {
-                            continue;
-                        }
-                        // 어떤 크기의 썸네일을 사용할 것인지 스킨 설정을 통해 결정(두배 이미지가 좋다함)
-                        $dimension = 'L';
-
-                        $media = Image::getThumbnail(
-                            $mediaManager->make($file),
-                            BoardModule::THUMBNAIL_TYPE,
-                            $dimension
-                        );
-
-                        if ($media === null) {
-                            continue;
-                        }
-
-                        $fileId = $file->id;
-                        $thumbnailPath = $media->url();
-                        break;
+                // make thumbnail
+                $thumbnailPath = $externalPath;
+            } else {
+                foreach ($files as $file) {
+                    if ($mediaManager->is($file) !== true) {
+                        continue;
                     }
+                    // 어떤 크기의 썸네일을 사용할 것인지 스킨 설정을 통해 결정(두배 이미지가 좋다함)
+                    $dimension = 'L';
+
+                    $media = Image::getThumbnail(
+                        $mediaManager->make($file),
+                        BoardModule::THUMBNAIL_TYPE,
+                        $dimension
+                    );
+
+                    if ($media === null) {
+                        continue;
+                    }
+
+                    $fileId = $file->id;
+                    $thumbnailPath = $media->url();
+                    break;
                 }
-
-                $item->boardThumbnailFileId = $fileId;
-                $item->boardThumbnailExternalPath = $externalPath;
-                $item->boardThumbnailPath = $thumbnailPath;
-
-                $model = new BoardGalleryThumb;
-                $model->fill([
-                    'targetId' => $item->id,
-                    'boardThumbnailFileId' => $fileId,
-                    'boardThumbnailExternalPath' => $externalPath,
-                    'boardThumbnailPath' => $thumbnailPath,
-                ]);
-                $model->save();
             }
 
-            // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
-            if ($item->boardThumbnailPath == '') {
-                $item->boardThumbnailPath = 'http://placehold.it/300x200';
-            }
+            $item->boardThumbnailFileId = $fileId;
+            $item->boardThumbnailExternalPath = $externalPath;
+            $item->boardThumbnailPath = $thumbnailPath;
+
+            $model = new BoardGalleryThumb;
+            $model->fill([
+                'targetId' => $item->id,
+                'boardThumbnailFileId' => $fileId,
+                'boardThumbnailExternalPath' => $externalPath,
+                'boardThumbnailPath' => $thumbnailPath,
+            ]);
+            $model->save();
+        }
+
+        // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
+        if ($item->boardThumbnailPath == '') {
+            $item->boardThumbnailPath = 'http://placehold.it/300x200';
         }
     }
 

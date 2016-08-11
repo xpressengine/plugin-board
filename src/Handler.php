@@ -570,7 +570,8 @@ class Handler
             ->where('instanceId', $config->get('boardId'))
             ->where('status', Document::STATUS_NOTICE)
             ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
-            ->where('published', Document::PUBLISHED_PUBLISHED);
+            ->where('published', Document::PUBLISHED_PUBLISHED)
+            ->orderBy('head', 'desc');
 
         // eager loading
         $query->with(['favorite' => function($favoriteQuery) use ($userId) {
