@@ -15,8 +15,10 @@ namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
+use Xpressengine\Media\Models\Media;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
+use Xpressengine\Seo\SeoUsable;
 use Xpressengine\Storage\File;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\Models\UnknownUser;
@@ -27,7 +29,7 @@ use Xpressengine\User\Models\UnknownUser;
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  */
-class Board extends Document implements CommentUsable
+class Board extends Document implements CommentUsable, SeoUsable
 {
     /**
      * get user id
@@ -269,5 +271,64 @@ class Board extends Document implements CommentUsable
         $query->where('status', Document::STATUS_PUBLIC)
             ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED);
+    }
+
+    /**
+     * Returns title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        $title = $this->getAttribute('title');
+
+        return $title;
+    }
+
+    /**
+     * Returns description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->getAttribute('pureContent');
+    }
+
+    /**
+     * Returns keyword
+     *
+     * @return string|array
+     */
+    public function getKeyword()
+    {
+        return 'getKeyword';
+    }
+
+    /**
+     * Returns url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->getSlug();
+    }
+
+    /**
+     * Returns image url list
+     *
+     * @return array
+     */
+    public function getImages()
+    {
+        $files = File::getByFileable($this->getKey());
+
+        $imageHandler = app('xe.media')->getHandler(Media::TYPE_IMAGE);
+        $images = [];
+        foreach ($files as $file) {
+            $images[] = $imageHandler->make($file);
+        }
+        return $images;
     }
 }
