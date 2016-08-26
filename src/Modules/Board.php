@@ -356,16 +356,17 @@ class Board extends AbstractModule
 
                 Mail::send('emails.notice', $data, function ($m) use ($board) {
                     $writer = $board->user;
+                    if ($writer->email != '') {
+                        $fromEmail = app('config')->get('mail.from.address');
+                        $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
-                    $fromEmail = app('config')->get('mail.from.address');
-                    $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
+                        $menuItem = app('xe.menu')->getItem($board->instanceId);
+                        $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
 
-                    $menuItem = app('xe.menu')->getItem($board->instanceId);
-                    $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
-
-                    $m->from($fromEmail, $applicationName);
-                    $m->to($writer->email, $writer->getDisplayName());
-                    $m->subject($subject);
+                        $m->from($fromEmail, $applicationName);
+                        $m->to($writer->email, $writer->getDisplayName());
+                        $m->subject($subject);
+                    }
                 });
 
                 return $comment;
@@ -399,12 +400,15 @@ class Board extends AbstractModule
                     return $board;
                 }
 
-                $managerEmails = explode(',', $config->get('managerEmail'));
+                $managerEmails = explode(',', trim($config->get('managerEmail')));
                 if (count($managerEmails) == 0) {
                     return $board;
                 }
 
                 foreach ($managerEmails as $toMail) {
+                    if (!$toMail) {
+                        continue;
+                    }
                     Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));

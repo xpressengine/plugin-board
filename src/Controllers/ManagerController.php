@@ -48,11 +48,6 @@ use Xpressengine\Plugins\Comment\ManageSection as CommentSection;
 class ManagerController extends Controller
 {
     /**
-     * @var Plugin
-     */
-    protected $plugin;
-
-    /**
      * @var Handler
      */
     protected $handler;
@@ -61,11 +56,6 @@ class ManagerController extends Controller
      * @var ConfigHandler
      */
     protected $configHandler;
-
-    /**
-     * @var PermissionHandler
-     */
-    protected $permissionHandler;
 
     /**
      * @var \Xpressengine\Presenter\Presenter
@@ -84,6 +74,11 @@ class ManagerController extends Controller
 
     /**
      * create instance
+     *
+     * @param Handler         $handler         handler
+     * @param ConfigHandler   $configHandler   board config handler
+     * @param UrlHandler      $urlHandler      url handler
+     * @param InstanceManager $instanceManager board instance manager
      */
     public function __construct(
         Handler $handler,
@@ -91,13 +86,9 @@ class ManagerController extends Controller
         UrlHandler $urlHandler,
         InstanceManager $instanceManager
     ) {
-        /** @var \Xpressengine\Plugins\Board\Plugin $plugin */
-        //$this->plugin = app('xe.plugin')->getPlugin('board')->getObject();
-
         $this->handler = $handler;
         $this->configHandler = $configHandler;
         $this->urlHandler = $urlHandler;
-
         $this->instanceManager =  $instanceManager;
 
         $this->presenter = app('xe.presenter');
@@ -116,7 +107,7 @@ class ManagerController extends Controller
     {
         $config = $this->configHandler->getDefault();
 
-        $perms = $boardPermission->getDefaultPerms();
+        $perms = $boardPermission->getGlobalPerms();
 
         $toggleMenuSection = new ToggleMenuSection(BoardModule::getId());
 
@@ -157,21 +148,7 @@ class ManagerController extends Controller
 
         $config = $this->configHandler->putDefault($params);
 
-        // permission update
-        $grant = new Grant();
-
-        foreach ($boardPermission->getActions() as $action) {
-            $permInputs = $request->only($permissionNames[$action]);
-            $grant = $boardPermission->createGrant($grant, $action, [
-                Grant::RATING_TYPE => $permInputs[$action . 'Rating'],
-                Grant::GROUP_TYPE => isset($permInputs[$action . 'Group']) ?
-                    $permInputs[$action . 'Group'] : [],
-                Grant::USER_TYPE => explode(',', $permInputs[$action . 'User']),
-                Grant::EXCEPT_TYPE => explode(',', $permInputs[$action . 'Except'])
-            ]);
-        }
-
-        $boardPermission->setDefault($grant);
+        $boardPermission->setGlobal($request);
 
         XeDB::commit();
 
@@ -249,25 +226,13 @@ class ManagerController extends Controller
             }
         }
 
+        XeDB::beginTransaction();
+
         $config = $this->instanceManager->updateConfig($config->getPureAll());
 
-        // permission update
-        $grant = new Grant();
+        $boardPermission->set($request, $boardId);
 
-        foreach ($boardPermission->getActions() as $action) {
-            $permInputs = $request->only($permissionNames[$action]);
-            if ($permInputs[$action.'Mode'] == 'manual') {
-                $grant = $boardPermission->createGrant($grant, $action, [
-                    Grant::RATING_TYPE => $permInputs[$action . 'Rating'],
-                    Grant::GROUP_TYPE => isset($permInputs[$action . 'Group']) ?
-                        $permInputs[$action . 'Group'] : [],
-                    Grant::USER_TYPE => explode(',', $permInputs[$action . 'User']),
-                    Grant::EXCEPT_TYPE => explode(',', $permInputs[$action . 'Except'])
-                ]);
-            }
-        }
-
-        $boardPermission->set($boardId, $grant);
+        XeDB::commit();
 
         return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
     }

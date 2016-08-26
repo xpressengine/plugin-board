@@ -87,7 +87,7 @@ class Plugin extends AbstractPlugin
 
         // create default permission
         $permission = new BoardPermissionHandler(app('xe.permission'));
-        $permission->getDefault();
+        $permission->addGlobal();
 
         // create toggle menu
         XeToggleMenu::setActivates('module/board@board', null, [

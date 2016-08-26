@@ -13,9 +13,11 @@
 
 namespace Xpressengine\Plugins\Board;
 
+use Xpressengine\Http\Request;
 use Xpressengine\Permission\Permission;
 use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Permission\Grant;
+use Xpressengine\Permission\PermissionSupport;
 use Xpressengine\Permission\Registered;
 use Xpressengine\Permission\Action;
 use Xpressengine\Plugin\PluginRegister;
@@ -28,6 +30,8 @@ use Xpressengine\Plugin\PluginRegister;
  */
 class BoardPermissionHandler
 {
+    use PermissionSupport;
+
     /** 문서 생성 퍼미션 action 이름 */
     const ACTION_CREATE = 'create';
 
@@ -87,6 +91,16 @@ class BoardPermissionHandler
     }
 
     /**
+     * get prefix
+     *
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    /**
      * 퍼미션 인스턴스 이름 반환
      *
      * @param string $instanceId instance identifier
@@ -97,52 +111,21 @@ class BoardPermissionHandler
         return sprintf('%s.%s', $this->prefix, $instanceId);
     }
 
-    public function getDefaultPerms()
+    /**
+     * @return array
+     */
+    public function getGlobalPerms()
     {
-        $default = $this->getDefault();
-
-        $perms = [];
-        foreach ($this->actions as $actionName) {
-            $mode = "top";
-            $grant = $default->pure($actionName);
-
-            $perms[] = [
-                'mode' => $mode,
-                'title' => $actionName,
-                'grant' => $grant,
-                'groups' => [],
-            ];
-        }
-
-        return $perms;
+        return $this->getPermArguments($this->prefix, $this->getActions());
     }
 
+    /**
+     * @param $instanceId
+     * @return array
+     */
     public function getPerms($instanceId)
     {
-        $default = $this->getDefault();
-        $permission = $this->get($instanceId);
-
-        $perms = [];
-        foreach ($this->actions as $actionName) {
-            $mode = "inherit";
-            if ($permission !== null) {
-                $pureGrant = $permission->pure($actionName);
-                $mode = ($pureGrant === null) ? "inherit" : "manual";
-            }
-
-            $grant = $default->pure($actionName);
-            if ($permission !== null && $permission->pure($actionName) !== null) {
-                $grant = $permission->pure($actionName);
-            }
-            $perms[] = [
-                'mode' => $mode,
-                'title' => $actionName,
-                'grant' => $grant,
-                'groups' => [], // 그룹 정보는 어떻게 획득해야 하나
-            ];
-        }
-
-        return $perms;
+        return $this->getPermArguments($this->name($instanceId), $this->getActions());
     }
 
     /**
@@ -159,13 +142,12 @@ class BoardPermissionHandler
     /**
      * 권한 설정
      *
-     * @param string $instanceId instance identifier
-     * @param Grant  $grant      grant information object
-     * @return void
+     * @param Request $request    request
+     * @param string  $instanceId instance identifier
      */
-    public function set($instanceId, Grant $grant)
+    public function set(Request $request, $instanceId)
     {
-        $this->permissionHandler->register($this->name($instanceId), $grant);
+        $this->permissionRegister($request, $this->name($instanceId), $this->getActions());
     }
 
     /**
@@ -174,7 +156,7 @@ class BoardPermissionHandler
      *
      * @return Grant
      */
-    public function getDefaultGrant()
+    public function addGlobal()
     {
         $grant = new Grant();
 
@@ -202,7 +184,7 @@ class BoardPermissionHandler
                 ];
             }
 
-            $grant = $this->createGrant($grant, $action, $perm);
+            $grant = $this->addGrant($grant, $action, $perm);
         }
 
         return $grant;
@@ -211,28 +193,22 @@ class BoardPermissionHandler
     /**
      * 게시판 기본 권한 반환
      *
-     * @return null|\Xpressengine\Permission\Permission
+     * @return \Xpressengine\Permission\Permission
      */
-    public function getDefault()
+    public function getGlobal()
     {
         $permission = $this->permissionHandler->get($this->prefix);
-        if ($permission === null) {
-            $this->setDefault($this->getDefaultGrant());
-            $permission = $this->permissionHandler->get($this->prefix);
-        }
-
         return $permission;
     }
 
     /**
      * 게시판 기본 권한 설정
      *
-     * @param Grant $grant grant information object
-     * @return void
+     * @param Request $request
      */
-    public function setDefault(Grant $grant)
+    public function setGlobal(Request $request)
     {
-        $this->permissionHandler->register($this->prefix, $grant);
+        $this->permissionRegister($request, $this->prefix, $this->getActions());
     }
 
     /**
@@ -243,7 +219,7 @@ class BoardPermissionHandler
      * @param array  $permissions permissions
      * @return Grant
      */
-    public function createGrant(Grant $grant, $action, $permissions)
+    public function addGrant(Grant $grant, $action, $permissions)
     {
         foreach ($permissions as $type => $value) {
             $grant->add($action, $type, $value);
