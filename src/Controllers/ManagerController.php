@@ -22,6 +22,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Sections\DynamicFieldSection;
 use App\Http\Sections\ToggleMenuSection;
 use App\Http\Sections\SkinSection;
+use Xpressengine\Captcha\CaptchaManager;
+use Xpressengine\Captcha\Exceptions\ConfigurationNotExistsException;
 use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Grant;
@@ -100,10 +102,13 @@ class ManagerController extends Controller
     }
 
     /**
-     * @param BoardPermissionHandler $boardPermission
+     * global config edit
+     *
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param CaptchaManager         $captcha         Captcha manager
      * @return mixed|\Xpressengine\Presenter\RendererInterface
      */
-    public function globalEdit(BoardPermissionHandler $boardPermission)
+    public function globalEdit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha)
     {
         $config = $this->configHandler->getDefault();
 
@@ -115,14 +120,28 @@ class ManagerController extends Controller
             'config' => $config,
             'perms' => $perms,
             'toggleMenuSection' => $toggleMenuSection,
+            'captcha' => $captcha,
         ]);
     }
 
     /**
+     * global config update
+     *
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     *
      * @return mixed
      */
     public function globalUpdate(Request $request, BoardPermissionHandler $boardPermission)
     {
+        if ($request->get('useCaptcha') === 'true') {
+            $driver = config('captcha.driver');
+            $captcha = config("captcha.apis.$driver.siteKey");
+            if (!$captcha) {
+                throw new ConfigurationNotExistsException();
+            }
+        }
+
         $config = $this->configHandler->getDefault();
 
         $permissionNames = [];
@@ -158,11 +177,12 @@ class ManagerController extends Controller
     /**
      * edit
      *
-     * @param BoardPermissionHandler $boardPermission
-     * @param string $boardId board id
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param CaptchaManager         $captcha         Captcha manager
+     * @param string                 $boardId         board id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function edit(BoardPermissionHandler $boardPermission, $boardId)
+    public function edit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha, $boardId)
     {
         $config = $this->configHandler->get($boardId);
 
@@ -188,6 +208,7 @@ class ManagerController extends Controller
             'toggleMenuSection' => $toggleMenuSection,
             'editorSection' => $editorSection,
             'perms' => $perms,
+            'captcha' => $captcha,
         ]);
     }
 
@@ -201,6 +222,14 @@ class ManagerController extends Controller
      */
     public function update(Request $request, BoardPermissionHandler $boardPermission, $boardId)
     {
+        if ($request->get('useCaptcha') === 'true') {
+            $driver = config('captcha.driver');
+            $captcha = config("captcha.apis.$driver.siteKey");
+            if (!$captcha) {
+                throw new ConfigurationNotExistsException();
+            }
+        }
+
         $config = $this->configHandler->get($boardId);
 
         $permissionNames = [];
