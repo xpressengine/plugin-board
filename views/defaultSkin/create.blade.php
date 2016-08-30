@@ -64,6 +64,13 @@
             </div>
             @endif
         </div>
+
+        @if($config['useCaptcha'] === true)
+            <div class="write_form_input">
+            {!! uio('captcha') !!}
+            </div>
+        @endif
+
         <div class="write_form_option">
             <div class="xe-form-inline">
                 @if($config->get('comment') === true)
