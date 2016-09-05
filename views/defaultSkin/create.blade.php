@@ -36,6 +36,16 @@
                         ]) !!}
                     </div>
                 </div>
+
+                @if($config->get('useTag') === true)
+                    <div class="xe-select-label __xe-board-tag">
+                        <div class="label-input">
+                            <ul>
+                                <li><input type="text" class="search-label" placeholder="tag"></li>
+                            </ul>
+                        </div>
+                    </div>
+                @endif
             @else
                 <div class="__xe_{{$columnName}} __xe_section">
                     {!! dfCreate($config->get('documentGroup'), $columnName, Input::all()) !!}
