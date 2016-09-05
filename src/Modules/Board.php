@@ -20,6 +20,7 @@ use Mail;
 use Xpressengine\Menu\AbstractModule;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Models\Board as BoardModel;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
@@ -338,9 +339,10 @@ class Board extends AbstractModule
                     return $comment;
                 }
 
-                app('xe.board.url')->setConfig(app('xe.board.config')->get($board->instanceId));
-
-                $url = app('xe.board.url')->getShow($board);
+                /** @var UrlHandler $urlHandler */
+                $urlHandler = app('xe.board.url');
+                $urlHandler->setConfig(app('xe.board.config')->get($board->instanceId));
+                $url = $urlHandler->getShow($board);
                 $data = [
                     'title' => xe_trans('board::newCommentRegistered'),
                     'contents' => sprintf(
@@ -382,7 +384,10 @@ class Board extends AbstractModule
             function($func, $args, $user, $config) {
                 $board = $func($args, $user, $config);
 
-                $url = app('xe.board.url')->getShow($board);
+                /** @var UrlHandler $urlHandler */
+                $urlHandler = app('xe.board.url');
+                $urlHandler->setConfig($config);
+                $url = $urlHandler->getShow($board);
                 $data = [
                     'title' => xe_trans('board::newPostsRegistered'),
                     'contents' => sprintf(
@@ -393,9 +398,9 @@ class Board extends AbstractModule
                     ),
                 ];
 
-                /** @var ConfigHandler $boardHandler */
-                $boardHandler = app('xe.board.config');
-                $config = $boardHandler->get($board->instanceId);
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+                $config = $configHandler->get($board->instanceId);
                 if ($config->get('managerEmail') === null) {
                     return $board;
                 }
