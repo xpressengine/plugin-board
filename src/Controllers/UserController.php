@@ -167,9 +167,10 @@ class UserController extends Controller
      * get list data
      *
      * @param Request $request request
+     * @param string  $id      document id
      * @return array
      */
-    protected function listDataImporter(Request $request)
+    protected function listDataImporter(Request $request, $id = null)
     {
         $query = $this->handler->getModel($this->config)
             ->where('instanceId', $this->instanceId)->visible();
@@ -202,6 +203,10 @@ class UserController extends Controller
         }, 'slug', 'data']);
 
         Event::fire('xe.plugin.board.list', [$query]);
+
+        if ($id !== null) {
+            $request->query->set('page', $this->handler->pageResolver($query, $this->config, $id));
+        }
 
         $paginate = $query->paginate($this->config->get('perPage'))->appends($request->except('page'));
 
@@ -253,7 +258,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return XePresenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request)));
+        return XePresenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request, $id)));
     }
 
     protected function showDataImporter($id)
