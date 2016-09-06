@@ -1,67 +1,65 @@
-System.amdRequire('react-tag-input', function(tag) {
-    var ReactTags = tag.WithContext;
-    //
-    // var ReactTags = React.createClass({
-    //     getInitialState: function() {
-    //         return {
-    //             test: 'test'
-    //         }
-    //     },
-    //     render: function() {
-    //         return (
-    //             <div className="asdf"> { this.state.test } </div>
-    //         )
-    //     }
-    // });
-
-    console.log(ReactTags);
-
+System.amdRequire(['react', 'react-dom', 'react-tag-input'], function(React, ReactDOM, TagInput) {
+    var ReactTags = TagInput.WithContext;
     var BoardTags = React.createClass({
         getInitialState: function() {
             return {
-                tags: [ {id: 1, text: "Apples"} ],
-                suggestions: ["Banana", "Mango", "Pear", "Apricot"]
-            }
+                tags: [],
+                suggestions: []
+            };
         },
         handleDelete: function(i) {
-            let tags = this.state.tags;
+            var tags = this.state.tags;
             tags.splice(i, 1);
             this.setState({tags: tags});
         },
         handleAddition: function(tag) {
-            let tags = this.state.tags;
+            var tags = this.state.tags;
             tags.push({
                 id: tags.length + 1,
                 text: tag
             });
             this.setState({tags: tags});
         },
-        handleDrag: function(tag, currPos, newPos) {
-            let tags = this.state.tags;
+        handleInputChange: function(value) {
+            var self = this;
 
-            // mutate array
-            tags.splice(currPos, 1);
-            tags.splice(newPos, 0, tag);
+            console.log(value);
 
-            // re-render
-            this.setState({ tags: tags });
+            if(value.length > 1) {
+                $.ajax({
+                    url: "/editor/hashTag",
+                    data: {
+                        string: value
+                    },
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(suggestions) {
+                        self.setState(function(state, props) {
+                            // state.suggestions = suggestions;
+                            state.suggestions = ['aa','aa1','aa2','aa3','aa4','as5'];
+                        })
+                    }
+                });
+            }
         },
         render: function() {
-            let tags = this.state.tags;
-            let suggestions = this.state.suggestions;
+            var tags = this.state.tags;
+            var suggestions = this.state.suggestions;
+
             return (
                 <div>
-                    <ReactTags tags={tags}
+                    <ReactTags placeholder="태그를 입력하세요."
+                               allowDeleteFromEmptyInput={false}
+                               tags={tags}
                                suggestions={suggestions}
                                handleDelete={this.handleDelete}
                                handleAddition={this.handleAddition}
-                               handleDrag={this.handleDrag} />
+                               handleInputChange={this.handleInputChange}
+                    />
                 </div>
-            )
+            );
         }
     });
 
     ReactDOM.render(<BoardTags />, document.getElementById('xeBoardTagWrap'));
 });
-
-
