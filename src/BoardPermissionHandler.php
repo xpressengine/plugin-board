@@ -198,6 +198,8 @@ class BoardPermissionHandler
             $grant = $this->addGrant($grant, $action, $perm);
         }
 
+        $this->permissionHandler->register($this->getPrefix(), $grant);
+
         return $grant;
     }
 
