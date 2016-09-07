@@ -2,6 +2,7 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
 
     $.noConflict();
 
+    var $container = $('#xeBoardTagWrap');
     var ReactTags = TagInput.WithContext;
     var BoardTags = React.createClass({displayName: "BoardTags",
         getInitialState: function() {
@@ -28,7 +29,7 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
 
             if(value.length > 1) {
                 $.ajax({
-                    url: "/editor/hashTag",
+                    url: $container.data('url'),
                     data: {
                         string: value
                     },
@@ -46,11 +47,13 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
         render: function() {
             var tags = this.state.tags;
             var suggestions = this.state.suggestions;
+            var placeholder = $container.data('placeholder');
 
             return (
                 React.createElement("div", null, 
-                    React.createElement(ReactTags, {placeholder: "태그를 입력하세요.", 
+                    React.createElement(ReactTags, {placeholder: placeholder, 
                                allowDeleteFromEmptyInput: false, 
+                               autofocus: false, 
                                tags: tags, 
                                suggestions: suggestions, 
                                handleDelete: this.handleDelete, 
