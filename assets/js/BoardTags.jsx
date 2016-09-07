@@ -1,4 +1,4 @@
-System.amdRequire(['react', 'react-dom', 'react-tag-input'], function(React, ReactDOM, TagInput) {
+System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(React, ReactDOM, $, TagInput) {
     var ReactTags = TagInput.WithContext;
     var BoardTags = React.createClass({
         getInitialState: function() {

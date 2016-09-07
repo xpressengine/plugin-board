@@ -1,5 +1,5 @@
 {{ XeFrontend::rule('board', $rules) }}
-{{--{{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}--}}
+{{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
