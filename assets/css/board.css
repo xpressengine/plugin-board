@@ -764,6 +764,7 @@
 .board_list.gallery .thumb_area {
   width: 92%;
   margin: 0 auto;
+  text-align: center;
 }
 .board_list.gallery .thumb_area img {
   width: 100%;
