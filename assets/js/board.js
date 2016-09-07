@@ -207,7 +207,7 @@ $(function($) {
         $('.bd_manage_detail').toggle();
     });
 
-    $('.__xe-bd-search').on('click', function() {
+    $('.__xe-bd-search').on('click', function(event) {
         event.preventDefault();
         $(this).toggleClass("on");
 
