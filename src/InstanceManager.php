@@ -118,7 +118,7 @@ class InstanceManager
 
         $config = $this->configHandler->add($params);
 
-        $this->permissionHandler->set($params['boardId'], new Grant());
+        $this->permissionHandler->setByInstanceId($params['boardId'], new Grant());
 
         $this->conn->commit();
 
