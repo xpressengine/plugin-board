@@ -151,6 +151,17 @@ class BoardPermissionHandler
     }
 
     /**
+     * 인스턴스 아이디로 권한 설정
+     *
+     * @param string $instanceId instance id
+     * @param Grant  $grant      grant
+     */
+    public function setByInstanceId($instanceId, Grant $grant)
+    {
+        $this->permissionHandler->register($this->name($instanceId), $grant);
+    }
+
+    /**
      * 게시판 기본 권한 반환
      * install 시 설정 하기 위한 기본 권한
      *
@@ -186,6 +197,8 @@ class BoardPermissionHandler
 
             $grant = $this->addGrant($grant, $action, $perm);
         }
+
+        $this->permissionHandler->register($this->getPrefix(), $grant);
 
         return $grant;
     }
