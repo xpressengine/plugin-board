@@ -302,7 +302,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getKeyword()
     {
-        return 'getKeyword';
+        return [];
     }
 
     /**
