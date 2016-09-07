@@ -23,8 +23,6 @@ System.amdRequire(['react', 'react-dom', 'react-tag-input'], function(React, Rea
         handleInputChange: function(value) {
             var self = this;
 
-            console.log(value);
-
             if(value.length > 1) {
                 $.ajax({
                     url: "/editor/hashTag",
