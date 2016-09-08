@@ -40,6 +40,10 @@ use Xpressengine\Storage\File as FileModel;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class Handler
 {
@@ -775,5 +779,39 @@ class Handler
         }
 
         BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->delete();
+    }
+
+    /**
+     * $request, $id 로 현재의 글이 리스트에서 몇 페이지에 표시되야 하는지 추측
+     *
+     * @param Builder      $query  orm builder
+     * @param ConfigEntity $config board config
+     * @param string       $id     document id
+     * @return int
+     */
+    public function pageResolver(Builder $query, ConfigEntity $config, $id)
+    {
+        $query = clone $query;
+        $doc = $this->getModel($config)->find($id);
+
+        $orders = $query->getQuery()->orders;
+        foreach ($orders as $order) {
+            $op = '>=';
+            if ($order['direction'] == 'asc') {
+                $op = '<=';
+            }
+            $query->where($order['column'], $op, $doc->{$order['column']});
+        }
+
+        $count = $query->count();
+        $page = (int)($count / $config->get('perPage'));
+        if ($count % $config->get('perPage') != 0) {
+            ++$page;
+        }
+        if ($page == 0) {
+            $page = 1;
+        }
+
+        return $page;
     }
 }

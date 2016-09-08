@@ -87,7 +87,7 @@ class Plugin extends AbstractPlugin
 
         // create default permission
         $permission = new BoardPermissionHandler(app('xe.permission'));
-        $permission->getDefault();
+        $permission->addGlobal();
 
         // create toggle menu
         XeToggleMenu::setActivates('module/board@board', null, [
@@ -196,6 +196,8 @@ class Plugin extends AbstractPlugin
      */
     public function update($installedVersion = null)
     {
+        $this->putLang();
+
         // ver 0.9.1
         if (XeConfig::get(XeToggleMenu::getConfigKey('module/board@board', null)) == null) {
             XeToggleMenu::setActivates('module/board@board', null, [
@@ -214,7 +216,19 @@ class Plugin extends AbstractPlugin
             });
         }
 
-        $this->putLang();
+        // ver 0.9.5
+        if ($this->hasConfigCaptchaTag() === false) {
+            $config = XeConfig::get('module/board@board');
+            if ($config->get('useCaptcha') === null) {
+                $config->set('useCaptcha', false);
+            }
+
+            if ($config->get('useTag') === null) {
+                $config->set('useTag', true);
+            }
+
+            XeConfig::modify($config);
+        }
     }
 
     /**
@@ -234,6 +248,26 @@ class Plugin extends AbstractPlugin
             return false;
         }
 
+        // ver 0.9.5
+        if ($this->hasConfigCaptchaTag() === false) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * has config for version 0.9.5
+     *
+     * @return bool
+     */
+    protected function hasConfigCaptchaTag()
+    {
+        $config = XeConfig::get('module/board@board');
+        if ($config->get('useCaptcha') === null || $config->get('useTag') === null) {
+            return false;
+        }
         return true;
     }
 

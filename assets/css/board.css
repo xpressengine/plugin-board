@@ -748,6 +748,7 @@
 .board_list.gallery > ul {
   padding: 20px 0 0;
   list-style: none;
+  font-size: 0;
 }
 .board_list.gallery > ul:after {
   display: block;
@@ -755,12 +756,15 @@
   content: "";
 }
 .board_list.gallery > ul > li {
-  float: left;
+  display: inline-block;
   margin-bottom: 37px;
+  vertical-align: top;
+  font-size: 15px;
 }
 .board_list.gallery .thumb_area {
   width: 92%;
   margin: 0 auto;
+  text-align: center;
 }
 .board_list.gallery .thumb_area img {
   width: 100%;

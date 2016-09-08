@@ -121,6 +121,7 @@ class Validator
             'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
             'certifyKey' => 'Required|AlphaNum|Between:4,64|',
+            'slug' => 'Required',
         ];
     }
 

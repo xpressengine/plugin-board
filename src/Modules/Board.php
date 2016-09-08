@@ -20,6 +20,7 @@ use Mail;
 use Xpressengine\Menu\AbstractModule;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Models\Board as BoardModel;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\ToggleMenus\TrashItem;
@@ -338,9 +339,10 @@ class Board extends AbstractModule
                     return $comment;
                 }
 
-                app('xe.board.url')->setConfig(app('xe.board.config')->get($board->instanceId));
-
-                $url = app('xe.board.url')->getShow($board);
+                /** @var UrlHandler $urlHandler */
+                $urlHandler = app('xe.board.url');
+                $urlHandler->setConfig(app('xe.board.config')->get($board->instanceId));
+                $url = $urlHandler->getShow($board);
                 $data = [
                     'title' => xe_trans('board::newCommentRegistered'),
                     'contents' => sprintf(
@@ -356,16 +358,17 @@ class Board extends AbstractModule
 
                 Mail::send('emails.notice', $data, function ($m) use ($board) {
                     $writer = $board->user;
+                    if ($writer->email != '') {
+                        $fromEmail = app('config')->get('mail.from.address');
+                        $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
-                    $fromEmail = app('config')->get('mail.from.address');
-                    $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
+                        $menuItem = app('xe.menu')->getItem($board->instanceId);
+                        $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
 
-                    $menuItem = app('xe.menu')->getItem($board->instanceId);
-                    $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
-
-                    $m->from($fromEmail, $applicationName);
-                    $m->to($writer->email, $writer->getDisplayName());
-                    $m->subject($subject);
+                        $m->from($fromEmail, $applicationName);
+                        $m->to($writer->email, $writer->getDisplayName());
+                        $m->subject($subject);
+                    }
                 });
 
                 return $comment;
@@ -381,7 +384,10 @@ class Board extends AbstractModule
             function($func, $args, $user, $config) {
                 $board = $func($args, $user, $config);
 
-                $url = app('xe.board.url')->getShow($board);
+                /** @var UrlHandler $urlHandler */
+                $urlHandler = app('xe.board.url');
+                $urlHandler->setConfig($config);
+                $url = $urlHandler->getShow($board);
                 $data = [
                     'title' => xe_trans('board::newPostsRegistered'),
                     'contents' => sprintf(
@@ -392,19 +398,22 @@ class Board extends AbstractModule
                     ),
                 ];
 
-                /** @var ConfigHandler $boardHandler */
-                $boardHandler = app('xe.board.config');
-                $config = $boardHandler->get($board->instanceId);
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+                $config = $configHandler->get($board->instanceId);
                 if ($config->get('managerEmail') === null) {
                     return $board;
                 }
 
-                $managerEmails = explode(',', $config->get('managerEmail'));
+                $managerEmails = explode(',', trim($config->get('managerEmail')));
                 if (count($managerEmails) == 0) {
                     return $board;
                 }
 
                 foreach ($managerEmails as $toMail) {
+                    if (!$toMail) {
+                        continue;
+                    }
                     Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));

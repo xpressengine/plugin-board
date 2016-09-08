@@ -59,8 +59,8 @@
                                                     {{--<div class="row">--}}
                                                         {{--<div class="col-sm-9">--}}
                                                             {{--<select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-board-id="" data-url="{{route('manage.board.board.storeCategory')}}">--}}
-                                                                {{--<option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >Use</option>--}}
-                                                                {{--<option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >Disuse</option>--}}
+                                                                {{--<option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>--}}
+                                                                {{--<option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>--}}
                                                             {{--</select>--}}
                                                         {{--</div>--}}
                                                         {{--<div class="col-sm-3">--}}
@@ -76,8 +76,8 @@
                                                         <label>{{xe_trans('xe::comment')}} </label>
                                                     </div>
                                                     <select id="" name="comment" class="form-control">
-                                                        <option value="true" {!! $config->get('comment') == true ? 'selected="selected"' : '' !!} >Use</option>
-                                                        <option value="false" {!! $config->get('comment') == false ? 'selected="selected"' : '' !!} >Disuse</option>
+                                                        <option value="true" {!! $config->get('comment') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('comment') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -90,8 +90,8 @@
                                                         <label>{{xe_trans('xe::recommend')}} </label>
                                                     </div>
                                                     <select id="" name="assent" class="form-control">
-                                                        <option value="true" {!! $config->get('assent') == true ? 'selected="selected"' : '' !!} >Use</option>
-                                                        <option value="false" {!! $config->get('assent') == false ? 'selected="selected"' : '' !!} >Disuse</option>
+                                                        <option value="true" {!! $config->get('assent') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('assent') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -102,8 +102,8 @@
                                                         <label>{{xe_trans('xe::discommend')}} </label>
                                                     </div>
                                                     <select id="" name="dissent" class="form-control">
-                                                        <option value="true" {!! $config->get('dissent') == true ? 'selected="selected"' : '' !!} >Use</option>
-                                                        <option value="false" {!! $config->get('dissent') == false ? 'selected="selected"' : '' !!} >Disuse</option>
+                                                        <option value="true" {!! $config->get('dissent') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('dissent') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -116,8 +116,8 @@
                                                         <label>{{xe_trans('board::anonymityUse')}} </label>
                                                     </div>
                                                     <select id="" name="anonymity" class="form-control">
-                                                        <option value="true" {!! $config->get('anonymity') == true ? 'selected="selected"' : '' !!} >Use</option>
-                                                        <option value="false" {!! $config->get('anonymity') == false ? 'selected="selected"' : '' !!} >Disuse</option>
+                                                        <option value="true" {!! $config->get('anonymity') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('anonymity') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -155,6 +155,39 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
+                                                        <label>{{xe_trans('board::useCreateCaptcha')}} </label>
+                                                    </div>
+                                                    <select id="" name="useCaptcha" class="form-control">
+                                                        <option value="true" {!! $config->get('useCaptcha') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('useCaptcha') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    </select>
+
+                                                    @if($captcha->available() !== true)
+                                                        <div class="alert alert-warning" role="alert">
+                                                            {!! xe_trans('board::masAlertCaptcha') !!}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
+                                                        <label>{{xe_trans('board::useTag')}} </label>
+                                                    </div>
+                                                    <select id="" name="useTag" class="form-control">
+                                                        <option value="true" {!! $config->get('useTag') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('useTag') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
 

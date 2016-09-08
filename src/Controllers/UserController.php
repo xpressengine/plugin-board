@@ -35,6 +35,7 @@ use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidRequestException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidRequestHttpException;
@@ -166,9 +167,10 @@ class UserController extends Controller
      * get list data
      *
      * @param Request $request request
+     * @param string  $id      document id
      * @return array
      */
-    protected function listDataImporter(Request $request)
+    protected function listDataImporter(Request $request, $id = null)
     {
         $query = $this->handler->getModel($this->config)
             ->where('instanceId', $this->instanceId)->visible();
@@ -201,6 +203,10 @@ class UserController extends Controller
         }, 'slug', 'data']);
 
         Event::fire('xe.plugin.board.list', [$query]);
+
+        if ($id !== null) {
+            $request->query->set('page', $this->handler->pageResolver($query, $this->config, $id));
+        }
 
         $paginate = $query->paginate($this->config->get('perPage'))->appends($request->except('page'));
 
@@ -252,7 +258,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return XePresenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request)));
+        return XePresenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request, $id)));
     }
 
     protected function showDataImporter($id)
@@ -379,6 +385,8 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        $this->checkCaptcha();
+
         $user = Auth::user();
 
         $this->validate($request, $validator->getCreateRule($user, $this->config));
@@ -408,6 +416,15 @@ class UserController extends Controller
         $board = $this->handler->add($inputs, $user, $this->config);
 
         return redirect()->to($this->urlHandler->getShow($board, $request->query->all()));
+    }
+
+    protected function checkCaptcha()
+    {
+        if ($this->config->get('useCaptcha', false) === true) {
+            if (app('xe.captcha')->verify() !== true) {
+                throw new CaptchaNotVerifiedException;
+            }
+        }
     }
 
     public function hasSlug(Request $request)

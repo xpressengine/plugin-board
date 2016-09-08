@@ -22,6 +22,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Sections\DynamicFieldSection;
 use App\Http\Sections\ToggleMenuSection;
 use App\Http\Sections\SkinSection;
+use Xpressengine\Captcha\CaptchaManager;
+use Xpressengine\Captcha\Exceptions\ConfigurationNotExistsException;
 use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Grant;
@@ -48,11 +50,6 @@ use Xpressengine\Plugins\Comment\ManageSection as CommentSection;
 class ManagerController extends Controller
 {
     /**
-     * @var Plugin
-     */
-    protected $plugin;
-
-    /**
      * @var Handler
      */
     protected $handler;
@@ -61,11 +58,6 @@ class ManagerController extends Controller
      * @var ConfigHandler
      */
     protected $configHandler;
-
-    /**
-     * @var PermissionHandler
-     */
-    protected $permissionHandler;
 
     /**
      * @var \Xpressengine\Presenter\Presenter
@@ -84,6 +76,11 @@ class ManagerController extends Controller
 
     /**
      * create instance
+     *
+     * @param Handler         $handler         handler
+     * @param ConfigHandler   $configHandler   board config handler
+     * @param UrlHandler      $urlHandler      url handler
+     * @param InstanceManager $instanceManager board instance manager
      */
     public function __construct(
         Handler $handler,
@@ -91,13 +88,9 @@ class ManagerController extends Controller
         UrlHandler $urlHandler,
         InstanceManager $instanceManager
     ) {
-        /** @var \Xpressengine\Plugins\Board\Plugin $plugin */
-        //$this->plugin = app('xe.plugin')->getPlugin('board')->getObject();
-
         $this->handler = $handler;
         $this->configHandler = $configHandler;
         $this->urlHandler = $urlHandler;
-
         $this->instanceManager =  $instanceManager;
 
         $this->presenter = app('xe.presenter');
@@ -109,14 +102,17 @@ class ManagerController extends Controller
     }
 
     /**
-     * @param BoardPermissionHandler $boardPermission
+     * global config edit
+     *
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param CaptchaManager         $captcha         Captcha manager
      * @return mixed|\Xpressengine\Presenter\RendererInterface
      */
-    public function globalEdit(BoardPermissionHandler $boardPermission)
+    public function globalEdit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha)
     {
         $config = $this->configHandler->getDefault();
 
-        $perms = $boardPermission->getDefaultPerms();
+        $perms = $boardPermission->getGlobalPerms();
 
         $toggleMenuSection = new ToggleMenuSection(BoardModule::getId());
 
@@ -124,14 +120,28 @@ class ManagerController extends Controller
             'config' => $config,
             'perms' => $perms,
             'toggleMenuSection' => $toggleMenuSection,
+            'captcha' => $captcha,
         ]);
     }
 
     /**
+     * global config update
+     *
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     *
      * @return mixed
      */
     public function globalUpdate(Request $request, BoardPermissionHandler $boardPermission)
     {
+        if ($request->get('useCaptcha') === 'true') {
+            $driver = config('captcha.driver');
+            $captcha = config("captcha.apis.$driver.siteKey");
+            if (!$captcha) {
+                throw new ConfigurationNotExistsException();
+            }
+        }
+
         $config = $this->configHandler->getDefault();
 
         $permissionNames = [];
@@ -157,21 +167,7 @@ class ManagerController extends Controller
 
         $config = $this->configHandler->putDefault($params);
 
-        // permission update
-        $grant = new Grant();
-
-        foreach ($boardPermission->getActions() as $action) {
-            $permInputs = $request->only($permissionNames[$action]);
-            $grant = $boardPermission->createGrant($grant, $action, [
-                Grant::RATING_TYPE => $permInputs[$action . 'Rating'],
-                Grant::GROUP_TYPE => isset($permInputs[$action . 'Group']) ?
-                    $permInputs[$action . 'Group'] : [],
-                Grant::USER_TYPE => explode(',', $permInputs[$action . 'User']),
-                Grant::EXCEPT_TYPE => explode(',', $permInputs[$action . 'Except'])
-            ]);
-        }
-
-        $boardPermission->setDefault($grant);
+        $boardPermission->setGlobal($request);
 
         XeDB::commit();
 
@@ -181,11 +177,12 @@ class ManagerController extends Controller
     /**
      * edit
      *
-     * @param BoardPermissionHandler $boardPermission
-     * @param string $boardId board id
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param CaptchaManager         $captcha         Captcha manager
+     * @param string                 $boardId         board id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function edit(BoardPermissionHandler $boardPermission, $boardId)
+    public function edit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha, $boardId)
     {
         $config = $this->configHandler->get($boardId);
 
@@ -211,6 +208,7 @@ class ManagerController extends Controller
             'toggleMenuSection' => $toggleMenuSection,
             'editorSection' => $editorSection,
             'perms' => $perms,
+            'captcha' => $captcha,
         ]);
     }
 
@@ -224,6 +222,14 @@ class ManagerController extends Controller
      */
     public function update(Request $request, BoardPermissionHandler $boardPermission, $boardId)
     {
+        if ($request->get('useCaptcha') === 'true') {
+            $driver = config('captcha.driver');
+            $captcha = config("captcha.apis.$driver.siteKey");
+            if (!$captcha) {
+                throw new ConfigurationNotExistsException();
+            }
+        }
+
         $config = $this->configHandler->get($boardId);
 
         $permissionNames = [];
@@ -249,25 +255,13 @@ class ManagerController extends Controller
             }
         }
 
+        XeDB::beginTransaction();
+
         $config = $this->instanceManager->updateConfig($config->getPureAll());
 
-        // permission update
-        $grant = new Grant();
+        $boardPermission->set($request, $boardId);
 
-        foreach ($boardPermission->getActions() as $action) {
-            $permInputs = $request->only($permissionNames[$action]);
-            if ($permInputs[$action.'Mode'] == 'manual') {
-                $grant = $boardPermission->createGrant($grant, $action, [
-                    Grant::RATING_TYPE => $permInputs[$action . 'Rating'],
-                    Grant::GROUP_TYPE => isset($permInputs[$action . 'Group']) ?
-                        $permInputs[$action . 'Group'] : [],
-                    Grant::USER_TYPE => explode(',', $permInputs[$action . 'User']),
-                    Grant::EXCEPT_TYPE => explode(',', $permInputs[$action . 'Except'])
-                ]);
-            }
-        }
-
-        $boardPermission->set($boardId, $grant);
+        XeDB::commit();
 
         return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
     }

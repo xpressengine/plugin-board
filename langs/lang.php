@@ -347,4 +347,22 @@ return [
         'ko' => '정렬 방식',
         'en' => 'Order type',
     ],
+    'useCreateCaptcha' => [
+        'ko' => '글 작성할 때 CAPTCHA 사용',
+        'en' => 'Article create CAPTCHA activate',
+    ],
+    'useTag' => [
+        'ko' => '태그 사용',
+        'en' => 'Tag use',
+    ],
+    'masAlertCaptcha' => [
+        'ko' => '현재 CAPTCHA 기능을 정상적으로 사용할 수 없습니다. CAPTCHA 설정이 정상적으로 되어 있는지 확인하십시오.<br>
+CAPTCHA 설정이 정상적이지 않을 경우 관련 기능에 오류가 발생할 수 있습니다.',
+        'en' => 'It will not be able to successfully use the current CAPTCHA function. Please make sure that the settings of CAPTCHA is in a usable state.<br>
+You may receive an error occurs in the associated function if not in a state capable of using the settings in the CAPTCHA.',
+    ],
+    'captchaNotVerified' => [
+        'ko' => '자동 인증 방지 기능을 통과하지 못했습니다.',
+        'en' => 'It did not pass the automatic authentication prevention function.',
+    ],
 ];

@@ -70,6 +70,8 @@ class ConfigHandler
         'dynamicFieldList' => [],
         'recursiveDelete' => true,
         'orderType' => '',
+        'useCaptcha' => false,
+        'useTag' => true,
     ];
 
     /**
