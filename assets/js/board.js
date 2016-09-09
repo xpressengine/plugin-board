@@ -392,7 +392,50 @@ $(function($) {
                 callback(json);
             });
         }
-    }
+    };
+
+    var resize = function ($o, w, h, mw, mh) {
+        if (h > mh) {
+            var ratio = mh / h;
+            $o.css("height", mh);
+            $o.css("width", w * ratio);
+            var w = w * ratio, h = h * ratio;
+        }
+    };
+
+    $('.board_list .thumb_area img').each(function () {
+
+        var $o = $(this);
+        if ($o.data('resize') !== undefined) {
+            return;
+        }
+
+        var maxWidth = $o.prop('clientWidth');
+        var width =  $o.prop('naturalWidth');
+        var maxHeight = $o.prop('clientHeight');
+        var height =  $o.prop('naturalHeight');
+
+        if (width == 0 || maxHeight == 0) {
+            return;
+        }
+        $o.data('resize', '1');
+
+        resize($o, width, height, maxWidth, maxHeight);
+    });
+    $('.board_list .thumb_area img').bind('load', function () {
+        var $o = $(this);
+        if ($o.data('resize') !== undefined) {
+            return;
+        }
+        $o.data('resize', '2');
+
+        var maxWidth = $o.prop('clientWidth');
+        var width =  $o.prop('naturalWidth');
+        var maxHeight = parseInt($o.css('max-height').replace('px', ''));
+        var height =  $o.prop('naturalHeight');
+
+        resize($o, width, height, maxWidth, maxHeight);
+    });
 
     // 엔터 or 콤마 입력 들어오면 태그 만들고 입력창 비움
     $('.__xe-board-tag .search-label').bind('keypress', function(event) {
