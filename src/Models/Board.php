@@ -58,17 +58,6 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
-     * scope notice
-     *
-     * @param $query
-     * @return $query
-     */
-    public function scopeNotice($query)
-    {
-        return $query->whereStatus(self::STATUS_NOTICE);
-    }
-
-    /**
      * get assent counter log
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -269,6 +258,18 @@ class Board extends Document implements CommentUsable, SeoUsable
     public function scopeVisible($query)
     {
         $query->where('status', Document::STATUS_PUBLIC)
+            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
+            ->where('published', Document::PUBLISHED_PUBLISHED);
+    }
+
+    /**
+     * notice
+     *
+     * @param $query
+     */
+    public function scopeNotice($query)
+    {
+        $query->where('status', Document::STATUS_NOTICE)
             ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED);
     }

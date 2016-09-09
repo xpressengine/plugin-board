@@ -561,6 +561,7 @@ class Handler
      *
      * @param ConfigEntity $config
      * @return mixed
+     * @deprecated controller 에서 model 사용
      */
     public function getsNotice(ConfigEntity $config, $userId)
     {

@@ -160,18 +160,63 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return XePresenter::makeAll('index', $this->listDataImporter($request));
+        return XePresenter::makeAll('index', $this->listDataImporter($request, $boardPermission));
     }
 
-    /**
-     * get list data
-     *
-     * @param Request $request request
-     * @param string  $id      document id
-     * @return array
-     */
-    protected function listDataImporter(Request $request, $id = null)
+    public function notices(Request $request, BoardPermissionHandler $boardPermission)
     {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_LIST,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        $query = $this->handler->getModel($this->config)
+            ->where('instanceId', $this->instanceId)
+            ->visible()->orderBy('head', 'desc');
+
+        if ($request->has('favorite') === true) {
+            $query->leftJoin(
+                'board_favorites',
+                sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                '=',
+                sprintf('%s.%s', 'board_favorites', 'targetId')
+            );
+            $query->where('board_favorites.userId', Auth::user()->getId());
+        }
+
+        $items = $query->get();
+
+        $fieldTypes = (array)$this->configHandler->getDynamicFields($this->config);
+
+        $categories = [];
+        if ($this->config->get('category') === true) {
+            $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
+        }
+
+        return XePresenter::makeApi([
+            'notices' => $items,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+        ]);
+    }
+
+    public function articles(Request $request, BoardPermissionHandler $boardPermission, $id = null)
+    {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_LIST,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
         $query = $this->handler->getModel($this->config)
             ->where('instanceId', $this->instanceId)->visible();
 
@@ -223,6 +268,22 @@ class UserController extends Controller
             }
         }
 
+        return XePresenter::makeApi([
+            'paginate' => $paginate,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+        ]);
+    }
+
+    /**
+     * get list data
+     *
+     * @param Request $request request
+     * @param string  $id      document id
+     * @return array
+     */
+    protected function listDataImporter(Request $request, $boardPermission, $id = null)
+    {
         $terms = [
             ['value' => '1week', 'text' => 'board::1week'],
             ['value' => '2week', 'text' => 'board::2week'],
@@ -237,7 +298,12 @@ class UserController extends Controller
             'board::selectBoard',
         ]);
 
-        return compact('notices', 'paginate', 'fieldTypes','categories', 'terms');
+        $notices = $this->notices($request, $boardPermission)->toArray();
+        $articles = $this->articles($request, $boardPermission)->toArray();
+
+        return array_merge($notices, $articles, ['terms' => $terms]);
+
+        //return compact('notices', 'paginate', 'fieldTypes','categories', 'terms');
     }
 
     /**
@@ -258,7 +324,9 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return XePresenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request, $id)));
+        return XePresenter::make('show', array_merge(
+            $this->showDataImporter($id), $this->listDataImporter($request, $boardPermission, $id))
+        );
     }
 
     protected function showDataImporter($id)
