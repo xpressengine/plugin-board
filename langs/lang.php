@@ -365,4 +365,8 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '자동 인증 방지 기능을 통과하지 못했습니다.',
         'en' => 'It did not pass the automatic authentication prevention function.',
     ],
+    'msgDeleteConfirm' => [
+        'ko' => '삭제된 게시물은 복구할 수 없습니다. 계속하시겠습니까?',
+        'en' => 'Deleted posts can not be recovered. Do you want to continue?',
+    ],
 ];
