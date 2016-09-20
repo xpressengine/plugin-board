@@ -280,6 +280,27 @@ $(function($) {
 
     });
 
+    $('.bd_delete').on('click touchstart', function (event) {
+        event.preventDefault();
+        if (confirm(XE.Lang.trans('board::msgDeleteConfirm'))) {
+            var url = $(this).data('href');
+            var $form = $('<form>', {
+                action: url,
+                method: 'post'
+            }).append($('<input>', {
+                type: 'hidden',
+                name: '_token',
+                value: XE.Request.options.headers['X-CSRF-TOKEN']
+            })).append($('<input>', {
+                type: 'hidden',
+                name: '_method',
+                value: 'delete'
+            }));
+            $('body').append($form);
+            $form.submit();
+        }
+    });
+
     $('.bd_like_num').on('click touchstart', function(event) {
         event.preventDefault();
         if (parseInt($(event.target).text()) == 0) {
@@ -393,43 +414,6 @@ $(function($) {
             });
         }
     }
-
-    // 엔터 or 콤마 입력 들어오면 태그 만들고 입력창 비움
-    $('.__xe-board-tag .search-label').bind('keypress', function(event) {
-        var $target = $(event.target),
-            $ul = $target.closest('ul');
-
-        console.log(event.keyCode);
-        if (event.keyCode == 13) {
-            var tag = $target.val();
-            var $li = $('<li>').html('<span class="label-choice">'+
-                tag+
-                '<button type="button"><i class="xi-close"></i></button></span>');
-            $ul.append($li);
-
-            $target.val('');
-        } else if (event.keyCode == 44) {
-            // 콤마 입력은 무시하고 keyup 할 때 처리함.. 이건 잘못한것 같음
-            event.preventDefault();
-        }
-    }).bind('keyup', function(event) {
-        var $target = $(event.target),
-            $ul = $target.closest('ul');
-        if (event.keyCode == 188) {
-            var tag = $target.val();
-            var $li = $('<li>').html('<span class="label-choice">'+
-                tag+
-                '<button type="button"><i class="xi-close"></i></button></span>');
-            $ul.append($li);
-
-            $target.val('');
-        }
-    });
-
-    $('.__xe-board-tag').on('click', '.xi-close', function(event) {
-        var $target = $(event.target);
-        $target.closest('li').empty();
-    });
 });
 
 $(function($) {
