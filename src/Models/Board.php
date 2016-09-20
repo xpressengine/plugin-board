@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Models;
 use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
+use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Media;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
@@ -327,10 +328,15 @@ class Board extends Document implements CommentUsable, SeoUsable
     {
         $files = File::getByFileable($this->getKey());
 
-        $imageHandler = app('xe.media')->getHandler(Media::TYPE_IMAGE);
+        /** @var MediaManager $mediaManager */
+        $mediaManager = app('xe.media');
+        $imageHandler = $mediaManager->getHandler(Media::TYPE_IMAGE);
+
         $images = [];
         foreach ($files as $file) {
-            $images[] = $imageHandler->make($file);
+            if ($mediaManager->getFileType($file) === Media::TYPE_IMAGE) {
+                $images[] = $imageHandler->make($file);
+            }
         }
         return $images;
     }
