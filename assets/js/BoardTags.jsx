@@ -38,8 +38,7 @@ System.import('vendor:/react-tag-input').then(function() {
                     dataType: 'json',
                     success: function(suggestions) {
                         self.setState(function(state, props) {
-                            // state.suggestions = suggestions;
-                            state.suggestions = ['aa','aa1','aa2','aa3','aa4','as5'];
+                            state.suggestions = suggestions;
                         });
                     }
                 });
