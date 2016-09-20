@@ -1,10 +1,10 @@
 {!! XeFrontend::css('assets/core/member/auth.css')->load() !!}
 <div class="member">
     <h1>{{ xe_trans('xe::identification') }}</h1>
-    <form action="{{ $urlHandler->get('identificationConfirm') }}" method="post">
+    <form action="{{ $urlHandler->get('guest.certify', ['id' => $item->id]) }}" method="post">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="hidden" name="referrer" value="{{$referrer}}" />
-        <input type="hidden" name="id" value="{{$board->id}}" />
+        <input type="hidden" name="id" value="{{$item->id}}" />
 
         <fieldset>
             <legend>{{ xe_trans('xe::identification') }}</legend>
