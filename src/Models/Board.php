@@ -15,6 +15,7 @@ namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
+use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Media;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
@@ -22,6 +23,7 @@ use Xpressengine\Seo\SeoUsable;
 use Xpressengine\Storage\File;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\Models\UnknownUser;
+use Xpressengine\User\Models\User;
 
 /**
  * Board
@@ -331,5 +333,18 @@ class Board extends Document implements CommentUsable, SeoUsable
             $images[] = $imageHandler->make($file);
         }
         return $images;
+    }
+
+    public function toArray()
+    {
+        /** @var Request $request */
+        $request = app('request');
+        $this->attributes['links'] = [
+            'rel' => 'self',
+            'href' => app('Xpressengine\Plugins\Board\UrlHandler')->getShow($this, $request->query->all()),
+        ];
+        $this->attributes['user'] = $this->user;
+
+        return parent::toArray();
     }
 }
