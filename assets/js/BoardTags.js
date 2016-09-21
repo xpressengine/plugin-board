@@ -1,7 +1,9 @@
-System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(React, ReactDOM, $, TagInput) {
+System.import('vendor:/react-tag-input').then(function() {
+    System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(React, ReactDOM, $, TagInput) {
 
     $.noConflict();
 
+    var $container = $('#xeBoardTagWrap');
     var ReactTags = TagInput.WithContext;
     var BoardTags = React.createClass({displayName: "BoardTags",
         getInitialState: function() {
@@ -28,7 +30,7 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
 
             if(value.length > 1) {
                 $.ajax({
-                    url: "/editor/hashTag",
+                    url: $container.data('url'),
                     data: {
                         string: value
                     },
@@ -36,9 +38,12 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
                     dataType: 'json',
                     success: function(suggestions) {
                         self.setState(function(state, props) {
-                            // state.suggestions = suggestions;
-                            state.suggestions = ['aa','aa1','aa2','aa3','aa4','as5'];
-                        })
+                            var items = [];
+                            $.each(suggestions, function(index, item) {
+                                items.push(item.word);
+                            });
+                            state.suggestions = items;
+                        });
                     }
                 });
             }
@@ -46,11 +51,13 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
         render: function() {
             var tags = this.state.tags;
             var suggestions = this.state.suggestions;
+            var placeholder = $container.data('placeholder');
 
             return (
                 React.createElement("div", null, 
-                    React.createElement(ReactTags, {placeholder: "태그를 입력하세요.", 
+                    React.createElement(ReactTags, {placeholder: placeholder, 
                                allowDeleteFromEmptyInput: false, 
+                               autofocus: false, 
                                tags: tags, 
                                suggestions: suggestions, 
                                handleDelete: this.handleDelete, 
@@ -63,4 +70,25 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
     });
 
     ReactDOM.render(React.createElement(BoardTags, null), document.getElementById('xeBoardTagWrap'));
+    });
+});
+
+$(function($) {
+    var $container = $('#xeBoardTagWrap');
+
+    $container.closest('form').on('submit', function (event) {
+        var $this = $(this),
+            tagSet = [];
+
+        $this.find("input[type=hidden].paramReactTags").remove();
+
+        $container.find('.ReactTags__tag').text(function (i, v) {
+            // text 에 'x'(삭제버튼) 이 포함되어 있음
+            v = v.substring(0, v.length - 1);
+            if ($.inArray(v, tagSet) === -1) {
+                $this.append("<input type='hidden' class='paramReactTags' name='_tags[]' value='" + v + "'>");
+                tagSet.push(v);
+            }
+        });
+    });
 });

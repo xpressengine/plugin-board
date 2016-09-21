@@ -23,6 +23,7 @@ use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Skin\AbstractSkin;
 use View;
+use XeFrontend;
 
 /**
  * DefaultSkin
@@ -110,6 +111,11 @@ class DefaultSkin extends AbstractSkin
         $this->setDynamicFieldSkins();
         $this->setPaginationPresenter();
         $this->setBoardList();
+        $this->setTerms();
+        XeFrontend::translation([
+            'board::selectPost',
+            'board::selectBoard',
+        ]);
     }
 
     /**
@@ -123,6 +129,12 @@ class DefaultSkin extends AbstractSkin
         $this->setDynamicFieldSkins();
         $this->setPaginationPresenter();
         $this->setBoardList();
+        $this->setTerms();
+        XeFrontend::translation([
+            'board::selectPost',
+            'board::selectBoard',
+            'board::msgDeleteConfirm',
+        ]);
     }
 
     /**
@@ -221,6 +233,18 @@ class DefaultSkin extends AbstractSkin
             ];
         }
         $this->data['boardList'] = $boardList;
+    }
+
+    protected function setTerms()
+    {
+        $this->data['terms'] = [
+            ['value' => '1week', 'text' => 'board::1week'],
+            ['value' => '2week', 'text' => 'board::2week'],
+            ['value' => '1month', 'text' => 'board::1month'],
+            ['value' => '3month', 'text' => 'board::3month'],
+            ['value' => '6month', 'text' => 'board::6month'],
+            ['value' => '1year', 'text' => 'board::1year'],
+        ];
     }
 
     /**

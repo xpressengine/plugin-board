@@ -208,7 +208,7 @@ class GallerySkin extends DefaultSkin
                 // target 의 스킨이 현재 skin 의 아이디와 일치하는지 확인
                 if (in_array($assignedSkin->getId(), static::getThumbSkins())) {
                     // 리스트 출력할 때 gallery thumbnail 확인을 위한 table join 이벤트 등록
-                    Event::listen('xe.plugin.board.list', function ($query) {
+                    Event::listen('xe.plugin.board.articles', function ($query) {
                         $query->leftJoin(
                             'board_gallery_thumbs',
                             sprintf('%s.%s', $query->getQuery()->from, 'id'),

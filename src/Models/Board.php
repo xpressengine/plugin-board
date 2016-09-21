@@ -15,13 +15,17 @@ namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
+use Xpressengine\Http\Request;
+use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Media;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\Seo\SeoUsable;
 use Xpressengine\Storage\File;
+use Xpressengine\Tag\Tag;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\Models\UnknownUser;
+use Xpressengine\User\Models\User;
 
 /**
  * Board
@@ -55,17 +59,6 @@ class Board extends Document implements CommentUsable, SeoUsable
     public function isNew($hour)
     {
         return strtotime($this->getAttribute(static::CREATED_AT)) + ($hour * 86400) > time();
-    }
-
-    /**
-     * scope notice
-     *
-     * @param $query
-     * @return $query
-     */
-    public function scopeNotice($query)
-    {
-        return $query->whereStatus(self::STATUS_NOTICE);
     }
 
     /**
@@ -136,6 +129,16 @@ class Board extends Document implements CommentUsable, SeoUsable
     public function comments()
     {
         return $this->hasMany('Xpressengine\Comment\Models\Comment', 'targetId');
+    }
+
+    /**
+     * get tags
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'taggables', 'taggableId', 'tagId');
     }
 
     /**
@@ -274,6 +277,18 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
+     * notice
+     *
+     * @param $query
+     */
+    public function scopeNotice($query)
+    {
+        $query->where('status', Document::STATUS_NOTICE)
+            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
+            ->where('published', Document::PUBLISHED_PUBLISHED);
+    }
+
+    /**
      * Returns title
      *
      * @return string
@@ -324,11 +339,35 @@ class Board extends Document implements CommentUsable, SeoUsable
     {
         $files = File::getByFileable($this->getKey());
 
-        $imageHandler = app('xe.media')->getHandler(Media::TYPE_IMAGE);
+        /** @var MediaManager $mediaManager */
+        $mediaManager = app('xe.media');
+        $imageHandler = $mediaManager->getHandler(Media::TYPE_IMAGE);
+
         $images = [];
         foreach ($files as $file) {
-            $images[] = $imageHandler->make($file);
+            if ($mediaManager->getFileType($file) === Media::TYPE_IMAGE) {
+                $images[] = $imageHandler->make($file);
+            }
         }
         return $images;
+    }
+
+    /**
+     * get array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        /** @var Request $request */
+        $request = app('request');
+        $this->attributes['links'] = [
+            'rel' => 'self',
+            'href' => app('Xpressengine\Plugins\Board\UrlHandler')->getShow($this, $request->query->all()),
+        ];
+        $this->attributes['user'] = $this->user;
+        $this->attributes['tags'] = $this->tags;
+
+        return parent::toArray();
     }
 }
