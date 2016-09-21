@@ -797,15 +797,18 @@ class Handler
         $doc = $this->getModel($config)->find($id);
 
         $orders = $query->getQuery()->orders;
-        foreach ($orders as $order) {
-            $op = '>=';
-            if ($order['direction'] == 'asc') {
-                $op = '<=';
+        $query->where(function ($query) use ($orders, $doc) {
+            foreach ($orders as $order) {
+                $op = '>=';
+                if ($order['direction'] == 'asc') {
+                    $op = '<=';
+                }
+                $query->where($order['column'], $op, $doc->{$order['column']});
             }
-            $query->where($order['column'], $op, $doc->{$order['column']});
-        }
+        });
 
         $count = $query->count();
+
         $page = (int)($count / $config->get('perPage'));
         if ($count % $config->get('perPage') != 0) {
             ++$page;
