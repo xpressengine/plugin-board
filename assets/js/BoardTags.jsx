@@ -69,9 +69,7 @@ System.import('vendor:/react-tag-input').then(function() {
             }
         });
 
-
-
-        ReactDOM.render(<BoardTags tags={JSON.parse($container.data('tags'))} />, document.getElementById('xeBoardTagWrap'));
+        ReactDOM.render(<BoardTags tags={$container.data('tags')} />, document.getElementById('xeBoardTagWrap'));
     });
 });
 

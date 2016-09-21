@@ -1,4 +1,5 @@
 {{ XeFrontend::rule('board', $rules) }}
+{{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
@@ -35,6 +36,10 @@
                         ], $item->id) !!}
                     </div>
                 </div>
+
+                @if($config->get('useTag') === true)
+                    <div id="xeBoardTagWrap" class="xe-select-label __xe-board-tag" data-placeholder="{{xe_trans('board::inputTag')}}" data-url="/editor/hashTag" data-tags='[@foreach($item->tags as $loop_key => $tag)"{{$tag->word}}" @if($loop_key+1 < $item->tags->count()) , @endif @endforeach]'></div>
+                @endif
             @else
                 <div class="__xe_{{$columnName}} __xe_section">
                     {!! dfEdit($config->get('documentGroup'), $columnName, $item->getAttributes()) !!}
