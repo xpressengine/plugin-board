@@ -662,7 +662,7 @@ class UserController extends Controller
         return XePresenter::redirect()->to(
             $this->urlHandler->getSlug(
                 $item->boardSlug->slug,
-                $this->urlHandler->queryStringToArray($request->get('queryString'))
+                $request->query->all()
             )
         )->setData(['item' => $board]);
     }
@@ -812,7 +812,8 @@ class UserController extends Controller
 
         $identifyManager->destroy($item);
 
-        return xeRedirect()->to($this->urlHandler->get('index', $request->all()))->setData(['item' => $item]);
+        $queries = $request->query->all();
+        return xeRedirect()->to($this->urlHandler->get('index', $queries))->setData(['item' => $item]);
     }
 
     /**
