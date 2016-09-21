@@ -22,6 +22,7 @@ use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\Seo\SeoUsable;
 use Xpressengine\Storage\File;
+use Xpressengine\Tag\Tag;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\Models\UnknownUser;
 use Xpressengine\User\Models\User;
@@ -128,6 +129,16 @@ class Board extends Document implements CommentUsable, SeoUsable
     public function comments()
     {
         return $this->hasMany('Xpressengine\Comment\Models\Comment', 'targetId');
+    }
+
+    /**
+     * get tags
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'taggables', 'taggableId', 'tagId');
     }
 
     /**
@@ -341,6 +352,11 @@ class Board extends Document implements CommentUsable, SeoUsable
         return $images;
     }
 
+    /**
+     * get array
+     *
+     * @return array
+     */
     public function toArray()
     {
         /** @var Request $request */
@@ -350,6 +366,7 @@ class Board extends Document implements CommentUsable, SeoUsable
             'href' => app('Xpressengine\Plugins\Board\UrlHandler')->getShow($this, $request->query->all()),
         ];
         $this->attributes['user'] = $this->user;
+        $this->attributes['tags'] = $this->tags;
 
         return parent::toArray();
     }
