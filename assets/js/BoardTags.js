@@ -1,4 +1,5 @@
-System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(React, ReactDOM, $, TagInput) {
+System.import('vendor:/react-tag-input').then(function() {
+    System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(React, ReactDOM, $, TagInput) {
 
     $.noConflict();
 
@@ -37,9 +38,8 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
                     dataType: 'json',
                     success: function(suggestions) {
                         self.setState(function(state, props) {
-                            // state.suggestions = suggestions;
-                            state.suggestions = ['aa','aa1','aa2','aa3','aa4','as5'];
-                        })
+                            state.suggestions = suggestions;
+                        });
                     }
                 });
             }
@@ -66,4 +66,5 @@ System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(
     });
 
     ReactDOM.render(React.createElement(BoardTags, null), document.getElementById('xeBoardTagWrap'));
+    });
 });
