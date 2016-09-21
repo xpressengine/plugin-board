@@ -324,8 +324,9 @@ class Handler
     {
         $board->getConnection()->beginTransaction();
 
+        $attributes = $board->getAttributes();
         foreach ($args as $name => $value) {
-            if ($board->{$name} !== null) {
+            if (isset($attributes[$name])) {
                 $board->{$name} = $value;
             }
         }
