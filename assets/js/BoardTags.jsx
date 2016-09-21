@@ -7,8 +7,19 @@ System.import('vendor:/react-tag-input').then(function() {
         var ReactTags = TagInput.WithContext;
         var BoardTags = React.createClass({
             getInitialState: function() {
+
+                var initTags = this.props.tags || [];
+                var tags = [];
+
+                initTags.forEach(function(val, i) {
+                    tags.push({
+                        id: i,
+                        text: val
+                    });
+                });
+
                 return {
-                    tags: this.props.tags || [],
+                    tags: tags,
                     suggestions: []
                 };
             },
