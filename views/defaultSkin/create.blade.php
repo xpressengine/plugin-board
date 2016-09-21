@@ -39,7 +39,7 @@
                 </div>
 
                 @if($config->get('useTag') === true)
-                    <div id="xeBoardTagWrap" class="xe-select-label __xe-board-tag" data-placeholder="태그를 입력하세요." data-url="/editor/hashTag"></div>
+                    <div id="xeBoardTagWrap" class="xe-select-label __xe-board-tag" data-placeholder="{{xe_trans('board::inputTag')}}" data-url="/editor/hashTag"></div>
                 @endif
             @else
                 <div class="__xe_{{$columnName}} __xe_section">

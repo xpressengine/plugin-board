@@ -355,6 +355,10 @@ return [
         'ko' => '태그 사용',
         'en' => 'Tag use',
     ],
+    'inputTag' => [
+        'ko' => '태그를 입력하세요.',
+        'en' => 'Enter your tags.',
+    ],
     'masAlertCaptcha' => [
         'ko' => '현재 CAPTCHA 기능을 정상적으로 사용할 수 없습니다. CAPTCHA 설정이 정상적으로 되어 있는지 확인하십시오.<br>
 CAPTCHA 설정이 정상적이지 않을 경우 관련 기능에 오류가 발생할 수 있습니다.',
