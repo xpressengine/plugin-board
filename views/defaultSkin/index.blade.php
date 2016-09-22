@@ -221,6 +221,7 @@
         <thead class="xe-hidden-xs">
         <!-- LIST HEADER -->
         <tr>
+            @if ($isManager === true)
             <th scope="col">
                 <label class="xe-label">
                     <input type="checkbox" title="{{ xe_trans('xe::checkAll') }}" class="bd_btn_manage_check_all">
@@ -228,6 +229,7 @@
                     <span class="xe-label-text xe-sr-only">{{ xe_trans('xe::checkAll') }}</span>
                 </label>
             </th>
+            @endif
             @if(Input::has('favorite'))
                 <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', Input::except(['favorite', 'page']))}}"><i class="xi-star-o on"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
             @else
@@ -251,6 +253,7 @@
         <!-- NOTICE -->
         @foreach($handler->getsNotice($config, Auth::user()->getId()) as $item)
         <tr class="notice">
+            @if ($isManager === true)
             <td class="check">
                 <label class="xe-label">
                     <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
@@ -258,6 +261,7 @@
                     <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
                 </label>
             </td>
+            @endif
             <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
             @foreach ($skinConfig['listColumns'] as $columnName)
@@ -328,6 +332,7 @@
         <!-- LIST -->
         @foreach($paginate as $item)
         <tr>
+            @if ($isManager === true)
             <td class="check">
                 <label class="xe-label">
                     <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
@@ -335,6 +340,7 @@
                     <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
                 </label>
             </td>
+            @endif
             <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
             @foreach ($skinConfig['listColumns'] as $columnName)
