@@ -258,11 +258,11 @@ class UserController extends Controller
             $favoriteQuery->where('userId', Auth::user()->getId());
         }, 'slug', 'data']);
 
+        Event::fire('xe.plugin.board.articles', [$query]);
+
         if ($id !== null) {
             $request->query->set('page', $this->handler->pageResolver($query, $this->config, $id));
         }
-
-        Event::fire('xe.plugin.board.articles', [$query]);
 
         $paginate = $query->paginate($this->config->get('perPage'))->appends($request->except('page'));
 
