@@ -651,7 +651,7 @@ class UserController extends Controller
         $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
         $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
 
-        $board = $this->handler->put($item, $inputs);
+        $board = $this->handler->put($item, $inputs, $this->config);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
         if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {

@@ -316,11 +316,12 @@ class Handler
     /**
      * update document
      *
-     * @param Board $board board model
-     * @param array $args  arguments
+     * @param Board        $board  board model
+     * @param array        $args   arguments
+     * @param ConfigEntity $config config entity
      * @return mixed
      */
-    public function put(Board $board, array $args)
+    public function put(Board $board, array $args, ConfigEntity $config)
     {
         $board->getConnection()->beginTransaction();
 
@@ -330,6 +331,8 @@ class Handler
                 $board->{$name} = $value;
             }
         }
+
+        $this->setModelConfig($board, $config);
 
         $doc = $this->documentHandler->put($board);
 
@@ -695,10 +698,10 @@ class Handler
      * @param string        $option 'assent' or 'dissent'
      * @return void
      */
-    public function vote(Board $board, UserInterface $user, $option)
+    public function vote(Board $board, UserInterface $user, $option, $point = 1)
     {
         if ($this->voteCounter->has($board->id, $user, $option) === false) {
-            $this->incrementVoteCount($board, $user, $option);
+            $this->incrementVoteCount($board, $user, $option, $point);
         } else {
             $this->decrementVoteCount($board, $user, $option);
         }
@@ -712,9 +715,9 @@ class Handler
      * @param string        $option 'assent' or 'dissent'
      * @return void
      */
-    public function incrementVoteCount(Board $board, UserInterface $user, $option)
+    public function incrementVoteCount(Board $board, UserInterface $user, $option, $point = 1)
     {
-        $this->voteCounter->add($board->id, $user, $option);
+        $this->voteCounter->add($board->id, $user, $option, $point);
 
         $columnName = 'assentCount';
         if ($option == 'dissent') {
