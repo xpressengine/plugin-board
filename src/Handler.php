@@ -789,15 +789,24 @@ class Handler
     /**
      * $request, $id 로 현재의 글이 리스트에서 몇 페이지에 표시되야 하는지 추측
      *
-     * order by A desc, B desc 인 경우 (order 가 2개 이하이면)
+     * order by A desc 인 경우 (order 가 1개일 경우)
      * ```
-     * and (A >= 'value' and B >= 'value')
+     * and (A >= 'value')
      * ```
      *
-     * order by A desc, B desc, C desc 인 경우 (order 가 3개 이상이면 같은 방식)
+     * order by A desc, B desc 인 경우 (order 가 2일 이상이면 같은 방식)
      * ```
      * and (
-     *   (A >= 'value' and B >= 'value')
+     *   (A >= 'value')
+     *   or (A = 'value' and B >= 'value')
+     * )
+     * ```
+     *
+     * order by A desc, B desc, C desc 인 경우 (order 가 3개인 경우)
+     * ```
+     * and (
+     *   (A >= 'value')
+     *   or (A = 'value' and B >= 'value')
      *   or (A = 'value' and B = 'value' and C >= 'value')
      * )
      * ```
@@ -805,7 +814,8 @@ class Handler
      * order by A desc, B desc, C asc, D desc 인 경우 (order 가 4개인 경우)
      * ```
      * and (
-     *   (A >= 'value' and B >= 'value')
+     *   (A >= 'value')
+     *   or (A = 'value' and B >= 'value')
      *   or (A = 'value' and B = 'value' and C <= 'value')
      *   or (A = 'value' and B = 'value' and C = 'value', D >= 'value')
      * )
@@ -822,55 +832,26 @@ class Handler
         $doc = $this->getModel($config)->find($id);
 
         $orders = $query->getQuery()->orders;
-        $orderCount = count($orders);
-        if ($orderCount < 3) {
-            $query->where(function ($query) use ($orders, $doc) {
-                foreach ($orders as $order) {
+        $query->where(function ($query) use ($orders, $doc) {
+            $orderCount = count($orders);
+
+            for ($i=0; $i<$orderCount; $i++) {
+                $query->Orwhere(function ($query) use ($orders, $doc, $i) {
+                    if ($i != 0) {
+                        for ($j=0; $j<$i; $j++) {
+                            $op = '=';
+                            $query->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
+                        }
+                    }
+
                     $op = '>=';
-                    if ($order['direction'] == 'asc') {
+                    if ($orders[$i]['direction'] == 'asc') {
                         $op = '<=';
                     }
-                    $query->where($order['column'], $op, $doc->{$order['column']});
-                }
-            });
-        } else {
-            $query->where(function ($query) use ($orders, $doc, $orderCount) {
-                // 인덱스를 1부터 시작
-                for ($i=1; $i<$orderCount; $i++) {
-                    if ($i == 1) {
-                        $query->where(function ($query) use ($orders, $doc, $i) {
-                            // 두개의 컬럼 처리
-                            $op = '>=';
-                            if ($orders[0]['direction'] == 'asc') {
-                                $op = '<=';
-                            }
-                            $query->where($orders[0]['column'], $op, $doc->{$orders[0]['column']});
-                            $op = '>=';
-                            if ($orders[1]['direction'] == 'asc') {
-                                $op = '<=';
-                            }
-                            $query->where($orders[1]['column'], $op, $doc->{$orders[1]['column']});
-                        });
-                    }
-                    if ($i > 1) {
-                        $query->Orwhere(function ($query) use ($orders, $doc, $i) {
-                            for ($j=0; $j<=$i; $j++) {
-                                if ($j != $i) {
-                                    $op = '=';
-                                    $query->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
-                                } else {
-                                    $op = '>=';
-                                    if ($orders[1]['direction'] == 'asc') {
-                                        $op = '<=';
-                                    }
-                                    $query->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        }
+                    $query->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
+                });
+            }
+        });
 
         $count = $query->count();
 
