@@ -306,9 +306,10 @@ class Handler
     protected function unsetTags(Board $board, array $args)
     {
         $tags = Tag::getByTaggable($board->id);
+        /** @var Tag $tag */
         foreach ($tags as $tag) {
             if (in_array($tag->word, $args['_hashTags']) === false) {
-                $tags->delete();
+                $tag->delete();
             }
         }
     }
