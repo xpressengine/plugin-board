@@ -23,44 +23,33 @@ use Auth;
 use Gate;
 use Event;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
-use Xpressengine\Counter\Counter;
 use Xpressengine\Counter\Exceptions\GuestNotSupportException;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
-use Xpressengine\Media\MediaManager;
-use Xpressengine\Media\Models\Image;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidRequestException;
-use Xpressengine\Plugins\Board\Exceptions\InvalidRequestHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
-use Xpressengine\Plugins\Board\Exceptions\NotFoundUploadFileException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
 use Xpressengine\Plugins\Board\Exceptions\RequiredValueHttpException;
 use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
-use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
-use Xpressengine\Storage\File;
-use Xpressengine\Storage\Storage;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
-use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
-use Xpressengine\User\Models\Guest;
 
 /**
  * UserController
@@ -102,6 +91,7 @@ class UserController extends Controller
 
     /**
      * UserController constructor.
+     *
      * @param Handler $handler
      * @param ConfigHandler $configHandler
      * @param UrlHandler $urlHandler
@@ -144,14 +134,15 @@ class UserController extends Controller
     }
 
     /**
-     * index
+     * index page
      *
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws AccessDeniedHttpException
      */
-    public function index(Request $request, BoardPermissionHandler $boardPermission)
+    public function index(Request $request, BoardPermissionHandler $boardPermission, $menuUrl)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
@@ -160,18 +151,83 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return XePresenter::makeAll('index', $this->listDataImporter($request));
+        $notices = $this->notices($request, $boardPermission)->toArray();
+        $articles = $this->articles($request, $boardPermission, $menuUrl)->toArray();
+
+        return XePresenter::makeAll('index', array_merge($notices, $articles));
     }
 
     /**
-     * get list data
+     * get notices
      *
-     * @param Request $request request
-     * @param string  $id      document id
-     * @return array
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission
+     * @return mixed
      */
-    protected function listDataImporter(Request $request, $id = null)
+    public function notices(Request $request, BoardPermissionHandler $boardPermission)
     {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_LIST,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        $query = $this->handler->getModel($this->config)
+            ->where('instanceId', $this->instanceId)
+            ->visible()->orderBy('head', 'desc');
+
+        if ($request->has('favorite') === true) {
+            $query->leftJoin(
+                'board_favorites',
+                sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                '=',
+                sprintf('%s.%s', 'board_favorites', 'targetId')
+            );
+            $query->where('board_favorites.userId', Auth::user()->getId());
+        }
+
+        Event::fire('xe.plugin.board.notice', [$query]);
+
+        $items = $query->get();
+
+        $fieldTypes = (array)$this->configHandler->getDynamicFields($this->config);
+
+        $categories = [];
+        if ($this->config->get('category') === true) {
+            $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
+        }
+
+        return XePresenter::makeApi([
+            'notices' => $items,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+        ]);
+    }
+
+    /**
+     * get articles
+     *
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission
+     * @param null                   $id              document id
+     * @return mixed
+     */
+    public function articles(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id = null)
+    {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_LIST,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
         $query = $this->handler->getModel($this->config)
             ->where('instanceId', $this->instanceId)->visible();
 
@@ -197,12 +253,12 @@ class UserController extends Controller
         $this->handler->makeWhere($query, $request, $this->config);
         $this->handler->makeOrder($query, $request, $this->config);
 
-        // eager loading
+        // eager loading favorite list
         $query->with(['favorite' => function($favoriteQuery) {
             $favoriteQuery->where('userId', Auth::user()->getId());
         }, 'slug', 'data']);
 
-        Event::fire('xe.plugin.board.list', [$query]);
+        Event::fire('xe.plugin.board.articles', [$query]);
 
         if ($id !== null) {
             $request->query->set('page', $this->handler->pageResolver($query, $this->config, $id));
@@ -223,21 +279,11 @@ class UserController extends Controller
             }
         }
 
-        $terms = [
-            ['value' => '1week', 'text' => 'board::1week'],
-            ['value' => '2week', 'text' => 'board::2week'],
-            ['value' => '1month', 'text' => 'board::1month'],
-            ['value' => '3month', 'text' => 'board::3month'],
-            ['value' => '6month', 'text' => 'board::6month'],
-            ['value' => '1year', 'text' => 'board::1year'],
-        ];
-
-        XeFrontend::translation([
-            'board::selectPost',
-            'board::selectBoard',
+        return XePresenter::makeApi([
+            'paginate' => $paginate,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
         ]);
-
-        return compact('notices', 'paginate', 'fieldTypes','categories', 'terms');
     }
 
     /**
@@ -258,11 +304,30 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        return XePresenter::make('show', array_merge($this->showDataImporter($id), $this->listDataImporter($request, $id)));
+        $item = $this->get($boardPermission, $menuUrl, $id)->toArray();
+        $notices = $this->notices($request, $boardPermission)->toArray();
+        $articles = $this->articles($request, $boardPermission, $menuUrl, $id)->toArray();
+
+        return XePresenter::make('show', array_merge($item, $notices, $articles));
     }
 
-    protected function showDataImporter($id)
+    /**
+     * get article
+     *
+     * @param BoardPermissionHandler $boardPermission board permission
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
+     * @return mixed
+     */
+    public function get(BoardPermissionHandler $boardPermission, $menuUrl, $id)
     {
+        if (Gate::denies(
+            BoardPermissionHandler::ACTION_READ,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
         /** @var UserInterface $user */
         $user = Auth::user();
         /** @var Board $item */
@@ -296,7 +361,11 @@ class UserController extends Controller
             }
         }
 
-        return compact('item', 'visible', 'showCategoryItem');
+        return XePresenter::makeApi([
+            'item' => $item,
+            'visible' => $visible,
+            'showCategoryItem' => $showCategoryItem,
+        ]);
     }
 
     /**
@@ -355,7 +424,6 @@ class UserController extends Controller
         $rules = $validator->getCreateRule($user, $this->config);
 
         return XePresenter::makeAll('create', [
-            'action' => 'create',
             'handler' => $this->handler,
             'head' => $head,
             'categories' => $categories,
@@ -415,7 +483,10 @@ class UserController extends Controller
 
         $board = $this->handler->add($inputs, $user, $this->config);
 
-        return redirect()->to($this->urlHandler->getShow($board, $request->query->all()));
+
+        return XePresenter::redirect()
+            ->to($this->urlHandler->getShow($board, $request->query->all()))
+            ->setData(['item' => $board]);
     }
 
     protected function checkCaptcha()
@@ -471,7 +542,7 @@ class UserController extends Controller
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
         ) {
-            return $this->identify($item);
+            return $this->guestId($menuUrl, $item->id);
         }
 
         // 접근 권한 확인
@@ -522,7 +593,8 @@ class UserController extends Controller
         Request $request,
         Validator $validator,
         BoardPermissionHandler $boardPermission,
-        IdentifyManager $identifyManager
+        IdentifyManager $identifyManager,
+        $menuUrl
     ) {
         $user = Auth::user();
         $id = $request->get('id');
@@ -536,14 +608,12 @@ class UserController extends Controller
         $this->handler->setModelConfig($item, $this->config);
 
         // 비회원이 작성 한 글 인증
-        // 비회원이 작성 한 글일 때 인증페이지로 이동
-        // ?? edit 과 동일한 코드로 처리해야하는것 아닌가? 문제 있어 보임
         if (
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
         ) {
-            return $this->identify($item, $this->urlHandler->get('edit', ['id' => $item->id]));
+            return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('edit', ['id' => $item->id]));
         }
 
 
@@ -581,7 +651,7 @@ class UserController extends Controller
         $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
         $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
 
-        $board = $this->handler->put($item, $inputs);
+        $board = $this->handler->put($item, $inputs, $this->config);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
         if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {
@@ -589,30 +659,33 @@ class UserController extends Controller
             $identifyManager->create($board);
         }
 
-        return redirect()->to(
+        return XePresenter::redirect()->to(
             $this->urlHandler->getSlug(
                 $item->boardSlug->slug,
-                $this->urlHandler->queryStringToArray($request->get('queryString'))
+                $request->query->all()
             )
-        );
+        )->setData(['item' => $board]);
     }
 
     /**
      * 비회원 인증 페이지
      *
-     * @param Board       $board    board model
-     * @param null|string $referrer referrer url (return page url)
-     * @return \Xpressengine\Presenter\RendererInterface
-     * @internal param DocumentEntity $doc document entity
+     * @param string $menuUrl  first segment
+     * @param string $id       document id
+     * @param string $referrer referrer url
+     * @return mixed
      */
-    public function identify(Board $board, $referrer = null)
+    public function guestId($menuUrl, $id, $referrer = null)
     {
+        $item = $this->handler->getModel($this->config)->find($id);
+
         // 레퍼러는 현재 url
         if ($referrer == null) {
             $referrer = app('url')->current();
         }
-        return XePresenter::make('identify', [
-            'board' => $board,
+
+        return XePresenter::make('guestId', [
+            'item' => $item,
             'referrer' => $referrer,
         ]);
     }
@@ -624,9 +697,9 @@ class UserController extends Controller
      * @param IdentifyManager $identifyManager identify manager
      * @return mixed
      */
-    public function identificationConfirm(Request $request, IdentifyManager $identifyManager)
+    public function guestCertify(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
     {
-        $item = $this->handler->getModel($this->config)->find($request->get('id'));
+        $item = $this->handler->getModel($this->config)->find($id);
 
         if ($item->certifyKey == '') {
             throw new InvalidRequestException;
@@ -647,7 +720,7 @@ class UserController extends Controller
         // 인증 되었다면 DB의 인증키를 세션에 저장
         $identifyManager->create($item);
 
-        return redirect()->to($request->get('referrer', 'edit'));
+        return xeRedirect()->to($request->get('referrer', 'edit'));
     }
 
     /**
@@ -724,7 +797,6 @@ class UserController extends Controller
         $user = Auth::user();
 
         $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
 
         // 비회원이 작성 한 글 인증
         if (
@@ -732,14 +804,16 @@ class UserController extends Controller
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
         ) {
-            return $this->identify($item, $this->urlHandler->get('edit', ['id' => $item->id]));
+            // 글 보기 페이지에서 삭제하기 다시 누르면 삭제 됨
+            return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
         }
 
         $this->handler->trash($item, $this->config);
 
         $identifyManager->destroy($item);
 
-        return redirect()->to($this->urlHandler->get('index', $request->all()));
+        $queries = $request->query->all();
+        return xeRedirect()->to($this->urlHandler->get('index', $queries))->setData(['item' => $item]);
     }
 
     /**
@@ -893,11 +967,13 @@ class UserController extends Controller
     }
 
     /**
-     * get voted user list
+     * get voted user modal
      *
      * @param Request $request request
-     * @param string  $menuUrl first segment
-     * @param string  $option  options
+     * @param string $menuUrl first segment
+     * @param string $option options
+     * @param string $id document id
+     * @return mixed
      */
     public function votedModal(Request $request, $menuUrl, $option, $id)
     {
@@ -917,6 +993,15 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * get voted user list
+     *
+     * @param Request $request
+     * @param $menuUrl
+     * @param $option
+     * @param $id
+     * @return mixed
+     */
     public function votedUserList(Request $request, $menuUrl, $option, $id)
     {
         $startId = $request->get('startId');
@@ -937,10 +1022,7 @@ class UserController extends Controller
         $logs = $query->orderBy('id', 'desc')->take($limit)->get();
         $list = [];
         foreach ($logs as $log) {
-//            if (Auth::user()->getId() == $log->userId) {
-//                continue;
-//            }
-
+            /** @var User $user */
             $user = $log->user;
             $profilePage = '#';
             if ($user->getId() != '') {
@@ -966,149 +1048,4 @@ class UserController extends Controller
             'nextStartId' => $nextStartId,
         ]);
     }
-
-//    /**
-//     * file upload
-//     *
-//     * @param Request $request request
-//     * @param Storage $storage storage
-//     * @return mixed
-//     */
-//    public function fileUpload(Request $request, Storage $storage)
-//    {
-//        $uploadedFile = null;
-//        if ($request->file('file') !== null) {
-//            $uploadedFile = $request->file('file');
-//        } elseif ($request->file('image') !== null) {
-//            $uploadedFile = $request->file('image');
-//        }
-//
-//        if ($uploadedFile === null) {
-//            throw new NotFoundUploadFileException;
-//        }
-//
-//        $file = $storage->upload($uploadedFile, BoardModule::FILE_UPLOAD_PATH);
-//
-//        /** @var \Xpressengine\Media\MediaManager $mediaManager */
-//        $mediaManager = \App::make('xe.media');
-//        $media = null;
-//        $thumbnails = null;
-//        if ($mediaManager->is($file) === true) {
-//            $media = $mediaManager->make($file);
-//            $thumbnails = $mediaManager->createThumbnails($media, BoardModule::THUMBNAIL_TYPE);
-//
-//            $media = $media->toArray();
-//
-//            if (!empty($thumbnails)) {
-//                $info['thumbnails'] = $thumbnails;
-//            }
-//        }
-//
-//        return XePresenter::makeApi([
-//            'file' => $file->toArray(),
-//            'media' => $media,
-//            'thumbnails' => $thumbnails,
-//        ]);
-//    }
-//
-//    /**
-//     * get file source
-//     *
-//     * @param BoardPermissionHandler $boardPermission board permission handler
-//     * @param string                 $menuUrl         first segment
-//     * @param string                 $id              document id
-//     */
-//    public function fileSource(BoardPermissionHandler $boardPermission, $menuUrl, $id)
-//    {
-//        if (Gate::denies(
-//            BoardPermissionHandler::ACTION_READ,
-//            new Instance($boardPermission->name($this->instanceId)))
-//        ) {
-//            throw new AccessDeniedHttpException;
-//        }
-//
-//        $file = File::find($id);
-//
-//        /** @var \Xpressengine\Media\MediaManager $mediaManager */
-//        $mediaManager = \App::make('xe.media');
-//        if ($mediaManager->is($file) === true) {
-//            $dimension = 'L';
-//            if (\Agent::isMobile() === true) {
-//                $dimension = 'M';
-//            }
-//            $media = Image::getThumbnail(
-//                $mediaManager->make($file),
-//                BoardModule::THUMBNAIL_TYPE,
-//                $dimension
-//            );
-//        }
-//
-//        header('Content-type: ' . $media->mime);
-//        echo $media->getContent();
-//    }
-//
-//    public function fileDownload(BoardPermissionHandler $boardPermission, $menuUrl, $id)
-//    {
-//        if (Gate::denies(
-//            BoardPermissionHandler::ACTION_READ,
-//            new Instance($boardPermission->name($this->instanceId)))
-//        ) {
-//            throw new AccessDeniedHttpException;
-//        }
-//
-//        $file = File::find($id);
-//
-//        /** @var \Xpressengine\Storage\Storage $storage */
-//        $storage = \App::make('xe.storage');
-//        $storage->download($file);
-//    }
-//
-//    /**
-//     * 해시태그 suggestion 리스트
-//     *
-//     * @param Request    $request request
-//     * @param TagHandler $tag     tag handler
-//     * @param string     $menuUrl first segment
-//     * @param string     $id      document id
-//     * @return mixed
-//     */
-//    public function suggestionHashTag(Request $request, TagHandler $tag, $menuUrl, $id = null)
-//    {
-//        $tags = $tag->similar($request->get('string'));
-//
-//        $suggestions = [];
-//        foreach ($tags as $tag) {
-//            $suggestions[] = [
-//                'id' => $tag->id,
-//                'word' => $tag->word,
-//            ];
-//        }
-//
-//        return XePresenter::makeApi($suggestions);
-//    }
-//
-//    /**
-//     * 멘션 suggestion 리스트
-//     *
-//     * @param Request $request request
-//     * @param string  $menuUrl first segment
-//     * @param string  $id      document id
-//     * @return mixed
-//     */
-//    public function suggestionMention(Request $request, $menuUrl, $id = null)
-//    {
-//        $suggestions = [];
-//
-//        $string = $request->get('string');
-//        $users = User::where('displayName', 'like', $string . '%')->where('id', '<>', Auth::user()->getId())->get();
-//        foreach ($users as $user) {
-//            $suggestions[] = [
-//                'id' => $user->getId(),
-//                'displayName' => $user->getDisplayName(),
-//                'profileImage' => $user->profileImage,
-//            ];
-//        }
-//
-//        return XePresenter::makeApi($suggestions);
-//    }
 }

@@ -306,9 +306,10 @@ class Handler
     protected function unsetTags(Board $board, array $args)
     {
         $tags = Tag::getByTaggable($board->id);
+        /** @var Tag $tag */
         foreach ($tags as $tag) {
             if (in_array($tag->word, $args['_hashTags']) === false) {
-                $tags->delete();
+                $tag->delete();
             }
         }
     }
@@ -316,19 +317,23 @@ class Handler
     /**
      * update document
      *
-     * @param Board $board board model
-     * @param array $args  arguments
+     * @param Board        $board  board model
+     * @param array        $args   arguments
+     * @param ConfigEntity $config config entity
      * @return mixed
      */
-    public function put(Board $board, array $args)
+    public function put(Board $board, array $args, ConfigEntity $config)
     {
         $board->getConnection()->beginTransaction();
 
+        $attributes = $board->getAttributes();
         foreach ($args as $name => $value) {
-            if ($board->{$name} !== null) {
+            if (isset($attributes[$name])) {
                 $board->{$name} = $value;
             }
         }
+
+        $this->setModelConfig($board, $config);
 
         $doc = $this->documentHandler->put($board);
 
@@ -561,6 +566,7 @@ class Handler
      *
      * @param ConfigEntity $config
      * @return mixed
+     * @deprecated controller 에서 model 사용
      */
     public function getsNotice(ConfigEntity $config, $userId)
     {
@@ -693,10 +699,10 @@ class Handler
      * @param string        $option 'assent' or 'dissent'
      * @return void
      */
-    public function vote(Board $board, UserInterface $user, $option)
+    public function vote(Board $board, UserInterface $user, $option, $point = 1)
     {
         if ($this->voteCounter->has($board->id, $user, $option) === false) {
-            $this->incrementVoteCount($board, $user, $option);
+            $this->incrementVoteCount($board, $user, $option, $point);
         } else {
             $this->decrementVoteCount($board, $user, $option);
         }
@@ -710,9 +716,9 @@ class Handler
      * @param string        $option 'assent' or 'dissent'
      * @return void
      */
-    public function incrementVoteCount(Board $board, UserInterface $user, $option)
+    public function incrementVoteCount(Board $board, UserInterface $user, $option, $point = 1)
     {
-        $this->voteCounter->add($board->id, $user, $option);
+        $this->voteCounter->add($board->id, $user, $option, $point);
 
         $columnName = 'assentCount';
         if ($option == 'dissent') {
@@ -784,6 +790,38 @@ class Handler
     /**
      * $request, $id 로 현재의 글이 리스트에서 몇 페이지에 표시되야 하는지 추측
      *
+     * order by A desc 인 경우 (order 가 1개일 경우)
+     * ```
+     * and (A >= 'value')
+     * ```
+     *
+     * order by A desc, B desc 인 경우 (order 가 2일 이상이면 같은 방식)
+     * ```
+     * and (
+     *   (A >= 'value')
+     *   or (A = 'value' and B >= 'value')
+     * )
+     * ```
+     *
+     * order by A desc, B desc, C desc 인 경우 (order 가 3개인 경우)
+     * ```
+     * and (
+     *   (A >= 'value')
+     *   or (A = 'value' and B >= 'value')
+     *   or (A = 'value' and B = 'value' and C >= 'value')
+     * )
+     * ```
+     *
+     * order by A desc, B desc, C asc, D desc 인 경우 (order 가 4개인 경우)
+     * ```
+     * and (
+     *   (A >= 'value')
+     *   or (A = 'value' and B >= 'value')
+     *   or (A = 'value' and B = 'value' and C <= 'value')
+     *   or (A = 'value' and B = 'value' and C = 'value', D >= 'value')
+     * )
+     * ```
+     *
      * @param Builder      $query  orm builder
      * @param ConfigEntity $config board config
      * @param string       $id     document id
@@ -795,15 +833,29 @@ class Handler
         $doc = $this->getModel($config)->find($id);
 
         $orders = $query->getQuery()->orders;
-        foreach ($orders as $order) {
-            $op = '>=';
-            if ($order['direction'] == 'asc') {
-                $op = '<=';
+        $query->where(function ($query) use ($orders, $doc) {
+            $orderCount = count($orders);
+
+            for ($i=0; $i<$orderCount; $i++) {
+                $query->Orwhere(function ($query) use ($orders, $doc, $i) {
+                    if ($i != 0) {
+                        for ($j=0; $j<$i; $j++) {
+                            $op = '=';
+                            $query->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
+                        }
+                    }
+
+                    $op = '>=';
+                    if ($orders[$i]['direction'] == 'asc') {
+                        $op = '<=';
+                    }
+                    $query->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
+                });
             }
-            $query->where($order['column'], $op, $doc->{$order['column']});
-        }
+        });
 
         $count = $query->count();
+
         $page = (int)($count / $config->get('perPage'));
         if ($count % $config->get('perPage') != 0) {
             ++$page;

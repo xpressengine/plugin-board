@@ -250,7 +250,13 @@
                 <div class="cont_area">
                     <p>{!! mb_substr($item->pureContent, 0, 100) !!}</p>
                     <div class="more_info">
-                        <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
+                        @if ($isManager === true)
+                        <label class="xe-label">
+                            <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
+                        </label>
+                        @endif
                         <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
                                 @if ($item->hasAuthor())
@@ -299,7 +305,13 @@
                 <div class="cont_area">
                     <p>{!! mb_substr($item->pureContent, 0, 100) !!}</p>
                     <div class="more_info">
-                        <input type="checkbox" title="체크" class="bd_manage_check" value="{{ $item->id }}">
+                        @if ($isManager === true)
+                        <label class="xe-label">
+                            <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
+                            <span class="xe-input-helper"></span>
+                            <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
+                        </label>
+                        @endif
                         <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
                                 @if ($item->hasAuthor())

@@ -355,6 +355,10 @@ return [
         'ko' => '태그 사용',
         'en' => 'Tag use',
     ],
+    'inputTag' => [
+        'ko' => '태그를 입력하세요.',
+        'en' => 'Enter your tags.',
+    ],
     'masAlertCaptcha' => [
         'ko' => '현재 CAPTCHA 기능을 정상적으로 사용할 수 없습니다. CAPTCHA 설정이 정상적으로 되어 있는지 확인하십시오.<br>
 CAPTCHA 설정이 정상적이지 않을 경우 관련 기능에 오류가 발생할 수 있습니다.',
@@ -364,5 +368,9 @@ You may receive an error occurs in the associated function if not in a state cap
     'captchaNotVerified' => [
         'ko' => '자동 인증 방지 기능을 통과하지 못했습니다.',
         'en' => 'It did not pass the automatic authentication prevention function.',
+    ],
+    'msgDeleteConfirm' => [
+        'ko' => '삭제된 게시물은 복구할 수 없습니다. 계속하시겠습니까?',
+        'en' => 'Deleted posts can not be recovered. Do you want to continue?',
     ],
 ];

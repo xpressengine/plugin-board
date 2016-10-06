@@ -134,43 +134,61 @@ class Board extends AbstractModule
     {
         Route::instance(self::getId(), function () {
             Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
-            Route::get('/create', ['as' => 'create', 'uses' => 'UserController@create']);
-            Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
-            Route::get('/destroy/{id}', ['as' => 'destroy', 'uses' => 'UserController@destroy']);
             Route::get('/show/{id}', ['as' => 'show', 'uses' => 'UserController@show']);
-            Route::get('/identify/{id}', ['as' => 'identify', 'uses' => 'UserController@identify']);
-            Route::get('/revision/{id}', ['as' => 'revision', 'uses' => 'UserController@revision']);
+
+            Route::get('/articles', ['as' => 'api.articles', 'uses' => 'UserController@articles']);
+            Route::get('/notices', ['as' => 'api.notices', 'uses' => 'UserController@notices']);
+            Route::get('/articles/{id}', ['as' => 'api.article', 'uses' => 'UserController@get']);
+
+            Route::get('/create', ['as' => 'create', 'uses' => 'UserController@create']);
             Route::post('/store', ['as' => 'store', 'uses' => 'UserController@store']);
+
+            Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
+            Route::post('/update', ['as' => 'update', 'uses' => 'UserController@update']);
+
+            Route::delete('/destroy/{id}', ['as' => 'destroy', 'uses' => 'UserController@destroy']);
+
+            Route::get('/guest/id/{id}', ['as' => 'guest.id', 'uses' => 'UserController@guestId']);
+            Route::post('/guest/certify/{id}', ['as' => 'guest.certify', 'uses' => 'UserController@guestCertify']);
+
+            Route::get('/revision/{id}', ['as' => 'revision', 'uses' => 'UserController@revision']);
+
             Route::post('/preview', ['as' => 'preview', 'uses' => 'UserController@preview']);
             Route::post('/temporary', ['as' => 'temporary', 'uses' => 'UserController@temporary']);
             Route::get('/trash', ['as' => 'trash', 'uses' => 'UserController@trash']);
             Route::post('/trash', ['as' => 'trash', 'uses' => 'UserController@trash']);
-            Route::post('/identificationConfirm', ['as' => 'identificationConfirm', 'uses' => 'UserController@identificationConfirm']);
-            Route::post('/update', ['as' => 'update', 'uses' => 'UserController@update']);
+
             Route::post('/vote/{option}/{id}', ['as' => 'vote', 'uses' => 'UserController@vote']);
             Route::get('/vote/show/{id}', ['as' => 'showVote', 'uses' => 'UserController@showVote']);
             Route::get('/vote/users/{option}/{id}', ['as' => 'votedUsers', 'uses' => 'UserController@votedUsers']);
             Route::get('/vote/modal/{option}/{id}', ['as' => 'votedModal', 'uses' => 'UserController@votedModal']);
             Route::get('/vote/userList/{option}/{id}', ['as' => 'votedUserList', 'uses' => 'UserController@votedUserList']);
+
+            Route::post('/favorite/{id}', ['as' => 'favorite', 'uses' => 'UserController@favorite']);
+
             Route::post('/manageMenus/{id}', ['as' => 'manageMenus', 'uses' => 'UserController@manageMenus']);
+
             Route::get('/comment/list', ['as' => 'comment.index', 'uses' => 'UserController@pageCommentIndex']);
             Route::post('/comment/store', ['as' => 'comment.store', 'uses' => 'UserController@pageCommentStore']);
             Route::post('/comment/update', ['as' => 'comment.update', 'uses' => 'UserController@pageCommentUpdate']);
             Route::post('/comment/destroy', ['as' => 'comment.destroy', 'uses' => 'UserController@pageCommentDestroy']);
+
             Route::post('/file/upload', ['as' => 'upload', 'uses' => 'UserController@fileUpload']);
             Route::get('/file/source/{id}', ['as' => 'source', 'uses' => 'UserController@fileSource']);
             Route::get('/file/download/{id}', ['as' => 'download', 'uses' => 'UserController@fileDownload']);
             Route::get('/suggestion/hashTag/{id?}', ['as' => 'hashTag', 'uses' => 'UserController@suggestionHashTag']);
             Route::get('/suggestion/mention/{id?}', ['as' => 'mention', 'uses' => 'UserController@suggestionMention']);
-            Route::get('/slug/{slug}', ['as' => 'slug2', 'uses' => 'UserController@slug']);
+
+            //Route::get('/slug/{slug}', ['as' => 'slug2', 'uses' => 'UserController@slug']);
             Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'UserController@hasSlug']);
             Route::get('/{slug}', ['as' => 'slug', 'uses' => 'UserController@slug']);
-            Route::post('/favorite/{id}', ['as' => 'favorite', 'uses' => 'UserController@favorite']);
+
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
 
         BoardSlug::setReserved([
             'index', 'create', 'edit', 'destroy', 'show', 'identify', 'revision', 'store', 'preview', 'temporary',
-            'trash', 'certify', 'update', 'vote', 'manageMenus', 'comment', 'file', 'suggestion', 'slug', 'hasSlug'
+            'trash', 'certify', 'update', 'vote', 'manageMenus', 'comment', 'file', 'suggestion', 'slug', 'hasSlug',
+            'favorite'
         ]);
     }
 
