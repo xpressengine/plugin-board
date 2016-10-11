@@ -1,7 +1,7 @@
 System.import('vendor:/react-tag-input').then(function() {
-    System.amdRequire(['react', 'react-dom', 'jquery', 'react-tag-input'], function(React, ReactDOM, $, TagInput) {
+    System.amdRequire(['react', 'react-dom', 'react-tag-input'], function(React, ReactDOM, TagInput) {
 
-        $.noConflict();
+        // $.noConflict();
 
         var $container = $('#xeBoardTagWrap');
         var ReactTags = TagInput.WithContext;
