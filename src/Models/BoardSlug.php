@@ -79,6 +79,7 @@ class BoardSlug extends DynamicModel
             if (
                 ($code <= 47 && $code != 45) ||
                 ($code >= 58 && $code <= 64) ||
+                ($code >= 91 && $code <= 96) ||
                 ($code >= 123 && $code <= 127)
             ) {
                 continue;
