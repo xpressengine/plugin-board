@@ -174,11 +174,11 @@ class Handler
     protected function saveData(Board $board, array $args)
     {
         $allowComment = 1;
-        if (!empty($args['allowComment']) && $args['allowComment'] !== '1') {
+        if (empty($args['allowComment']) || $args['allowComment'] !== '1') {
             $allowComment = 0;
         }
         $useAlarm = 1;
-        if (!empty($args['useAlarm']) && $args['useAlarm'] !== '1') {
+        if (empty($args['useAlarm']) || $args['useAlarm'] !== '1') {
             $useAlarm = 0;
         }
         $fileCount = FileModel::getByFileable($board->id)->count();
