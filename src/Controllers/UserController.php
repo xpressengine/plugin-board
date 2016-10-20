@@ -142,7 +142,7 @@ class UserController extends Controller
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws AccessDeniedHttpException
      */
-    public function index(Request $request, BoardPermissionHandler $boardPermission, $menuUrl)
+    public function index(Request $request, BoardPermissionHandler $boardPermission, $menuUrl='')
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
