@@ -30,6 +30,7 @@ use XeToggleMenu;
 use XeConfig;
 use XeDB;
 use XePlugin;
+use XeTrash;
 
 /**
  * Plugin
@@ -293,6 +294,7 @@ class Plugin extends AbstractPlugin
     {
         $this->bindClasses();
         $this->registerTitleWithSlug();
+        $this->registerRecycleBin();
     }
 
     /**
@@ -445,5 +447,10 @@ class Plugin extends AbstractPlugin
 
         $register->add(UIObjects\Share::class);
         $uiObjectHandler->setAlias('share', UIObjects\Share::getId());
+    }
+
+    private function registerRecycleBin()
+    {
+        XeTrash::register(RecycleBin::class);
     }
 }

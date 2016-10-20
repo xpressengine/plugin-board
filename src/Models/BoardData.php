@@ -40,6 +40,12 @@ class BoardData extends DynamicModel
 
     protected $fillable = ['allowComment', 'useAlarm', 'fileCount'];
 
+    protected $casts = [
+        'allowComment' => 'int',
+        'useAlarm' => 'int',
+        'fileCount' => 'int',
+    ];
+
     public function isAlarm()
     {
         return $this->getAttribute('useAlarm') == 1;
