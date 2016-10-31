@@ -538,6 +538,7 @@ class UserController extends Controller
 
         // 비회원이 작성 한 글일 때 인증페이지로 이동
         if (
+            $this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
@@ -546,10 +547,7 @@ class UserController extends Controller
         }
 
         // 접근 권한 확인
-        if (Gate::denies(
-            BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+        if ($this->isManager !== true && $item->userId !== $user->getId()) {
             throw new AccessDeniedHttpException;
         }
 
@@ -609,6 +607,7 @@ class UserController extends Controller
 
         // 비회원이 작성 한 글 인증
         if (
+            $this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
@@ -616,6 +615,10 @@ class UserController extends Controller
             return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('edit', ['id' => $item->id]));
         }
 
+        // 접근 권한 확인
+        if ($this->isManager !== true && $item->userId !== $user->getId()) {
+            throw new AccessDeniedHttpException;
+        }
 
         $rules = $validator->getEditRule($user, $this->config);
         $this->validate($request, $rules);
