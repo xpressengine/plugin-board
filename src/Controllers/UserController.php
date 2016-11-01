@@ -44,6 +44,7 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
+use Xpressengine\Plugins\Board\Purifier;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
@@ -461,8 +462,9 @@ class UserController extends Controller
 
         $inputs = $request->all();
         $inputs['instanceId'] = $this->instanceId;
-        $inputs['content'] = $request->originAll()['content'];
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+        $purifier = new Purifier();
+        $inputs['content'] = $purifier->purify($request->originAll()['content']);
 
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
@@ -624,9 +626,9 @@ class UserController extends Controller
         $this->validate($request, $rules);
 
         $inputs = $request->all();
-        // replace purifying content to origin content value
-        $inputs['content'] = $request->originAll()['content'];
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+        $purifier = new Purifier();
+        $inputs['content'] = $purifier->purify($request->originAll()['content']);
 
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
