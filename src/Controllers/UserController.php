@@ -463,8 +463,8 @@ class UserController extends Controller
         $inputs = $request->all();
         $inputs['instanceId'] = $this->instanceId;
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $purifier = new Purifier();
-        $inputs['content'] = $purifier->purify($request->originAll()['content']);
+
+        $inputs['content'] = purify($request->originAll()['content']);
 
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
@@ -627,8 +627,7 @@ class UserController extends Controller
 
         $inputs = $request->all();
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $purifier = new Purifier();
-        $inputs['content'] = $purifier->purify($request->originAll()['content']);
+        $inputs['content'] = purify($request->originAll()['content']);
 
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
