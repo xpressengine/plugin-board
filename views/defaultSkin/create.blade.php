@@ -23,7 +23,7 @@
                     <div class="write_title">
                         {!! uio('titleWithSlug', [
                         'title' => Input::old('title'),
-                        'slug' => '',
+                        'slug' => Input::old('slug'),
                         'titleClassName' => 'bd_input',
                         'config' => $config
                         ]) !!}
