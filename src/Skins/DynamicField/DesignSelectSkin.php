@@ -28,98 +28,175 @@ class DesignSelectSkin extends DefaultSkin
      */
     protected static $id = 'FieldType/xpressengine@Category/FieldSkin/xpressengine@default';
 
-    protected $name = 'Category Design select skin';
-    protected $description = '공식사이트 홈페이지에서 Category DynamicField Type 위해 사용하는 스킨';
+    /**
+     * path delimiter
+     *
+     * @var string
+     */
+    protected $delimiter = '.';
+
+    public function name()
+    {
+        return 'Category Design select skin';
+    }
 
     /**
      * get view path
      *
-     * @param string $name view name
      * @return string
      */
-    protected function getPath($name)
+    public function getPath()
     {
-        return 'board::views.dynamicField.category.designSelect.'.$name;
+        return 'board::views.dynamicField.category.designSelect';
     }
 
-    public function create(array $inputs)
+    public function create(array $args)
     {
-        $config = $this->config;
-
-        $categories = [];
+        $selectItems = [];
         $categoryItems = Category::find($this->config->get('categoryId'))->items;
         foreach ($categoryItems as $categoryItem) {
-            $categories[] = [
+            $selectItems[] = [
                 'value' => $categoryItem->id,
                 'text' => $categoryItem->word,
             ];
         }
 
-        return View::make($this->getPath('create'), [
-            'config' => $config,
-            'categories' => $categories,
-        ])->render();
+        $this->addMergeData(['selectItems' => $selectItems]);
+
+          return parent::create($args);
     }
 
     public function edit(array $args)
     {
-        $config = $this->config;
-
-        $categories = [];
+        $selectItems = [];
         $categoryItems = Category::find($this->config->get('categoryId'))->items;
         foreach ($categoryItems as $categoryItem) {
-            $categories[] = [
+            $selectItems[] = [
                 'value' => $categoryItem->id,
                 'text' => $categoryItem->word,
             ];
         }
 
-        $itemId = '';
-        $item = null;
+        $this->addMergeData(['selectItems' => $selectItems]);
 
-        if (isset($args[$config->get('id') . 'ItemId'])) {
-            $itemId = $args[$config->get('id') . 'ItemId'];
-            $item = CategoryItem::find($itemId);
-        }
-
-        return View::make($this->getPath('edit'), [
-            'config' => $config,
-            'categories' => $categories,
-            'itemId' => $itemId,
-            'item' => $item,
-        ])->render();
+        return parent::edit($args);
     }
 
-    public function search(array $inputs)
+    public function show(array $args)
     {
-        $config = $this->config;
-        if ($config->get('searchable') !== true) {
-            return '';
-        }
+        $this->path = parent::getPath();
+        return parent::show($args);
+    }
 
-        $categories = [];
+    public function search(array $args)
+    {
+        $selectItems = [];
         $categoryItems = Category::find($this->config->get('categoryId'))->items;
         foreach ($categoryItems as $categoryItem) {
-            $categories[] = [
+            $selectItems[] = [
                 'value' => $categoryItem->id,
                 'text' => $categoryItem->word,
             ];
         }
 
-        $key = $config->get('id').'ItemId';
+        $this->addMergeData(['selectItems' => $selectItems]);
 
-        $itemId = '';
-        $item = '';
-        if (isset($inputs[$key])) {
-            $itemId = $inputs[$key];
-            $item = CategoryItem::find($itemId);
-        }
-
-        return View::make($this->getPath('search'), [
-            'config' => $config,
-            'categories' => $categories,
-            'itemId' => $itemId,
-            'item' => $item,
-        ])->render();
+        return parent::search($args);
     }
+
+//
+//    public function create(array $args)
+//    {
+//        $config = $this->config;
+//
+//        $categories = [];
+//        $categoryItems = Category::find($this->config->get('categoryId'))->items;
+//        foreach ($categoryItems as $categoryItem) {
+//            $categories[] = [
+//                'value' => $categoryItem->id,
+//                'text' => $categoryItem->word,
+//            ];
+//        }
+//
+//        return View::make($this->getViewPath('create'), [
+//            'config' => $config,
+//            'categories' => $categories,
+//        ])->render();
+//    }
+//
+//    public function edit(array $args)
+//    {
+//        $config = $this->config;
+//
+//        $categories = [];
+//        $categoryItems = Category::find($this->config->get('categoryId'))->items;
+//        foreach ($categoryItems as $categoryItem) {
+//            $categories[] = [
+//                'value' => $categoryItem->id,
+//                'text' => $categoryItem->word,
+//            ];
+//        }
+//
+//        $itemId = '';
+//        $item = null;
+//
+//        if (isset($args[$config->get('id') . 'ItemId'])) {
+//            $itemId = $args[$config->get('id') . 'ItemId'];
+//            $item = CategoryItem::find($itemId);
+//        }
+//
+//        return View::make($this->getViewPath('edit'), [
+//            'config' => $config,
+//            'categories' => $categories,
+//            'itemId' => $itemId,
+//            'item' => $item,
+//        ])->render();
+//    }
+//
+//    public function search(array $inputs)
+//    {
+//        $config = $this->config;
+//        if ($config->get('searchable') !== true) {
+//            return '';
+//        }
+//
+//        $categories = [];
+//        $categoryItems = Category::find($this->config->get('categoryId'))->items;
+//        foreach ($categoryItems as $categoryItem) {
+//            $categories[] = [
+//                'value' => $categoryItem->id,
+//                'text' => $categoryItem->word,
+//            ];
+//        }
+//
+//        $key = $config->get('id').'ItemId';
+//
+//        $itemId = '';
+//        $item = '';
+//        if (isset($inputs[$key])) {
+//            $itemId = $inputs[$key];
+//            $item = CategoryItem::find($itemId);
+//        }
+//
+//        return View::make($this->getViewPath('search'), [
+//            'config' => $config,
+//            'categories' => $categories,
+//            'itemId' => $itemId,
+//            'item' => $item,
+//        ])->render();
+//    }
+//
+//    public function show(array $args)
+//    {
+//        $this->path = parent::getPath();
+//
+//        return parent::show($args);
+//    }
+//
+//    public function settings(ConfigEntity $config = null)
+//    {
+//        $this->path = parent::getPath();
+//
+//        return parent::settings($config);
+//    }
 }

@@ -328,7 +328,7 @@ class Handler
 
         $attributes = $board->getAttributes();
         foreach ($args as $name => $value) {
-            if (isset($attributes[$name])) {
+            if (array_key_exists($name, $attributes)) {
                 $board->{$name} = $value;
             }
         }

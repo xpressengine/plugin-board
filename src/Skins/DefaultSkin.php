@@ -253,7 +253,7 @@ class DefaultSkin extends AbstractSkin
      * @param array $config config
      * @return \Illuminate\Contracts\Support\Renderable|string
      */
-    public function getSettingView($config = [])
+    public function renderSetting(array $config = [])
     {
         if ($config === []) {
             $config = [

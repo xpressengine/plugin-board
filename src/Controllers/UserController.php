@@ -44,6 +44,7 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
+use Xpressengine\Plugins\Board\Purifier;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
@@ -461,8 +462,9 @@ class UserController extends Controller
 
         $inputs = $request->all();
         $inputs['instanceId'] = $this->instanceId;
-        $inputs['content'] = $request->originAll()['content'];
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+
+        $inputs['content'] = purify($request->originAll()['content']);
 
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
@@ -538,6 +540,7 @@ class UserController extends Controller
 
         // 비회원이 작성 한 글일 때 인증페이지로 이동
         if (
+            $this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
@@ -546,10 +549,7 @@ class UserController extends Controller
         }
 
         // 접근 권한 확인
-        if (Gate::denies(
-            BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+        if ($this->isManager !== true && $item->userId !== $user->getId()) {
             throw new AccessDeniedHttpException;
         }
 
@@ -609,6 +609,7 @@ class UserController extends Controller
 
         // 비회원이 작성 한 글 인증
         if (
+            $this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             $user->getRating() != 'super'
@@ -616,14 +617,17 @@ class UserController extends Controller
             return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('edit', ['id' => $item->id]));
         }
 
+        // 접근 권한 확인
+        if ($this->isManager !== true && $item->userId !== $user->getId()) {
+            throw new AccessDeniedHttpException;
+        }
 
         $rules = $validator->getEditRule($user, $this->config);
         $this->validate($request, $rules);
 
         $inputs = $request->all();
-        // replace purifying content to origin content value
-        $inputs['content'] = $request->originAll()['content'];
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+        $inputs['content'] = purify($request->originAll()['content']);
 
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
