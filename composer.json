@@ -82,7 +82,10 @@
           "name": "Share",
           "description": "share"
         }
-      }
+      },
+      "screenshots" : [
+        "/plugins/board/assets/img/screenshots/plugin1.png"
+      ]
     }
   },
   "require": {
