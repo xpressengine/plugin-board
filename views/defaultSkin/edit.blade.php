@@ -151,27 +151,43 @@
 
     /* Styles for suggestions */
     div.ReactTags__suggestions {
+        overflow-y: auto;
         position: absolute;
+        top: 100%;
+        max-height: 366px;
+        margin-top: -1px ;
+        padding: 8px 0;
+        border: 1px solid #51586b;
+        border-radius: 0 0 2px 2px;
+        background-color: #fff;
+        z-index: 10;
     }
+    
     div.ReactTags__suggestions ul {
-        list-style-type: none;
-        box-shadow: .05em .01em .5em rgba(0,0,0,.2);
-        background: white;
         width: 200px;
+        margin: 0;
+        padding: 0;
+        background: white;
+        list-style-type: none;
     }
     div.ReactTags__suggestions li {
-        border-bottom: 1px solid #ddd;
-        padding: 5px 10px;
-        margin: 0;
+      padding: 5px 10px;
+      margin: 0;
+    }
+    div.ReactTags__suggestions li:hover,
+    div.ReactTags__suggestions li.active {
+        background-color: #2389ee;
+        color: #000;
+        cursor: pointer;
     }
     div.ReactTags__suggestions li mark {
         text-decoration: underline;
         background: none;
         font-weight: 600;
     }
-    div.ReactTags__suggestions ul li.active {
-        background: #b7cfe0;
-        cursor: pointer;
+    div.ReactTags__suggestions li:hover span,
+    div.ReactTags__suggestions li.active span {
+        color: #fff;
     }
 
 </style>
