@@ -1,5 +1,6 @@
 {{ XeFrontend::rule('board', $rules) }}
-{{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
+
+{{ XeFrontend::js('plugins/board/assets/js/build/BoardTags.js')->appendTo('body')->load() }}
 
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
@@ -110,84 +111,3 @@
     </form>
 
 </div>
-
-<style type="text/css">
-    /* Example Styles for React Tags*/
-    div.ReactTags__tags {
-        position: relative;
-    }
-
-    /* Styles for the input */
-    div.ReactTags__tagInput {
-        width: 200px;
-        border-radius: 2px;
-        display: inline-block;
-    }
-    div.ReactTags__tagInput input,
-    div.ReactTags__tagInput input:focus {
-        height: 31px;
-        margin: 0;
-        font-size: 12px;
-        width: 100%;
-        border: 1px solid #eee;
-    }
-
-    /* Styles for selected tags */
-    div.ReactTags__selected span.ReactTags__tag {
-        border: 1px solid #ddd;
-        background: #eee;
-        font-size: 12px;
-        display: inline-block;
-        padding: 5px;
-        margin: 0 5px;
-        /*cursor: move;*/
-        border-radius: 2px;
-    }
-    div.ReactTags__selected a.ReactTags__remove {
-        color: #aaa;
-        margin-left: 5px;
-        cursor: pointer;
-    }
-
-    /* Styles for suggestions */
-    div.ReactTags__suggestions {
-        overflow-y: auto;
-        position: absolute;
-        top: 100%;
-        max-height: 366px;
-        margin-top: -1px ;
-        padding: 8px 0;
-        border: 1px solid #51586b;
-        border-radius: 0 0 2px 2px;
-        background-color: #fff;
-        z-index: 10;
-    }
-    
-    div.ReactTags__suggestions ul {
-        width: 200px;
-        margin: 0;
-        padding: 0;
-        background: white;
-        list-style-type: none;
-    }
-    div.ReactTags__suggestions li {
-      padding: 5px 10px;
-      margin: 0;
-    }
-    div.ReactTags__suggestions li:hover,
-    div.ReactTags__suggestions li.active {
-        background-color: #2389ee;
-        color: #000;
-        cursor: pointer;
-    }
-    div.ReactTags__suggestions li mark {
-        text-decoration: underline;
-        background: none;
-        font-weight: 600;
-    }
-    div.ReactTags__suggestions li:hover span,
-    div.ReactTags__suggestions li.active span {
-        color: #fff;
-    }
-
-</style>

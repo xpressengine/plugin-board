@@ -1,5 +1,4 @@
-{{ XeFrontend::js('/assets/vendor/vendor.bundle.js')->appendTo('head')->load() }}
-{{ XeFrontend::js('/assets/core/common/js/toggleMenu.bundle.js')->appendTo('head')->load() }}
+{{ XeFrontend::js('/assets/core/common/js/toggleMenu.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/jqueryui/jquery.event.drag-2.2.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.core.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.formatters.js')->appendTo('head')->load() }}

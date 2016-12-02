@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,14 @@
   },
   "homepage": "https://github.com/xpressengine/plugin-board#readme",
   "dependencies": {
-    "gulp-cli": "^1.2.2",
-    "gulp-react": "^3.1.0"
+    "moment": "^2.17.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-tag-input": "^4.4.0",
+    "webpack": "^1.13.3"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.14",
+    "path": "^0.12.7"
   }
 }
