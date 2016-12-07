@@ -322,7 +322,7 @@
         <tr class="no_article">
             <!-- [D] 컬럼수에 따라 colspan 적용 -->
             <td colspan="{{ count($skinConfig['listColumns']) + 2 }}">
-                <img src="/plugins/board/assets/img/@no.jpg" alt="">
+                <img src="/plugins/board/assets/img/img_pen.jpg" alt="">
                 <p>{{ xe_trans('xe::noPost') }}</p>
             </td>
         </tr>
