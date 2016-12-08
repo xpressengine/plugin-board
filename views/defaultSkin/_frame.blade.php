@@ -1,12 +1,10 @@
-{{ XeFrontend::js('plugins/board/assets/js/build/board.js')->appendTo('body')->load() }}
-{{ XeFrontend::css('plugins/board/assets/css/board.css')->load() }}
+{{ XeFrontend::css('plugins/board/assets/defaultSkin/css/board.css')->load() }}
+{{ XeFrontend::js('plugins/board/assets/build/defaultSkin.js')->appendTo('body')->load() }}
 
 <style>
     .bd_function .bd_like.voted{color:#FE381E}
 </style>
 
 <!-- BOARD -->
-<div class="board">
-    @yield('content', isset($content) ? $content : '')
-</div>
+<div id="boardContainer" class="board">{{--@yield('content', isset($content) ? $content : '')--}}</div>
 <!-- /BOARD -->

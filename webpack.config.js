@@ -1,38 +1,29 @@
 var path = require('path');
 var webpack = require('webpack');
+var webpackMerge = require('webpack-merge');
 var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 
-module.exports = {
+var prodConfig = require('./webpack.prod.config');
+var devConfig = require('./webpack.dev.config');
+var target = true;//(process.env.npm_lifecycle_event === 'build')? true : false;
+
+var common = {
   devtool: 'source-map',
   entry: {
-    'assets/js/build/BoardTags': [
-      './assets/js/BoardTags.jsx'
-    ],
-    'assets/js/build/board': [
-      './assets/js/board.js'
-    ],
+    'assets/build/defaultSkin': './assets/defaultSkin/js/index.js'
   },
   output: {
     path: path.resolve(__dirname, './'),
     filename: '[name].js',
   },
   plugins: [
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ minimize: true, compress: { warnings: false }, sourceMap: false}),
-    new webpack.DefinePlugin({
-      'process.env': {
-        // This has effect on the react lib size
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
     new CleanWebpackPlugin(['build'], {
-      root: path.join(__dirname, './assets/js'),
+      root: path.join(__dirname, './assets/build'),
       verbose: true,
       dry: false,
       exclude: []
     }),
-
   ],
   module: {
     loaders: [
@@ -41,13 +32,30 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react'],
           cacheDirectory: true,
-        },
+          presets: ['es2015', 'stage-0', 'react']
+        }
       },
+      {
+        test: /\.css$/,
+        loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+      }
     ],
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
+  externals: {
+    window: 'window',
+  },
 };
+
+var config;
+
+if (target) {
+  config = webpackMerge(common, prodConfig);
+} else {
+  config = webpackMerge(common, devConfig);
+}
+
+module.exports = config;
