@@ -53,6 +53,7 @@ class Board extends AbstractModule
         self::registerArchiveRoute();
         self::registerManageRoute();
         self::registerInstanceRoute();
+        self::registerApiRoute();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
         self::registerCommentAlarmIntercept();
@@ -190,6 +191,18 @@ class Board extends AbstractModule
             'trash', 'certify', 'update', 'vote', 'manageMenus', 'comment', 'file', 'suggestion', 'slug', 'hasSlug',
             'favorite'
         ]);
+    }
+
+    protected static function registerApiRoute()
+    {
+        Route::instance(self::getId(), function () {
+            Route::group([
+                'prefix' => 'api',
+                'namespace' => 'Xpressengine\Plugins\Board\Controllers'
+            ], function () {
+                Route::get('/articles', 'ApiController@articles');
+            });
+        });
     }
 
     /**
