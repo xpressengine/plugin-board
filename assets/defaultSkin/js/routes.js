@@ -6,6 +6,7 @@ import ListPage from './components/list/ListPage';
 import CreatePage from './components/write/CreatePage';
 
 export default new Path('*', Container, [
-	new Path('/list', ListPage),
 	new Path('/create', CreatePage),
+	new Path('/list', ListPage),
+	new Path('/', ListPage),
 ]);
