@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var prodConfig = require('./webpack.prod.config');
 var devConfig = require('./webpack.dev.config');
@@ -11,7 +12,7 @@ var target = true;//(process.env.npm_lifecycle_event === 'build')? true : false;
 var common = {
   devtool: 'source-map',
   entry: {
-    'assets/build/defaultSkin': './assets/defaultSkin/js/index.js'
+    'assets/build/defaultSkin': './assets/defaultSkin/js/index.js',
   },
   output: {
     path: path.resolve(__dirname, './'),
@@ -24,6 +25,7 @@ var common = {
       dry: false,
       exclude: []
     }),
+    new ExtractTextPlugin('assets/build/defaultSkin.css'),
   ],
   module: {
     loaders: [
@@ -37,16 +39,13 @@ var common = {
         }
       },
       {
-        test: /\.css$/,
-        loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
+        test: /\.css/,
+        loader: ExtractTextPlugin.extract("css-loader")
       }
     ],
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
-  },
-  externals: {
-    window: 'window',
   },
 };
 

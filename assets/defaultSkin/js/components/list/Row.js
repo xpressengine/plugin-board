@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-export default class Part extends React.Component {
+class Row extends React.Component {
+
+	static propTypes = {
+		id: PropTypes.number.isRequired,
+	};
 
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
+		//{'#/detail/' + this.props.id}
 		return (
 			<tr>
 				{
@@ -48,3 +53,5 @@ export default class Part extends React.Component {
 		);
 	}
 };
+
+export default Row;

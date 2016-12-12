@@ -1,11 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, Route, Link, hashHistory } from 'react-router';
 
-import Router from 'react-hash-router';
-import Routes from './routes';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import counterApp from './reducers';
 
-import '../css/board.css';
+//pages
+import Container from './components/common/Container';
+import ListPage from './components/list/ListPage';
+import CreatePage from './components/write/CreatePage';
+import DetailPage from './components/detail/DetailPage';
 
-Router.run(Routes, function(RootComponent, props) {
-	ReactDOM.render(<RootComponent {...props}/>, document.getElementById('boardContainer'));
-});
+const store = createStore(counterApp);
+
+import "../css/board.css";
+
+ReactDOM.render(
+	<Provider store={store}>
+		<Router history={hashHistory} component={Container}>
+			<Route path='/' component={ListPage} />
+			<Route path='/list' component={ListPage} />
+			<Route path='/create' component={CreatePage} />
+			<Route path='/deatil' component={DetailPage} />
+		</Router>
+	</Provider>
+	, document.getElementById('boardContainer'));

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Part from './Part';
+import Row from './Row';
 
 import Header from'./Header';
 import Footer from'./Footer';
@@ -11,6 +11,15 @@ export default class BoardList extends React.Component {
 
 	constructor(props) {
 		super(props);
+	}
+
+	componentDidMount() {
+		XE.ajax(Common.get('apis').list, {
+			success (res) {
+				console.log('res', res);
+				// this.props.onReciveList(res.paginate.data);
+			}
+		});
 	}
 
 	render() {
@@ -48,8 +57,10 @@ export default class BoardList extends React.Component {
 						<tbody>
 						{
 							listCount.map((obj, i) => {
+								console.log(obj, i);
 								return (
-									<Part />
+
+									<Row id={obj} id={obj} />
 								);
 							})
 						}

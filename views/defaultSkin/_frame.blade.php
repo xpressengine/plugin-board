@@ -1,4 +1,4 @@
-{{ XeFrontend::css('plugins/board/assets/defaultSkin/css/board.css')->load() }}
+{{ XeFrontend::css('plugins/board/assets/build/defaultSkin.css')->load() }}
 {{ XeFrontend::js('plugins/board/assets/build/defaultSkin.js')->appendTo('body')->load() }}
 
 <style>
@@ -15,7 +15,7 @@
                 create: '',
                 delete: '',
                 update: '',
-                list: '',
+                list: 'http://localhost:8088/board1/api/articles',
                 view: ''
             }
         };
