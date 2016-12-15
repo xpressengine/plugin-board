@@ -71,8 +71,8 @@
                                     <td><span class="label label-green">{{ $document->display }}</span></td>
                                     <td><span class="label label-grey">{{ $document->approved }}</span></td>
                                 </tr>
-                            </tbody>
                             @endforeach
+                            </tbody>
                         </table>
                     </form>
                 </div>

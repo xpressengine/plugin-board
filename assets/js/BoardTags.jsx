@@ -1,88 +1,84 @@
-System.import('vendor:/react-tag-input').then(function() {
-    System.amdRequire(['react', 'react-dom', 'react-tag-input'], function(React, ReactDOM, TagInput) {
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {WithContext} from 'react-tag-input';
 
-        // $.noConflict();
+var $container = $('#xeBoardTagWrap');
+var BoardTags = React.createClass({
+    getInitialState: function() {
 
-        var $container = $('#xeBoardTagWrap');
-        var ReactTags = TagInput.WithContext;
-        var BoardTags = React.createClass({
-            getInitialState: function() {
+        var initTags = this.props.tags || [];
+        var tags = [];
 
-                var initTags = this.props.tags || [];
-                var tags = [];
-
-                initTags.forEach(function(val, i) {
-                    tags.push({
-                        id: i,
-                        text: val
-                    });
-                });
-
-                return {
-                    tags: tags,
-                    suggestions: []
-                };
-            },
-            handleDelete: function(i) {
-                var tags = this.state.tags;
-                tags.splice(i, 1);
-                this.setState({tags: tags});
-            },
-            handleAddition: function(tag) {
-                var tags = this.state.tags;
-                tags.push({
-                    id: tags.length + 1,
-                    text: tag
-                });
-                this.setState({tags: tags});
-            },
-            handleInputChange: function(value) {
-                var self = this;
-
-                if(value.length > 1) {
-                    $.ajax({
-                        url: $container.data('url'),
-                        data: {
-                            string: value
-                        },
-                        type: 'get',
-                        dataType: 'json',
-                        success: function(suggestions) {
-                            self.setState(function(state, props) {
-                                var items = [];
-                                $.each(suggestions, function(index, item) {
-                                    items.push(item.word);
-                                });
-                                state.suggestions = items;
-                            });
-                        }
-                    });
-                }
-            },
-            render: function() {
-                var tags = this.state.tags;
-                var suggestions = this.state.suggestions;
-                var placeholder = $container.data('placeholder');
-
-                return (
-                    <div>
-                        <ReactTags placeholder={placeholder}
-                                   allowDeleteFromEmptyInput={false}
-                                   autofocus={false}
-                                   tags={tags}
-                                   suggestions={suggestions}
-                                   handleDelete={this.handleDelete}
-                                   handleAddition={this.handleAddition}
-                                   handleInputChange={this.handleInputChange}
-                        />
-                    </div>
-                );
-            }
+        initTags.forEach(function(val, i) {
+            tags.push({
+                id: i,
+                text: val
+            });
         });
 
-        ReactDOM.render(<BoardTags tags={$container.data('tags')} />, document.getElementById('xeBoardTagWrap'));
-    });
+        return {
+            tags: tags,
+            suggestions: []
+        };
+    },
+    handleDelete: function(i) {
+        var tags = this.state.tags;
+        tags.splice(i, 1);
+        this.setState({tags: tags});
+    },
+    handleAddition: function(tag) {
+        var tags = this.state.tags;
+        tags.push({
+            id: tags.length + 1,
+            text: tag
+        });
+        this.setState({tags: tags});
+    },
+    handleInputChange: function(value) {
+        var self = this;
+
+        if(value.length > 1) {
+            $.ajax({
+                url: $container.data('url'),
+                data: {
+                    string: value
+                },
+                type: 'get',
+                dataType: 'json',
+                success: function(suggestions) {
+                    self.setState(function(state, props) {
+                        var items = [];
+                        $.each(suggestions, function(index, item) {
+                            items.push(item.word);
+                        });
+                        state.suggestions = items;
+                    });
+                }
+            });
+        }
+    },
+    render: function() {
+        var tags = this.state.tags;
+        var suggestions = this.state.suggestions;
+        var placeholder = $container.data('placeholder');
+
+        return (
+            <div>
+                <WithContext placeholder={placeholder}
+                           allowDeleteFromEmptyInput={false}
+                           autofocus={false}
+                           tags={tags}
+                           suggestions={suggestions}
+                           handleDelete={this.handleDelete}
+                           handleAddition={this.handleAddition}
+                           handleInputChange={this.handleInputChange}
+                />
+            </div>
+        );
+    }
 });
+
+ReactDOM.render(<BoardTags tags={$container.data('tags')} />, document.getElementById('xeBoardTagWrap'));
 
 $(function($) {
     var $container = $('#xeBoardTagWrap');
