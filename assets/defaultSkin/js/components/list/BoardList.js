@@ -1,31 +1,23 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Row from './Row';
 
-import Header from'./Header';
-import Footer from'./Footer';
-
-const listCount = [1,2,3,4,5];
+import BoardRow from './BoardRow';
+import BoardListHeader from'./BoardListHeader';
+import BoardListFooter from'./BoardListFooter';
 
 export default class BoardList extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
+	static propTypes = {
+		list: React.PropTypes.object
+	};
 
-	componentDidMount() {
-		XE.ajax(Common.get('apis').list, {
-			success (res) {
-				console.log('res', res);
-				// this.props.onReciveList(res.paginate.data);
-			}
-		});
+	componentWillMount() {
+		this.props.fetchBoardList();
 	}
 
 	render() {
 		return (
 			<div>
-				<Header />
+				<BoardListHeader />
 
 				<div className="board_list">
 					<table>
@@ -56,19 +48,15 @@ export default class BoardList extends React.Component {
 						</thead>
 						<tbody>
 						{
-							listCount.map((obj, i) => {
-								console.log(obj, i);
-								return (
-
-									<Row id={obj} id={obj} />
-								);
+							this.props.list.boardList.map((row, i) => {
+								return <BoardRow {...row} />
 							})
 						}
 						</tbody>
 					</table>
 				</div>
 
-				<Footer />
+				<BoardListFooter />
 			</div>
 		);
 	}

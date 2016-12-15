@@ -1,18 +1,22 @@
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 
-class Row extends React.Component {
+import { Link } from 'react-router';
+import Favorite from './../../containers/FavoriteContainer';
+
+class BoardRow extends React.Component {
 
 	static propTypes = {
-		id: PropTypes.number.isRequired,
+		id: React.PropTypes.number.isRequired
 	};
 
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
-		//{'#/detail/' + this.props.id}
+		console.log('this.props : ', this.props);
+
+		const favoriteConfig = {
+			id: this.props.id,
+			favorite: this.props.favorite
+		};
+
 		return (
 			<tr>
 				{
@@ -30,12 +34,17 @@ class Row extends React.Component {
 						}
 					})()
 				}
-				<td className="favorite xe-hidden-xs"><a href="#" title="즐겨찾기 체크"><i className="xi-star-o"></i><span className="xe-sr-only">즐겨찾기 체크</span></a></td>
+				<Favorite {...favoriteConfig} />
+				{
+					(() => {
+
+					})
+				}
 				<td className="category xe-hidden-xs">Q&amp;A</td>
 				<td className="title">
 					<span className="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
 					<span className="bd_ico_lock"><i className="xi-lock"></i><span className="xe-sr-only">secret</span></span>
-					<a href="#" className="title_text">안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요.</a>
+					<Link to={`/detail/${this.props.id}`} className="title_text">안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요. 안녕하세요.</Link>
 					<a href="#" className="reply_num xe-hidden-xs" title="Replies">9</a>
 					<span className="bd_ico_file"><i className="xi-clip"></i><span className="xe-sr-only">file</span></span>
 					<span className="bd_ico_new"><i className="xi-new"></i><span className="xe-sr-only">new</span></span>
@@ -54,4 +63,4 @@ class Row extends React.Component {
 	}
 };
 
-export default Row;
+export default BoardRow;

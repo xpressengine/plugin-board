@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class CreatePage extends React.Component {
+class Write extends React.Component {
 	render() {
 		return (
 			<div className="board_write">
@@ -59,4 +59,4 @@ class CreatePage extends React.Component {
 	}
 }
 
-export default CreatePage;
+export default Write;

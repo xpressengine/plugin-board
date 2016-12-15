@@ -6,7 +6,7 @@
 </style>
 
 <script type="text/javascript">
-    var Common = function() {
+    var Common = (function() {
         var _data = {
             user: {
                 isManager: true
@@ -16,7 +16,8 @@
                 delete: '',
                 update: '',
                 list: 'http://localhost:8088/board1/api/articles',
-                view: ''
+                view: '',
+                favorite: '',
             }
         };
 
@@ -25,7 +26,7 @@
                 return _data[key];
             }
         };
-    }();
+    })();
 </script>
 
 <!-- BOARD -->

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class Footer extends React.Component {
+class BoardFooter extends React.Component {
 	render() {
 		return (
 			<div className="board_footer">
@@ -42,4 +42,4 @@ class Footer extends React.Component {
 	}
 }
 
-export default Footer;
+export default BoardFooter;
