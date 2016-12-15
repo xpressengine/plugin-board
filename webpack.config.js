@@ -46,6 +46,9 @@ var common = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
+    alias: {
+      utils: path.resolve(__dirname, 'assets/defaultSkin/js/utils.js'),
+    },
   },
 };
 

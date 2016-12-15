@@ -28,17 +28,6 @@ export const DELETE_BOARD_SUCCESS = 'DELETE_BOARD_SUCCESS';
 export const DELETE_BOARD_FAILURE = 'DELETE_BOARD_FAILURE';
 export const RESET_DELETED_BOARD = 'RESET_DELETED_BOARD';
 
-export const fetchBoardList = (options) => {
-	return {
-		type: FETCH_BOARD_LIST,
-		options: {
-			url: Common.get('apis').list,
-			dataType: 'json',
-			data: {}
-		}
-	};
-}
-
 export const fetchBoardListSuccess = (response) => {
 	console.log('response : ', response);
 
@@ -53,4 +42,8 @@ export const fetchBoardListFailure = (err) => {
 		type: FETCH_POSTS_FAILURE,
 		payload: error
 	};
+}
+
+export const fetchDetailSuccess = () => {
+	
 }

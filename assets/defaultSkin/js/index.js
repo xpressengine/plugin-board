@@ -8,7 +8,11 @@ import { Provider } from 'react-redux';
 import routes from './routes';
 import rootReducer from './reducers';
 
+import moment from 'moment';
+
 import "../css/board.css";
+
+moment.locale(XE.getLocale());
 
 const store = createStore(rootReducer);
 
