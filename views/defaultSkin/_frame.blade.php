@@ -15,9 +15,12 @@
                 create: '',
                 delete: '',
                 update: '',
-                list: 'http://localhost:8088/board1/api/articles',
+                index: 'http://localhost:8088/board1/api/articles',
                 view: '',
                 favorite: '',
+            },
+            links: {
+                settings: ''
             }
         };
 

@@ -1,5 +1,5 @@
 import {
-	FETCH_BOARD_LIST_SUCCESS, FETCH_BOARD_LIST_FAILURE, RESET_BOARD_LIST,
+	FETCH_BOARD_INDEX_SUCCESS, FETCH_BOARD_INDEX_FAILURE,
 	FETCH_BOARD_SUCCESS, FETCH_BOARD_FAILURE
 	// FETCH_POST, FETCH_POST_SUCCESS,  FETCH_POST_FAILURE, RESET_ACTIVE_POST,
 	// CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE, RESET_NEW_POST,
@@ -7,10 +7,13 @@ import {
 	// VALIDATE_POST_FIELDS,VALIDATE_POST_FIELDS_SUCCESS, VALIDATE_POST_FIELDS_FAILURE, RESET_POST_FIELDS
 } from '../actions/boardAction';
 
-
 const INITIAL_STATE = {
-	list: {
-		boardList: [], error:null, loading: false
+	index: {
+		boardList: [],
+		categories: [],
+		checkList: [],
+		error: null,
+		loading: false
 	},
 	detail: {
 		board: null, error: null, loading: false
@@ -21,10 +24,9 @@ export default function(state = INITIAL_STATE, action) {
 	let error;
 
 	switch(action.type) {
-		case FETCH_BOARD_LIST_SUCCESS:// return list of posts and make loading = false
-			return { ...state, list: {boardList: action.payload, error:null, loading: false} };
-		case FETCH_BOARD_LIST_FAILURE:// return error and make loading = false
-			//error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+		case FETCH_BOARD_INDEX_SUCCESS:// return list of posts and make loading = false
+			return { ...state, index: {boardList: action.payload.paginate.data, categories: action.categories, error:null, loading: false} };
+
 		default:
 			return state;
 		// 	return { ...state, postsList: {posts: [], error: error, loading: false} };

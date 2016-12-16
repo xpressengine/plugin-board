@@ -1,23 +1,39 @@
 import React from 'react';
 
 import BoardRow from './BoardRow';
-import BoardListHeader from'./BoardListHeader';
-import BoardListFooter from'./BoardListFooter';
+import BoardListHeaderContainer from './../../containers/BoardListHeaderContainer';
+import BoardListFooter from './BoardListFooter';
+import Spinner from './../Spinner';
 
 export default class BoardList extends React.Component {
 
 	static propTypes = {
-		list: React.PropTypes.object
+		boardList: React.PropTypes.object
 	};
 
+	constructor() {
+		super();
+
+		this.onChangeCheckAll = this.onChangeCheckAll.bind(this);
+	}
+
 	componentWillMount() {
-		this.props.fetchBoardList();
+		this.props.fetchBoardIndex();
+	}
+
+	onChangeCheckAll() {
+
 	}
 
 	render() {
+
+		if(this.props.loading) {
+			return <Spinner />
+		}
+
 		return (
 			<div>
-				<BoardListHeader />
+				<BoardListHeaderContainer />
 
 				<div className="board_list">
 					<table>
@@ -29,7 +45,7 @@ export default class BoardList extends React.Component {
 										return (
 											<th scope="col">
 												<label className="xe-label">
-													<input type="checkbox" onChange={this.onChangeCheckAll.bind(this)} />
+													<input type="checkbox" onChange={ this.onChangeCheckAll } />
 													<span className="xe-input-helper"></span>
 													<span className="xe-label-text xe-sr-only">전체 선택</span>
 												</label>
@@ -48,8 +64,11 @@ export default class BoardList extends React.Component {
 						</thead>
 						<tbody>
 						{
-							this.props.list.boardList.map((row, i) => {
-								return <BoardRow {...row} />
+							this.props.boardList.map((row, i) => {
+								return (
+										<BoardRow {...row} />
+										// <BoardRow {...row} ref={`row${i}`} index={`row${i}`} checked={false} />
+									)
 							})
 						}
 						</tbody>
@@ -59,9 +78,5 @@ export default class BoardList extends React.Component {
 				<BoardListFooter />
 			</div>
 		);
-	}
-
-	onChangeCheckAll(e) {
-		let target = e.target;
 	}
 };

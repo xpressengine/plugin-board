@@ -1,22 +1,24 @@
 import { connect } from 'react-redux';
-import { fetchBoardListSuccess } from './../actions/boardAction';
+import { fetchBoardIndexSuccess } from './../actions/boardAction';
 import BoardList from './../components/list/BoardList';
 
 const mapStateToProps = (state) => {
 	return {
-		list: state.board.list
+		boardList: state.board.index.boardList,
+		loading: state.board.index.loading,
+		error: state.board.index.error
 	};
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchBoardList: () => {
+		fetchBoardIndex: () => {
 			XE.ajax({
-				url: Common.get('apis').list,
+				url: Common.get('apis').index,
 				dataType: 'json',
 				data: {},
 				success: function(res) {
-					dispatch(fetchBoardListSuccess(res));
+					dispatch(fetchBoardIndexSuccess(res));
 				},
 			});
 		}

@@ -1,7 +1,7 @@
 //Board list
-export const FETCH_BOARD_LIST = 'FETCH_BOARD_LIST';
-export const FETCH_BOARD_LIST_SUCCESS = 'FETCH_BOARD_LIST_SUCCESS';
-export const FETCH_BOARD_LIST_FAILURE = 'FETCH_BOARD_LIST_FAILURE';
+// export const FETCH_BOARD_LIST = 'FETCH_BOARD_LIST';
+export const FETCH_BOARD_INDEX_SUCCESS = 'FETCH_BOARD_INDEX_SUCCESS';
+export const FETCH_BOARD_INDEX_FAILURE = 'FETCH_BOARD_INDEX_FAILURE';
 export const RESET_BOARD_LIST = 'RESET_BOARD_LIST';
 
 //Create new board
@@ -28,22 +28,22 @@ export const DELETE_BOARD_SUCCESS = 'DELETE_BOARD_SUCCESS';
 export const DELETE_BOARD_FAILURE = 'DELETE_BOARD_FAILURE';
 export const RESET_DELETED_BOARD = 'RESET_DELETED_BOARD';
 
-export const fetchBoardListSuccess = (response) => {
-	console.log('response : ', response);
+export const fetchBoardIndexSuccess = (response) => {
+	console.log('response :: ', response);
 
 	return {
-		type: FETCH_BOARD_LIST_SUCCESS,
-		payload: response.paginate.data
+		type: FETCH_BOARD_INDEX_SUCCESS,
+		payload: response
 	};
 }
 
-export const fetchBoardListFailure = (err) => {
+export const fetchBoardIndexFailure = (err) => {
 	return {
-		type: FETCH_POSTS_FAILURE,
+		type: FETCH_BOARD_INDEX_FAILURE,
 		payload: error
 	};
 }
 
 export const fetchDetailSuccess = () => {
-	
+
 }
