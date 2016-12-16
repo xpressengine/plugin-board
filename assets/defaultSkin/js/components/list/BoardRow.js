@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 import { Link } from 'react-router';
 import Favorite from './../../containers/FavoriteContainer';
-import { timeAgo } from 'utils';
+import { timeAgo, isNew } from 'utils';
 
 class BoardRow extends React.Component {
 
@@ -56,9 +56,17 @@ class BoardRow extends React.Component {
 							}
 						})
 					}
-					<span className="bd_ico_new"><i className="xi-new"></i><span className="xe-sr-only">new</span></span>
+					{
+						(() => {
+							if(isNew(this.props.createdAt)) {
+								return (
+									<span className="bd_ico_new"><i className="xi-new"></i><span className="xe-sr-only">new</span></span>
+								)
+							}
+						})()
+					}
 					<div className="more_info xe-visible-xs">
-						<a href="" className="mb_autohr">XE</a>
+						<a href="" className="mb_autohr">{ this.props.user.displayName }</a>
 						<span className="mb_time"><i className="xi-time"></i> { timeAgo(this.props.createdAt) }</span>
 						<span className="mb_read_num"><i className="xi-eye"></i> { this.props.readCount }</span>
 						<a href="#" className="mb_reply_num"><i className="xi-comment"></i> { this.props.commentCount > 0 ? this.props.commentCount : '' }</a>

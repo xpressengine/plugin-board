@@ -11,3 +11,9 @@ export const timeAgo = (date) => {
 
 	return date.fromNow();
 };
+
+export const isNew = (createdAt) => {
+	let ret = (new Date(createdAt).getTime() + (60 * 60 * 24 * 1000) > new Date().getTime())? true : false;
+
+	return ret;
+}
