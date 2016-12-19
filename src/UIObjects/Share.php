@@ -39,10 +39,6 @@ class Share extends AbstractUIObject
                 '/update',
                 ['as' => 'manage.board.share.update', 'uses' => 'ShareManagerController@update']
             );
-            Route::get(
-                '/update',
-                ['as' => 'manage.board.share.update', 'uses' => 'ShareManagerController@update']
-            );
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
     }
 

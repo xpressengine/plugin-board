@@ -155,7 +155,6 @@ class Board extends AbstractModule
 
             Route::post('/preview', ['as' => 'preview', 'uses' => 'UserController@preview']);
             Route::post('/temporary', ['as' => 'temporary', 'uses' => 'UserController@temporary']);
-            Route::get('/trash', ['as' => 'trash', 'uses' => 'UserController@trash']);
             Route::post('/trash', ['as' => 'trash', 'uses' => 'UserController@trash']);
 
             Route::post('/vote/{option}/{id}', ['as' => 'vote', 'uses' => 'UserController@vote']);
