@@ -1,5 +1,6 @@
 import {
 	FETCH_BOARD_INDEX_SUCCESS, FETCH_BOARD_INDEX_FAILURE,
+	CHECK_ALL, UNCHECK_ALL, CHECK_ROW, UNCHECK_ROW,
 	FETCH_BOARD_SUCCESS, FETCH_BOARD_FAILURE
 	// FETCH_POST, FETCH_POST_SUCCESS,  FETCH_POST_FAILURE, RESET_ACTIVE_POST,
 	// CREATE_POST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE, RESET_NEW_POST,
@@ -11,10 +12,10 @@ const INITIAL_STATE = {
 	index: {
 		boardList: [],
 		categories: [],
-		checkList: [],
 		error: null,
-		loading: false
+		loading: false,
 	},
+	checkedMap: {},
 	detail: {
 		board: null, error: null, loading: false
 	},
@@ -25,7 +26,56 @@ export default function(state = INITIAL_STATE, action) {
 
 	switch(action.type) {
 		case FETCH_BOARD_INDEX_SUCCESS:// return list of posts and make loading = false
-			return { ...state, index: {boardList: action.payload.paginate.data, categories: action.categories, error:null, loading: false} };
+
+			var checkedMap = {};
+			var boardList = action.payload.paginate.data;
+
+			boardList.map((obj) => {
+				checkedMap[obj.id] = false;
+			});
+
+			// checkedMap['6a8ab167-cc57-4a5c-bbeb-c89256eaaf80'] = true;
+
+			return { ...state, index: {boardList: boardList, categories: action.categories, error:null, loading: false}, checkedMap: checkedMap };
+
+		case CHECK_ALL:
+			var checkedMap = {};
+			var boardList = state.index.boardList;
+
+			boardList.map((obj, i) => {
+				checkedMap[obj.id] = true;
+			});
+
+			return { ...state, checkedMap: checkedMap};
+
+		case UNCHECK_ALL:
+			var checkedMap = {};
+			var boardList = state.index.boardList;
+
+			boardList.map((obj, i) => {
+				checkedMap[obj.id] = false;
+			});
+
+			return { ...state, checkedMap: checkedMap};
+
+		case CHECK_ROW:
+			var checkedMap = state.checkedMap;
+
+			checkedMap[action.id] = true;
+
+
+			console.log(checkedMap);
+
+			return { ...state, checkedMap: checkedMap};
+
+		case UNCHECK_ROW:
+			var checkedMap = state.checkedMap;
+
+			checkedMap[action.id] = false;
+
+			console.log(checkedMap);
+
+			return { ...state, checkedMap: checkedMap};
 
 		default:
 			return state;

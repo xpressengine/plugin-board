@@ -4,6 +4,11 @@ export const FETCH_BOARD_INDEX_SUCCESS = 'FETCH_BOARD_INDEX_SUCCESS';
 export const FETCH_BOARD_INDEX_FAILURE = 'FETCH_BOARD_INDEX_FAILURE';
 export const RESET_BOARD_LIST = 'RESET_BOARD_LIST';
 
+export const CHECK_ALL = 'CHECK_ALL';
+export const UNCHECK_ALL = 'UNCHECK_ALL';
+export const CHECK_ROW = 'CHECK_ROW';
+export const UNCHECK_ROW = 'UNCHECK_ROW';
+
 //Create new board
 export const CREATE_BOARD = 'CREATE_BOARD';
 export const CREATE_BOARD_SUCCESS = 'CREATE_BOARD_SUCCESS';

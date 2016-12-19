@@ -10,12 +10,29 @@ class BoardRow extends React.Component {
 		id: React.PropTypes.number.isRequired
 	};
 
-	render() {
-		// console.log('this.props : ', this.props);
+	constructor(props) {
+		super(props);
 
+		this.handleCheckRow = this.handleCheckRow.bind(this);
+	}
+
+	handleCheckRow(e) {
+		let target = e.target;
+		let checked = target.checked;
+
+		console.log(checked);
+
+		if(checked) {
+			this.props.handleCheck(this.props.id);
+		} else {
+			this.props.handleUnCheck(this.props.id);
+		}
+	}
+
+	render() {
 		const favoriteConfig = {
 			id: this.props.id,
-			favorite: this.props.favorite
+			favorite: this.props.favorite,
 		};
 
 		return (
@@ -23,10 +40,13 @@ class BoardRow extends React.Component {
 				{
 					(() => {
 						if(Common.get('user').isManager) {
+
+							console.log(this.props.checkedMap);
+
 							return (
 								<td className="check">
 									<label className="xe-label">
-										<input type="checkbox" />
+										<input type="checkbox" onChange={ this.handleCheckRow } checked={this.props.checkedMap[this.props.id]} />
 										<span className="xe-input-helper"></span>
 										<span className="xe-label-text xe-sr-only">선택</span>
 									</label>

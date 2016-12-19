@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BoardRow from './BoardRow';
+import BoardRowContainer from './../../containers/BoardRowContainer';
 import BoardListHeaderContainer from './../../containers/BoardListHeaderContainer';
 import BoardListFooter from './BoardListFooter';
 import Spinner from './../Spinner';
@@ -11,8 +11,8 @@ export default class BoardList extends React.Component {
 		boardList: React.PropTypes.object
 	};
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.onChangeCheckAll = this.onChangeCheckAll.bind(this);
 	}
@@ -21,8 +21,14 @@ export default class BoardList extends React.Component {
 		this.props.fetchBoardIndex();
 	}
 
-	onChangeCheckAll() {
+	onChangeCheckAll(e) {
+		let target = e.target.checked;
 
+		if(target) {
+			this.props.handleCheckAll();
+		} else {
+			this.props.handleUnCheckAll();
+		}
 	}
 
 	render() {
@@ -66,8 +72,7 @@ export default class BoardList extends React.Component {
 						{
 							this.props.boardList.map((row, i) => {
 								return (
-										<BoardRow {...row} />
-										// <BoardRow {...row} ref={`row${i}`} index={`row${i}`} checked={false} />
+										<BoardRowContainer {...row} />
 									)
 							})
 						}

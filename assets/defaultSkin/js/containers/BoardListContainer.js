@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchBoardIndexSuccess } from './../actions/boardAction';
+import { fetchBoardIndexSuccess, CHECK_ALL, UNCHECK_ALL } from './../actions/boardAction';
 import BoardList from './../components/list/BoardList';
 
 const mapStateToProps = (state) => {
@@ -20,6 +20,16 @@ const mapDispatchToProps = (dispatch) => {
 				success: function(res) {
 					dispatch(fetchBoardIndexSuccess(res));
 				},
+			});
+		},
+		handleCheckAll: () => {
+			dispatch({
+				type: CHECK_ALL,
+			});
+		},
+		handleUnCheckAll: () => {
+			dispatch({
+				type: UNCHECK_ALL,
 			});
 		}
 	}
