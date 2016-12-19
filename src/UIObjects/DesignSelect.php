@@ -66,7 +66,7 @@ class DesignSelect extends AbstractUIObject
             $args['default'] = '';
         }
 
-        if (empty($args['value'])) {
+        if (!isset($args['value']) || $args['value'] === '') {
             $args['value'] = '';
             $args['text'] = '';
         } else {
