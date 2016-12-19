@@ -104,6 +104,21 @@ class DesignSelectSkin extends DefaultSkin
         return parent::search($args);
     }
 
+    /**
+     * Dynamic Field 설정 페이지에서 skin 설정 등록 페이지 반환
+     * return html tag string
+     *
+     * @param ConfigEntity $config dynamic field config entity
+     * @return string
+     */
+    public function settings(ConfigEntity $config = null)
+    {
+        $viewFactory = $this->handler->getViewFactory();
+        return $viewFactory->make(parent::getViewPath('settings', parent::getPath()), [
+            'config' => $config,
+        ])->render();
+    }
+
 //
 //    public function create(array $args)
 //    {
