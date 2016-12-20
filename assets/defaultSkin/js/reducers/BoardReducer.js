@@ -59,21 +59,22 @@ export default function(state = INITIAL_STATE, action) {
 			return { ...state, checkedMap: checkedMap};
 
 		case CHECK_ROW:
-			var checkedMap = state.checkedMap;
+			var checkedMap = {};
+			var stateCheckedMap = state.checkedMap;
 
-			checkedMap[action.id] = true;
+			stateCheckedMap[action.id] = true;
 
-
-			console.log(checkedMap);
+			checkedMap = Object.assign({}, checkedMap, stateCheckedMap);
 
 			return { ...state, checkedMap: checkedMap};
 
 		case UNCHECK_ROW:
-			var checkedMap = state.checkedMap;
+			var checkedMap = {};
+			var stateCheckedMap = state.checkedMap;
 
-			checkedMap[action.id] = false;
+			stateCheckedMap[action.id] = false;
 
-			console.log(checkedMap);
+			checkedMap = Object.assign({}, checkedMap, stateCheckedMap);
 
 			return { ...state, checkedMap: checkedMap};
 

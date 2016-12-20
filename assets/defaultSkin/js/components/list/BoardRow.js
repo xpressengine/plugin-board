@@ -20,8 +20,6 @@ class BoardRow extends React.Component {
 		let target = e.target;
 		let checked = target.checked;
 
-		console.log(checked);
-
 		if(checked) {
 			this.props.handleCheck(this.props.id);
 		} else {
@@ -40,8 +38,6 @@ class BoardRow extends React.Component {
 				{
 					(() => {
 						if(Common.get('user').isManager) {
-
-							console.log(this.props.checkedMap);
 
 							return (
 								<td className="check">

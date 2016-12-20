@@ -4,7 +4,7 @@ import DetailView from './../components/detail/DetailView';
 
 const mapStateToProps = (state) => {
 	return {
-		// list: state.board.list
+		 detail: state.board.deatil
 	};
 }
 
