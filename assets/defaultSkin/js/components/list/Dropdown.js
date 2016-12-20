@@ -14,8 +14,6 @@ class Dropdown extends Component {
 	}
 
 	handleClick() {
-		console.log('check');
-
 		this.props.handleClick();
 	}
 
