@@ -60,6 +60,9 @@ use Xpressengine\User\UserInterface;
  */
 class UserController extends Controller
 {
+    /** @var \Xpressengine\Routing\InstanceConfig */
+    protected $instanceConfig;
+
     /**
      * @var string
      */
@@ -104,8 +107,8 @@ class UserController extends Controller
         UrlHandler $urlHandler,
         BoardPermissionHandler $boardPermission
     ) {
-        $instanceConfig = InstanceConfig::instance();
-        $this->instanceId = $instanceConfig->getInstanceId();
+        $this->instanceConfig = InstanceConfig::instance();
+        $this->instanceId = $this->instanceConfig->getInstanceId();
 
         $this->handler = $handler;
         $this->configHandler = $configHandler;
@@ -130,6 +133,7 @@ class UserController extends Controller
         XePresenter::share('configHandler', $configHandler);
         XePresenter::share('urlHandler', $urlHandler);
         XePresenter::share('isManager', $this->isManager);
+        XePresenter::share('instanceConfig', $this->instanceConfig);
         XePresenter::share('instanceId', $this->instanceId);
         XePresenter::share('config', $this->config);
     }

@@ -12,12 +12,14 @@
                 isManager: true
             },
             apis: {
-                create: '',
-                delete: '',
-                update: '',
+                create: '{{sprintf('/%s/api/create/', $instanceConfig->getUrl())}}',
+                store: '{{sprintf('/%s/api/store/', $instanceConfig->getUrl())}}',
+                delete: '{{sprintf('/%s/api/update/[id]', $instanceConfig->getUrl())}}',
+                edit: '{{sprintf('/%s/api/edit/[id]', $instanceConfig->getUrl())}}',
+                update: '{{sprintf('/%s/api/update/[id]', $instanceConfig->getUrl())}}',
                 index: 'http://localhost:8088/board1/api/articles',
-                view: '',
-                favorite: '',
+                view: '{{sprintf('/%s/api/articles/[id]', $instanceConfig->getUrl())}}',
+                favorite: '{{sprintf('/%s/api/favorit/[id]', $instanceConfig->getUrl())}}'
             },
             links: {
                 settings: ''
