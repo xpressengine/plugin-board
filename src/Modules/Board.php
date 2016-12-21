@@ -200,7 +200,15 @@ class Board extends AbstractModule
                 'prefix' => 'api',
                 'namespace' => 'Xpressengine\Plugins\Board\Controllers'
             ], function () {
-                Route::get('/articles', 'ApiController@articles');
+                Route::get('/articles', ['as' => 'api.articles', 'uses' => 'ApiController@articles']);
+                Route::get('/articles/{id}', ['as' => 'api.article', 'uses' => 'ApiController@article']);
+                Route::get('/create', ['as' => 'api.create', 'uses' => 'ApiController@create']);
+                Route::post('/store', ['as' => 'api.store', 'uses' => 'ApiController@store']);
+                Route::get('/edit/{id}', ['as' => 'api.edit', 'uses' => 'ApiController@edit']);
+                Route::post('/update/{id?}', ['as' => 'api.update', 'uses' => 'ApiController@update']);
+                Route::post('/destroy/{id?}', ['as' => 'api.delete', 'uses' => 'ApiController@destroy']);
+                Route::post('/favorite/{id?}', ['as' => 'api.favorite', 'uses' => 'ApiController@favorite']);
+                Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'UserController@hasSlug']);
             });
         });
     }
