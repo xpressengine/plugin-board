@@ -4,7 +4,8 @@ import BoardRow from './../components/list/BoardRow';
 
 const mapStateToProps = (state) => {
 	return {
-		checkedMap: state.board.checkedMap
+		checkedMap: state.board.checkedMap,
+		categories: state.board.index.categories
 	};
 }
 

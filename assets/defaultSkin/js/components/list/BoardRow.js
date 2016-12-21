@@ -54,13 +54,31 @@ class BoardRow extends React.Component {
 				<Favorite {...favoriteConfig} />
 				{
 					(() => {
-
-					})
+						if(this.props.categories.length > 0) {
+							return (
+								<td className="category xe-hidden-xs">{ this.props.category || '없음' }</td>
+							)
+						}
+					})()
 				}
-				<td className="category xe-hidden-xs">Q&amp;A</td>
 				<td className="title">
-					<span className="xe-badge xe-primary-outline xe-visible-xs-inline-block">Q&amp;A</span>
-					<span className="bd_ico_lock"><i className="xi-lock"></i><span className="xe-sr-only">secret</span></span>
+					{
+						(() => {
+							if(this.props.categories.length > 0) {
+								return (
+									<span className="xe-badge xe-primary-outline xe-visible-xs-inline-block">{ this.props.category || '없음' }</span>
+								)
+							}
+						})()
+					}
+					{
+						(() => {
+							//TODO secret 노출 조건 확인
+							if(this.props.secret) {
+								return (<span className="bd_ico_lock"><i className="xi-lock"></i><span className="xe-sr-only">secret</span></span>);
+							}
+						})()
+					}
 					<Link to={`/detail/${this.props.id}`} className="title_text">{ this.props.title }</Link>
 					<a href="#" className="reply_num xe-hidden-xs" title="Replies">{ this.props.commentCount > 0 ? this.props.commentCount : '' }</a>
 					{
@@ -70,7 +88,7 @@ class BoardRow extends React.Component {
 									<span className="bd_ico_file"><i className="xi-clip"></i><span className="xe-sr-only">file</span></span>
 								)
 							}
-						})
+						})()
 					}
 					{
 						(() => {

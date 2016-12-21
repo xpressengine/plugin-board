@@ -46,12 +46,17 @@ class BoardHeader extends React.Component {
 
 		return (
 			<div className="board_header">
-				<div className="bd_manage_area">
-					<button type="button" className="xe-btn xe-btn-primary-outline bd_manage" onClick={this.handleManagement}>게시글 관리</button>
-				</div>
-				<div className="bd_manage_area xe-visible-xs">
-					<a href="#" className="btn_mng bd_sorting"><i className="xi-funnel"></i> <span className="xe-sr-only">게시글 정렬</span></a>
-				</div>
+				{
+					(() => {
+						if(Common.get('user').isManager) {
+							return (
+								<div className="bd_manage_area">
+									<button type="button" className="xe-btn xe-btn-primary-outline bd_manage" onClick={this.handleManagement}>게시글 관리</button>
+								</div>
+							)
+						}
+					})()
+				}
 				<div className="bd_btn_area">
 					<ul>
 						<li><a href="#" className="bd_search"><span className="xe-sr-only">검색</span><i className="xi-magnifier"></i></a></li>

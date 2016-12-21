@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 
 class BoardFooter extends React.Component {
 	render() {
+
+		
+
 		return (
 			<div className="board_footer">
 				<div className="bd_paginate xe-hidden-xs">

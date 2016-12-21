@@ -5,6 +5,7 @@ import BoardList from './../components/list/BoardList';
 const mapStateToProps = (state) => {
 	return {
 		boardList: state.board.index.boardList,
+		categories: state.board.index.categories,
 		loading: state.board.index.loading,
 		error: state.board.index.error
 	};
