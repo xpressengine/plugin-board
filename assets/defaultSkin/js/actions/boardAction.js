@@ -9,6 +9,9 @@ export const UNCHECK_ALL = 'UNCHECK_ALL';
 export const CHECK_ROW = 'CHECK_ROW';
 export const UNCHECK_ROW = 'UNCHECK_ROW';
 
+export const SHOW_MANAGEMENT = 'SHOW_MANAGEMENT';
+export const HIDE_MANAGEMENT = 'HIDE_MANAGEMENT';
+
 //Create new board
 export const CREATE_BOARD = 'CREATE_BOARD';
 export const CREATE_BOARD_SUCCESS = 'CREATE_BOARD_SUCCESS';

@@ -7,14 +7,8 @@ class Dropdown extends Component {
 		handleClick: React.PropTypes.func
 	};
 
-	constructor() {
-		super();
-
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	handleClick() {
-		this.props.handleClick();
+	constructor(props) {
+		super(props);
 	}
 
 	render() {
@@ -26,7 +20,7 @@ class Dropdown extends Component {
 					{
 						this.props.optionList.map((obj, i) => {
 								return (
-									<li><a href="#">{ obj.text }</a></li>
+									<li><a href="#" onClick={this.props.handleClick.bind(this, obj.value)}>{ obj.text }</a></li>
 								)
 						})
 					}
@@ -35,3 +29,5 @@ class Dropdown extends Component {
 		)
 	}
 }
+
+export default Dropdown;

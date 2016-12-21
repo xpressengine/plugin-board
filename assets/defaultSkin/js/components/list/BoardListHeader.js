@@ -1,17 +1,53 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Dropdown from './Dropdown';
 
 class BoardHeader extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+		this.handleManagement = this.handleManagement.bind(this);
+	}
+
+	handleCategory(value) {
+		if(value) {
+			console.log('value', value);
+		} else {
+			//전체보기
+		}
+	}
+
+	handleOrdering(value) {
+		if(value) {
+			console.log('value', value);
+		} else {
+			//전체보기
+		}
+	}
+	
+	handleManagement(e) {
+		let managementStatus = this.props.managementStatus;
+
+		if(managementStatus === 'block') {
+			this.props.hideManagement();
+		} else {
+			this.props.showManagement();
+		}
 	}
 
 	render() {
+
+		let orderingConfig = [
+			{ text: '최신순', value: 1 },
+			{ text: '조회순', value: 2 },
+			{ text: '북마크', value: 3 }
+		];
+
 		return (
 			<div className="board_header">
 				<div className="bd_manage_area">
-					<button type="button" className="xe-btn xe-btn-primary-outline bd_manage">게시글 관리</button>
+					<button type="button" className="xe-btn xe-btn-primary-outline bd_manage" onClick={this.handleManagement}>게시글 관리</button>
 				</div>
 				<div className="bd_manage_area xe-visible-xs">
 					<a href="#" className="btn_mng bd_sorting"><i className="xi-funnel"></i> <span className="xe-sr-only">게시글 정렬</span></a>
@@ -24,25 +60,18 @@ class BoardHeader extends React.Component {
 					</ul>
 				</div>
 				<div className="xe-form-inline xe-hidden-xs board-sorting-area">
-					<div className="xe-dropdown">
-						<button className="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">전체보기</button>
-						<ul className="xe-dropdown-menu">
-							<li className="on"><a href="#">전체보기</a></li>
-							<li><a href="#">공지</a></li>
-							<li><a href="#">기타</a></li>
-						</ul>
-					</div>
-					<div className="xe-dropdown">
-						<button className="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">최신순</button>
-						<ul className="xe-dropdown-menu">
-							<li className="on"><a href="#">최신순</a></li>
-							<li><a href="#">조회순</a></li>
-							<li><a href="#">북마크</a></li>
-						</ul>
-					</div>
+					{
+						(() => {
+							console.log('this.props', this.props);
+							if(this.props.categories.length) {
+								return <Dropdown optionList={ this.props.categories } handleClick={this.handleCategory.bind(this)} />
+							}
+						})()
+					}
+					<Dropdown optionList={orderingConfig} handleClick={this.handleOrdering.bind(this)} />
 				</div>
 
-				<div className="bd_manage_detail">
+				<div className="bd_manage_detail" style={{display: this.props.managementStatus}}>
 					<div className="xe-row">
 						<div className="xe-col-sm-6">
 							<div className="xe-row">
