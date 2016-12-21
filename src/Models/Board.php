@@ -367,6 +367,7 @@ class Board extends Document implements CommentUsable, SeoUsable
         ];
         $this->attributes['user'] = $this->user;
         $this->attributes['tags'] = $this->tags;
+        $this->attributes['category'] = $this->boardCategory;
 
         return parent::toArray();
     }
