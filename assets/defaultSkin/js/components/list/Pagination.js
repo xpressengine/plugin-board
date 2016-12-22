@@ -11,6 +11,15 @@ class Pagination extends React.Component {
 	}
 
 	getPaginationInfo() {
+		/**
+		 * currerntPage - 현재 페이지
+		 * lastPage - 마지막 페이지
+		 * perPageBlockCount - block당 보여질 page정보 갯수
+		 * blockStartPage - block의 첫 페이지 number
+		 * blockEndPage - block의 마지막 페이지 number
+		 * currentBlockNum - 현재 block의 number
+		 * lastBlockNum - 마지막 block의 number
+		 * */
 		let currentPage = this.props.paginate.currentPage;
 		let lastPage = this.props.paginate.lastPage;
 		let perPageBlockCount = this.props.paginate.perPageBlockCount;
@@ -33,16 +42,19 @@ class Pagination extends React.Component {
 	}
 
 	requestPrevBlock() {
-		let perPageBlockCount = this.props.paginate.perPageBlockCount;
-		let blockStartPage = ((parseInt(currentPage / perPageBlockCount, 10) * perPageBlockCount) + 1);
+		let paginationInfo = this.getPaginationInfo();
+		let blockStartPage = paginationInfo.blockStartPage;
 		let prevPage = blockStartPage - 1;
+
 
 	}
 
 	requestNextBlock() {
-		let perPageBlockCount = this.props.paginate.perPageBlockCount;
-		let blockStartPage = ((parseInt(currentPage / perPageBlockCount, 10) * perPageBlockCount) + 1);
+		let paginationInfo = this.getPaginationInfo();
+		let perPageBlockCount = paginationInfo.perPageBlockCount;
+		let blockStartPage = paginationInfo.blockStartPage;
 		let nextPage = blockStartPage + perPageBlockCount;
+
 
 	}
 
