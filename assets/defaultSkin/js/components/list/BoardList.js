@@ -2,7 +2,7 @@ import React from 'react';
 
 import BoardRowContainer from './../../containers/BoardRowContainer';
 import BoardListHeaderContainer from './../../containers/BoardListHeaderContainer';
-import BoardListFooter from './BoardListFooter';
+import PaginationContainer from './../../containers/PaginationContainer';
 import Spinner from './../Spinner';
 
 export default class BoardList extends React.Component {
@@ -87,7 +87,7 @@ export default class BoardList extends React.Component {
 					</table>
 				</div>
 
-				<BoardListFooter />
+				<PaginationContainer />
 			</div>
 		);
 	}
