@@ -21,6 +21,7 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.5.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "lodash": "^4.17.2",
     "moment": "^2.17.1",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",

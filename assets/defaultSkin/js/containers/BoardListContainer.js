@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
 		boardList: state.board.index.boardList,
 		categories: state.board.index.categories,
 		loading: state.board.index.loading,
-		error: state.board.index.error
+		error: state.board.index.error,
+		checkedAll: state.board.checkedAll,
 	};
 }
 
@@ -16,6 +17,7 @@ const mapDispatchToProps = (dispatch) => {
 		fetchBoardIndex: () => {
 			XE.ajax({
 				url: Common.get('apis').index,
+				type: 'get',
 				dataType: 'json',
 				data: {},
 				success: function(res) {

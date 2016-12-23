@@ -23,39 +23,44 @@ class Pagination extends React.Component {
 		let currentPage = this.props.paginate.currentPage;
 		let lastPage = this.props.paginate.lastPage;
 		let perPageBlockCount = this.props.paginate.perPageBlockCount;
-		let blockStartPage = ((parseInt(currentPage / perPageBlockCount, 10) * perPageBlockCount) + 1);
-		let blockEndPage = blockStartPage + (perPageBlockCount - 1);
-		let currentBlockNum = parseInt(currentPage / perPageBlockCount, 10) + 1;
-		let lastBlockNum = parseInt(lastPage / perPageBlockCount, 10) + 1;
+		let blockStartPage = Math.ceil(currentPage / perPageBlockCount);
+		let currentBlockNum = Math.floor(currentPage / perPageBlockCount) || 1;
+		let lastBlockNum = Math.ceil(lastPage / perPageBlockCount) - 1;
+		let blockEndPage;
 
-		blockEndPage = (blockEndPage > lastPage)? lastPage: blockEndPage;
+		blockStartPage = (blockStartPage - 1) * perPageBlockCount + 1;
+		blockEndPage = (blockStartPage + (perPageBlockCount - 1) > lastPage)? lastPage: blockStartPage + (perPageBlockCount - 1);
 
 		return {
-			currentPage: currentPage,
-			lastPage: lastPage,
-			perPageBlockCount: perPageBlockCount,
-			blockStartPage: blockStartPage,
-			blockEndPage: blockEndPage,
-			currentBlockNum: currentBlockNum,
-			lastBlockNum: lastBlockNum
+			currentPage,
+			lastPage,
+			perPageBlockCount,
+			blockStartPage,
+			blockEndPage,
+			currentBlockNum,
+			lastBlockNum
 		}
 	}
 
 	requestPrevBlock() {
+		console.log('clicked');
+
 		let paginationInfo = this.getPaginationInfo();
 		let blockStartPage = paginationInfo.blockStartPage;
 		let prevPage = blockStartPage - 1;
 
-
+		this.props.fetchBoardIndex({pageNum: prevPage});
 	}
 
 	requestNextBlock() {
+		console.log('clicked');
+
 		let paginationInfo = this.getPaginationInfo();
 		let perPageBlockCount = paginationInfo.perPageBlockCount;
 		let blockStartPage = paginationInfo.blockStartPage;
 		let nextPage = blockStartPage + perPageBlockCount;
 
-
+		this.props.fetchBoardIndex({pageNum: nextPage});
 	}
 
 	renderPrevPage() {
@@ -64,8 +69,8 @@ class Pagination extends React.Component {
 
 		if(currentBlockNum > 1) {
 			return (
-				<a href="#" className="btn_pg btn_prev">
-					<i className="xi-angle-left"><span className="xe-sr-only" onClick={this.requestPrevBlock}>이전</span></i>
+				<a href="#" className="btn_pg btn_prev" onClick={this.requestPrevBlock}>
+					<i className="xi-angle-left"><span className="xe-sr-only">이전</span></i>
 				</a>
 			)
 		} else {
@@ -84,8 +89,8 @@ class Pagination extends React.Component {
 
 		if(lastBlockNum > currentBlockNum) {
 			return (
-				<a href="#" className="btn_pg btn_next">
-					<i className="xi-angle-right"><span className="xe-sr-only" onClick={this.requestNextBlock} >다음</span></i>
+				<a href="#" className="btn_pg btn_next" onClick={this.requestNextBlock} >
+					<i className="xi-angle-right"><span className="xe-sr-only">다음</span></i>
 				</a>
 			)
 		} else {
@@ -97,8 +102,8 @@ class Pagination extends React.Component {
 		}
 	}
 
-	requestPage(pageNum) {
-		console.log(pageNum);
+	fetchBoardIndex(pageNum) {
+		this.props.fetchBoardIndex({pageNum});
 	}
 
 	render() {
@@ -106,6 +111,8 @@ class Pagination extends React.Component {
 		let currentPage = paginationInfo.currentPage;
 		let lastPage = paginationInfo.lastPage;
 		let perPageBlockCount = paginationInfo.perPageBlockCount;
+
+		console.log('paginationInfo', paginationInfo);
 
 		if((currentPage === 0 || currentPage === 1 && currentPage === lastPage)) {
 			return (
@@ -120,13 +127,15 @@ class Pagination extends React.Component {
 					{
 						(() => {
 							let pages = [];
-							let blockStartPage = (parseInt(currentPage / 10, 10) + 1);
+							let blockStartPage = paginationInfo.blockStartPage;
+							let blockEndPage = paginationInfo.blockEndPage;
 
-							for(var i = blockStartPage, max = perPageBlockCount; i <= max; i += 1) {
+							for(var i = blockStartPage, max = blockEndPage; i <= max; i += 1) {
+								console.log('in loop');
 								if(currentPage === i) {
 									pages.push(<strong>{i}</strong>)
 								} else {
-									pages.push(<a href="#" onClick={ this.requestPage.bind(this, i) }>{i}</a>);
+									pages.push(<a href="#" onClick={ this.fetchBoardIndex.bind(this, i) }>{i}</a>);
 								}
 
 								if(lastPage === i) {

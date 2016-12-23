@@ -52,7 +52,7 @@ export default class BoardList extends React.Component {
 										return (
 											<th scope="col">
 												<label className="xe-label">
-													<input type="checkbox" onChange={ this.onChangeCheckAll } />
+													<input type="checkbox" onChange={ this.onChangeCheckAll } checked={this.props.checkedAll} />
 													<span className="xe-input-helper"></span>
 													<span className="xe-label-text xe-sr-only">전체 선택</span>
 												</label>

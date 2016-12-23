@@ -12,15 +12,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchBoardIndex: ({
-			currentPage,
-			perPage,
+			pageNum
 		}) => {
 			XE.ajax({
 				url: Common.get('apis').index,
+				type: 'get',
 				dataType: 'json',
 				data: {
-					current_page: currentPage,
-					per_page: perPage
+					page: pageNum
 				},
 				success: function(res) {
 					dispatch(fetchBoardIndexSuccess(res));

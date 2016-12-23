@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
 	FETCH_BOARD_INDEX_SUCCESS, FETCH_BOARD_INDEX_FAILURE,
 	CHECK_ALL, UNCHECK_ALL, CHECK_ROW, UNCHECK_ROW,
@@ -22,6 +23,7 @@ const INITIAL_STATE = {
 		error: null,
 		loading: false,
 	},
+	checkedAll: false,
 	managementStatus: 'none',
 	checkedMap: {},
 	detail: {
@@ -53,7 +55,7 @@ export default function(state = INITIAL_STATE, action) {
 				checkedMap[obj.id] = false;
 			});
 
-			return { ...state, index: {boardList: boardList, paginate: paginate, categories: action.payload.categories, error:null, loading: false, }, checkedMap: checkedMap };
+			return { ...state, index: {boardList, paginate, categories: action.payload.categories, error:null, loading: false, }, checkedMap, checkedAll: false, };
 
 		case CHECK_ALL:
 			var checkedMap = {};
@@ -63,7 +65,7 @@ export default function(state = INITIAL_STATE, action) {
 				checkedMap[obj.id] = true;
 			});
 
-			return { ...state, checkedMap: checkedMap};
+			return { ...state, checkedMap, checkedAll: true};
 
 		case UNCHECK_ALL:
 			var checkedMap = {};
@@ -73,17 +75,25 @@ export default function(state = INITIAL_STATE, action) {
 				checkedMap[obj.id] = false;
 			});
 
-			return { ...state, checkedMap: checkedMap};
+			return { ...state, checkedMap, checkedAll: false};
 
 		case CHECK_ROW:
 			var checkedMap = {};
 			var stateCheckedMap = state.checkedMap;
+			var listLen = state.index.boardList.length;
+			var checkedAll = false;
 
 			stateCheckedMap[action.id] = true;
 
 			checkedMap = Object.assign({}, checkedMap, stateCheckedMap);
 
-			return { ...state, checkedMap: checkedMap};
+			console.log(listLen, _.filter(stateCheckedMap, (v, k) => { return v === true }).length);
+
+			if(listLen !== 0 && listLen === _.filter(stateCheckedMap, (v, k) => { return v === true }).length) {
+				checkedAll = true
+			}
+
+			return { ...state, checkedMap, checkedAll};
 
 		case UNCHECK_ROW:
 			var checkedMap = {};
@@ -93,7 +103,7 @@ export default function(state = INITIAL_STATE, action) {
 
 			checkedMap = Object.assign({}, checkedMap, stateCheckedMap);
 
-			return { ...state, checkedMap: checkedMap};
+			return { ...state, checkedMap, checkedAll: false};
 
 		case SHOW_MANAGEMENT:
 			return { ...state, managementStatus: action.display }

@@ -67,7 +67,6 @@ class BoardHeader extends React.Component {
 				<div className="xe-form-inline xe-hidden-xs board-sorting-area">
 					{
 						(() => {
-							console.log('this.props', this.props);
 							if(this.props.categories.length) {
 								return <Dropdown optionList={ this.props.categories } handleClick={this.handleCategory.bind(this)} />
 							}
