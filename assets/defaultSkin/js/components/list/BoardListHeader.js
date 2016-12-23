@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Dropdown from './Dropdown';
+import Dropdown from './../Dropdown';
 
 class BoardHeader extends React.Component {
 
@@ -68,11 +68,11 @@ class BoardHeader extends React.Component {
 					{
 						(() => {
 							if(this.props.categories.length) {
-								return <Dropdown optionList={ this.props.categories } handleClick={this.handleCategory.bind(this)} />
+								return <Dropdown optionList={ this.props.categories } handleSelect={this.handleCategory.bind(this)} />
 							}
 						})()
 					}
-					<Dropdown optionList={orderingConfig} handleClick={this.handleOrdering.bind(this)} />
+					<Dropdown optionList={orderingConfig} handleSelect={this.handleOrdering.bind(this)} />
 				</div>
 
 				<div className="bd_manage_detail" style={{display: this.props.managementStatus}}>

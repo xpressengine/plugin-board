@@ -1,22 +1,27 @@
 import { connect } from 'react-redux';
-import { fetchDetailSuccess } from './../actions/boardAction';
+import { fetchViewSuccess } from './../actions/boardViewAction';
 import DetailView from './../components/detail/DetailView';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+	const id = state.routing.locationBeforeTransitions.pathname.split('/')[2];
+
 	return {
-		 detail: state.board.deatil
+		view: state.view,
+		id
 	};
 }
 
 const mapDispatchToProps = (dispatch) => {
+	let viewApi = Common.get('apis').view;
+
 	return {
 		fetchDetailView: (id) => {
 			XE.ajax({
-				url: Common.get('apis').detail + `/${id}`,
+				url: viewApi.replace('[id]', id),
 				dataType: 'json',
 				data: {},
 				success: function(res) {
-					dispatch(fetchDetailSuccess(res));
+					dispatch(fetchViewSuccess(res));
 				},
 			});
 		}

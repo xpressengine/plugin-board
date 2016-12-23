@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import { CHECK_ROW, UNCHECK_ROW } from './../actions/boardAction';
+import { CHECK_ROW, UNCHECK_ROW } from './../actions/boardListAction';
 import BoardRow from './../components/list/BoardRow';
 
 const mapStateToProps = (state) => {
 	return {
-		checkedMap: state.board.checkedMap,
-		categories: state.board.index.categories
+		checkedMap: state.list.checkedMap,
+		categories: state.list.index.categories
 	};
 }
 

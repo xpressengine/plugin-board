@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
-import { fetchBoardIndexSuccess, CHECK_ALL, UNCHECK_ALL, CHECK_ROW, UNCHECK_ROW } from './../actions/boardAction';
+import { fetchBoardIndexSuccess, CHECK_ALL, UNCHECK_ALL, CHECK_ROW, UNCHECK_ROW } from './../actions/boardListAction';
 import BoardList from './../components/list/BoardList';
 
 const mapStateToProps = (state) => {
 	return {
-		boardList: state.board.index.boardList,
-		categories: state.board.index.categories,
-		loading: state.board.index.loading,
-		error: state.board.index.error,
-		checkedAll: state.board.checkedAll,
+		boardList: state.list.index.boardList,
+		categories: state.list.index.categories,
+		loading: state.list.index.loading,
+		error: state.list.index.error,
+		checkedAll: state.list.checkedAll,
 	};
 }
 

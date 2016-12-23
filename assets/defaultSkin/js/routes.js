@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, Link, hashHistory, IndexRoute } from 'react-router';
+import { Route, IndexRoute } from 'react-router';
 
 import Container from './pages/Container';
 import BoardIndex from './pages/BoardIndex';

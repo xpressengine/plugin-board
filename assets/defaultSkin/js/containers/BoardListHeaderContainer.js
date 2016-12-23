@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SHOW_MANAGEMENT, HIDE_MANAGEMENT } from './../actions/boardAction';
+import { SHOW_MANAGEMENT, HIDE_MANAGEMENT } from './../actions/boardListAction';
 import BoardListHeader from './../components/list/BoardListHeader';
 
 const mapStateToProps = (state) => {
 	return {
-		categories: state.board.index.categories,
-		managementStatus: state.board.managementStatus,
+		categories: state.list.index.categories,
+		managementStatus: state.list.managementStatus,
 	};
 }
 

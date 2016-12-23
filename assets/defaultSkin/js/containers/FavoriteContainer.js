@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { fetchBoardListSuccess } from './../actions/boardAction';
+import { fetchBoardListSuccess } from './../actions/boardListAction';
 import Favorite from './../components/list/Favorite';
 
 const mapStateToProps = (state) => {
 	return {
-		list: state.board.list
+		
 	};
 }
 

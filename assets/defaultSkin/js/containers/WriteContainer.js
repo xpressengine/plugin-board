@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { addSuccess } from './../actions/boardAction';
+import { addSuccess } from './../actions/boardListAction';
 import WriteForm from './../components/write/WriteForm';
 
 const mapStateToProps = (state) => {
 	return {
-		// list: state.board.list
+
 	};
 }
 

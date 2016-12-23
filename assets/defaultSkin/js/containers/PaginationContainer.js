@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchBoardIndexSuccess } from './../actions/boardAction';
+import { fetchBoardIndexSuccess } from './../actions/boardListAction';
 import Pagination from './../components/list/Pagination';
 
 const mapStateToProps = (state) => {
 	return {
-		paginate: state.board.index.paginate
+		paginate: state.list.index.paginate
 	};
 }
 

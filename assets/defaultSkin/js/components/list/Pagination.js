@@ -112,8 +112,6 @@ class Pagination extends React.Component {
 		let lastPage = paginationInfo.lastPage;
 		let perPageBlockCount = paginationInfo.perPageBlockCount;
 
-		console.log('paginationInfo', paginationInfo);
-
 		if((currentPage === 0 || currentPage === 1 && currentPage === lastPage)) {
 			return (
 				<div className="board_footer"></div>
@@ -131,7 +129,6 @@ class Pagination extends React.Component {
 							let blockEndPage = paginationInfo.blockEndPage;
 
 							for(var i = blockStartPage, max = blockEndPage; i <= max; i += 1) {
-								console.log('in loop');
 								if(currentPage === i) {
 									pages.push(<strong>{i}</strong>)
 								} else {

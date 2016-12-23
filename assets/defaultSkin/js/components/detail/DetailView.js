@@ -1,28 +1,38 @@
 import React, { PropTypes } from 'react';
-
-// import BoardList from './../list/BoardList';
-
+import { browserHistory, Router, Route, Link } from 'react-router'
+import { timeAgo } from '../../utils';
 
 class DetailView extends React.Component {
 
-	static contextType = {
-		query: PropTypes.object,
-		params: PropTypes.object
+	static propTypes = {
+		id: PropTypes.number.isRequired,
+		view: PropTypes.object
 	};
+
+	componentWillMount() {
+		this.props.fetchDetailView(this.props.id);
+	}
+
+	constructor(props, context) {
+		super();
+	}
 
 	render() {
 
+		console.log(this.props);
+
+		let item = this.props.view.item;
+
 		return (
-			
 			<div className="board_read">
 				<div className="read_header">
-					<span className="category">여행</span>
-					<h1><a href="#">기요미즈데라, 교토 청수사 만년필 스케치</a></h1>
+					<span className="category">{item.category}</span>
+					<h1><a href="#">{item.title}</a></h1>
 					<div className="more_info">
 
-						<a href="#" className="mb_autohr">XE</a>
-						<span className="mb_time"><i className="xi-time"></i> 15시간 전</span>
-						<span className="mb_readnum"><i className="xi-eye"></i> 78</span>
+						<a href="#" className="mb_autohr">{item.writer}</a>
+						<span className="mb_time"><i className="xi-time"></i> {timeAgo(item.createdAt)}</span>
+						<span className="mb_readnum"><i className="xi-eye"></i> {item.readCount}</span>
 						<div className="ly_popup">
 							<ul>
 								<li><a href="#">프로필 보기</a></li>
@@ -34,80 +44,7 @@ class DetailView extends React.Component {
 				</div>
 				<div className="read_body">
 					<div className="xe_content">
-
-						<div className="__xe_contents_compiler" id="xe-editor-content">
-							<h1>에디터 View 스타일</h1>
-							<h2>font size</h2>
-							<blockquote>
-								<h1>난 h1이다 28px</h1>
-								<h2>난 h2이다 26px</h2>
-								<h3>난 h3이다 23px</h3>
-								<h4>난 h4이다 20px</h4>
-								<h5>난 h5이다 17px</h5>
-								<h6>난 h6이다 16px</h6>
-							</blockquote>
-							<h2>common</h2>
-							<p>기본 폰트 크기는 16px</p>
-							<p>키이스트·FNC·SM ‘1%’대 상승 마감, ‘그녀는 예뻤다’ 박서준·AOA 설현·레드벨벳 슬기…로엔 아이유 컴백 임박·CJ E&M ‘슈퍼스타K7’·‘신서유기’ 불구 하락</p>
-							<p>코스피와 코스닥 지수가 소폭 상승 마감한 가운데 엔터주 역시 기지개를 켰다.</p>
-							<p>코스피는 1일 전 거래일 대비 16.51포인트(0.84%) 상승한 1979.32로 마감했다. 코스닥 역시 같은 기간 6.31포인트(0.93%) 오른 684.79에 장을 마쳤다.</p>
-							<p><a href="">난 링크다</a></p>
-
-							<h2>list</h2>
-							<ul>
-								<li>안녕하세요
-									<ul>
-										<li>안녕하세요</li>
-										<li>안녕하세요</li>
-										<li>안녕하세요</li>
-									</ul>
-								</li>
-								<li>안녕하세요</li>
-								<li>안녕하세요</li>
-							</ul>
-
-							<ol>
-								<li>안녕하세요</li>
-								<li>안녕하세요</li>
-								<li>안녕하세요</li>
-							</ol>
-
-							<h2>table</h2>
-							<table border="1" cellpadding="1" cellspacing="1" style={{'width': '500px'}}>
-								<thead>
-								<tr>
-									<th>타이틀</th>
-									<th>타이틀</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr>
-									<td><a href="#">ㅇㅇㅇ</a></td>
-									<td>ㅇㅇㅇ</td>
-								</tr>
-								<tr>
-									<td>ㅇㅇㅇ</td>
-									<td>ㅇㅇㅇ</td>
-								</tr>
-								<tr>
-									<td>ㅇㅇ</td>
-									<td>ㅇㅇㅇ</td>
-								</tr>
-								</tbody>
-							</table>
-
-							<h2>blockquote</h2>
-							<blockquote>blockquote 영역</blockquote>
-
-							<h2>pre</h2>
-							<pre>pre 요소 test</pre>
-
-							<h2>image</h2>
-							<img src="http://www.mediaus.co.kr/news/photo/201012/15458_28375_5451.jpg" />
-							<img src="http://www.mediaus.co.kr/news/photo/201012/15458_28375_5451.jpg" />
-							<h3>iframe</h3>
-							<iframe width="560" height="315" src="https://www.youtube.com/embed/JAAo30-86QA" frameborder="0" allowfullscreen=""></iframe>
-						</div>
+						<div className="__xe_contents_compiler" id="xe-editor-content" dangerouslySetInnerHTML={{__html: item.content}}></div>
 					</div>
 				</div>
 
