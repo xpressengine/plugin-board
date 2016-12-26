@@ -13,7 +13,7 @@ class BoardRow extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.handleCheckRow = this.handleCheckRow.bind(this);
+		this.handleCheckRow = ::this.handleCheckRow;
 	}
 
 	handleCheckRow(e) {

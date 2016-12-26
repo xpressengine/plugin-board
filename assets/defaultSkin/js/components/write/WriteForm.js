@@ -1,25 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Dropdown from './../Dropdown';
 
-class Write extends React.Component {
+class WriteForm extends React.Component {
+
+	componentWillMount() {
+		this.props.fetchBoardIndex();
+	}
+
+	handleSelect(value) {
+
+	}
+
 	render() {
 		return (
 			<div className="board_write">
 				<div className="write_header">
-					<div className="write_category">
-						<div className="xe-dropdown">
-							<button className="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">카테고리</button>
-							<ul className="xe-dropdown-menu">
-								<li className="on"><a href="#">카테고리</a></li>
-								<li><a href="#">카테고리</a></li>
-							</ul>
-						</div>
-					</div>
+					{
+						(() => {
+							let categories = this.props.categories;
+
+							if(categories.length > 0) {
+								categories.unshift({text: '전체보기', value: ''});
+
+								return (
+									<div className="write_category">
+										<Dropdown optionList={categories} handleSelect={this.handleSelect.bind(this)} />
+									</div>
+								)
+							}
+						})()
+					}
 					<div className="write_title">
 						<div className="temp_save">
 							<a href="#" className="temp_save_num"><strong>3</strong>개의 임시 저장 글</a>
 						</div>
-						<input type="text" className="xe-form-control" placeholder="제목을 입력하세요" title="제목" />
+						<input type="text" className="xe-form-control" placeholder="제목을 입력하세요" title="제목" defaultValue="" />
 					</div>
 				</div>
 				<div className="write_body">
@@ -59,4 +75,4 @@ class Write extends React.Component {
 	}
 }
 
-export default Write;
+export default WriteForm;

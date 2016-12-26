@@ -6,8 +6,8 @@ class Pagination extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.requestPrevBlock = this.requestPrevBlock.bind(this);
-		this.requestNextBlock = this.requestNextBlock.bind(this);
+		this.requestPrevBlock = ::this.requestPrevBlock;
+		this.requestNextBlock = ::this.requestNextBlock;
 	}
 
 	getPaginationInfo() {
@@ -43,8 +43,6 @@ class Pagination extends React.Component {
 	}
 
 	requestPrevBlock() {
-		console.log('clicked');
-
 		let paginationInfo = this.getPaginationInfo();
 		let blockStartPage = paginationInfo.blockStartPage;
 		let prevPage = blockStartPage - 1;
@@ -53,8 +51,6 @@ class Pagination extends React.Component {
 	}
 
 	requestNextBlock() {
-		console.log('clicked');
-
 		let paginationInfo = this.getPaginationInfo();
 		let perPageBlockCount = paginationInfo.perPageBlockCount;
 		let blockStartPage = paginationInfo.blockStartPage;

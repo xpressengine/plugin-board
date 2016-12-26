@@ -7,7 +7,7 @@ class BoardHeader extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.handleManagement = this.handleManagement.bind(this);
+		this.handleManagement = ::this.handleManagement;
 	}
 
 	handleCategory(value) {
@@ -39,6 +39,7 @@ class BoardHeader extends React.Component {
 	render() {
 
 		let orderingConfig = [
+			{ text: '전체보기', value: '' },
 			{ text: '최신순', value: 1 },
 			{ text: '조회순', value: 2 },
 			{ text: '북마크', value: 3 }
@@ -68,7 +69,11 @@ class BoardHeader extends React.Component {
 					{
 						(() => {
 							if(this.props.categories.length) {
-								return <Dropdown optionList={ this.props.categories } handleSelect={this.handleCategory.bind(this)} />
+
+								let categories = this.props.categories;
+								categories.unshift({text: '전체보기', value: ''});
+
+								return <Dropdown optionList={ categories } handleSelect={this.handleCategory.bind(this)} />
 							}
 						})()
 					}

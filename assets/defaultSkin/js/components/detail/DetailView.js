@@ -22,6 +22,7 @@ class DetailView extends React.Component {
 		console.log(this.props);
 
 		let item = this.props.view.item;
+		let id = this.props.view.item.id;
 
 		return (
 			<div className="board_read">
@@ -73,7 +74,7 @@ class DetailView extends React.Component {
 							</div>
 						</div>
 						<div className="bd_function_r">
-							<a href="#" className="bd_ico bd_modify"><i className="xi-eraser"></i><span className="xe-sr-only">수정</span></a>
+							<Link to={`/edit/${id}`} className="bd_ico bd_modify"><i className="xi-eraser"></i><span className="xe-sr-only">수정</span></Link>
 							<a href="#" className="bd_ico bd_delete"><i className="xi-trash"></i><span className="xe-sr-only">삭제</span></a>
 							<div className="bd_more_area">
 								<a href="#" className="bd_ico bd_more_view"><i className="xi-ellipsis-h"></i><span className="xe-sr-only">더보기</span></a>

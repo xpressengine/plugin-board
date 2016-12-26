@@ -11,7 +11,7 @@ export default class Favorite extends Component {
 	constructor() {
 		super();
 
-		this.handleFavorite = this.handleFavorite.bind(this);
+		this.handleFavorite = ::this.handleFavorite;
 	}
 
 	handleFavorite(e) {

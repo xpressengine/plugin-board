@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
 					dispatch(fetchViewSuccess(res));
 				},
 			});
-		}
+		},
 	}
 }
 
