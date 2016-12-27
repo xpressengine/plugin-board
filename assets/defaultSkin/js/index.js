@@ -14,7 +14,16 @@ import "../css/board.css";
 
 moment.locale(XE.getLocale());
 
-const store = createStore(rootReducer);
+let store;
+
+if(location && location.hostname === 'localhost') {
+	store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+} else {
+	store = createStore(rootReducer);
+
+}
+
 const history = syncHistoryWithStore(hashHistory, store, {
 	selectLocationState: (state) => {
 		return state.routing;

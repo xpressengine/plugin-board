@@ -13,6 +13,11 @@ class DetailView extends React.Component {
 		this.props.fetchDetailView(this.props.id);
 	}
 
+	componentWillUpdate() {
+		console.log('update');
+	}
+
+
 	constructor(props, context) {
 		super();
 	}
