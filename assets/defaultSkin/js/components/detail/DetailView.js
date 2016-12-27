@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { browserHistory, Router, Route, Link } from 'react-router'
 import { timeAgo } from '../../utils';
 
@@ -9,17 +10,29 @@ class DetailView extends React.Component {
 		view: PropTypes.object
 	};
 
-	componentWillMount() {
-		this.props.fetchDetailView(this.props.id);
-	}
-
-	componentWillUpdate() {
-		console.log('update');
-	}
-
+	tmpId;
 
 	constructor(props, context) {
-		super();
+		super(props);
+
+		this.fetch = ::this.fetch;
+	}
+
+	componentWillMount() {
+		this.fetch();
+	}
+
+	componentWillUpdate(a,b,c) {
+		if(this.tmpId !== this.props.id) {
+			this.fetch();
+		}
+	}
+
+	fetch() {
+		this.tmpId = this.props.id;
+		this.props.fetchDetailView(this.props.id);
+
+		document.body.scrollTop = 0;
 	}
 
 	render() {
