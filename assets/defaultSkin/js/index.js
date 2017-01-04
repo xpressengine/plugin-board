@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import { Router, hashHistory } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import { createEpicMiddleware } from 'redux-observable';
 
 import routes from './routes';
 import rootReducer from './reducers';
-import rootEpic from './epics';
+import rootEpics from './epics';
 
 import moment from 'moment';
 
@@ -17,14 +17,14 @@ import "../css/board.css";
 moment.locale(XE.getLocale());
 
 let store;
-const epicMiddleware = createEpicMiddleware(rootEpic);
+const epicMiddleware = createEpicMiddleware(rootEpics);
+const router = routerMiddleware(hashHistory);
+const createStoreWithMiddleware = applyMiddleware(epicMiddleware, router)(createStore);
 
 if(location && location.hostname === 'localhost') {
-	store = createStore(rootReducer, applyMiddleware(epicMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-
+	store = createStoreWithMiddleware(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 } else {
-	store = createStore(rootReducer, applyMiddleware(epicMiddleware));
-
+	store = createStoreWithMiddleware(rootReducer);
 }
 
 const history = syncHistoryWithStore(hashHistory, store, {

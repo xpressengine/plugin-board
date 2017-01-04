@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {
-	FETCH_BOARD_INDEX_SUCCESS, FETCH_BOARD_INDEX_FAILURE,
+	FETCH_BOARD_INDEX, FETCH_BOARD_INDEX_SUCCESS, FETCH_BOARD_INDEX_FAILURE,
 	CHECK_ALL, UNCHECK_ALL, CHECK_ROW, UNCHECK_ROW,
 	SHOW_MANAGEMENT, HIDE_MANAGEMENT,
 } from '../actions/boardListAction';
@@ -32,6 +32,8 @@ export default function(state = INITIAL_STATE, action) {
 
 	switch(action.type) {
 		case FETCH_BOARD_INDEX_SUCCESS:// return list of posts and make loading = false
+
+			console.log('reducer ::', FETCH_BOARD_INDEX_SUCCESS, action);
 
 			var checkedMap = {};
 			var boardList = action.payload.paginate.data;

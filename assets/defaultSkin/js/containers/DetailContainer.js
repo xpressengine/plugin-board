@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchViewSuccess } from './../actions/boardViewAction';
+import { FETCH_VIEW, fetchView } from './../actions/boardViewAction';
 import DetailView from './../components/detail/DetailView';
 
 const mapStateToProps = (state, ownProps) => {
@@ -12,18 +12,9 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-	let viewApi = Common.get('apis').view;
-
 	return {
 		fetchDetailView: (id) => {
-			XE.ajax({
-				url: viewApi.replace('[id]', id),
-				dataType: 'json',
-				data: {},
-				success: function(res) {
-					dispatch(fetchViewSuccess(res));
-				},
-			});
+			dispatch(fetchView(id));
 		},
 	}
 }

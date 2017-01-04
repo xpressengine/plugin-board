@@ -1,8 +1,10 @@
-//Board list
-// export const FETCH_BOARD_LIST = 'FETCH_BOARD_LIST';
+import { Observable } from 'rxjs';
+import { ajax } from 'rxjs/observable/dom/ajax';
+import { objectToQuerystring } from './../utils';
+
+export const FETCH_BOARD_INDEX = 'FETCH_BOARD_INDEX';
 export const FETCH_BOARD_INDEX_SUCCESS = 'FETCH_BOARD_INDEX_SUCCESS';
 export const FETCH_BOARD_INDEX_FAILURE = 'FETCH_BOARD_INDEX_FAILURE';
-export const RESET_BOARD_LIST = 'RESET_BOARD_LIST';
 
 export const CHECK_ALL = 'CHECK_ALL';
 export const UNCHECK_ALL = 'UNCHECK_ALL';
@@ -30,18 +32,30 @@ export const DELETE_BOARD_SUCCESS = 'DELETE_BOARD_SUCCESS';
 export const DELETE_BOARD_FAILURE = 'DELETE_BOARD_FAILURE';
 export const RESET_DELETED_BOARD = 'RESET_DELETED_BOARD';
 
-export const fetchBoardIndexSuccess = (response) => {
-	console.log('response :: ', response);
+export const fetchBoardIndexEpic = action$ => {
+	return action$.ofType(FETCH_BOARD_INDEX)
+		.mergeMap(action => {
+			console.log('action', action);
 
-	return {
-		type: FETCH_BOARD_INDEX_SUCCESS,
-		payload: response
-	};
+			return ajax({ url: Common.get('apis').index + action.query, method: 'GET',})
+				.map(data => fetchBoardIndexSuccess(data))
+				.catch(err => Observable.of(fetchBoardIndexFailure(err)))
+			}
+		);
 }
 
-export const fetchBoardIndexFailure = (err) => {
-	return {
-		type: FETCH_BOARD_INDEX_FAILURE,
-		payload: error
-	};
-}
+
+export const fetchBoardIndex = (queryJSON) => ({
+	type: FETCH_BOARD_INDEX,
+	query: queryJSON? objectToQuerystring(queryJSON) : ''
+});
+
+export const fetchBoardIndexSuccess = (data) => ({
+	type: FETCH_BOARD_INDEX_SUCCESS,
+	payload: data.response
+});
+
+export const fetchBoardIndexFailure = (error) => ({
+	type: FETCH_BOARD_INDEX_FAILURE,
+	payload: error.xhr.response
+});
