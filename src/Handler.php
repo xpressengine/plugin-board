@@ -25,6 +25,7 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Models\BoardData;
 use Xpressengine\Plugins\Board\Models\BoardFavorite;
+use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Storage\File;
@@ -343,6 +344,10 @@ class Handler
         $this->setTags($board, $args);
         $this->unsetTags($board, $args);
         $this->saveData($board, $args);
+        $thumbnail = BoardGalleryThumb::find($board->id);
+        if ($thumbnail !== null) {
+            $thumbnail->delete();
+        }
 
         $board->getConnection()->commit();
 
