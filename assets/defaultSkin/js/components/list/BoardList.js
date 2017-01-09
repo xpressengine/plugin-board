@@ -35,6 +35,8 @@ export default class BoardList extends React.Component {
 
 	render() {
 
+		console.log('this.props.loading', this.props.loading);
+
 		if(this.props.loading) {
 			return <Spinner />
 		}

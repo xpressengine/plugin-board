@@ -19,9 +19,9 @@ const INITIAL_STATE = {
 		},
 		boardList: [],
 		categories: [],
-		error: null,
-		loading: false,
 	},
+	error: null,
+	loading: false,
 	checkedAll: false,
 	managementStatus: 'none',
 	checkedMap: {},
@@ -32,7 +32,7 @@ export default function(state = INITIAL_STATE, action) {
 
 	switch(action.type) {
 		case FETCH_BOARD_INDEX:
-			return { ...state, [index.loading]: true }
+			return { ...state, loading: true};
 
 		case FETCH_BOARD_INDEX_SUCCESS:// return list of posts and make loading = false
 
@@ -56,7 +56,7 @@ export default function(state = INITIAL_STATE, action) {
 				checkedMap[obj.id] = false;
 			});
 
-			return { ...state, index: {boardList, paginate, categories: action.payload.categories, error:null, loading: false, }, checkedMap, checkedAll: false, };
+			return { ...state, index: {boardList, paginate, categories: action.payload.categories, }, checkedMap, checkedAll: false, error:null, loading: false, };
 
 		case CHECK_ALL:
 			var checkedMap = {};

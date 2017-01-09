@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { browserHistory, Router, Route, Link } from 'react-router'
 import { timeAgo } from '../../utils';
+import Spinner from './../Spinner';
 
 class DetailView extends React.Component {
 
@@ -41,6 +42,13 @@ class DetailView extends React.Component {
 
 		let item = this.props.view.item;
 		let id = this.props.view.item.id;
+
+
+		if(this.props.view.loading) {
+			return (
+				<Spinner />
+			)
+		}
 
 		return (
 			<div className="board_read">

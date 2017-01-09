@@ -7,7 +7,7 @@ const mapStateToProps = (state, ownProps) => {
 
 	return {
 		view: state.view,
-		id
+		id,
 	};
 }
 

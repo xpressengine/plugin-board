@@ -6,8 +6,8 @@ const mapStateToProps = (state) => {
 	return {
 		boardList: state.list.index.boardList,
 		categories: state.list.index.categories,
-		loading: state.list.index.loading,
-		error: state.list.index.error,
+		loading: state.list.loading,
+		error: state.list.error,
 		checkedAll: state.list.checkedAll,
 	};
 }

@@ -5,18 +5,17 @@ export const EDIT_BOARD = "EDIT_BOARD";
 export const EDIT_BOARD_SUCCESS = "EDIT_BOARD_SUCCESS";
 export const EDIT_BOARD_FAILURE = "EDIT_BOARD_FAILURE";
 
-export const editBoardEpic = action$ => {
+export const editBoardEpic = action$ =>
 	action$.ofType(EDIT_BOARD)
 		.mergeMap(action =>
 			ajax({ url: Common.get('apis').update, type: 'put', body: action.payload })
-				.map(e => editBoardSuccess(e))
-				.catch(error => editBoardFailure(error))
-		)
-};
+				.mergeMap(data => editBoardSuccess(data))
+				.catch(error => Observable.of(editBoardFailure(error)))
+		);
 
-const editBoardSuccess = (res) => ({
+const editBoardSuccess = (data) => ({
 	type: EDIT_BOARD_SUCCESS,
-	payload: e.response
+	payload: data.response
 })
 
 export const editBoardFailure = (error) => ({

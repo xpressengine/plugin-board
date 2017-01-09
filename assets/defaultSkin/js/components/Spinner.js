@@ -16,12 +16,12 @@ export default class Spinner extends React.Component {
 
 		return (
 			<div>
-				<div class="xe-loading xe-fixed">
-					<div class="xe-loading-inner">
-						<span class="xe-sr-only">Loading...</span>
+				<div className="xe-loading xe-fixed">
+					<div className="xe-loading-inner">
+						<span className="xe-sr-only">Loading...</span>
 					</div>
 				</div>
-				<div class="dim" style="display:block"></div>
+				<div className="dim" style={{display:'block'}}></div>
 			</div>
 		);
 	}
