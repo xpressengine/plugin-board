@@ -1,15 +1,24 @@
 import { connect } from 'react-redux';
-import { addSuccess } from './../actions/boardListAction';
+import { FETCH_VIEW } from './../actions/boardViewAction';
 import EditForm from './../components/write/EditForm';
 
 const mapStateToProps = (state) => {
-	return {
+	const id = state.routing.locationBeforeTransitions.pathname.split('/')[2];
 
+	return {
+		edit: state.edit,
+		id
 	};
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		fetchView: (id) => {
+			dispatch({
+				type: FETCH_VIEW,
+				id
+			})
+		},
 		updateContents: (data) => {
 			XE.ajax({
 				url: Common.get('apis').edit,

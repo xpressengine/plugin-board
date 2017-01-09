@@ -32,17 +32,13 @@ export const DELETE_BOARD_SUCCESS = 'DELETE_BOARD_SUCCESS';
 export const DELETE_BOARD_FAILURE = 'DELETE_BOARD_FAILURE';
 export const RESET_DELETED_BOARD = 'RESET_DELETED_BOARD';
 
-export const fetchBoardIndexEpic = action$ => {
-	return action$.ofType(FETCH_BOARD_INDEX)
-		.mergeMap(action => {
-			console.log('action', action);
-
-			return ajax({ url: Common.get('apis').index + action.query, method: 'GET',})
+export const fetchBoardIndexEpic = action$ =>
+	action$.ofType(FETCH_BOARD_INDEX)
+		.mergeMap(action =>
+			ajax({ url: Common.get('apis').index + action.query, method: 'GET',})
 				.map(data => fetchBoardIndexSuccess(data))
-				.catch(err => Observable.of(fetchBoardIndexFailure(err)))
-			}
+				.catch(error => Observable.of(fetchBoardIndexFailure(error)))
 		);
-}
 
 
 export const fetchBoardIndex = (queryJSON) => ({

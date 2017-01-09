@@ -19,6 +19,7 @@ export default class BoardList extends React.Component {
 	}
 
 	componentWillMount() {
+		console.log('BoardList componentWillMount:fn');
 		this.props.fetchBoardIndex();
 	}
 

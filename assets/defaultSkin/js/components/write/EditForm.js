@@ -3,7 +3,22 @@ import ReactDOM from 'react-dom';
 
 class EditForm extends React.Component {
 
+	constructor() {
+		super();
+	}
+
+	componentWillMount() {
+		this.props.fetchView(this.props.id);
+	}
+
 	render() {
+
+		if(!this.props.loading) {
+			return (
+				<div></div>
+			)
+		}
+
 		return (
 			<div className="board_write">
 				<div className="write_header">

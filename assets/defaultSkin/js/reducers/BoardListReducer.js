@@ -31,6 +31,9 @@ export default function(state = INITIAL_STATE, action) {
 	let error;
 
 	switch(action.type) {
+		case FETCH_BOARD_INDEX:
+			return { ...state, [index.loading]: true }
+
 		case FETCH_BOARD_INDEX_SUCCESS:// return list of posts and make loading = false
 
 			console.log('reducer ::', FETCH_BOARD_INDEX_SUCCESS, action);
