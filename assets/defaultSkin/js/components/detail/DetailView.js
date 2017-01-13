@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { browserHistory, Router, Route, Link } from 'react-router'
+import { Link } from 'react-router'
 import { timeAgo } from '../../utils';
 import Spinner from './../Spinner';
 
@@ -23,7 +23,9 @@ class DetailView extends React.Component {
 		this.fetch();
 	}
 
-	componentWillUpdate(a,b,c) {
+	componentWillUpdate() {
+		console.log(this.tmpId, this.props.id);
+
 		if(this.tmpId !== this.props.id) {
 			this.fetch();
 		}
@@ -38,22 +40,25 @@ class DetailView extends React.Component {
 
 	render() {
 
-		console.log(this.props);
-
-		let item = this.props.view.item;
-		let id = this.props.view.item.id;
-
-
 		if(this.props.view.loading) {
 			return (
 				<Spinner />
 			)
 		}
 
+		const item = this.props.view.item;
+		const id = this.props.view.item.id;
+
+		const categories = this.props.categories;
+
+		console.log('categories', categories);
+		const category = item.category;
+		const categoryName = category? _.find(categories, o => ( o.value == category.itemId )).text : '없음';
+
 		return (
 			<div className="board_read">
 				<div className="read_header">
-					<span className="category">{item.category}</span>
+					<span className="category">{categoryName}</span>
 					<h1><a href="#">{item.title}</a></h1>
 					<div className="more_info">
 
@@ -116,17 +121,7 @@ class DetailView extends React.Component {
 						</div>
 						<div className="bd_like_more">
 							<ul>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-
-								<li className="on"><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
-								<li><img src="sample/@iu.jpg" alt="아이유" title="아이유" /></li>
+								<li><img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRTEyUfPSIFSp5Vt75bhjqmF8pO26z7S8Nwv96S8QROx6j7RGzJ-efZ" alt="" title="" /></li>
 							</ul>
 						</div>
 					</div>

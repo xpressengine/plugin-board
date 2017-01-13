@@ -32,12 +32,9 @@ export default function(state = INITIAL_STATE, action) {
 
 	switch(action.type) {
 		case FETCH_BOARD_INDEX:
-			return { ...state, loading: true};
+			return { ...state, loading: true}
 
 		case FETCH_BOARD_INDEX_SUCCESS:// return list of posts and make loading = false
-
-			console.log('reducer ::', FETCH_BOARD_INDEX_SUCCESS, action);
-
 			var checkedMap = {};
 			var boardList = action.payload.paginate.data;
 			var resPaginate = action.payload.paginate;

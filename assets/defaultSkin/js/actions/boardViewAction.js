@@ -9,9 +9,9 @@ export const FETCH_VIEW_FAILURE = 'FETCH_VIEW_FAILURE';
 export const fetchViewEpic = (action$) =>
 	action$.ofType(FETCH_VIEW)
 		.mergeMap(action =>
-			ajax({ url: Common.get('apis').view.replace('[id]', action.id), method: 'GET'})
-				.map(e => fetchViewSuccess(e))
-				.catch(err => Observable.of(fetchViewFailure(err)))
+			ajax({ url: Common.get('apis').view.replace('[id]', action.id), method: 'GET', headers: Common.get('ajaxHeaders')})
+				.map(data => fetchViewSuccess(data))
+				.catch(error => Observable.of(fetchViewFailure(error)))
 		);
 
 export const fetchView = (id) => ({
@@ -19,9 +19,9 @@ export const fetchView = (id) => ({
 	id
 });
 
-export const fetchViewSuccess = (e) => ({
+export const fetchViewSuccess = (data) => ({
 	type: FETCH_VIEW_SUCCESS,
-	payload: e.response
+	payload: data.response
 })
 
 export const fetchViewFailure = (error) => ({

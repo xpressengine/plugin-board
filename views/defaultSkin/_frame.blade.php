@@ -23,6 +23,9 @@
             },
             links: {
                 settings: ''
+            },
+            ajaxHeaders: {
+                'X-CSRF-TOKEN': '{!! csrf_token() !!}'
             }
         };
 

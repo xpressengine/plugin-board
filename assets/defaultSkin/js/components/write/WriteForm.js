@@ -9,29 +9,26 @@ import Dropdown from './../Dropdown';
 
 const { DOM: { input } } = React;
 
-function validate(values) {
-	console.log('v', JSON.stringify(values));
-}
-
-
-const validateAndCreateBoard = (values, dispatch, selectedCategory) => {
-	return dispatch(createBoardContents(values));
-}
-
-
 class WriteForm extends React.Component {
 
 	constructor() {
 		super();
+
+		this.handleSelect = ::this.handleSelect;
 	}
 
 	componentWillMount() {
-		//카테고리 정보
 		this.props.fetchBoardIndex();
 	}
 
-	handleSelect(value) {
+	handleSelect(categoryItemId) {
+		this.props.handleSelect(categoryItemId);
+	}
 
+	validateAndCreateBoard(values, dispatch) {
+		values.slug = 'testSlug';
+		console.log('values', values);
+		return dispatch(createBoardContents(values));
 	}
 
 	render() {
@@ -39,7 +36,7 @@ class WriteForm extends React.Component {
 
 		return (
 			<div className="board_write">
-				<form onSubmit={handleSubmit(validateAndCreateBoard)}>
+				<form onSubmit={handleSubmit(this.validateAndCreateBoard)}>
 					<div className="write_header">
 					{
 						(() => {
@@ -51,15 +48,13 @@ class WriteForm extends React.Component {
 								}
 
 								return (
-									<Field name="categoryItemId">
-										<div className="write_category">
-											<Dropdown optionList={categories} handleSelect={this.handleSelect.bind(this)} />
-										</div>
-									</Field>
+									<div className="write_category">
+										<Dropdown optionList={categories} handleSelect={this.handleSelect} />
+									</div>
 								)
 							}
 						})()
-					}
+						}
 					<div className="write_title">
 						<div className="temp_save">
 							<a href="#" className="temp_save_num"><strong>3</strong>개의 임시 저장 글</a>
@@ -119,8 +114,4 @@ class WriteForm extends React.Component {
 	}
 }
 
-export default reduxForm({
-	form: 'WriteForm',  // a unique identifier for this form
-	validate,                // <--- validation function given to redux-form
-	// warn                     // <--- warning function given to redux-form
-})(WriteForm);
+export default WriteForm;

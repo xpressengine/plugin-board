@@ -35,7 +35,7 @@ export const RESET_DELETED_BOARD = 'RESET_DELETED_BOARD';
 export const fetchBoardIndexEpic = action$ =>
 	action$.ofType(FETCH_BOARD_INDEX)
 		.mergeMap(action =>
-			ajax({ url: Common.get('apis').index + action.query, method: 'GET',})
+			ajax({ url: Common.get('apis').index + action.query, method: 'GET', headers: Common.get('ajaxHeaders')})
 				.map(data => fetchBoardIndexSuccess(data))
 				.catch(error => Observable.of(fetchBoardIndexFailure(error)))
 		);

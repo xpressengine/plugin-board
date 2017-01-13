@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
-
 import { Link } from 'react-router';
+import _ from 'lodash';
+
 import Favorite from './../../containers/FavoriteContainer';
 import { timeAgo, isNew } from 'utils';
 
@@ -33,6 +34,10 @@ class BoardRow extends React.Component {
 			favorite: this.props.favorite,
 		};
 
+		const categories = this.props.categories;
+		const category = this.props.category;
+		const categoryName = category? _.find(categories, o => ( o.value == category.itemId )).text : '없음';
+
 		return (
 			<tr>
 				{
@@ -56,7 +61,7 @@ class BoardRow extends React.Component {
 					(() => {
 						if(this.props.categories.length > 0) {
 							return (
-								<td className="category xe-hidden-xs">{ this.props.category || '없음' }</td>
+								<td className="category xe-hidden-xs">{ categoryName }</td>
 							)
 						}
 					})()
@@ -66,7 +71,7 @@ class BoardRow extends React.Component {
 						(() => {
 							if(this.props.categories.length > 0) {
 								return (
-									<span className="xe-badge xe-primary-outline xe-visible-xs-inline-block">{ this.props.category || '없음' }</span>
+									<span className="xe-badge xe-primary-outline xe-visible-xs-inline-block">{ categoryName }</span>
 								)
 							}
 						})()
