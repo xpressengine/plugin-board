@@ -233,10 +233,22 @@ class ApiController extends Controller
             }
         }
 
+        $categories = [];
+        if ($this->config->get('category') === true) {
+            $categoryItems = Category::find($this->config->get('categoryId'))->items;
+            foreach ($categoryItems as $categoryItem) {
+                $categories[] = [
+                    'value' => $categoryItem->id,
+                    'text' => $categoryItem->word,
+                ];
+            }
+        }
+
         return XePresenter::makeApi([
             'item' => $item,
             'visible' => $visible,
             'showCategoryItem' => $showCategoryItem,
+            'categories' => $categories,
             'links' => [
                 'edit' => $this->urlHandler->get('api.edit', ['id' => $item->id]),
                 'update' => $this->urlHandler->get('api.update', ['id' => $item->id]),
