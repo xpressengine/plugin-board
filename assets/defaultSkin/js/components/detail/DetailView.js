@@ -1,15 +1,17 @@
-import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router'
 import { timeAgo } from '../../utils';
 import Spinner from './../Spinner';
 
-class DetailView extends React.Component {
+class DetailView extends Component {
 
 	static propTypes = {
-		id: PropTypes.number.isRequired,
 		view: PropTypes.object
-	};
+	}
+
+	static contextTypes = {
+		router: PropTypes.object
+	}
 
 	tmpId;
 
@@ -24,14 +26,17 @@ class DetailView extends React.Component {
 	}
 
 	componentWillUpdate() {
-		if(this.tmpId !== this.props.id) {
+		const id = this.context.router.params.id;
+
+		if(this.tmpId !== id) {
 			this.fetch();
 		}
 	}
 
 	fetch() {
-		this.tmpId = this.props.id;
-		this.props.fetchDetailView(this.props.id);
+		const id = this.context.router.params.id;
+		this.tmpId = id;
+		this.props.fetchDetailView(id);
 
 		document.body.scrollTop = 0;
 	}

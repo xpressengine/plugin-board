@@ -11,11 +11,11 @@ const formConfig = {
 };
 
 const mapStateToProps = (state) => {
-	const id = state.routing.locationBeforeTransitions.pathname.split('/')[2];
-
 	return {
-		edit: state.edit,
-		id
+		item: state.edit.item,
+		categories: state.edit.categories,
+		loading: state.edit.loading,
+		error: state.edit.error
 	};
 }
 
@@ -28,15 +28,10 @@ const mapDispatchToProps = (dispatch) => {
 			})
 		},
 		updateContents: (data) => {
-			XE.ajax({
-				url: Common.get('apis').update,
-				type: 'put',
-				dataType: 'json',
-				data: data,
-				success: function(res) {
-					dispatch(addSuccess(res));
-				},
-			});
+
+		},
+		handleSelect: (categoryItemId) => {
+			dispatch(change(form, 'categoryItemId', categoryItemId));
 		}
 	}
 }

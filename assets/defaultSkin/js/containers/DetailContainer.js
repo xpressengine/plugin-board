@@ -3,11 +3,8 @@ import { fetchCategories, fetchView } from './../actions/boardViewAction';
 import DetailView from './../components/detail/DetailView';
 
 const mapStateToProps = (state, ownProps) => {
-	const id = state.routing.locationBeforeTransitions.pathname.split('/')[2];
-
 	return {
-		view: state.view,
-		id,
+		view: state.view
 	};
 }
 

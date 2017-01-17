@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
+import Spinner from './../Spinner';
 import renderField from './renderField';
 import renderTextArea from './renderTextArea';
 import { createBoardContents } from './../../actions/boardWriteAction';
@@ -9,7 +10,11 @@ import Dropdown from './../Dropdown';
 
 const { DOM: { input } } = React;
 
-class WriteForm extends React.Component {
+class WriteForm extends Component {
+
+	static contextTypes = {
+		router: PropTypes.object
+	};
 
 	constructor() {
 		super();
@@ -18,7 +23,14 @@ class WriteForm extends React.Component {
 	}
 
 	componentWillMount() {
+		this.props.resetComponent();
 		this.props.fetchBoardIndex();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.item && !nextProps.error) {
+			this.context.router.push('/');
+		}
 	}
 
 	handleSelect(categoryItemId) {
@@ -28,11 +40,18 @@ class WriteForm extends React.Component {
 	validateAndCreateBoard(values, dispatch) {
 		values.slug = 'testSlug';
 		console.log('values', values);
+
 		return dispatch(createBoardContents(values));
 	}
 
 	render() {
 		const { handleSubmit, submitting } = this.props;
+
+		if(this.props.loading) {
+			return (
+				<Spinner />
+			)
+		}
 
 		return (
 			<div className="board_write">
@@ -54,12 +73,22 @@ class WriteForm extends React.Component {
 								)
 							}
 						})()
-						}
+					}
 					<div className="write_title">
-						<div className="temp_save">
-							<a href="#" className="temp_save_num"><strong>3</strong>개의 임시 저장 글</a>
-						</div>
 
+						{
+							//TODO
+							(() => {
+								if(1 !== 1) {
+									return (
+										<div className="temp_save">
+											<a href="#" className="temp_save_num"><strong>3</strong>개의 임시 저장 글</a>
+										</div>
+									)
+								}
+							})()
+						}
+						
 						<Field
 							name="title"
 							type="text"
@@ -79,13 +108,23 @@ class WriteForm extends React.Component {
 						</div>
 					</div>
 					<div className="write_footer">
-						<div className="write_form_input">
-							<div className="xe-form-inline">
-								<input type="text" className="xe-form-control" placeholder="이름" title="이름" />
-								<input type="text" className="xe-form-control" placeholder="비밀번호" title="비밀번호" />
-								<input type="text" className="xe-form-control" placeholder="이메일 주소" title="이메일 주소" />
-							</div>
-						</div>
+
+						{
+							(() => {
+								if(1 !== 1) {
+									return (
+										<div className="write_form_input">
+											<div className="xe-form-inline">
+												<input type="text" className="xe-form-control" placeholder="이름" title="이름" />
+												<input type="text" className="xe-form-control" placeholder="비밀번호" title="비밀번호" />
+												<input type="text" className="xe-form-control" placeholder="이메일 주소" title="이메일 주소" />
+											</div>
+										</div>
+									) ;
+								}
+							})()
+						}
+
 						<div className="write_form_option">
 							<div className="xe-form-inline">
 								<label className="xe-label">

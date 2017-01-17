@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 
 class Dropdown extends Component {
 
 	static propTypes = {
-		optionList: React.PropTypes.array.isRequired,
-		handleSelect: React.PropTypes.func,
+		optionList: PropTypes.array.isRequired,
+		handleSelect: PropTypes.func,
+		selected: PropTypes.string
 	};
 
 	constructor(props) {
@@ -16,8 +18,23 @@ class Dropdown extends Component {
 		};
 	}
 
+	componentWillMount() {
+
+		if(this.props.selected && this.props.optionList.length > 0) {
+			const defaultSelected = _.find(this.props.optionList, {value: this.props.selected});
+
+			this.handleSelect({
+				text: defaultSelected.text,
+				value: defaultSelected.value
+			})
+		}
+	}
+
 	handleSelect(obj, e) {
-		e.preventDefault();
+
+		if(e) {
+			e.preventDefault();
+		}
 
 		this.setState((s, p) => {
 			s.selectedValue = obj.value;

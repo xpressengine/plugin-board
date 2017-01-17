@@ -5,6 +5,7 @@ import { push } from 'react-router-redux';
 export const ADD_CONTENTS = 'ADD_CONTENTS';
 export const ADD_CONTENTS_SUCCESS = 'ADD_CONTENTS_SUCCESS';
 export const ADD_CONTENTS_FAILURE = 'ADD_CONTENTS_FAILURE';
+export const DETAIL_RESET = 'DETAIL_RESET';
 
 export const createBoardContentsEpic = action$ =>
 	action$.ofType(ADD_CONTENTS)
@@ -27,4 +28,8 @@ export const createBoardContentsSuccess = (data) => ({
 export const createBoardContentsFailure = (error) => ({
 	type: ADD_CONTENTS_SUCCESS,
 	payload: error.xhr.response
-})
+});
+
+export const resetWriteForm = () => ({
+	type: DETAIL_RESET
+});
