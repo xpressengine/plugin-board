@@ -24,8 +24,6 @@ class DetailView extends React.Component {
 	}
 
 	componentWillUpdate() {
-		console.log(this.tmpId, this.props.id);
-
 		if(this.tmpId !== this.props.id) {
 			this.fetch();
 		}
@@ -49,9 +47,8 @@ class DetailView extends React.Component {
 		const item = this.props.view.item;
 		const id = this.props.view.item.id;
 
-		const categories = this.props.categories;
+		const categories = this.props.view.categories;
 
-		console.log('categories', categories);
 		const category = item.category;
 		const categoryName = category? _.find(categories, o => ( o.value == category.itemId )).text : '없음';
 

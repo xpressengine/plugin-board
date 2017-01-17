@@ -13,9 +13,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchCategories: () => {
-			dispatch(fetchCategories());
-		},
+		// fetchCategories: () => {
+		// 	dispatch(fetchCategories());
+		// },
 		fetchDetailView: (id) => {
 			dispatch(fetchView(id));
 		},
