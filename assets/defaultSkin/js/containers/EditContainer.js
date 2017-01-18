@@ -30,8 +30,9 @@ const mapDispatchToProps = (dispatch) => {
 		updateContents: (data) => {
 
 		},
-		handleSelect: (categoryItemId) => {
-			dispatch(change(form, 'categoryItemId', categoryItemId));
+		changeFormField: ({ field, value }) => {
+			console.log(field, value);
+			dispatch(change(form, field, value));
 		}
 	}
 }

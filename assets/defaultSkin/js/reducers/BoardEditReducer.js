@@ -1,5 +1,5 @@
 import {
-	EDIT_BOARD, EDIT_BOARD_SUCCESS, EDIT_BOARD_FAILURE
+	UPDATE_BOARD, UPDATE_BOARD_SUCCESS, UPDATE_BOARD_FAILURE
 } from '../actions/boardEditAction';
 
 import {
@@ -26,13 +26,13 @@ export default function(state = INITIAL_STATE, action) {
 		case FETCH_VIEW_FAILURE:
 			return { ...state, ...action.payload , loading: false, error: action.payload}//Object.assign({}, state, action.payload);
 
-		case EDIT_BOARD:
+		case UPDATE_BOARD:
 			return { ...state, loading: true, error: null };
 
-		case EDIT_BOARD_SUCCESS:
+		case UPDATE_BOARD_SUCCESS:
 			return { ...state, ...action.payload, loading: false, error: null }
 
-		case EDIT_BOARD_FAILURE:
+		case UPDATE_BOARD_FAILURE:
 			return { ...state, ...action.payload, loading: false }
 
 		default:

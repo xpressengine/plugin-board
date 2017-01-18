@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm, Field } from 'redux-form';
+import { updateBoard } from './../../actions/boardEditAction';
 import Spinner from './../Spinner';
 import renderField from './renderField';
 import renderTextArea from './renderTextArea';
@@ -15,6 +16,8 @@ class EditForm extends Component {
 
 	constructor() {
 		super();
+
+		this.handleSelect = ::this.handleSelect
 	}
 
 	componentWillMount() {
@@ -23,7 +26,31 @@ class EditForm extends Component {
 		this.props.fetchView(id);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		// if (nextProps.item && !nextProps.error) {
+		// 	this.context.router.push('/');
+		// }
+	}
+
+	changeField(field, e) {
+		this.props.changeFormField({field, value: e.target.value});
+	}
+
+	handleSelect(categoryItemId) {
+		this.props.changeFormField({field: categoryItemId, value: categoryItemId});
+	}
+
+	validateAndUpdateBoard(values, dispatch, id) {
+		values.slug = 'testSlug';
+		console.log('values', values, id);
+
+		return dispatch(updateBoard(id, values));
+	}
+
 	render() {
+		const { handleSubmit, submitting } = this.props;
+		const id = this.context.router.params.id;
+
 		if(this.props.loading) {
 			return (
 				<Spinner />
@@ -32,16 +59,9 @@ class EditForm extends Component {
 
 		console.log(this.props);
 
-		const initialValues = {
-			title: 'test',
-			content: 'content',
-			slug: 'testSlug',
-			category: 'testCategory'
-		}
-
 		return (
 			<div className="board_write">
-				<form initialValues={initialValues}>
+				<form onSubmit={handleSubmit((values, dispatch) => { this.validateAndUpdateBoard(values, dispatch, id) })}>
 					<div className="write_header">
 						{
 							(() => {
@@ -54,7 +74,7 @@ class EditForm extends Component {
 
 									return (
 										<div className="write_category">
-											<Dropdown optionList={categories} handleSelect={this.props.handleSelect} selected={parseInt(this.props.item.category.itemId, 10)} />
+											<Dropdown optionList={categories} handleSelect={this.handleSelect} selected={parseInt(this.props.item.category.itemId, 10)} />
 										</div>
 									)
 								}
@@ -77,10 +97,11 @@ class EditForm extends Component {
 
 							<Field
 								name="title"
-								value="test"
-								type="text"
 								component={ renderField }
+								input={{defaultValue: this.props.item.title, onChange: this.changeField.bind(this, 'title')}}
+								type="text"
 								label="제목을 입력하세요"
+
 							/>
 
 						</div>
@@ -91,8 +112,9 @@ class EditForm extends Component {
 							<Field
 								name="content"
 								component={ renderTextArea }
-								value={ this.props.item.content }
+								input={{defaultValue: this.props.item.content, onChange: this.changeField.bind(this, 'content')}}
 								label="내용을 입력하세요"
+
 							/>
 
 						</div>
@@ -131,7 +153,7 @@ class EditForm extends Component {
 						</div>
 						<div className="write_form_btn nologin">
 							<a href="#" className="bd_btn btn_preview">미리보기</a>
-							<a href="#" className="bd_btn btn_submit">등록</a>
+							<button type="submit" className="bd_btn btn_submit">등록</button>
 						</div>
 					</div>
 				</form>
