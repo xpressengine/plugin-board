@@ -239,7 +239,7 @@ class ApiController extends Controller
             foreach ($categoryItems as $categoryItem) {
                 $categories[] = [
                     'value' => $categoryItem->id,
-                    'text' => $categoryItem->word,
+                    'text' => xe_trans($categoryItem->word),
                 ];
             }
         }
