@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dropdown from './../Dropdown';
 
-class BoardHeader extends React.Component {
+class BoardListHeader extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -151,7 +151,7 @@ class BoardHeader extends React.Component {
 
 				<div className="bd_search_area">
 					<div className="bd_search_box">
-						<input type="text" className="bd_search_input" title="게시판 검색" placeholder="검색어를 입력하세요" defaultValue="" />
+						<input type="text" className="bd_search_input" title="게시판 검색" placeholder="검색어를 입력하세요" />
 							<a href="#" className="bd_btn_detail" title="게시판 상세검색">상세검색</a>
 					</div>
 					<div className="bd_search_detail">
@@ -179,7 +179,7 @@ class BoardHeader extends React.Component {
 											<label className="xe-control-label">제목 + 내용</label>
 										</div>
 										<div className="xe-col-sm-9">
-											<input type="text" className="xe-form-control" title="제목+내용" defaultValue="" />
+											<input type="text" className="xe-form-control" title="제목+내용" />
 										</div>
 									</div>
 								</div>
@@ -191,7 +191,7 @@ class BoardHeader extends React.Component {
 											<label className="xe-control-label">글쓴이</label>
 										</div>
 										<div className="xe-col-sm-9">
-											<input type="text" className="xe-form-control" title="제목+내용" defaultValue="" />
+											<input type="text" className="xe-form-control" title="제목+내용" />
 										</div>
 									</div>
 								</div>
@@ -214,7 +214,7 @@ class BoardHeader extends React.Component {
 												</div>
 											</div>
 											<div className="xe-form-inline">
-												<input type="text" className="xe-form-control" title="시작 날짜 입력" value="20150928" defaultValue="20150928"/> - <input type="text" className="xe-form-control" title="끝 날짜 입력" value="20151004" defaultValue="20151004" />
+												<input type="text" className="xe-form-control" title="시작 날짜 입력" defaultValue="20150928"/> - <input type="text" className="xe-form-control" title="끝 날짜 입력" defaultValue="20151004" />
 											</div>
 										</div>
 									</div>
@@ -234,4 +234,4 @@ class BoardHeader extends React.Component {
 	}
 }
 
-export default BoardHeader;
+export default BoardListHeader;

@@ -8,7 +8,7 @@ import Spinner from './../Spinner';
 export default class BoardList extends React.Component {
 
 	static propTypes = {
-		boardList: React.PropTypes.object,
+		boardList: React.PropTypes.array,
 		categories: React.PropTypes.array
 	};
 
@@ -82,7 +82,7 @@ export default class BoardList extends React.Component {
 						{
 							this.props.boardList.map((row, i) => {
 								return (
-										<BoardRowContainer {...row} />
+										<BoardRowContainer key={i} {...row} />
 									)
 							})
 						}

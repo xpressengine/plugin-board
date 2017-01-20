@@ -6,7 +6,7 @@ class Dropdown extends Component {
 	static propTypes = {
 		optionList: PropTypes.array.isRequired,
 		handleSelect: PropTypes.func,
-		selected: PropTypes.string
+		selected: PropTypes.number
 	};
 
 	constructor(props) {
@@ -55,7 +55,7 @@ class Dropdown extends Component {
 							var on = (i === 0 && !this.state.selectedValue || this.state.selected === obj.value)? "on" : '';
 							
 							return (
-								<li className={on}><a href="#" onClick={this.handleSelect.bind(this, obj)}>{ obj.text }</a></li>
+								<li key={i} className={on}><a href="#" onClick={this.handleSelect.bind(this, obj)}>{ obj.text }</a></li>
 							)
 						})
 					}

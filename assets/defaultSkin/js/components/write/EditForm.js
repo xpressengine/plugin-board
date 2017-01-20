@@ -14,6 +14,12 @@ class EditForm extends Component {
 		router: PropTypes.object
 	}
 
+	static propTypes = {
+		fields: PropTypes.array.isRequired,
+		handleSubmit: PropTypes.func.isRequired,
+		submitting: PropTypes.bool.isRequired
+	}
+
 	constructor() {
 		super();
 
@@ -27,17 +33,21 @@ class EditForm extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log('componentWillReceiveProps', this.props, nextProps);
+
 		// if (nextProps.item && !nextProps.error) {
 		// 	this.context.router.push('/');
 		// }
 	}
 
 	changeField(field, e) {
+		
 		this.props.changeFormField({field, value: e.target.value});
 	}
 
 	handleSelect(categoryItemId) {
-		this.props.changeFormField({field: categoryItemId, value: categoryItemId});
+		this.props.changeFormField({field: 'categoryItemId', value: categoryItemId});
+
 	}
 
 	validateAndUpdateBoard(values, dispatch, id) {
@@ -49,15 +59,22 @@ class EditForm extends Component {
 
 	render() {
 		const { handleSubmit, submitting } = this.props;
+		// const { fields: { title, content, slug, categoryItemId }, handleSubmit, load, submitting } = this.props;
 		const id = this.context.router.params.id;
+
+		console.log('this.props', this.props);
+		// console.log('fields', fields);
+		// console.log('id', id);
+
+		if(this.props.err) {
+			XE.toast('', this.props.err.message);
+		}
 
 		if(this.props.loading) {
 			return (
 				<Spinner />
 			)
 		}
-
-		console.log(this.props);
 
 		return (
 			<div className="board_write">
@@ -98,10 +115,10 @@ class EditForm extends Component {
 							<Field
 								name="title"
 								component={ renderField }
-								input={{defaultValue: this.props.item.title, onChange: this.changeField.bind(this, 'title')}}
+								input={{value: this.props.item.title, onChange: this.changeField.bind(this, 'title')}}
 								type="text"
 								label="제목을 입력하세요"
-
+								
 							/>
 
 						</div>
@@ -112,9 +129,9 @@ class EditForm extends Component {
 							<Field
 								name="content"
 								component={ renderTextArea }
-								input={{defaultValue: this.props.item.content, onChange: this.changeField.bind(this, 'content')}}
+								input={{value: this.props.item.content, onChange: this.changeField.bind(this, 'content')}}
 								label="내용을 입력하세요"
-
+								onChange={(v) => {console.log(v)}}
 							/>
 
 						</div>

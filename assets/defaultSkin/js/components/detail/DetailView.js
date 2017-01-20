@@ -43,6 +43,10 @@ class DetailView extends Component {
 
 	render() {
 
+		if(this.props.view.error) {
+			XE.toast('', this.props.view.error.message);
+		}
+
 		if(this.props.view.loading) {
 			return (
 				<Spinner />

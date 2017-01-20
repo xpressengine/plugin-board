@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 		categories: state.list.index.categories,
 		categoryItemId: state.write.categoryItemId,
 		item: state.write.item,
-		error: state.write.error,
+		err: state.write.error,
 		loading: state.write.loading
 	};
 }

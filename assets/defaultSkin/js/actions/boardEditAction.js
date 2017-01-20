@@ -1,5 +1,7 @@
 import { Observable } from 'rxjs';
 import { ajax } from 'rxjs/observable/dom/ajax';
+import 'rxjs/operator/map';
+import 'rxjs/operator/catch';
 
 export const UPDATE_BOARD = "UPDATE_BOARD";
 export const UPDATE_BOARD_SUCCESS = "UPDATE_BOARD_SUCCESS";
@@ -8,13 +10,13 @@ export const UPDATE_BOARD_FAILURE = "UPDATE_BOARD_FAILURE";
 export const updateBoardEpic = action$ =>
 	action$.ofType(UPDATE_BOARD)
 		.mergeMap(action =>
-			ajax({
+			Observable::ajax({
 				url: Common.get('apis').update.replace('[id]', action.id),
-				type: 'put',
+				method: 'POST',
 				body: action.payload,
 				headers: Common.get('ajaxHeaders')
 			})
-				.mergeMap(data => updateBoardSuccess(data))
+				.map(data => updateBoardSuccess(data))
 				.catch(error => Observable.of(updateBoardFailure(error)))
 		);
 

@@ -45,8 +45,12 @@ class WriteForm extends Component {
 	}
 
 	render() {
-		const { handleSubmit, submitting } = this.props;
+		const { handleSubmit, submitting, onSubmit } = this.props;
 
+		if(this.props.err) {
+			XE.toast('', this.props.err.message);
+		}
+		
 		if(this.props.loading) {
 			return (
 				<Spinner />

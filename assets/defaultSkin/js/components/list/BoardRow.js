@@ -8,7 +8,7 @@ import { timeAgo, isNew } from 'utils';
 class BoardRow extends React.Component {
 
 	static propTypes = {
-		id: React.PropTypes.number.isRequired
+		id: React.PropTypes.string.isRequired
 	};
 
 	constructor(props) {

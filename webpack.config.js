@@ -7,7 +7,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var prodConfig = require('./webpack.prod.config');
 var devConfig = require('./webpack.dev.config');
-var target = true;//(process.env.npm_lifecycle_event === 'build')? true : false;
+var target = (process.env.npm_lifecycle_event === 'build')? true : false;
 
 var common = {
   devtool: 'source-map',

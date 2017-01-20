@@ -12,10 +12,11 @@ const formConfig = {
 
 const mapStateToProps = (state) => {
 	return {
+		initialValues: state.edit.item,
 		item: state.edit.item,
 		categories: state.edit.categories,
 		loading: state.edit.loading,
-		error: state.edit.error
+		err: state.edit.error,
 	};
 }
 
@@ -26,9 +27,6 @@ const mapDispatchToProps = (dispatch) => {
 				type: FETCH_VIEW,
 				id
 			})
-		},
-		updateContents: (data) => {
-
 		},
 		changeFormField: ({ field, value }) => {
 			console.log(field, value);

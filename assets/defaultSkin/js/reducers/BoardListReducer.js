@@ -32,7 +32,7 @@ export default function(state = INITIAL_STATE, action) {
 
 	switch(action.type) {
 		case FETCH_BOARD_INDEX:
-			return { ...state, loading: true}
+			return { ...state, loading: true, error: null}
 
 		case FETCH_BOARD_INDEX_SUCCESS:// return list of posts and make loading = false
 			var checkedMap = {};

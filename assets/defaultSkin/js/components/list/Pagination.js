@@ -126,9 +126,9 @@ class Pagination extends React.Component {
 
 							for(var i = blockStartPage, max = blockEndPage; i <= max; i += 1) {
 								if(currentPage === i) {
-									pages.push(<strong>{i}</strong>)
+									pages.push(<strong key={i}>{i}</strong>)
 								} else {
-									pages.push(<a href="#" onClick={ this.fetchBoardIndex.bind(this, i) }>{i}</a>);
+									pages.push(<a href="#" key={i} onClick={ this.fetchBoardIndex.bind(this, i) }>{i}</a>);
 								}
 
 								if(lastPage === i) {
