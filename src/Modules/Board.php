@@ -205,8 +205,8 @@ class Board extends AbstractModule
                 Route::get('/create', ['as' => 'api.create', 'uses' => 'ApiController@create']);
                 Route::post('/store', ['as' => 'api.store', 'uses' => 'ApiController@store']);
                 Route::get('/edit/{id}', ['as' => 'api.edit', 'uses' => 'ApiController@edit']);
-                Route::post('/update/{id?}', ['as' => 'api.update', 'uses' => 'ApiController@update']);
-                Route::post('/destroy/{id?}', ['as' => 'api.delete', 'uses' => 'ApiController@destroy']);
+                Route::match(['post', 'put'], '/update/{id?}', ['as' => 'api.update', 'uses' => 'ApiController@update']);
+                Route::match(['post', 'delete'], '/destroy/{id?}', ['as' => 'api.delete', 'uses' => 'ApiController@destroy']);
                 Route::post('/favorite/{id?}', ['as' => 'api.favorite', 'uses' => 'ApiController@favorite']);
                 Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'UserController@hasSlug']);
             });
