@@ -12,7 +12,7 @@ export const updateBoardEpic = action$ =>
 		.mergeMap(action =>
 			Observable::ajax({
 				url: Common.get('apis').update.replace('[id]', action.id),
-				method: 'POST',
+				method: 'PUT',
 				body: action.payload,
 				headers: Common.get('ajaxHeaders')
 			})

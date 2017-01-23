@@ -34,7 +34,7 @@ class WriteForm extends Component {
 	}
 
 	handleSelect(categoryItemId) {
-		this.props.changeFormField({field: categoryItemId, value: categoryItemId});
+		this.props.changeFormField({field: 'categoryItemId', value: categoryItemId});
 	}
 
 	validateAndCreateBoard(values, dispatch) {

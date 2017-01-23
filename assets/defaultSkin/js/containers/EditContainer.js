@@ -12,7 +12,11 @@ const formConfig = {
 
 const mapStateToProps = (state) => {
 	return {
-		initialValues: state.edit.item,
+		initialValues: {
+			title: state.edit.item.title,
+			content: state.edit.item.content,
+			slug: state.edit.item.slug,
+		},
 		item: state.edit.item,
 		categories: state.edit.categories,
 		loading: state.edit.loading,

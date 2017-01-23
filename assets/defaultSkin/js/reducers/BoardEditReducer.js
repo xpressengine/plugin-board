@@ -7,7 +7,7 @@ import {
 } from '../actions/boardViewAction';
 
 const INITIAL_STATE = {
-	item: null,
+	item: {},
 	categories: [],
 	error: null,
 	loading: true,

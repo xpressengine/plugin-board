@@ -41,7 +41,9 @@ class EditForm extends Component {
 	}
 
 	changeField(field, e) {
-		
+
+		console.log(field, e.target.value);
+
 		this.props.changeFormField({field, value: e.target.value});
 	}
 
@@ -52,19 +54,22 @@ class EditForm extends Component {
 
 	validateAndUpdateBoard(values, dispatch, id) {
 		values.slug = 'testSlug';
+		values.id = id;
 		console.log('values', values, id);
 
 		return dispatch(updateBoard(id, values));
 	}
 
 	render() {
-		const { handleSubmit, submitting } = this.props;
+		const { handleSubmit, submitting, initialValues } = this.props;
 		// const { fields: { title, content, slug, categoryItemId }, handleSubmit, load, submitting } = this.props;
 		const id = this.context.router.params.id;
 
 		console.log('this.props', this.props);
 		// console.log('fields', fields);
 		// console.log('id', id);
+
+		console.log('initialValues', initialValues);
 
 		if(this.props.err) {
 			XE.toast('', this.props.err.message);
@@ -75,6 +80,9 @@ class EditForm extends Component {
 				<Spinner />
 			)
 		}
+
+
+		// this.props.initialize("editForm", { content: initialValues.content, title: initialValues.title}, ['title', 'content', 'slug', 'categoryItemId']);
 
 		return (
 			<div className="board_write">
@@ -115,10 +123,9 @@ class EditForm extends Component {
 							<Field
 								name="title"
 								component={ renderField }
-								input={{value: this.props.item.title, onChange: this.changeField.bind(this, 'title')}}
+
 								type="text"
 								label="제목을 입력하세요"
-								
 							/>
 
 						</div>
@@ -129,9 +136,8 @@ class EditForm extends Component {
 							<Field
 								name="content"
 								component={ renderTextArea }
-								input={{value: this.props.item.content, onChange: this.changeField.bind(this, 'content')}}
+
 								label="내용을 입력하세요"
-								onChange={(v) => {console.log(v)}}
 							/>
 
 						</div>
