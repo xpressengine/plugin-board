@@ -799,8 +799,8 @@ class UserController extends Controller
     public function destroy(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
     {
         $user = Auth::user();
-
         $item = $this->handler->getModel($this->config)->find($id);
+        $this->handler->setModelConfig($item, $this->config);
 
         // 비회원이 작성 한 글 인증
         if (
@@ -812,8 +812,11 @@ class UserController extends Controller
             return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
         }
 
-        $this->handler->trash($item, $this->config);
+        if ($user->getRating() != 'super' && $user->getId() != $item->userId) {
+            throw new AccessDeniedHttpException;
+        }
 
+        $this->handler->trash($item, $this->config);
         $identifyManager->destroy($item);
 
         $queries = $request->query->all();
@@ -834,19 +837,8 @@ class UserController extends Controller
         $item = $this->handler->getModel($this->config)->find($id);
         $this->handler->setModelConfig($item, $this->config);
 
-        if ($user->getRating() != 'super' && $user->getId() != $item->id) {
+        if ($user->getRating() != 'super' && $user->getId() != $item->userId) {
             throw new AccessDeniedHttpException;
-        }
-
-        $id = $request->get('id');
-        $author = Auth::user();
-
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
-
-        // 관리자 또는 본인 글이 아니면 접근 할 수 없음
-        if ($author->getRating() !== 'super' && $author->getId() != $item->id) {
-            throw new NotFoundDocumentException;
         }
 
         $this->handler->trash($item, $this->config);
