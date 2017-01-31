@@ -139,13 +139,14 @@ class Handler
         if (empty($args['writer'])) {
             $args['writer'] = $user->getDisplayName();
         }
-        if ($user instanceof Guest) {
-            $args['userType'] = Board::USER_TYPE_GUEST;
-        }
 
         if ($config->get('anonymity') === true) {
             $args['writer'] = $config->get('anonymityName');
             $args['userType'] = Board::USER_TYPE_ANONYMITY;
+        }
+
+        if ($user instanceof Guest) {
+            $args['userType'] = Board::USER_TYPE_GUEST;
         }
 
         // save Document
