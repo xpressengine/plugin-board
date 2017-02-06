@@ -42,8 +42,8 @@ class Database
                 $table->engine = "InnoDB";
 
                 $table->bigIncrements('favoriteId');
-                $table->string('targetId', 36);
-                $table->string('userId', 36);
+                $table->string('targetId', 36)->charset('latin1');
+                $table->string('userId', 36)->charset('latin1');
 
                 $table->index(array('targetId', 'userId'));
             });
