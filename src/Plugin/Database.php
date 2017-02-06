@@ -59,8 +59,8 @@ class Database
                 $table->bigIncrements('id');
                 $table->string('targetId', 36);
                 $table->string('instanceId', 36);
-                $table->string('slug', 255);
-                $table->string('title', 255);
+                $table->string('slug', 190);
+                $table->string('title', 180);
 
                 $table->unique(array('slug'));
                 $table->index(array('title'));
