@@ -11,6 +11,7 @@ namespace Xpressengine\Plugins\Board\UIObjects;
 
 use Xpressengine\UIObject\AbstractUIObject;
 use View;
+use XePlugin;
 
 class Title extends AbstractUIObject
 {
@@ -53,7 +54,7 @@ class Title extends AbstractUIObject
             $args['scriptInit'] = true;
         }
 
-        $plugin = app('xe.plugin.board');
+        $plugin = XePlugin::getPlugin('board');
         return View::make(sprintf('%s::views.uiobject.title', $plugin->getId()), $args)->render();
     }
 
