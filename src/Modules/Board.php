@@ -240,6 +240,9 @@ class Board extends AbstractModule
 
                 $board = BoardModel::find($comment->target->targetId);
 
+                if ($board == null) {
+                    return $comment;
+                }
                 if ($board->type != static::getId()) {
                     return $comment;
                 }
@@ -264,8 +267,11 @@ class Board extends AbstractModule
                 $result = $func($comment);
 
                 if ($board = BoardModel::find($comment->target->targetId)) {
+                    if ($board == null) {
+                        return $result;
+                    }
                     if ($board->type != static::getId()) {
-                        return $comment;
+                        return $result;
                     }
 
                     /** @var BoardHandler $handler */
@@ -289,8 +295,11 @@ class Board extends AbstractModule
                 $result = $func($comment);
 
                 if ($board = BoardModel::find($comment->target->targetId)) {
+                    if ($board == null) {
+                        return $result;
+                    }
                     if ($board->type != static::getId()) {
-                        return $comment;
+                        return $result;
                     }
 
                     /** @var BoardHandler $handler */
@@ -314,8 +323,11 @@ class Board extends AbstractModule
                 $result = $func($comment);
 
                 if ($board = BoardModel::find($comment->target->targetId)) {
+                    if ($board == null) {
+                        return $result;
+                    }
                     if ($board->type != static::getId()) {
-                        return $comment;
+                        return $result;
                     }
 
                     /** @var BoardHandler $handler */
@@ -343,6 +355,9 @@ class Board extends AbstractModule
 
                 $board = BoardModel::find($comment->target->targetId);
 
+                if ($board == null) {
+                    return $comment;
+                }
                 if ($board->type != static::getId()) {
                     return $comment;
                 }
