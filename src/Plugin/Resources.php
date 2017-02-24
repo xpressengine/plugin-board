@@ -114,7 +114,8 @@ class Resources
                 app('xe.storage'),
                 app('xe.tag'),
                 $readCounter,
-                $voteCounter
+                $voteCounter,
+                app('xe.plugin.comment')->getHandler()
             );
             return $handler;
         });

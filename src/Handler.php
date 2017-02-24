@@ -28,6 +28,7 @@ use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Comment\Models\Comment;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Tag\Tag;
@@ -35,6 +36,7 @@ use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
 use Xpressengine\Storage\File as FileModel;
+use Xpressengine\Plugins\Comment\Handler as CommentHandler;
 
 /**
  * Board handler
@@ -74,6 +76,10 @@ class Handler
      */
     protected $voteCounter;
 
+    /**
+     * @var CommentHandler
+     */
+    protected $commentHandler;
 
     /**
      * Handler constructor.
@@ -83,19 +89,22 @@ class Handler
      * @param TagHandler      $tag             tag
      * @param Counter         $readCounter     read counter
      * @param Counter         $voteCounter     vote counter
+     * @param CommentHandler  $commentHandler  comment handler
      */
     public function __construct(
         DocumentHandler $documentHandler,
         Storage $storage,
         TagHandler $tag,
         Counter $readCounter,
-        Counter $voteCounter
+        Counter $voteCounter,
+        CommentHandler $commentHandler
     ) {
         $this->documentHandler = $documentHandler;
         $this->storage = $storage;
         $this->tag = $tag;
         $this->readCounter = $readCounter;
         $this->voteCounter = $voteCounter;
+        $this->commentHandler = $commentHandler;
     }
 
     /**
@@ -470,42 +479,60 @@ class Handler
 
     /**
      * 게시판 이동
-     * Document Package 에서 comment 를 지원하지 않아서 사용할 수 있는 인터페이스가 없음
      *
-     * @param Board        $board  board model
-     * @param ConfigEntity $config board config entity
+     * @param Board        $board        board model
+     * @param ConfigEntity $dstConfig    destination board config entity
+     * @param ConfigEntity $originConfig original board config entity
      * @return void
      */
-    public function move(Board $board, ConfigEntity $config)
+    public function move(Board $board, ConfigEntity $dstConfig, ConfigEntity $originConfig)
     {
         $board->getConnection()->beginTransaction();
 
-        $dstInstanceId = $config->get('boardId');
+        $dstInstanceId = $dstConfig->get('boardId');
 
         // 덧글이 있다면 덧글들을 모두 옯긴다.
-        if ($config->get('recursiveDelete') === true) {
-            $query = Board::where('head', $board->head);
+        if ($originConfig->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head)->where('id', '<>', $board->id);
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
-                $item->instanceId = $dstInstanceId;
-                $item->save();
-
-                $slug = $board->boardSlug;
-                $slug->instanceId = $dstInstanceId;
-                $slug->save();
+                $this->move($item, $dstConfig, $originConfig);
             }
-        } else {
-            $board->instanceId = $dstInstanceId;
-            $board->save();
-
-            $slug = $board->boardSlug;
-            $slug->instanceId = $dstInstanceId;
-            $slug->save();
         }
+
+        $board->instanceId = $dstInstanceId;
+        $board->save();
+
+        if ($dstConfig->get('division') === true) {
+            $documentConfig = $this->documentHandler->getConfig($dstConfig->get('boardId'));
+            $board->exists = false;
+            $board->setTable($this->documentHandler->getDivisionTableName($documentConfig));
+            $board->save();
+        }
+        if ($originConfig->get('division') === true) {
+            $documentConfig = $this->documentHandler->getConfig($originConfig->get('boardId'));
+            $origin = Board::where('instanceId', $originConfig->get('boardId'))->where('id', $board->id);
+            $origin->from($this->documentHandler->getDivisionTableName($documentConfig));
+            $origin->delete();
+        }
+
+        // 댓글 인스턴스 변경
+        $dstCommentConfig = $this->commentHandler->getConfig(
+            $this->commentHandler->getInstanceId($dstConfig->get('boardId'))
+        );
+        $originCommentConfig = $this->commentHandler->getConfig(
+            $this->commentHandler->getInstanceId($originConfig->get('boardId'))
+        );
+
+        $slug = $board->boardSlug;
+        $slug->instanceId = $dstInstanceId;
+        $slug->save();
+
+        // 댓글 인스턴스 변경 처리
+        $this->commentHandler->moveByTarget($board);
 
         $board->getConnection()->commit();
     }

@@ -544,16 +544,16 @@ class ManagerController extends Controller
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
         $instanceId = $request->get('instanceId');
-        $config = $this->configHandler->get($instanceId);
-        if ($config === null) {
+        $dstConfig = $this->configHandler->get($instanceId);
+        if ($dstConfig === null) {
             throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
         }
 
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
-            $this->handler->move($item, $config);
+            $originConfig = $this->configHandler->get($item->instanceId);
+            $this->handler->move($item, $dstConfig, $originConfig);
         }
 
         Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
