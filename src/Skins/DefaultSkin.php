@@ -186,7 +186,7 @@ class DefaultSkin extends AbstractSkin
         // replace dynamicField skin registered information
         /** @var \Xpressengine\Register\Container $register */
         $register = app('xe.register');
-        $register->set('FieldType/xpressengine@Category/FieldSkin/xpressengine@default', DesignSelectSkin::class);
+        $register->set('fieldType/xpressengine@Category/fieldSkin/xpressengine@default', DesignSelectSkin::class);
     }
 
     /**

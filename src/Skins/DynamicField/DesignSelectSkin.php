@@ -26,7 +26,7 @@ class DesignSelectSkin extends DefaultSkin
      * @var string
      * @see BoardSkin::render()
      */
-    protected static $id = 'FieldType/xpressengine@Category/FieldSkin/xpressengine@default';
+    protected static $id = 'FieldType/xpressengine@Category/fieldSkin/xpressengine@default';
 
     /**
      * path delimiter
