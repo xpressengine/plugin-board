@@ -817,14 +817,10 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-//        \XeDB::beginTransaction();
-        //$this->handler->trash($item, $this->config);
         $this->handler->remove($item, $this->config);
         $identifyManager->destroy($item);
 
         $queries = $request->query->all();
-//        dd(4);
-//        \XeDB::commit();
         return xeRedirect()->to($this->urlHandler->get('index', $queries))->setData(['item' => $item]);
     }
 
