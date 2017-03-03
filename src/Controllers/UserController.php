@@ -818,7 +818,11 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $this->handler->remove($item, $this->config);
+        if ($this->config->get('deleteToTrash') === true) {
+            $this->handler->trash($item, $this->config);
+        } else {
+            $this->handler->remove($item, $this->config);
+        }
         $identifyManager->destroy($item);
 
         $queries = $request->query->all();

@@ -73,6 +73,7 @@ class ConfigHandler
         'useCaptcha' => false,
         'useTag' => true,
         'urlType' => 'slug',
+        'deleteToTrash' => false,
     ];
 
     /**

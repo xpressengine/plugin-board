@@ -385,4 +385,12 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => 'Slug(슬러그)',
         'en' => 'slug',
     ],
+    'useDeleteToTrash' => [
+        'ko' => '게시물 삭제를 휴지통으로 이동',
+        'en' => 'Move article removal to trash',
+    ],
+    'useDeleteToTrashDescription' => [
+        'ko' => '사용자가 게시물을 삭제할 때 휴지통으로 이동 시킵니다.',
+        'en' => 'When a user deletes a article, it moved to the trash.',
+    ]
 ];
