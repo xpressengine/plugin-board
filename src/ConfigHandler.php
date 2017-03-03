@@ -72,6 +72,7 @@ class ConfigHandler
         'orderType' => '',
         'useCaptcha' => false,
         'useTag' => true,
+        'urlType' => 'slug',
     ];
 
     /**

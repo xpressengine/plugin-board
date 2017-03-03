@@ -256,11 +256,8 @@ class ManagerController extends Controller
         }
 
         XeDB::beginTransaction();
-
         $config = $this->instanceManager->updateConfig($config->getPureAll());
-
         $boardPermission->set($request, $boardId);
-
         XeDB::commit();
 
         return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));

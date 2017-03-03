@@ -81,15 +81,22 @@ class UrlHandler
      * 1. short id 가 있다면 short id 로 url return
      * 1. 기본 id 로 url return
      *
-     * @param Board $board  board item entity
-     * @param array $params parameters
+     * @param Board        $board  board item entity
+     * @param array        $params parameters
+     * @param ConfigEntity $config board config
      * @return string
      */
-    public function getShow(Board $board, $params = [])
+    public function getShow(Board $board, $params = [], ConfigEntity $config = null)
     {
-        $slug = $board->slug;
-        if ($slug != null) {
-            return $this->getSlug($slug->slug, $params, $slug->instanceId);
+        if ($config === null) {
+            $config = $this->config;
+        }
+
+        if ($config !== null && $config->get('urlType') == 'slug') {
+            $slug = $board->slug;
+            if ($slug != null) {
+                return $this->getSlug($slug->slug, $params, $slug->instanceId);
+            }
         }
 
         $id = $board->id;

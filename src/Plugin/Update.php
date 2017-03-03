@@ -29,6 +29,11 @@ class Update
             return false;
         }
 
+        // ver 0.9.14
+        if (static::hasConfigUrlType() === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -71,6 +76,16 @@ class Update
 
             XeConfig::modify($config);
         }
+
+        // ver 0.9.14
+        if (static::hasConfigUrlType() === false) {
+            $config = XeConfig::get('module/board@board');
+            if ($config->get('urlType') === null) {
+                $config->set('urlType', 'slug');
+            }
+
+            XeConfig::modify($config);
+        }
     }
 
     /**
@@ -98,6 +113,15 @@ class Update
             return false;
         }
 
+        return true;
+    }
+
+    static protected function hasConfigUrlType()
+    {
+        $config = XeConfig::get('module/board@board');
+        if ($config->get('urlType') === null) {
+            return false;
+        }
         return true;
     }
 }

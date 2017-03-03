@@ -373,4 +373,16 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '삭제된 게시물은 복구할 수 없습니다. 계속하시겠습니까?',
         'en' => 'Deleted posts can not be recovered. Do you want to continue?',
     ],
+    'urlType' => [
+        'ko' => '주소 방식',
+        'en' => 'URL Type',
+    ],
+    'documentId' => [
+        'ko' => '문서 아이디',
+        'en' => 'Document ID',
+    ],
+    'slug' => [
+        'ko' => 'Slug(슬러그)',
+        'en' => 'slug',
+    ],
 ];
