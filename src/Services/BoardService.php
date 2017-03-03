@@ -329,4 +329,17 @@ class BoardService
         }
         $identifyManager->destroy($item);
     }
+
+    public function hasItemPerm(Board $item, UserInterface $user, $force = false)
+    {
+        $perm = true;
+        if ($force === true) {
+            $perm = true;
+        } elseif($item->userId == Auth::user()->getId()) {
+            $perm = true;
+        } elseif($item->userId == '' && Auth::user()->getId() == null) {
+            $perm = true;
+        }
+        return $perm;
+    }
 }

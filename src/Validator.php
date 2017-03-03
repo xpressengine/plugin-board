@@ -163,7 +163,7 @@ class Validator
         return [
             'categoryItemId' =>  'Required',
         ];
-    },
+    }
 
     public function guestCertify()
     {

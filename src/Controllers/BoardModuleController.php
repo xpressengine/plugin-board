@@ -551,7 +551,7 @@ class BoardModuleController extends Controller
         }
 
         // 접근 권한 확인
-        if ($this->isManager !== true && $item->userId !== Auth::user()->getId()) {
+        if ($service->hasItemPerm($item, Auth::user(), $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
@@ -600,8 +600,7 @@ class BoardModuleController extends Controller
 
         $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
 
-        // 접근 권한 확인
-        if ($this->isManager !== true && $item->userId !== Auth::user()->getId()) {
+        if ($service->hasItemPerm($item, Auth::user(), $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
@@ -756,7 +755,7 @@ class BoardModuleController extends Controller
             return $this->guestId($validator, $menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
         }
 
-        if ($this->isManager !== true && $item->userId !== Auth::user()->getId()) {
+        if ($service->hasItemPerm($item, Auth::user(), $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
