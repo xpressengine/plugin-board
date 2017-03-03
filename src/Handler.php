@@ -128,16 +128,16 @@ class Handler
     }
 
     /**
-     * 게시판에 글 등록 시 핸들러를 통해서 처리
-     * Interception 을 통해 다양한 서드파티 기능이 추가될 수 있다.
+     * 글 등록
      *
-     * @param array         $args arguments
-     * @param UserInterface $user
+     * @param array         $args   arguments
+     * @param UserInterface $user   user
+     * @param ConfigEntity  $config board config entity
      * @return Board
      */
     public function add(array $args, UserInterface $user, ConfigEntity $config)
     {
-        $model = $this->getModel($config);
+        $model = new Board;
         $model->getConnection()->beginTransaction();
 
         $args['type'] = BoardModule::getId();
@@ -160,9 +160,8 @@ class Handler
 
         // save Document
         $doc = $this->documentHandler->add($args);
-        $model = $this->getModel($config);
-        $board = $model->find($doc->id);
-        $this->setModelConfig($board, $config);
+
+        $board = Board::find($doc->id);
 
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
@@ -330,7 +329,7 @@ class Handler
      *
      * @param Board        $board  board model
      * @param array        $args   arguments
-     * @param ConfigEntity $config config entity
+     * @param ConfigEntity $config board config entity
      * @return mixed
      */
     public function put(Board $board, array $args, ConfigEntity $config)
@@ -344,13 +343,11 @@ class Handler
             }
         }
 
-        $this->setModelConfig($board, $config);
-
-        $doc = $this->documentHandler->put($board);
+        $this->documentHandler->put($board);
 
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
-        $fileIds = $this->setFiles($board, $args);
+        $this->setFiles($board, $args);
         $this->setTags($board, $args);
         $this->unsetTags($board, $args);
         $this->saveData($board, $args);
@@ -382,9 +379,9 @@ class Handler
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
                 if ($item->boardSlug !== null) {
                     $item->boardSlug->delete();
                 }
@@ -399,7 +396,7 @@ class Handler
                 foreach ($tags as $tag) {
                     $tag->delete();
                 }
-                $item->delete();
+                $this->documentHandler->remove($item);
             }
         } else {
             if ($board->slug !== null) {
@@ -413,7 +410,7 @@ class Handler
             foreach ($tags as $tag) {
                 $tag->delete();
             }
-            $board->delete();
+            $this->documentHandler->remove($board);
         }
 
         $board->getConnection()->commit();
@@ -436,9 +433,9 @@ class Handler
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
                 $item->setTrash()->save();
             }
         } else {
@@ -465,9 +462,9 @@ class Handler
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
                 $item->setRestore()->save();
             }
         } else {
@@ -497,6 +494,7 @@ class Handler
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
                 $this->move($item, $dstConfig, $originConfig);
@@ -505,27 +503,6 @@ class Handler
 
         $board->instanceId = $dstInstanceId;
         $board->save();
-
-        if ($dstConfig->get('division') === true) {
-            $documentConfig = $this->documentHandler->getConfig($dstConfig->get('boardId'));
-            $board->exists = false;
-            $board->setTable($this->documentHandler->getDivisionTableName($documentConfig));
-            $board->save();
-        }
-        if ($originConfig->get('division') === true) {
-            $documentConfig = $this->documentHandler->getConfig($originConfig->get('boardId'));
-            $origin = Board::where('instanceId', $originConfig->get('boardId'))->where('id', $board->id);
-            $origin->from($this->documentHandler->getDivisionTableName($documentConfig));
-            $origin->delete();
-        }
-
-        // 댓글 인스턴스 변경
-        $dstCommentConfig = $this->commentHandler->getConfig(
-            $this->commentHandler->getInstanceId($dstConfig->get('boardId'))
-        );
-        $originCommentConfig = $this->commentHandler->getConfig(
-            $this->commentHandler->getInstanceId($originConfig->get('boardId'))
-        );
 
         $slug = $board->boardSlug;
         $slug->instanceId = $dstInstanceId;
@@ -569,6 +546,7 @@ class Handler
      *
      * @param ConfigEntity $config board config entity
      * @return Board
+     * @deprecated
      */
     public function getModel(ConfigEntity $config)
     {
@@ -585,6 +563,7 @@ class Handler
      * @param Board        $board  board model
      * @param ConfigEntity $config board config entity
      * @return Board
+     * @deprecated
      */
     public function setModelConfig(Board $board, ConfigEntity $config)
     {
@@ -597,14 +576,16 @@ class Handler
     /**
      * get notice
      *
-     * @param ConfigEntity $config
+     * @param ConfigEntity $config board config entity
+     * @param string       $userId user id
      * @return mixed
      * @deprecated controller 에서 model 사용
      */
     public function getsNotice(ConfigEntity $config, $userId)
     {
-        $query = $this->getModel($config)
-            ->where('instanceId', $config->get('boardId'))
+        $model = Board::division($config->get('boardId'));
+
+        $query = $model->where('instanceId', $config->get('boardId'))
             ->where('status', Document::STATUS_NOTICE)
             ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED)
@@ -721,6 +702,7 @@ class Handler
         }
 
         $board->readCount = $this->readCounter->getPoint($board->id);
+        $board->timestamps = false;
         $board->save();
     }
 
@@ -862,19 +844,21 @@ class Handler
      */
     public function pageResolver(Builder $query, ConfigEntity $config, $id)
     {
-        $query = clone $query;
-        $doc = $this->getModel($config)->find($id);
+        $clone = clone $query;
+        /** @var Board $model */
+        $model = Board::division($config->get('boardId'));
+        $doc = $model->find($id);
 
-        $orders = $query->getQuery()->orders;
-        $query->where(function ($query) use ($orders, $doc) {
+        $orders = $clone->getQuery()->orders;
+        $clone->where(function ($clone) use ($orders, $doc) {
             $orderCount = count($orders);
 
             for ($i=0; $i<$orderCount; $i++) {
-                $query->Orwhere(function ($query) use ($orders, $doc, $i) {
+                $clone->Orwhere(function ($clone) use ($orders, $doc, $i) {
                     if ($i != 0) {
                         for ($j=0; $j<$i; $j++) {
                             $op = '=';
-                            $query->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
+                            $clone->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
                         }
                     }
 
@@ -882,12 +866,12 @@ class Handler
                     if ($orders[$i]['direction'] == 'asc') {
                         $op = '<=';
                     }
-                    $query->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
+                    $clone->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
                 });
             }
         });
 
-        $count = $query->count();
+        $count = $clone->count();
 
         $page = (int)($count / $config->get('perPage'));
         if ($count % $config->get('perPage') != 0) {

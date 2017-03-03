@@ -174,8 +174,8 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $query = $this->handler->getModel($this->config)
-            ->where('instanceId', $this->instanceId)
+        $model = Board::division($this->instanceId);
+        $query = $model->where('instanceId', $this->instanceId)
             ->visible()->orderBy('head', 'desc');
 
         if ($request->has('favorite') === true) {
@@ -229,8 +229,9 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $query = $this->handler->getModel($this->config)
-            ->where('instanceId', $this->instanceId)->visible();
+        /** @var Board $model */
+        $model = Board::division($this->instanceId);
+        $query = $model->where('instanceId', $this->instanceId)->visible();
 
         if ($this->config->get('category') === true) {
             $query->leftJoin(
@@ -332,8 +333,7 @@ class UserController extends Controller
         /** @var UserInterface $user */
         $user = Auth::user();
         /** @var Board $item */
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $visible = false;
         if ($item->display == Document::DISPLAY_VISIBLE) {
@@ -485,7 +485,6 @@ class UserController extends Controller
 
         $board = $this->handler->add($inputs, $user, $this->config);
 
-
         return XePresenter::redirect()
             ->to($this->urlHandler->getShow($board, $request->query->all()))
             ->setData(['item' => $board]);
@@ -531,8 +530,7 @@ class UserController extends Controller
     ) {
         $user = Auth::user();
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         if ($item === null) {
             throw new NotFoundDocumentException;
@@ -604,8 +602,7 @@ class UserController extends Controller
         }
 
         // 글 수정 시 게시판 설정이 아닌 글의 상태에 따른 처리가 되어야 한다.
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         // 비회원이 작성 한 글 인증
         if (
@@ -681,7 +678,7 @@ class UserController extends Controller
      */
     public function guestId($menuUrl, $id, $referrer = null)
     {
-        $item = $this->handler->getModel($this->config)->find($id);
+        $item = Board::division($this->instanceId)->find($id);
 
         // 레퍼러는 현재 url
         if ($referrer == null) {
@@ -703,7 +700,7 @@ class UserController extends Controller
      */
     public function guestCertify(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
     {
-        $item = $this->handler->getModel($this->config)->find($id);
+        $item = Board::division($this->instanceId)->find($id);
 
         if ($item->certifyKey == '') {
             throw new InvalidRequestException;
@@ -799,8 +796,12 @@ class UserController extends Controller
     public function destroy(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
     {
         $user = Auth::user();
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+
+        $item = Board::division($this->instanceId)->find($id);
+
+        if ($item === null) {
+            throw new NotFoundDocumentException;
+        }
 
         // 비회원이 작성 한 글 인증
         if (
@@ -816,7 +817,7 @@ class UserController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $this->handler->trash($item, $this->config);
+        $this->handler->remove($item, $this->config);
         $identifyManager->destroy($item);
 
         $queries = $request->query->all();
@@ -834,8 +835,7 @@ class UserController extends Controller
         $user = Auth::user();
         $id = $request->get('id');
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         if ($user->getRating() != 'super' && $user->getId() != $item->userId) {
             throw new AccessDeniedHttpException;
@@ -860,15 +860,15 @@ class UserController extends Controller
         if (Auth::check() === false) {
             throw new AccessDeniedHttpException;
         }
-        $board = $this->handler->getModel($this->config)->find($id);
+        $item = Board::division($this->instanceId)->find($id);
 
         $userId = Auth::user()->getId();
         $favorite = false;
-        if ($this->handler->hasFavorite($board->id, $userId) === false) {
-            $this->handler->addFavorite($board->id, $userId);
+        if ($this->handler->hasFavorite($item->id, $userId) === false) {
+            $this->handler->addFavorite($item->id, $userId);
             $favorite = true;
         } else {
-            $this->handler->removeFavorite($board->id, $userId);
+            $this->handler->removeFavorite($item->id, $userId);
         }
 
         return XePresenter::makeApi(['favorite' => $favorite]);
@@ -894,8 +894,7 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        $board = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($board, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $voteCounter = $this->handler->getVoteCounter();
         $vote = $voteCounter->getByName($id, $user);
@@ -904,8 +903,8 @@ class UserController extends Controller
             'display' => $display,
             'id' => $id,
             'counts' => [
-                'assent' => $board->assentCount,
-                'dissent' => $board->dissentCount,
+                'assent' => $item->assentCount,
+                'dissent' => $item->dissentCount,
             ],
             'voteAt' => $vote['counterOption'],
         ]);
@@ -923,8 +922,7 @@ class UserController extends Controller
     {
         $author = Auth::user();
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         try {
             $this->handler->vote($item, $author, $option);
@@ -946,8 +944,7 @@ class UserController extends Controller
     {
         $limit = $request->get('limit', 10);
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
@@ -973,8 +970,7 @@ class UserController extends Controller
      */
     public function votedModal(Request $request, $menuUrl, $option, $id)
     {
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
@@ -1003,8 +999,7 @@ class UserController extends Controller
         $startId = $request->get('startId');
         $limit = $request->get('limit', 10);
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
