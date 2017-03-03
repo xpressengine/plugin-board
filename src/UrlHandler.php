@@ -13,10 +13,9 @@
 
 namespace Xpressengine\Plugins\Board;
 
-use Xpressengine\Document\DocumentHandler;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Plugins\Board\Models\Board;
-use Xpressengine\Plugins\Board\Models\Slug;
+use Xpressengine\Plugins\Board\Models\BoardSlug;
 
 /**
  * UrlHandler
@@ -26,11 +25,10 @@ use Xpressengine\Plugins\Board\Models\Slug;
  */
 class UrlHandler
 {
-
     /**
-     * @var DocumentHandler
+     * @var string
      */
-    protected $document;
+    protected $instanceId;
 
     /**
      * @var ConfigEntity
@@ -38,45 +36,43 @@ class UrlHandler
     protected $config;
 
     /**
-     * create instance
+     * set instance id
      *
-     * @param ConfigEntity $config config entity
+     * @param string $instanceId instance id
+     * @return $this
      */
-    public function __construct(ConfigEntity $config = null)
+    public function setInstanceId($instanceId)
     {
-        $this->config = $config;
+        $this->instanceId = $instanceId;
+        return $this;
     }
 
     /**
      * set Config
      *
      * @param ConfigEntity $config board config entity
-     * @return void
+     * @return $this
      */
     public function setConfig(ConfigEntity $config)
     {
         $this->config = $config;
+        return $this;
     }
 
     /**
      * get user controller's url
      *
-     * @param string       $name   get url name
-     * @param array        $params parameters
-     * @param ConfigEntity $config null or board config entity
+     * @param string $instanceId board instance id
+     * @param string $name       get url name
+     * @param array  $params     parameters
      * @return string
      */
-    public function get($name = 'index', $params = [], ConfigEntity $config = null)
+    public function get($name = 'index', $params = [], $instanceId = null)
     {
-        if ($this->config == null && $config == null) {
-            throw new Exceptions\InvalidConfigException;
+        if ($instanceId == null) {
+            $instanceId = $this->instanceId;
         }
-
-        if ($config == null) {
-            $config = $this->config;
-        }
-
-        return instanceRoute($name, $params, $config->get('boardId'));
+        return instanceRoute($name, $params, $instanceId);
     }
 
     /**
@@ -93,12 +89,12 @@ class UrlHandler
     {
         $slug = $board->slug;
         if ($slug != null) {
-            return $this->getSlug($slug->slug, $params);
+            return $this->getSlug($slug->slug, $params, $slug->instanceId);
         }
 
         $id = $board->id;
         $params['id'] = $id;
-        return $this->get('show', $params);
+        return $this->get('show', $params, $board->instanceId);
     }
 
     /**
@@ -107,26 +103,28 @@ class UrlHandler
      *
      * @param string $id document id
      * @return string
+     * @deprecated
      */
     public function getSlugById($id)
     {
-        $slug = Slug::where(id, $id)->where('instanceId', $this->config->get('boardId'));
+        $slug = BoardSlug::where(id, $id)->where('instanceId', $this->config->get('boardId'));
 
         if ($slug === null) {
             return '';
         }
 
-        return $this->getSlug($slug->slug);
+        return $this->getSlug($slug->slug, [], $slug->instanceId);
     }
 
     /**
      * get slug url
      *
-     * @param string $slug   slug
-     * @param array  $params parameters
+     * @param string $slug       slug
+     * @param array  $params     parameters
+     * @param string $instanceId boad instance id
      * @return string
      */
-    public function getSlug($slug, array $params = [])
+    public function getSlug($slug, array $params = [], $instanceId)
     {
         unset($params['id']);
         $params['slug'] = $slug;
@@ -134,7 +132,7 @@ class UrlHandler
         // 페이지 정보는 넘기지 않음
         unset($params['page']);
 
-        return $this->get('slug', $params);
+        return $this->get('slug', $params, $instanceId);
     }
 
     /**

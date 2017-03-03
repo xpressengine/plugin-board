@@ -113,6 +113,7 @@ class UserController extends Controller
 
         $this->config = $configHandler->get($this->instanceId);
         if ($this->config !== null) {
+            $urlHandler->setInstanceId($this->config->get('boardId'));
             $urlHandler->setConfig($this->config);
 
             $this->isManager = false;
@@ -661,8 +662,8 @@ class UserController extends Controller
         }
 
         return XePresenter::redirect()->to(
-            $this->urlHandler->getSlug(
-                $item->boardSlug->slug,
+            $this->urlHandler->getShow(
+                $item,
                 $request->query->all()
             )
         )->setData(['item' => $board]);
