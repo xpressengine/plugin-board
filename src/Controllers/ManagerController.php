@@ -462,7 +462,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->put($item, ['approve' => $approved]);
         }
 
@@ -482,7 +481,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->remove($item, $this->configHandler->get($item->instanceId));
         }
 
@@ -504,7 +502,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->trash($item, $this->configHandler->get($item->instanceId));
         }
 
@@ -526,7 +523,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->restore($item, $this->configHandler->get($item->instanceId));
         }
 
@@ -580,7 +576,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $user = new Guest;
             if ($item->userId != '') {
                 $user = User::find($item->userId);
