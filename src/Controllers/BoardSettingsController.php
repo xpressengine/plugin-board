@@ -42,12 +42,12 @@ use Xpressengine\User\Models\User;
 use Xpressengine\Plugins\Comment\ManageSection as CommentSection;
 
 /**
- * ManagerController
+ * BoardSettingsController
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  */
-class ManagerController extends Controller
+class BoardSettingsController extends Controller
 {
     /**
      * @var Handler

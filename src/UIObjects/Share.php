@@ -33,11 +33,11 @@ class Share extends AbstractUIObject
         Route::settings(self::getId(), function () {
             Route::get(
                 '/edit',
-                ['as' => 'manage.board.share.edit', 'uses' => 'ShareManagerController@edit']
+                ['as' => 'manage.board.share.edit', 'uses' => 'ShareSettingsController@edit']
             );
             Route::post(
                 '/update',
-                ['as' => 'manage.board.share.update', 'uses' => 'ShareManagerController@update']
+                ['as' => 'manage.board.share.update', 'uses' => 'ShareSettingsController@update']
             );
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
     }

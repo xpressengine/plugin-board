@@ -19,7 +19,7 @@ use XeConfig;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\UIObjects\Share;
 
-class ShareManagerController extends Controller
+class ShareSettingsController extends Controller
 {
     public function edit()
     {

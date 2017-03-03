@@ -53,12 +53,12 @@ use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
 
 /**
- * UserController
+ * BoardModuleController
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  */
-class UserController extends Controller
+class BoardModuleController extends Controller
 {
     /**
      * @var string
