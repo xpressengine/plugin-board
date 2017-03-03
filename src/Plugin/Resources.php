@@ -12,6 +12,7 @@ use Xpressengine\Plugins\Board\InstanceManager;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
+use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\UIObjects\Title;
 use Xpressengine\Plugins\Board\UIObjects\Share;
 use Xpressengine\Plugins\Board\UrlHandler;
@@ -156,6 +157,13 @@ class Resources
             $boardPermission = new BoardPermissionHandler(app('xe.permission'), app('xe.board.config'));
             $boardPermission->setPrefix(BoardModule::getId());
             return $boardPermission;
+        });
+
+        $app->singleton(['xe.board.service' => BoardService::class], function ($app) {
+            $proxyHandler = XeInterception::proxy(BoardService::class);
+
+            $instance = new $proxyHandler(app('xe.board.handler'), app('xe.board.config'));
+            return $instance;
         });
     }
 

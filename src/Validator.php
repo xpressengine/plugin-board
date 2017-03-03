@@ -83,6 +83,11 @@ class Validator
         return $rules;
     }
 
+    public function guestCertifyRule()
+    {
+        return $this->guestCertify();
+    }
+
     /**
      * 전달된 rule 에 다이나믹필드 의 rule 을 추가해서 반환
      *
@@ -157,6 +162,14 @@ class Validator
     {
         return [
             'categoryItemId' =>  'Required',
+        ];
+    },
+
+    public function guestCertify()
+    {
+        return [
+            'email' => 'Required|Email',
+            'certifyKey' => 'Required',
         ];
     }
 }

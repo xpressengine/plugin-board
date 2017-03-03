@@ -45,6 +45,7 @@ use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Purifier;
+use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
@@ -138,13 +139,14 @@ class BoardModuleController extends Controller
     /**
      * index page
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param string                 $menuUrl
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws AccessDeniedHttpException
      */
-    public function index(Request $request, BoardPermissionHandler $boardPermission, $menuUrl='')
+    public function index(BoardService $service, Request $request, BoardPermissionHandler $boardPermission, $menuUrl='')
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
@@ -153,10 +155,17 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $notices = $this->notices($request, $boardPermission)->toArray();
-        $articles = $this->articles($request, $boardPermission, $menuUrl)->toArray();
+        $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
+        $paginate = $service->getItems($request, $this->config);
+        $fieldTypes = $service->getFieldTypes($this->config);
+        $categories = $service->getCategoryItems($this->config);
 
-        return XePresenter::makeAll('index', array_merge($notices, $articles));
+        return XePresenter::makeAll('index', [
+            'notices' => $notices,
+            'paginate' => $paginate,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+        ]);
     }
 
     /**
@@ -165,6 +174,7 @@ class BoardModuleController extends Controller
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission
      * @return mixed
+     * @deprecated
      */
     public function notices(Request $request, BoardPermissionHandler $boardPermission)
     {
@@ -216,10 +226,12 @@ class BoardModuleController extends Controller
     /**
      * get articles
      *
-     * @param Request                $request         request
+     * @param Request $request request
      * @param BoardPermissionHandler $boardPermission board permission
-     * @param null                   $id              document id
+     * @param $menuUrl
+     * @param null $id document id
      * @return mixed
+     * @deprecated
      */
     public function articles(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id = null)
     {
@@ -292,13 +304,14 @@ class BoardModuleController extends Controller
     /**
      * show
      *
-     * @param Request                $request         request
+     * @param BoardService $service
+     * @param Request $request request
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param string                 $menuUrl         first segment
-     * @param string                 $id              document id
+     * @param string $menuUrl first segment
+     * @param string $id document id
      * @return mixed
      */
-    public function show(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id)
+    public function show(BoardService $service, Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
@@ -307,11 +320,25 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $item = $this->get($boardPermission, $menuUrl, $id)->toArray();
-        $notices = $this->notices($request, $boardPermission)->toArray();
-        $articles = $this->articles($request, $boardPermission, $menuUrl, $id)->toArray();
+        $item = $service->getItem($id, Auth::user(), $this->config, $this->isManager);
 
-        return XePresenter::make('show', array_merge($item, $notices, $articles));
+        // 글 조회수 증가
+        if ($item->display == Board::DISPLAY_VISIBLE) {
+            $this->handler->incrementReadCount($item, Auth::user());
+        }
+
+        $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
+        $paginate = $service->getItems($request, $this->config, $id);
+        $fieldTypes = $service->getFieldTypes($this->config);
+        $categories = $service->getCategoryItems($this->config);
+
+        return XePresenter::make('show', [
+            'item' => $item,
+            'notices' => $notices,
+            'paginate' => $paginate,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+        ]);
     }
 
     /**
@@ -321,6 +348,7 @@ class BoardModuleController extends Controller
      * @param string                 $menuUrl         first segment
      * @param string                 $id              document id
      * @return mixed
+     * @deprecated
      */
     public function get(BoardPermissionHandler $boardPermission, $menuUrl, $id)
     {
@@ -380,7 +408,7 @@ class BoardModuleController extends Controller
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws Exception
      */
-    public function slug(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $strSlug)
+    public function slug(BoardService $service, Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $strSlug)
     {
         $slug = BoardSlug::where('slug', $strSlug)->where('instanceId', $this->instanceId)->first();
 
@@ -388,18 +416,19 @@ class BoardModuleController extends Controller
             throw new NotFoundDocumentException;
         }
 
-        return $this->show($request, $boardPermission, $menuUrl, $slug->targetId);
+        return $this->show($service, $request, $boardPermission, $menuUrl, $slug->targetId);
     }
 
     /**
      * create
      *
-     * @param Request                $request         request
-     * @param Validator              $validator       validator
+     * @param BoardService $service
+     * @param Request $request request
+     * @param Validator $validator validator
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @return mixed
      */
-    public function create(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
+    public function create(BoardService $service, Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
@@ -408,28 +437,13 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $head = '';
-
-        $categories = [];
-        if ($this->config->get('category') === true) {
-            $categoryItems = Category::find($this->config->get('categoryId'))->items;
-            foreach ($categoryItems as $categoryItem) {
-                $categories[] = [
-                    'value' => $categoryItem->id,
-                    'text' => $categoryItem->word,
-                ];
-            }
-        }
-
-        /** @var UserInterface $user */
-        $user = Auth::user();
-        $rules = $validator->getCreateRule($user, $this->config);
+        $categories = $service->getCategoryItems($this->config);
+        $rules = $validator->getCreateRule(Auth::user(), $this->config);
 
         return XePresenter::makeAll('create', [
-            'handler' => $this->handler,
-            'head' => $head,
             'categories' => $categories,
             'rules' => $rules,
+            'head' => '',
         ]);
     }
 
@@ -443,6 +457,7 @@ class BoardModuleController extends Controller
      * @return mixed
      */
     public function store(
+        BoardService $service,
         Request $request,
         Validator $validator,
         BoardPermissionHandler $boardPermission,
@@ -455,42 +470,24 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $this->checkCaptcha();
+        // 유표성 체크
+        $this->validate($request, $validator->getCreateRule(Auth::user(), $this->config));
 
-        $user = Auth::user();
-
-        $this->validate($request, $validator->getCreateRule($user, $this->config));
-
-        $inputs = $request->all();
-        $inputs['instanceId'] = $this->instanceId;
-        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-
-        $inputs['content'] = purify($request->originAll()['content']);
-
+        // 공지 등록 권한 확인
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
-        // 암호 설정
-        if (empty($inputs['certifyKey']) === false) {
-            $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
-        }
-        
-        /** @var \Xpressengine\Editor\AbstractEditor $editor */
-        $editor = XeEditor::get($this->instanceId);
-        $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
-
-        // set file, tag
-        $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
-        $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
-
-        $board = $this->handler->add($inputs, $user, $this->config);
+        $item = $service->store($request, Auth::user(), $this->config, $identifyManager);
 
         return XePresenter::redirect()
-            ->to($this->urlHandler->getShow($board, $request->query->all()))
-            ->setData(['item' => $board]);
+            ->to($this->urlHandler->getShow($item, $request->query->all()))
+            ->setData(['item' => $item]);
     }
 
+    /**
+     * @deprecated
+     */
     protected function checkCaptcha()
     {
         if ($this->config->get('useCaptcha', false) === true) {
@@ -500,10 +497,16 @@ class BoardModuleController extends Controller
         }
     }
 
+    /**
+     * 문자열을 넘겨 slug 반환
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function hasSlug(Request $request)
     {
-        $slug = BoardSlug::convert('', $request->get('slug'));
-        $slug = BoardSlug::make($slug, $request->get('id'));
+        $slugText = BoardSlug::convert('', $request->get('slug'));
+        $slug = BoardSlug::make($slugText, $request->get('id'));
 
         return XePresenter::makeApi([
             'slug' => $slug,
@@ -513,15 +516,17 @@ class BoardModuleController extends Controller
     /**
      * edit
      *
-     * @param Request                $request         request
-     * @param Validator              $validator       validator
+     * @param BoardService $service
+     * @param Request $request request
+     * @param Validator $validator validator
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param IdentifyManager        $identifyManager identify manager
-     * @param string                 $menuUrl         first segment
-     * @param string                 $id              document id
+     * @param IdentifyManager $identifyManager identify manager
+     * @param string $menuUrl first segment
+     * @param string $id document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function edit(
+        BoardService $service,
         Request $request,
         Validator $validator,
         BoardPermissionHandler $boardPermission,
@@ -529,8 +534,6 @@ class BoardModuleController extends Controller
         $menuUrl,
         $id
     ) {
-        $user = Auth::user();
-
         $item = Board::division($this->instanceId)->find($id);
 
         if ($item === null) {
@@ -542,142 +545,91 @@ class BoardModuleController extends Controller
             $this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            $user->getRating() != 'super'
+            Auth::user()->getRating() != 'super'
         ) {
-            return $this->guestId($menuUrl, $item->id);
+            return $this->guestId($validator, $menuUrl, $item->id);
         }
 
         // 접근 권한 확인
-        if ($this->isManager !== true && $item->userId !== $user->getId()) {
+        if ($this->isManager !== true && $item->userId !== Auth::user()->getId()) {
             throw new AccessDeniedHttpException;
         }
 
-        $categories = [];
-        if ($this->config->get('category') === true) {
-            $categoryItems = Category::find($this->config->get('categoryId'))->items;
-            foreach ($categoryItems as $categoryItem) {
-                $categories[] = [
-                    'value' => $categoryItem->id,
-                    'text' => $categoryItem->word,
-                ];
-            }
-        }
+        $categories = $service->getCategoryItems($this->config);
 
-        /** @var \Xpressengine\Plugins\Board\Validator $validator */
-        $validator = app('xe.board.validator');
-        $rules = $validator->getEditRule($user, $this->config);
-
-        $parent = null;
+        $rules = $validator->getEditRule(Auth::user(), $this->config);
 
         return XePresenter::make('edit', [
-            'config' => $this->config,
-            'handler' => $this->handler,
             'item' => $item,
-            'parent' => $parent,
             'categories' => $categories,
             'rules' => $rules,
+            'parent' => null,
         ]);
     }
 
     /**
      * update
      *
-     * @param Request                $request         request
-     * @param Validator              $validator       validator
+     * @param BoardService $service
+     * @param Request $request request
+     * @param Validator $validator validator
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param IdentifyManager        $identifyManager identify manager
+     * @param IdentifyManager $identifyManager identify manager
+     * @param $menuUrl
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function update(
+        BoardService $service,
         Request $request,
         Validator $validator,
         BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager,
         $menuUrl
     ) {
-        $user = Auth::user();
-        $id = $request->get('id');
-
-        if ($id === null) {
-            throw new RequiredValueHttpException(['key' => 'id']);
-        }
-
-        // 글 수정 시 게시판 설정이 아닌 글의 상태에 따른 처리가 되어야 한다.
-        $item = Board::division($this->instanceId)->find($id);
+        $item = Board::division($this->instanceId)->find($request->get('id'));
 
         // 비회원이 작성 한 글 인증
         if (
             $this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            $user->getRating() != 'super'
+            Auth::user()->getRating() != 'super'
         ) {
             return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('edit', ['id' => $item->id]));
         }
 
+        $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
+
         // 접근 권한 확인
-        if ($this->isManager !== true && $item->userId !== $user->getId()) {
+        if ($this->isManager !== true && $item->userId !== Auth::user()->getId()) {
             throw new AccessDeniedHttpException;
         }
 
-        $rules = $validator->getEditRule($user, $this->config);
-        $this->validate($request, $rules);
-
-        $inputs = $request->all();
-        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = purify($request->originAll()['content']);
-
+        // 공지 등록 권한 확인
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
-        if ($request->get('status') == Board::STATUS_NOTICE) {
-            $item->status = Board::STATUS_NOTICE;
-        } else if ($request->get('status') != Board::STATUS_NOTICE && $item->status == Board::STATUS_NOTICE) {
-            $item->status = Board::STATUS_PUBLIC;
-        }
-
-        // 암호 설정
-        $oldCertifyKey = $item->certifyKey;
-        if ($item->certifyKey != '' && isset($inputs['certifyKey']) === true && $inputs['certifyKey'] == '') {
-            $inputs['certifyKey'] = $item->certifyKey;
-        } elseif ($item->certifyKey != '' && isset($inputs['certifyKey']) === true && $inputs['certifyKey'] != '') {
-            $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
-        }
-
-        /** @var \Xpressengine\Editor\AbstractEditor $editor */
-        $editor = XeEditor::get($this->instanceId);
-        $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
-
-        // set file, tag
-        $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
-        $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
-
-        $board = $this->handler->put($item, $inputs, $this->config);
-
-        // 비회원 비밀번호를 변경 한 경우 세션 변경
-        if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {
-            $identifyManager->destroy($board);
-            $identifyManager->create($board);
-        }
+        $item = $service->update($item, $request, Auth::user(), $this->config, $identifyManager);
 
         return XePresenter::redirect()->to(
             $this->urlHandler->getShow(
                 $item,
                 $request->query->all()
             )
-        )->setData(['item' => $board]);
+        )->setData(['item' => $item]);
     }
 
     /**
      * 비회원 인증 페이지
      *
-     * @param string $menuUrl  first segment
-     * @param string $id       document id
+     * @param Validator $validator
+     * @param string $menuUrl first segment
+     * @param string $id document id
      * @param string $referrer referrer url
      * @return mixed
      */
-    public function guestId($menuUrl, $id, $referrer = null)
+    public function guestId(Validator $validator, $menuUrl, $id, $referrer = null)
     {
         $item = Board::division($this->instanceId)->find($id);
 
@@ -689,6 +641,7 @@ class BoardModuleController extends Controller
         return XePresenter::make('guestId', [
             'item' => $item,
             'referrer' => $referrer,
+            'rules' => $validator->guestCertifyRule(),
         ]);
     }
 
@@ -699,21 +652,11 @@ class BoardModuleController extends Controller
      * @param IdentifyManager $identifyManager identify manager
      * @return mixed
      */
-    public function guestCertify(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
+    public function guestCertify(Request $request, IdentifyManager $identifyManager, Validator $validator, $menuUrl, $id)
     {
         $item = Board::division($this->instanceId)->find($id);
 
-        if ($item->certifyKey == '') {
-            throw new InvalidRequestException;
-        }
-
-        if ($request->get('email') == '') {
-            throw new RequiredValueHttpException(['name' => xe_trans('xe::email')]);
-        }
-
-        if ($request->get('certifyKey') == '') {
-            throw new RequiredValueHttpException(['name' => xe_trans('xe::password')]);
-        }
+        $this->validate($request, $validator->guestCertifyRule());
 
         if ($identifyManager->verify($item, $request->get('email'), $request->get('certifyKey')) === false) {
             throw new NotMatchedCertifyKeyException;
@@ -794,10 +737,9 @@ class BoardModuleController extends Controller
      * @param string          $id              document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function destroy(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
+    public function destroy(BoardService $service, Request $request, IdentifyManager $identifyManager, Validator $validator, $menuUrl, $id)
     {
-        $user = Auth::user();
-
+        /** @var Board $item */
         $item = Board::division($this->instanceId)->find($id);
 
         if ($item === null) {
@@ -808,25 +750,21 @@ class BoardModuleController extends Controller
         if (
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            $user->getRating() != 'super'
+            Auth::user()->getRating() != 'super'
         ) {
             // 글 보기 페이지에서 삭제하기 다시 누르면 삭제 됨
-            return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
+            return $this->guestId($validator, $menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
         }
 
-        if ($user->getRating() != 'super' && $user->getId() != $item->userId) {
+        if ($this->isManager !== true && $item->userId !== Auth::user()->getId()) {
             throw new AccessDeniedHttpException;
         }
 
-        if ($this->config->get('deleteToTrash') === true) {
-            $this->handler->trash($item, $this->config);
-        } else {
-            $this->handler->remove($item, $this->config);
-        }
-        $identifyManager->destroy($item);
+        $service->destroy($item, $this->config, $identifyManager);
 
-        $queries = $request->query->all();
-        return xeRedirect()->to($this->urlHandler->get('index', $queries))->setData(['item' => $item]);
+        return xeRedirect()->to(
+            $this->urlHandler->get('index', $request->query->all())
+        )->setData(['item' => $item]);
     }
 
     /**
@@ -848,9 +786,11 @@ class BoardModuleController extends Controller
 
         $this->handler->trash($item, $this->config);
 
-        return redirect()->to($this->urlHandler->get('index'))->with(
-            ['alert' => ['type' => 'success', 'message' => xe_trans('xe::complete')]]
-        );
+        return redirect()->to($this->urlHandler->get('index'))->with([
+            'alert' => [
+                'type' => 'success', 'message' => xe_trans('xe::complete')
+            ]
+        ]);
     }
 
     /**

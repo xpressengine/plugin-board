@@ -164,21 +164,22 @@ class Board extends AbstractModule
 
             Route::post('/favorite/{id}', ['as' => 'favorite', 'uses' => 'BoardModuleController@favorite']);
 
-            Route::post('/manageMenus/{id}', ['as' => 'manageMenus', 'uses' => 'BoardModuleController@manageMenus']);
-
-            Route::get('/comment/list', ['as' => 'comment.index', 'uses' => 'BoardModuleController@pageCommentIndex']);
-            Route::post('/comment/store', ['as' => 'comment.store', 'uses' => 'BoardModuleController@pageCommentStore']);
-            Route::post('/comment/update', ['as' => 'comment.update', 'uses' => 'BoardModuleController@pageCommentUpdate']);
-            Route::post('/comment/destroy', ['as' => 'comment.destroy', 'uses' => 'BoardModuleController@pageCommentDestroy']);
-
-            Route::post('/file/upload', ['as' => 'upload', 'uses' => 'BoardModuleController@fileUpload']);
-            Route::get('/file/source/{id}', ['as' => 'source', 'uses' => 'BoardModuleController@fileSource']);
-            Route::get('/file/download/{id}', ['as' => 'download', 'uses' => 'BoardModuleController@fileDownload']);
-            Route::get('/suggestion/hashTag/{id?}', ['as' => 'hashTag', 'uses' => 'BoardModuleController@suggestionHashTag']);
-            Route::get('/suggestion/mention/{id?}', ['as' => 'mention', 'uses' => 'BoardModuleController@suggestionMention']);
-
             Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'BoardModuleController@hasSlug']);
             Route::get('/{slug}', ['as' => 'slug', 'uses' => 'BoardModuleController@slug']);
+
+//            Route::post('/manageMenus/{id}', ['as' => 'manageMenus', 'uses' => 'BoardModuleController@manageMenus']);
+
+//            Route::get('/comment/list', ['as' => 'comment.index', 'uses' => 'BoardModuleController@pageCommentIndex']);
+//            Route::post('/comment/store', ['as' => 'comment.store', 'uses' => 'BoardModuleController@pageCommentStore']);
+//            Route::post('/comment/update', ['as' => 'comment.update', 'uses' => 'BoardModuleController@pageCommentUpdate']);
+//            Route::post('/comment/destroy', ['as' => 'comment.destroy', 'uses' => 'BoardModuleController@pageCommentDestroy']);
+//
+//            Route::post('/file/upload', ['as' => 'upload', 'uses' => 'BoardModuleController@fileUpload']);
+//            Route::get('/file/source/{id}', ['as' => 'source', 'uses' => 'BoardModuleController@fileSource']);
+//            Route::get('/file/download/{id}', ['as' => 'download', 'uses' => 'BoardModuleController@fileDownload']);
+//            Route::get('/suggestion/hashTag/{id?}', ['as' => 'hashTag', 'uses' => 'BoardModuleController@suggestionHashTag']);
+//            Route::get('/suggestion/mention/{id?}', ['as' => 'mention', 'uses' => 'BoardModuleController@suggestionMention']);
+
 
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
 
