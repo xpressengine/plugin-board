@@ -145,15 +145,12 @@ class InstanceManager
         $configHandler = $this->document->getConfigHandler();
         $documentConfig = $configHandler->get($params['boardId']);
         foreach ($params as $key => $value) {
-            $config->set($key, $value);
             $documentConfig->set($key, $value);
         }
 
         $this->conn->beginTransaction();
-
-        $config = $this->configHandler->put($config->getPureAll());
+        $config = $this->configHandler->put($params);
         $this->document->getInstanceManager()->put($documentConfig);
-
         $this->conn->commit();
 
         return $config;
