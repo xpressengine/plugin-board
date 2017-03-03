@@ -330,14 +330,23 @@ class BoardService
         $identifyManager->destroy($item);
     }
 
-    public function hasItemPerm(Board $item, UserInterface $user, $force = false)
+    /**
+     * has article permission
+     *
+     * @param Board $item
+     * @param UserInterface $user
+     * @param IdentifyManager $identifyManager
+     * @param bool $force
+     * @return bool
+     */
+    public function hasItemPerm(Board $item, UserInterface $user, IdentifyManager $identifyManager, $force = false)
     {
         $perm = true;
         if ($force === true) {
             $perm = true;
-        } elseif($item->userId == Auth::user()->getId()) {
+        } elseif($item->userId == $user->getId()) {
             $perm = true;
-        } elseif($item->userId == '' && Auth::user()->getId() == null) {
+        } elseif($item->userId == '' && $user->getId() === null && $identifyManager->identified($item) === true) {
             $perm = true;
         }
         return $perm;

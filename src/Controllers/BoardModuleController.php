@@ -519,7 +519,6 @@ class BoardModuleController extends Controller
      * @param BoardService $service
      * @param Request $request request
      * @param Validator $validator validator
-     * @param BoardPermissionHandler $boardPermission board permission handler
      * @param IdentifyManager $identifyManager identify manager
      * @param string $menuUrl first segment
      * @param string $id document id
@@ -529,7 +528,6 @@ class BoardModuleController extends Controller
         BoardService $service,
         Request $request,
         Validator $validator,
-        BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager,
         $menuUrl,
         $id
@@ -551,7 +549,7 @@ class BoardModuleController extends Controller
         }
 
         // 접근 권한 확인
-        if ($service->hasItemPerm($item, Auth::user(), $this->isManager) == false) {
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
@@ -573,7 +571,6 @@ class BoardModuleController extends Controller
      * @param BoardService $service
      * @param Request $request request
      * @param Validator $validator validator
-     * @param BoardPermissionHandler $boardPermission board permission handler
      * @param IdentifyManager $identifyManager identify manager
      * @param $menuUrl
      * @return \Xpressengine\Presenter\RendererInterface
@@ -582,7 +579,6 @@ class BoardModuleController extends Controller
         BoardService $service,
         Request $request,
         Validator $validator,
-        BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager,
         $menuUrl
     ) {
@@ -600,7 +596,7 @@ class BoardModuleController extends Controller
 
         $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
 
-        if ($service->hasItemPerm($item, Auth::user(), $this->isManager) == false) {
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
@@ -730,10 +726,12 @@ class BoardModuleController extends Controller
     /**
      * destroy
      *
-     * @param Request         $request         request
+     * @param BoardService $service
+     * @param Request $request request
      * @param IdentifyManager $identifyManager identify manager
-     * @param string          $menuUrl         first segment
-     * @param string          $id              document id
+     * @param Validator $validator
+     * @param string $menuUrl first segment
+     * @param string $id document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function destroy(BoardService $service, Request $request, IdentifyManager $identifyManager, Validator $validator, $menuUrl, $id)
@@ -755,7 +753,7 @@ class BoardModuleController extends Controller
             return $this->guestId($validator, $menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
         }
 
-        if ($service->hasItemPerm($item, Auth::user(), $this->isManager) == false) {
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
