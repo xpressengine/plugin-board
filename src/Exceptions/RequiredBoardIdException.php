@@ -1,6 +1,6 @@
 <?php
 /**
- * NotFoundConfigHttpException
+ * RequiredBoardIdException
  *
  * PHP version 5
  *
@@ -13,11 +13,12 @@
  */
 namespace Xpressengine\Plugins\Board\Exceptions;
 
-use Xpressengine\Plugins\Board\HttpBoardException;
-use Symfony\Component\HttpFoundation\Response;
+use Xpressengine\Plugins\Board\BoardException;
 
 /**
- * NotFoundConfigHttpException
+ * RequiredBoardIdException
+ *
+ * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -26,7 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        http://www.xpressengine.com
  */
-class NotFoundConfigHttpException extends HttpBoardException
+class RequiredBoardIdException extends BoardException
 {
-    protected $message = 'xe::NotFoundConfig';
 }

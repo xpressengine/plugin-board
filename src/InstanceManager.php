@@ -22,7 +22,7 @@ use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistsInstanceException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidConfigException;
-use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
+use Xpressengine\Plugins\Board\Exceptions\RequiredBoardIdException;
 use Xpressengine\Database\VirtualConnectionInterface as VirtualConnection;
 
 /**
@@ -104,7 +104,7 @@ class InstanceManager
     public function create(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException(['key' => 'boardId']);
+            throw new RequiredBoardIdException;
         }
 
         $config = $this->configHandler->get($params['boardId']);
@@ -154,7 +154,7 @@ class InstanceManager
     public function updateConfig(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException(['key' => 'boardId']);
+            throw new RequiredBoardIdException;
         }
 
         $config = $this->configHandler->get($params['boardId']);
