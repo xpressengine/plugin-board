@@ -21,7 +21,7 @@ use Xpressengine\Storage\File;
 use Xpressengine\Widget\AbstractWidget;
 use View;
 use Xpressengine\Media\Models\Image;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Menu\Models\MenuItem;
 
 /**

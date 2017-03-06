@@ -22,7 +22,7 @@
       "icon": "icon.png",
       "component": {
         "module/board@board": {
-          "class": "Xpressengine\\Plugins\\Board\\Modules\\Board",
+          "class": "Xpressengine\\Plugins\\Board\\Modules\\BoardModule",
           "name": "Board",
           "description": "XE Board 모듈",
           "screenshot" : [

@@ -21,7 +21,7 @@ use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\InstanceManager;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
 use Xpressengine\Plugins\Board\Services\BoardService;

@@ -28,7 +28,7 @@ use Event;
 use Input;
 use App;
 use Xpressengine\Storage\File;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 
 /**
  * GallerySkin

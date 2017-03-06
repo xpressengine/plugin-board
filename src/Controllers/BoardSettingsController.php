@@ -33,7 +33,7 @@ use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\InstanceManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\UrlHandler;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Routing\InstanceRouteHandler;
 use Xpressengine\Routing\RouteRepository;
 use Xpressengine\User\Models\Guest;
