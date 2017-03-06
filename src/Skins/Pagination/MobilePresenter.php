@@ -1,6 +1,6 @@
 <?php
 /**
- * PaginationMobilePresenter
+ * MobilePresenter
  *
  * PHP version 5
  *
@@ -11,7 +11,7 @@
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-namespace Xpressengine\Plugins\Board\Skins;
+namespace Xpressengine\Plugins\Board\Skins\Pagination;
 
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Contracts\Pagination\Presenter as PresenterContract;
@@ -19,7 +19,7 @@ use Illuminate\Pagination\UrlWindowPresenterTrait;
 use Illuminate\Pagination\UrlWindow;
 
 /**
- * PaginationMobilePresenter
+ * MobilePresenter
  *
  * mobile pagination 디자인 교체
  *
@@ -30,7 +30,7 @@ use Illuminate\Pagination\UrlWindow;
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-class PaginationMobilePresenter implements PresenterContract
+class MobilePresenter implements PresenterContract
 {
     use UrlWindowPresenterTrait;
 

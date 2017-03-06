@@ -13,17 +13,18 @@
  */
 namespace Xpressengine\Plugins\Board\Skins;
 
+use View;
+use XeFrontend;
+use XeRegister;
 use XePresenter;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
-use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
-use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
+use Xpressengine\Plugins\Board\Skins\Pagination\MobilePresenter;
+use Xpressengine\Plugins\Board\Skins\Pagination\BasePresenter;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Skin\AbstractSkin;
-use View;
-use XeFrontend;
 
 /**
  * DefaultSkin
@@ -110,6 +111,8 @@ class DefaultSkin extends AbstractSkin
         $this->setPaginationPresenter();
         $this->setBoardList();
         $this->setTerms();
+
+        // 스킨 view(blade)파일이나 js 에서 사용할 다국어 정의
         XeFrontend::translation([
             'board::selectPost',
             'board::selectBoard',
@@ -128,6 +131,8 @@ class DefaultSkin extends AbstractSkin
         $this->setPaginationPresenter();
         $this->setBoardList();
         $this->setTerms();
+
+        // 스킨 view(blade)파일이나 js 에서 사용할 다국어 정의
         XeFrontend::translation([
             'board::selectPost',
             'board::selectBoard',
@@ -182,25 +187,25 @@ class DefaultSkin extends AbstractSkin
     protected function setDynamicFieldSkins()
     {
         // replace dynamicField skin registered information
-        /** @var \Xpressengine\Register\Container $register */
-        $register = app('xe.register');
-        $register->set('fieldType/xpressengine@Category/fieldSkin/xpressengine@default', DesignSelectSkin::class);
+        XeRegister::set('fieldType/xpressengine@Category/fieldSkin/xpressengine@default', DesignSelectSkin::class);
     }
 
     /**
      * set pagination presenter
+     * 스킨에서 추가한 만든 pagination presenter 사용
      *
      * @return void
+     * @see views/defaultSkin/index.blade.php
      */
     protected function setPaginationPresenter()
     {
         $this->data['paginate']->setPath($this->data['urlHandler']->get('index'));
-        $this->data['paginationPresenter'] = new PaginationPresenter($this->data['paginate']);
-        $this->data['paginationMobilePresenter'] = new PaginationMobilePresenter($this->data['paginate']);
+        $this->data['paginationPresenter'] = new BasePresenter($this->data['paginate']);
+        $this->data['paginationMobilePresenter'] = new MobilePresenter($this->data['paginate']);
     }
 
     /**
-     * set board list
+     * set board list (for supervisor)
      *
      * @return void
      */
