@@ -1,4 +1,16 @@
 <?php
+/**
+ * ListWidget
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 namespace Xpressengine\Plugins\Board\Widgets;
 
 use Carbon\Carbon;
@@ -8,8 +20,21 @@ use Xpressengine\Widget\AbstractWidget;
 use View;
 use Xpressengine\Menu\Models\MenuItem;
 
+/**
+ * ListWidget
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 class ListWidget extends AbstractWidget
 {
+    /**
+     * @var string
+     */
     protected static $viewAlias = 'board::views.widgets.list';
 
     /**

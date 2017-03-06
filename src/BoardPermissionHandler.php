@@ -2,31 +2,33 @@
 /**
  * BoardPermissionHandler
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright    2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Http\Request;
-use Xpressengine\Permission\Permission;
 use Xpressengine\Permission\PermissionHandler;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Permission\PermissionSupport;
 use Xpressengine\Permission\Registered;
 use Xpressengine\Permission\Action;
-use Xpressengine\Plugin\PluginRegister;
 
 /**
  * BoardPermissionHandler
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class BoardPermissionHandler
 {
@@ -76,14 +78,16 @@ class BoardPermissionHandler
      *
      * @param PermissionHandler $permissionHandler permission factory instance
      */
-    public function __construct(PermissionHandler $permissionHandler) {
+    public function __construct(PermissionHandler $permissionHandler)
+    {
         $this->permissionHandler = $permissionHandler;
     }
 
     /**
      * set prefix
      *
-     * @param $prefix
+     * @param string $prefix config prefix
+     * @return void
      */
     public function setPrefix($prefix)
     {
@@ -91,7 +95,7 @@ class BoardPermissionHandler
     }
 
     /**
-     * get prefix
+     * get config prefix
      *
      * @return string
      */
@@ -112,6 +116,8 @@ class BoardPermissionHandler
     }
 
     /**
+     * get global permissions
+     *
      * @return array
      */
     public function getGlobalPerms()
@@ -120,7 +126,9 @@ class BoardPermissionHandler
     }
 
     /**
-     * @param $instanceId
+     * get instance permissions
+     *
+     * @param string $instanceId board instance id
      * @return array
      */
     public function getPerms($instanceId)
@@ -131,7 +139,7 @@ class BoardPermissionHandler
     /**
      * 권한 객체 반환
      *
-     * @param string $instanceId instance identifier
+     * @param string $instanceId board instance id
      * @return \Xpressengine\Permission\Permission
      */
     public function get($instanceId)
@@ -143,7 +151,8 @@ class BoardPermissionHandler
      * 권한 설정
      *
      * @param Request $request    request
-     * @param string  $instanceId instance identifier
+     * @param string  $instanceId board instance id
+     * @return void
      */
     public function set(Request $request, $instanceId)
     {
@@ -153,8 +162,9 @@ class BoardPermissionHandler
     /**
      * 인스턴스 아이디로 권한 설정
      *
-     * @param string $instanceId instance id
+     * @param string $instanceId board instance id
      * @param Grant  $grant      grant
+     * @return void
      */
     public function setByInstanceId($instanceId, Grant $grant)
     {
@@ -217,7 +227,8 @@ class BoardPermissionHandler
     /**
      * 게시판 기본 권한 설정
      *
-     * @param Request $request
+     * @param Request $request request
+     * @return void
      */
     public function setGlobal(Request $request)
     {

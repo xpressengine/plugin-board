@@ -1,12 +1,16 @@
 <?php
 /**
- * @author    XE Developers <developers@xpressengine.com>
- * @copyright 2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license   LGPL-2.1
- * @license   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
- * @link      https://xpressengine.io
+ * PaginationMobilePresenter
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Skins;
 
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
@@ -15,8 +19,16 @@ use Illuminate\Pagination\UrlWindowPresenterTrait;
 use Illuminate\Pagination\UrlWindow;
 
 /**
- * Class Paginationresenter
- * @package Xpressengine\Plugins\Board
+ * PaginationMobilePresenter
+ *
+ * mobile pagination 디자인 교체
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class PaginationMobilePresenter implements PresenterContract
 {
@@ -39,9 +51,8 @@ class PaginationMobilePresenter implements PresenterContract
     /**
      * Create a new Bootstrap presenter instance.
      *
-     * @param  \Illuminate\Contracts\Pagination\Paginator  $paginator
-     * @param  \Illuminate\Pagination\UrlWindow|null  $window
-     * @return void
+     * @param  PaginatorContract $paginator paginator
+     * @param  UrlWindow|null    $window    window
      */
     public function __construct(PaginatorContract $paginator, UrlWindow $window = null)
     {
@@ -81,7 +92,7 @@ class PaginationMobilePresenter implements PresenterContract
     /**
      * Get the previous page pagination element.
      *
-     * @param  string  $text
+     * @param string $text text
      * @return string
      */
     public function getPreviousButton($text = '&laquo;')
@@ -90,20 +101,22 @@ class PaginationMobilePresenter implements PresenterContract
         // further back in the pages, so we will render a disabled previous button
         // when that is the case. Otherwise, we will give it an active "status".
         if ($this->paginator->currentPage() <= 1) {
-            return '<span class="btn_pg btn_prev"><i class="xi-angle-left"><span class="bd_hidden">'.$text.'</span></i></span>';
+            return '<span class="btn_pg btn_prev"><i class="xi-angle-left">'.
+            '<span class="bd_hidden">'.$text.'</span></i></span>';
         }
 
         $url = $this->paginator->url(
             $this->paginator->currentPage() - 1
         );
 
-        return '<a href="'.$url.'" class="btn_pg btn_prev"><i class="xi-angle-left"><span class="bd_hidden">'.$text.'</span></i></a>';
+        return '<a href="'.$url.'" class="btn_pg btn_prev"><i class="xi-angle-left">'.
+        '<span class="bd_hidden">'.$text.'</span></i></a>';
     }
 
     /**
      * Get the next page pagination element.
      *
-     * @param  string  $text
+     * @param string $text text
      * @return string
      */
     public function getNextButton($text = '&raquo;')
@@ -112,17 +125,25 @@ class PaginationMobilePresenter implements PresenterContract
         // can't go any further into the pages, as we're already on this last page
         // that is available, so we will make it the "next" link style disabled.
         if (! $this->paginator->hasMorePages()) {
-            return '<span class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">'.$text.'</span></i></span>';
+            return '<span class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">'
+            .$text.'</span></i></span>';
         }
 
         $url = $this->paginator->url($this->paginator->currentPage() + 1);
 
-        return '<a href="'.$url.'" class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">'.$text.'</span></i></a>';
+        return '<a href="'.$url.'" class="btn_pg btn_next"><i class="xi-angle-right">'.
+        '<span class="bd_hidden">'.$text.'</span></i></a>';
     }
 
+    /**
+     * get current position
+     *
+     * @return string
+     */
     public function getCurrentPosition()
     {
-        return '<span class="pg_box"><strong>'.$this->currentPage().'</strong> / <span>'.$this->lastPage().'</span></span>';
+        return '<span class="pg_box"><strong>'.$this->currentPage().
+        '</strong> / <span>'.$this->lastPage().'</span></span>';
     }
 
     /**

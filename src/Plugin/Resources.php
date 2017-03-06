@@ -1,4 +1,16 @@
 <?php
+/**
+ * Resources
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 namespace Xpressengine\Plugins\Board\Plugin;
 
 use Xpressengine\Document\DocumentHandler;
@@ -28,6 +40,18 @@ use XeCounter;
 use XeDynamicField;
 use XeDocument;
 
+/**
+ * Resources
+ *
+ * Plugin 에서 필요한 리소스 관리
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 class Resources
 {
     /**
@@ -35,7 +59,7 @@ class Resources
      *
      * @return void
      */
-    static public function createDefaultConfig()
+    public static function createDefaultConfig()
     {
         /**
          * @var $configManager ConfigManager
@@ -67,7 +91,7 @@ class Resources
      *
      * @return void
      */
-    static public function createShareConfig()
+    public static function createShareConfig()
     {
         $configManager = app('xe.config');
         $configManager->add(Share::CONFIG_NAME, array_keys(Share::getItems()));
@@ -78,7 +102,7 @@ class Resources
      *
      * @return void
      */
-    static public function putLang()
+    public static function putLang()
     {
         // put board translation source
         /** @var \Xpressengine\Translation\Translator $trans */
@@ -91,7 +115,7 @@ class Resources
      *
      * @return void
      */
-    static public function bindClasses()
+    public static function bindClasses()
     {
         /** @var \Illuminate\Foundation\Application $app */
         $app = app();
@@ -172,7 +196,7 @@ class Resources
      *
      * @return void
      */
-    static public function registerTitleWithSlug()
+    public static function registerTitleWithSlug()
     {
         /**
          * @var $register \Xpressengine\Plugin\PluginRegister
@@ -193,7 +217,7 @@ class Resources
      *
      * @return void
      */
-    static public function registerRecycleBin()
+    public static function registerRecycleBin()
     {
         XeTrash::register(RecycleBin::class);
     }

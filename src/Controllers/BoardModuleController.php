@@ -1,16 +1,16 @@
 <?php
 /**
- * UserController
+ * BoardModuleController
+ *
+ * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Controllers;
 
 use XeDocument;
@@ -33,10 +33,8 @@ use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
-use Xpressengine\Plugins\Board\Exceptions\InvalidRequestException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
-use Xpressengine\Plugins\Board\Exceptions\RequiredValueHttpException;
 use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
@@ -56,8 +54,14 @@ use Xpressengine\User\UserInterface;
 /**
  * BoardModuleController
  *
+ * 메뉴에서 게시판 추가할 때 추가된 게시판 관리
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class BoardModuleController extends Controller
 {
@@ -94,10 +98,10 @@ class BoardModuleController extends Controller
     /**
      * UserController constructor.
      *
-     * @param Handler $handler
-     * @param ConfigHandler $configHandler
-     * @param UrlHandler $urlHandler
-     * @param BoardPermissionHandler $boardPermission
+     * @param Handler                $handler         board handler
+     * @param ConfigHandler          $configHandler   board config handler
+     * @param UrlHandler             $urlHandler      board url handler
+     * @param BoardPermissionHandler $boardPermission board permission handler
      */
     public function __construct(
         Handler $handler,
@@ -120,8 +124,8 @@ class BoardModuleController extends Controller
             $this->isManager = false;
             if (Gate::allows(
                 BoardPermissionHandler::ACTION_MANAGE,
-                new Instance($boardPermission->name($this->instanceId)))
-            ) {
+                new Instance($boardPermission->name($this->instanceId))
+            )) {
                 $this->isManager = true;
             };
         }
@@ -142,16 +146,15 @@ class BoardModuleController extends Controller
      * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param string                 $menuUrl
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws AccessDeniedHttpException
      */
-    public function index(BoardService $service, Request $request, BoardPermissionHandler $boardPermission, $menuUrl='')
+    public function index(BoardService $service, Request $request, BoardPermissionHandler $boardPermission)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -180,8 +183,8 @@ class BoardModuleController extends Controller
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -226,10 +229,10 @@ class BoardModuleController extends Controller
     /**
      * get articles
      *
-     * @param Request $request request
-     * @param BoardPermissionHandler $boardPermission board permission
-     * @param $menuUrl
-     * @param null $id document id
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
      * @return mixed
      * @deprecated
      */
@@ -237,8 +240,8 @@ class BoardModuleController extends Controller
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -269,7 +272,7 @@ class BoardModuleController extends Controller
         $this->handler->makeOrder($query, $request, $this->config);
 
         // eager loading favorite list
-        $query->with(['favorite' => function($favoriteQuery) {
+        $query->with(['favorite' => function ($favoriteQuery) {
             $favoriteQuery->where('userId', Auth::user()->getId());
         }, 'slug', 'data']);
 
@@ -304,19 +307,24 @@ class BoardModuleController extends Controller
     /**
      * show
      *
-     * @param BoardService $service
-     * @param Request $request request
+     * @param BoardService           $service         board service
+     * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param string $menuUrl first segment
-     * @param string $id document id
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
      * @return mixed
      */
-    public function show(BoardService $service, Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id)
-    {
+    public function show(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $id
+    ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -354,8 +362,8 @@ class BoardModuleController extends Controller
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -401,15 +409,20 @@ class BoardModuleController extends Controller
     /**
      * show by slug
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param string                 $menuUrl         first segment
      * @param string                 $strSlug         document slug
      * @return \Xpressengine\Presenter\RendererInterface
-     * @throws Exception
      */
-    public function slug(BoardService $service, Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $strSlug)
-    {
+    public function slug(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $strSlug
+    ) {
         $slug = BoardSlug::where('slug', $strSlug)->where('instanceId', $this->instanceId)->first();
 
         if ($slug === null) {
@@ -422,18 +435,22 @@ class BoardModuleController extends Controller
     /**
      * create
      *
-     * @param BoardService $service
-     * @param Request $request request
-     * @param Validator $validator validator
+     * @param BoardService           $service         board service
+     * @param Request                $request         request
+     * @param Validator              $validator       validator
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @return mixed
      */
-    public function create(BoardService $service, Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
-    {
+    public function create(
+        BoardService $service,
+        Request $request,
+        Validator $validator,
+        BoardPermissionHandler $boardPermission
+    ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -450,6 +467,7 @@ class BoardModuleController extends Controller
     /**
      * create
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param Validator              $validator       validator
      * @param BoardPermissionHandler $boardPermission board permission handler
@@ -465,8 +483,8 @@ class BoardModuleController extends Controller
     ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -486,6 +504,9 @@ class BoardModuleController extends Controller
     }
 
     /**
+     * check captcha
+     *
+     * @return  bool
      * @deprecated
      */
     protected function checkCaptcha()
@@ -500,7 +521,7 @@ class BoardModuleController extends Controller
     /**
      * 문자열을 넘겨 slug 반환
      *
-     * @param Request $request
+     * @param Request $request request
      * @return mixed
      */
     public function hasSlug(Request $request)
@@ -516,12 +537,12 @@ class BoardModuleController extends Controller
     /**
      * edit
      *
-     * @param BoardService $service
-     * @param Request $request request
-     * @param Validator $validator validator
+     * @param BoardService    $service         board service
+     * @param Request         $request         request
+     * @param Validator       $validator       validator
      * @param IdentifyManager $identifyManager identify manager
-     * @param string $menuUrl first segment
-     * @param string $id document id
+     * @param string          $menuUrl         first segment
+     * @param string          $id              document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function edit(
@@ -539,12 +560,10 @@ class BoardModuleController extends Controller
         }
 
         // 비회원이 작성 한 글일 때 인증페이지로 이동
-        if (
-            $this->isManager !== true &&
+        if ($this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            Auth::user()->getRating() != 'super'
-        ) {
+            Auth::user()->getRating() != 'super') {
             return $this->guestId($validator, $menuUrl, $item->id);
         }
 
@@ -568,11 +587,11 @@ class BoardModuleController extends Controller
     /**
      * update
      *
-     * @param BoardService $service
-     * @param Request $request request
-     * @param Validator $validator validator
+     * @param BoardService    $service         board service
+     * @param Request         $request         request
+     * @param Validator       $validator       validator
      * @param IdentifyManager $identifyManager identify manager
-     * @param $menuUrl
+     * @param string          $menuUrl         first segment
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function update(
@@ -585,12 +604,10 @@ class BoardModuleController extends Controller
         $item = Board::division($this->instanceId)->find($request->get('id'));
 
         // 비회원이 작성 한 글 인증
-        if (
-            $this->isManager !== true &&
+        if ($this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            Auth::user()->getRating() != 'super'
-        ) {
+            Auth::user()->getRating() != 'super') {
             return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('edit', ['id' => $item->id]));
         }
 
@@ -618,10 +635,10 @@ class BoardModuleController extends Controller
     /**
      * 비회원 인증 페이지
      *
-     * @param Validator $validator
-     * @param string $menuUrl first segment
-     * @param string $id document id
-     * @param string $referrer referrer url
+     * @param Validator $validator validator
+     * @param string    $menuUrl   first segment
+     * @param string    $id        document id
+     * @param string    $referrer  referrer url
      * @return mixed
      */
     public function guestId(Validator $validator, $menuUrl, $id, $referrer = null)
@@ -645,10 +662,18 @@ class BoardModuleController extends Controller
      *
      * @param Request         $request         request
      * @param IdentifyManager $identifyManager identify manager
+     * @param Validator       $validator       validator
+     * @param string          $menuUrl         first segment
+     * @param string          $id              document id
      * @return mixed
      */
-    public function guestCertify(Request $request, IdentifyManager $identifyManager, Validator $validator, $menuUrl, $id)
-    {
+    public function guestCertify(
+        Request $request,
+        IdentifyManager $identifyManager,
+        Validator $validator,
+        $menuUrl,
+        $id
+    ) {
         $item = Board::division($this->instanceId)->find($id);
 
         $this->validate($request, $validator->guestCertifyRule());
@@ -673,11 +698,10 @@ class BoardModuleController extends Controller
      */
     public function preview(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
     {
-        if (
-            Gate::denies(
+        if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -726,16 +750,22 @@ class BoardModuleController extends Controller
     /**
      * destroy
      *
-     * @param BoardService $service
-     * @param Request $request request
+     * @param BoardService    $service         board service
+     * @param Request         $request         request
+     * @param Validator       $validator       validator
      * @param IdentifyManager $identifyManager identify manager
-     * @param Validator $validator
-     * @param string $menuUrl first segment
-     * @param string $id document id
+     * @param string          $menuUrl         first segment
+     * @param string          $id              document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function destroy(BoardService $service, Request $request, IdentifyManager $identifyManager, Validator $validator, $menuUrl, $id)
-    {
+    public function destroy(
+        BoardService $service,
+        Request $request,
+        Validator $validator,
+        IdentifyManager $identifyManager,
+        $menuUrl,
+        $id
+    ) {
         /** @var Board $item */
         $item = Board::division($this->instanceId)->find($id);
 
@@ -744,11 +774,9 @@ class BoardModuleController extends Controller
         }
 
         // 비회원이 작성 한 글 인증
-        if (
-            $item->isGuest() === true &&
+        if ($item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            Auth::user()->getRating() != 'super'
-        ) {
+            Auth::user()->getRating() != 'super') {
             // 글 보기 페이지에서 삭제하기 다시 누르면 삭제 됨
             return $this->guestId($validator, $menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
         }
@@ -820,6 +848,7 @@ class BoardModuleController extends Controller
      * 투표 정보
      *
      * @param Request $request request
+     * @param string  $id      document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function showVote(Request $request, $id)
@@ -858,6 +887,7 @@ class BoardModuleController extends Controller
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
+     * @param string  $id      document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function vote(Request $request, $menuUrl, $option, $id)
@@ -881,6 +911,8 @@ class BoardModuleController extends Controller
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
+     * @param string  $id      document id
+     * @return mixed
      */
     public function votedUsers(Request $request, $menuUrl, $option, $id)
     {
@@ -905,9 +937,9 @@ class BoardModuleController extends Controller
      * get voted user modal
      *
      * @param Request $request request
-     * @param string $menuUrl first segment
-     * @param string $option options
-     * @param string $id document id
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
+     * @param string  $id      document id
      * @return mixed
      */
     public function votedModal(Request $request, $menuUrl, $option, $id)
@@ -930,10 +962,10 @@ class BoardModuleController extends Controller
     /**
      * get voted user list
      *
-     * @param Request $request
-     * @param $menuUrl
-     * @param $option
-     * @param $id
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
+     * @param string  $id      document id
      * @return mixed
      */
     public function votedUserList(Request $request, $menuUrl, $option, $id)

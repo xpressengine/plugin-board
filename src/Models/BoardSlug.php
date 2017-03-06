@@ -2,15 +2,15 @@
 /**
  * BoardSlug
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
@@ -18,8 +18,18 @@ use Xpressengine\Database\Eloquent\DynamicModel;
 /**
  * BoardSlug
  *
+ * @property int id
+ * @property string targetId
+ * @property string instanceId
+ * @property string slug
+ * @property string title
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class BoardSlug extends DynamicModel
 {
@@ -76,12 +86,11 @@ class BoardSlug extends DynamicModel
         for ($i=0; $i<$len; $i++) {
             $ch = mb_substr($title, $i, 1);
             $code = static::utf8Ord($ch);
-            if (
-                ($code <= 47 && $code != 45) ||
+
+            if (($code <= 47 && $code != 45) ||
                 ($code >= 58 && $code <= 64) ||
                 ($code >= 91 && $code <= 96) ||
-                ($code >= 123 && $code <= 127)
-            ) {
+                ($code >= 123 && $code <= 127)) {
                 continue;
             }
             $slug .= $ch;

@@ -1,4 +1,16 @@
 <?php
+/**
+ * GalleryWidget
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 namespace Xpressengine\Plugins\Board\Widgets;
 
 use Carbon\Carbon;
@@ -12,8 +24,21 @@ use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 use Xpressengine\Menu\Models\MenuItem;
 
+/**
+ * GalleryWidget
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 class GalleryWidget extends AbstractWidget
 {
+    /**
+     * @var string
+     */
     protected static $viewAlias = 'board::views.widgets.gallery';
 
     /**
@@ -56,8 +81,11 @@ class GalleryWidget extends AbstractWidget
         //$recent_date
         if ($recent_date !== 0) {
             $current = Carbon::now();
-            $query = $query->where('createdAt', '>=', $current->addDay(-1 * $recent_date)->toDateString() . ' 00:00:00')
-                ->where('createdAt', '<=', $current->addDay($recent_date)->toDateString() . ' 23:59:59');
+            $query = $query->where(
+                'createdAt',
+                '>=',
+                $current->addDay(-1 * $recent_date)->toDateString() . ' 00:00:00'
+            )->where('createdAt', '<=', $current->addDay($recent_date)->toDateString() . ' 23:59:59');
         }
 
         //$orderType
@@ -124,7 +152,13 @@ class GalleryWidget extends AbstractWidget
         }
     }
 
-    protected function bindGalleryThumb($item)
+    /**
+     * bind gallery thumbnail
+     *
+     * @param Board $item board model
+     * @return void
+     */
+    protected function bindGalleryThumb(Board $item)
     {
         /** @var \Xpressengine\Media\MediaManager $mediaManager */
         $mediaManager = app('xe.media');
@@ -148,7 +182,10 @@ class GalleryWidget extends AbstractWidget
                     if ($mediaManager->is($file) !== true) {
                         continue;
                     }
-                    // 어떤 크기의 썸네일을 사용할 것인지 스킨 설정을 통해 결정(두배 이미지가 좋다함)
+
+                    /**
+                     * set thumbnail size
+                     */
                     $dimension = 'L';
 
                     $media = Image::getThumbnail(

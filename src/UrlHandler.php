@@ -2,15 +2,15 @@
 /**
  * UrlHandler
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Config\ConfigEntity;
@@ -22,6 +22,10 @@ use Xpressengine\Plugins\Board\Models\BoardSlug;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class UrlHandler
 {
@@ -62,12 +66,12 @@ class UrlHandler
     /**
      * get user controller's url
      *
-     * @param string $instanceId board instance id
      * @param string $name       get url name
      * @param array  $params     parameters
+     * @param string $instanceId board instance id
      * @return string
      */
-    public function get($name = 'index', $params = [], $instanceId = null)
+    public function get($name = 'index', array $params = [], $instanceId = null)
     {
         if ($instanceId == null) {
             $instanceId = $this->instanceId;
@@ -128,10 +132,10 @@ class UrlHandler
      *
      * @param string $slug       slug
      * @param array  $params     parameters
-     * @param string $instanceId boad instance id
+     * @param string $instanceId board instance id
      * @return string
      */
-    public function getSlug($slug, array $params = [], $instanceId)
+    public function getSlug($slug, array $params, $instanceId)
     {
         unset($params['id']);
         $params['slug'] = $slug;

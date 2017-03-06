@@ -1,22 +1,44 @@
 <?php
 /**
- * @author    XE Developers <developers@xpressengine.com>
- * @copyright 2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license   LGPL-2.1
- * @license   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
- * @link      https://xpressengine.io
+ * Title
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\UIObjects;
 
 use Xpressengine\UIObject\AbstractUIObject;
 use View;
 use XePlugin;
 
+/**
+ * Title
+ *
+ * 게시판 글 등록할 때 slug 지원하는 input box
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 class Title extends AbstractUIObject
 {
+    /**
+     * @var bool
+     */
     protected static $loaded = false;
 
+    /**
+     * @var string
+     */
     protected static $id = 'uiobject/board@title';
 
     /**
@@ -57,10 +79,4 @@ class Title extends AbstractUIObject
         $plugin = XePlugin::getPlugin('board');
         return View::make(sprintf('%s::views.uiobject.title', $plugin->getId()), $args)->render();
     }
-
-    public static function boot()
-    {
-
-    }
-
 }

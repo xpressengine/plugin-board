@@ -1,16 +1,16 @@
 <?php
 /**
- * Board handler
+ * Handler
+ *
+ * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Config\ConfigEntity;
@@ -28,7 +28,6 @@ use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
-use Xpressengine\Plugins\Comment\Models\Comment;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Tag\Tag;
@@ -39,7 +38,7 @@ use Xpressengine\Storage\File as FileModel;
 use Xpressengine\Plugins\Comment\Handler as CommentHandler;
 
 /**
- * Board handler
+ * Handler
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -282,7 +281,7 @@ class Handler
      *
      * @param Board $board   board model
      * @param array $fileIds current uploaded file ids
-     * @retunr void
+     * @return void
      */
     protected function unsetFiles(Board $board, array $fileIds)
     {
@@ -592,7 +591,7 @@ class Handler
             ->orderBy('head', 'desc');
 
         // eager loading
-        $query->with(['favorite' => function($favoriteQuery) use ($userId) {
+        $query->with(['favorite' => function ($favoriteQuery) use ($userId) {
             $favoriteQuery->where('userId', $userId);
         }, 'slug', 'data']);
 
@@ -712,6 +711,7 @@ class Handler
      * @param Board         $board  board model
      * @param UserInterface $user   user
      * @param string        $option 'assent' or 'dissent'
+     * @param int           $point  vote point
      * @return void
      */
     public function vote(Board $board, UserInterface $user, $option, $point = 1)
@@ -729,6 +729,7 @@ class Handler
      * @param Board         $board  board model
      * @param UserInterface $user   user
      * @param string        $option 'assent' or 'dissent'
+     * @param int           $point  vote point
      * @return void
      */
     public function incrementVoteCount(Board $board, UserInterface $user, $option, $point = 1)
@@ -776,11 +777,25 @@ class Handler
         return $this->voteCounter->has($board->id, $user, $option);
     }
 
+    /**
+     * check has favorite
+     *
+     * @param string $boardId board id
+     * @param string $userId  user id
+     * @return bool
+     */
     public function hasFavorite($boardId, $userId)
     {
         return BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->exists();
     }
 
+    /**
+     * add favorite
+     *
+     * @param string $boardId board id
+     * @param string $userId  user id
+     * @return void
+     */
     public function addFavorite($boardId, $userId)
     {
         if ($this->hasFavorite($boardId, $userId) === true) {
@@ -793,6 +808,13 @@ class Handler
         $favorite->save();
     }
 
+    /**
+     * remove favorite
+     *
+     * @param string $boardId board id
+     * @param string $userId  user id
+     * @return void
+     */
     public function removeFavorite($boardId, $userId)
     {
         if ($this->hasFavorite($boardId, $userId) === false) {

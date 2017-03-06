@@ -2,15 +2,15 @@
 /**
  * Board
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Counter\Models\CounterLog;
@@ -19,6 +19,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Media;
 use Xpressengine\Plugins\Comment\CommentUsable;
+use Xpressengine\Plugins\Comment\Models\Comment;
 use Xpressengine\Routing\InstanceRoute;
 use Xpressengine\Seo\SeoUsable;
 use Xpressengine\Storage\File;
@@ -26,12 +27,20 @@ use Xpressengine\Tag\Tag;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\Models\UnknownUser;
 use Xpressengine\User\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Board
  *
+ * 게시판에서는 Document 모델을 확장해서 사용하기 위해 Board 모델 사용.
+ * Board 모델에는 Document 에 없던 BoardCategory, BoardSlug 등 게시판을 위한 relation 을 추가.
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class Board extends Document implements CommentUsable, SeoUsable
 {
@@ -68,7 +77,8 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function assents()
     {
-        return $this->hasMany(CounterLog::class, 'targetId')->where('counterName', 'vote')->where('counterOption', 'assent');
+        return $this->hasMany(CounterLog::class, 'targetId')
+            ->where('counterName', 'vote')->where('counterOption', 'assent');
     }
 
     /**
@@ -78,7 +88,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function boardData()
     {
-        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardData', 'targetId');
+        return $this->hasOne(BoardData::class, 'targetId');
     }
 
     /**
@@ -88,7 +98,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function boardSlug()
     {
-        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardSlug', 'targetId');
+        return $this->hasOne(BoardSlug::class, 'targetId');
     }
 
     /**
@@ -98,7 +108,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function boardCategory()
     {
-        return $this->hasOne('Xpressengine\Plugins\Board\Models\BoardCategory', 'targetId');
+        return $this->hasOne(BoardCategory::class, 'targetId');
     }
 
     /**
@@ -118,7 +128,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function user()
     {
-        return $this->hasOne('Xpressengine\User\Models\User', 'id', 'userId');
+        return $this->hasOne(User::class, 'id', 'userId');
     }
 
     /**
@@ -128,7 +138,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function comments()
     {
-        return $this->hasMany('Xpressengine\Comment\Models\Comment', 'targetId');
+        return $this->hasMany(Comment::class, 'targetId');
     }
 
     /**
@@ -174,7 +184,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function favorite()
     {
-        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardFavorite', 'id', 'targetId');
+        return $this->belongsTo(BoardFavorite::class, 'id', 'targetId');
     }
 
     /**
@@ -184,7 +194,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function slug()
     {
-        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardSlug', 'id', 'targetId');
+        return $this->belongsTo(BoardSlug::class, 'id', 'targetId');
     }
 
     /**
@@ -194,7 +204,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function data()
     {
-        return $this->belongsTo('Xpressengine\Plugins\Board\Models\BoardData', 'id', 'targetId');
+        return $this->belongsTo(BoardData::class, 'id', 'targetId');
     }
 
     /**
@@ -267,25 +277,27 @@ class Board extends Document implements CommentUsable, SeoUsable
     /**
      * visible
      *
-     * @param $query
+     * @param Builder $query query
+     * @return $this
      */
-    public function scopeVisible($query)
+    public function scopeVisible(Builder $query)
     {
-        $query->where('status', Document::STATUS_PUBLIC)
-            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
-            ->where('published', Document::PUBLISHED_PUBLISHED);
+        $query->where('status', static::STATUS_PUBLIC)
+            ->whereIn('display', [static::DISPLAY_VISIBLE, static::DISPLAY_SECRET])
+            ->where('published', static::PUBLISHED_PUBLISHED);
     }
 
     /**
      * notice
      *
-     * @param $query
+     * @param Builder $query query
+     * @return $this
      */
-    public function scopeNotice($query)
+    public function scopeNotice(Builder $query)
     {
-        $query->where('status', Document::STATUS_NOTICE)
-            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
-            ->where('published', Document::PUBLISHED_PUBLISHED);
+        $query->where('status', static::STATUS_NOTICE)
+            ->whereIn('display', [static::DISPLAY_VISIBLE, static::DISPLAY_SECRET])
+            ->where('published', static::PUBLISHED_PUBLISHED);
     }
 
     /**

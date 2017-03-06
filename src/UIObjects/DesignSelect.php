@@ -2,15 +2,15 @@
 /**
  * DesignSelect
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\UIObjects;
 
 use Xpressengine\UIObject\AbstractUIObject;
@@ -18,6 +18,7 @@ use View;
 
 /**
  * DesignSelect
+ *
  * DIV 방식 select
  *
  * ## 사용법
@@ -36,17 +37,28 @@ use View;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class DesignSelect extends AbstractUIObject
 {
+    /**
+     * @var bool
+     */
     protected static $loaded = false;
 
+    /**
+     * @var string
+     */
     protected static $id = 'uiobject/board@select';
 
     /**
      * render
      *
-     * @return string
+     * @return mixed
+     * @throws \Exception
      */
     public function render()
     {
@@ -85,14 +97,5 @@ class DesignSelect extends AbstractUIObject
         }
 
         return View::make('board::views.uiobject.designSelect', $args)->render();
-    }
-
-    /**
-     * boot
-     *
-     * @return void
-     */
-    public static function boot()
-    {
     }
 }

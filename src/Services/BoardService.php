@@ -1,4 +1,16 @@
 <?php
+/**
+ * BoardService
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 namespace Xpressengine\Plugins\Board\Services;
 
 use Auth;
@@ -18,6 +30,16 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 use Xpressengine\User\UserInterface;
 
+/**
+ * BoardService
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 class BoardService
 {
     /**
@@ -32,8 +54,8 @@ class BoardService
 
     /**
      * BoardService constructor.
-     * @param Handler $handler
-     * @param ConfigHandler $configHandler
+     * @param Handler       $handler       board handler
+     * @param ConfigHandler $configHandler board config handler
      */
     public function __construct(Handler $handler, ConfigHandler $configHandler)
     {
@@ -44,9 +66,9 @@ class BoardService
     /**
      * get notice list
      *
-     * @param Request $request
-     * @param ConfigEntity $config
-     * @param $userId
+     * @param Request      $request request
+     * @param ConfigEntity $config  board config entity
+     * @param string       $userId  user id
      * @return mixed
      */
     public function getNoticeItems(Request $request, ConfigEntity $config, $userId)
@@ -73,9 +95,9 @@ class BoardService
     /**
      * get article list
      *
-     * @param Request $request
-     * @param ConfigEntity $config
-     * @param null $id
+     * @param Request      $request request
+     * @param ConfigEntity $config  board config entity
+     * @param string|null  $id      document id
      * @return mixed
      */
     public function getItems(Request $request, ConfigEntity $config, $id = null)
@@ -107,7 +129,7 @@ class BoardService
         $this->handler->makeOrder($query, $request, $config);
 
         // eager loading favorite list
-        $query->with(['favorite' => function($favoriteQuery) {
+        $query->with(['favorite' => function ($favoriteQuery) {
             $favoriteQuery->where('userId', Auth::user()->getId());
         }, 'slug', 'data']);
 
@@ -125,7 +147,7 @@ class BoardService
     /**
      * get category item list
      *
-     * @param ConfigEntity $config
+     * @param ConfigEntity $config board config entity
      * @return array
      */
     public function getCategoryItems(ConfigEntity $config)
@@ -147,8 +169,8 @@ class BoardService
     /**
      * get category item
      *
-     * @param ConfigEntity $config
-     * @param Board $item
+     * @param ConfigEntity $config board config entity
+     * @param Board        $item   board model
      * @return null
      */
     public function getCategoryItem(ConfigEntity $config, Board $item)
@@ -163,7 +185,7 @@ class BoardService
     /**
      * get dynamic field types
      *
-     * @param ConfigEntity $config
+     * @param ConfigEntity $config board config entity
      * @return array
      */
     public function getFieldTypes(ConfigEntity $config)
@@ -174,10 +196,10 @@ class BoardService
     /**
      * get article
      *
-     * @param $id
-     * @param UserInterface $user
-     * @param ConfigEntity $config
-     * @param bool $force
+     * @param string        $id     document id
+     * @param UserInterface $user   user
+     * @param ConfigEntity  $config board config entity
+     * @param bool          $force  force
      * @return Board
      */
     public function getItem($id, UserInterface $user, ConfigEntity $config, $force = false)
@@ -214,7 +236,8 @@ class BoardService
     /**
      * check captcha configuration
      *
-     * @param ConfigEntity $config
+     * @param ConfigEntity $config board config entity
+     * @return void
      */
     public function checkCaptcha(ConfigEntity $config)
     {
@@ -226,10 +249,12 @@ class BoardService
     }
 
     /**
-     * @param Request $request
-     * @param UserInterface $user
-     * @param ConfigEntity $config
-     * @param IdentifyManager $identifyManager
+     * store board item
+     *
+     * @param Request         $request         request
+     * @param UserInterface   $user            user
+     * @param ConfigEntity    $config          board config entity
+     * @param IdentifyManager $identifyManager identify manager
      * @return Board
      */
     public function store(Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager)
@@ -260,11 +285,11 @@ class BoardService
     /**
      * update article
      *
-     * @param Board $item
-     * @param Request $request
-     * @param UserInterface $user
-     * @param ConfigEntity $config
-     * @param IdentifyManager $identifyManager
+     * @param Board           $item            board model item
+     * @param Request         $request         request
+     * @param UserInterface   $user            user
+     * @param ConfigEntity    $config          board config entity
+     * @param IdentifyManager $identifyManager identify manager
      * @return Board
      */
     public function update(
@@ -289,7 +314,7 @@ class BoardService
 
         if ($request->get('status') == Board::STATUS_NOTICE) {
             $item->status = Board::STATUS_NOTICE;
-        } else if ($request->get('status') != Board::STATUS_NOTICE && $item->status == Board::STATUS_NOTICE) {
+        } elseif ($request->get('status') != Board::STATUS_NOTICE && $item->status == Board::STATUS_NOTICE) {
             $item->status = Board::STATUS_PUBLIC;
         }
 
@@ -315,9 +340,9 @@ class BoardService
     /**
      * destroy article
      *
-     * @param Board $item
-     * @param ConfigEntity $config
-     * @param IdentifyManager $identifyManager
+     * @param Board           $item            board model item
+     * @param ConfigEntity    $config          board config entity
+     * @param IdentifyManager $identifyManager identify manager
      * @return void
      */
     public function destroy(Board $item, ConfigEntity $config, IdentifyManager $identifyManager)
@@ -333,10 +358,11 @@ class BoardService
     /**
      * has article permission
      *
-     * @param Board $item
-     * @param UserInterface $user
-     * @param IdentifyManager $identifyManager
-     * @param bool $force
+     * @param Board           $item            board model item
+     * @param UserInterface   $user            user
+     * @param IdentifyManager $identifyManager identify manager
+     * @param bool            $force           force
+     *
      * @return bool
      */
     public function hasItemPerm(Board $item, UserInterface $user, IdentifyManager $identifyManager, $force = false)
@@ -344,9 +370,10 @@ class BoardService
         $perm = true;
         if ($force === true) {
             $perm = true;
-        } elseif($item->userId == $user->getId()) {
+        } elseif ($item->userId == $user->getId()) {
             $perm = true;
-        } elseif($item->userId == '' && $user->getId() === null && $identifyManager->identified($item) === true) {
+        } elseif ($item->userId == '' && $user->getId() === null &&
+            $identifyManager->identified($item) === true) {
             $perm = true;
         }
         return $perm;

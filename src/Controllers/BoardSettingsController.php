@@ -1,16 +1,16 @@
 <?php
 /**
- * ManagerController
+ * BoardSettingsController
+ *
+ * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Controllers;
 
 use App\Http\Sections\EditorSection;
@@ -26,7 +26,6 @@ use Xpressengine\Captcha\CaptchaManager;
 use Xpressengine\Captcha\Exceptions\ConfigurationNotExistsException;
 use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
-use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundConfigHttpException;
@@ -46,6 +45,10 @@ use Xpressengine\Plugins\Comment\ManageSection as CommentSection;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class BoardSettingsController extends Controller
 {
@@ -129,7 +132,6 @@ class BoardSettingsController extends Controller
      *
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
-     *
      * @return mixed
      */
     public function globalUpdate(Request $request, BoardPermissionHandler $boardPermission)
@@ -179,7 +181,7 @@ class BoardSettingsController extends Controller
      *
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param CaptchaManager         $captcha         Captcha manager
-     * @param string                 $boardId         board id
+     * @param string                 $boardId         board instance id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function edit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha, $boardId)
@@ -215,9 +217,9 @@ class BoardSettingsController extends Controller
     /**
      * update
      *
-     * @param Request $request
-     * @param BoardPermissionHandler $boardPermission
-     * @param string $boardId board id
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $boardId         board instance id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, BoardPermissionHandler $boardPermission, $boardId)
@@ -263,6 +265,13 @@ class BoardSettingsController extends Controller
         return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
     }
 
+    /**
+     * store category
+     *
+     * @param CategoryHandler $categoryHandler category handler
+     * @param Request         $request         request
+     * @return mixed
+     */
     public function storeCategory(CategoryHandler $categoryHandler, Request $request)
     {
         $boardId = $request->get('boardId');
@@ -291,6 +300,8 @@ class BoardSettingsController extends Controller
     /**
      * document manager
      *
+     * @param Request         $request         request
+     * @param RouteRepository $routeRepository route repository
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function docsIndex(Request $request, RouteRepository $routeRepository)
@@ -345,6 +356,8 @@ class BoardSettingsController extends Controller
     /**
      * document manager
      *
+     * @param Request         $request         request
+     * @param RouteRepository $routeRepository route repository
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function docsApprove(Request $request, RouteRepository $routeRepository)
@@ -396,6 +409,9 @@ class BoardSettingsController extends Controller
     /**
      * document manager
      *
+     *
+     * @param Request         $request         request
+     * @param RouteRepository $routeRepository route repository
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function docsTrash(Request $request, RouteRepository $routeRepository)
@@ -447,6 +463,7 @@ class BoardSettingsController extends Controller
     /**
      * update document approve status
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function approve(Request $request)
@@ -468,6 +485,7 @@ class BoardSettingsController extends Controller
     /**
      * destroy document
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function destroy(Request $request)
@@ -489,6 +507,7 @@ class BoardSettingsController extends Controller
     /**
      * move to trash
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function trash(Request $request)
@@ -510,6 +529,7 @@ class BoardSettingsController extends Controller
     /**
      * move to restore
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function restore(Request $request)
@@ -529,6 +549,7 @@ class BoardSettingsController extends Controller
     /**
      * move to move
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function move(Request $request)
@@ -557,6 +578,7 @@ class BoardSettingsController extends Controller
     /**
      * move to copy
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function copy(Request $request)

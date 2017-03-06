@@ -2,35 +2,31 @@
 /**
  * GallerySkin
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Skins;
 
-use App\Facades\XeFrontend;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\Models\Image;
+use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
-use Xpressengine\Plugins\Board\Skins\DynamicField\DesignSelectSkin;
-use Xpressengine\Plugins\Board\Skins\PaginationMobilePresenter;
-use Xpressengine\Plugins\Board\Skins\PaginationPresenter;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
-use Xpressengine\Skin\AbstractSkin;
 use XeSkin;
 use XePresenter;
 use View;
 use Event;
 use Input;
+use App;
 use Xpressengine\Storage\File;
 use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
 
@@ -39,11 +35,21 @@ use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class GallerySkin extends DefaultSkin
 {
+    /**
+     * @var string
+     */
     protected static $skinAlias = 'board::views.gallerySkin';
 
+    /**
+     * @var array
+     */
     static protected $thumbSkins = [];
 
     /**
@@ -106,7 +112,7 @@ class GallerySkin extends DefaultSkin
         intercept(
             sprintf('%s@getOrders', BoardHandler::class),
             static::class.'-board-getOrders',
-            function($func) {
+            function ($func) {
                 $orders = $func();
                 $orders[] = ['value' => 'exceptNotice', 'text' => 'board::exceptNotice'];
                 return $orders;
@@ -116,7 +122,7 @@ class GallerySkin extends DefaultSkin
         intercept(
             sprintf('%s@getsNotice', BoardHandler::class),
             static::class.'-board-getsNotice',
-            function($func, ConfigEntity $config, $userId) {
+            function ($func, ConfigEntity $config, $userId) {
                 $notice = $func($config, $userId);
 
                 // 공지 제외하고 보기 옵션 처리
@@ -162,7 +168,8 @@ class GallerySkin extends DefaultSkin
     /**
      * set using thumbnail skin id
      *
-     * @param $skinId
+     * @param string $skinId skin id
+     * @return void
      */
     public static function addThumbSkin($skinId)
     {
@@ -234,10 +241,16 @@ class GallerySkin extends DefaultSkin
         }
     }
 
-    protected static function bindGalleryThumb($item)
+    /**
+     * bind gallery thumbnail
+     *
+     * @param Board $item board model
+     * @return  void
+     */
+    protected static function bindGalleryThumb(Board $item)
     {
         /** @var \Xpressengine\Media\MediaManager $mediaManager */
-        $mediaManager = \App::make('xe.media');
+        $mediaManager = App::make('xe.media');
 
         // board gallery thumbnails 에 항목이 없는 경우
         if ($item->boardThumbnailFileId === null && $item->boardThumbnailPath === null) {
@@ -258,7 +271,10 @@ class GallerySkin extends DefaultSkin
                     if ($mediaManager->is($file) !== true) {
                         continue;
                     }
-                    // 어떤 크기의 썸네일을 사용할 것인지 스킨 설정을 통해 결정(두배 이미지가 좋다함)
+
+                    /**
+                     * set thumbnail size
+                     */
                     $dimension = 'L';
 
                     $media = Image::getThumbnail(
