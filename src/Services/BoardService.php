@@ -367,7 +367,7 @@ class BoardService
      */
     public function hasItemPerm(Board $item, UserInterface $user, IdentifyManager $identifyManager, $force = false)
     {
-        $perm = true;
+        $perm = false;
         if ($force === true) {
             $perm = true;
         } elseif ($item->userId == $user->getId()) {

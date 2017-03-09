@@ -89,9 +89,7 @@ class TrashItem extends AbstractToggleMenu
     {
         $doc = Board::find($this->identifier);
 
-        $config = app('xe.board.config')->get($doc->instanceId);
-
-        return app('xe.board.url')->get('trash', ['id' => $this->identifier], $config);
+        return app('xe.board.url')->get('trash', ['id' => $this->identifier], $doc->instanceId);
     }
 
     /**
