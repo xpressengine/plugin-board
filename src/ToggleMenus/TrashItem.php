@@ -2,15 +2,15 @@
 /**
  * TrashItem
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\ToggleMenus;
 
 use Gate;
@@ -22,17 +22,25 @@ use Xpressengine\Permission\Instance;
 /**
  * TrashItem
  *
+ * Toggle menu item
+ * 팝업 메뉴에 휴지통으로 이동 처리
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER Crop. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
 class TrashItem extends AbstractToggleMenu
 {
-    public function allows() {
+    /**
+     * check permission
+     *
+     * @return bool
+     */
+    public function allows()
+    {
         $doc = Board::find($this->identifier);
         $configHandler = app('xe.board.config');
         $boardPermission = app('xe.board.permission');
@@ -43,8 +51,8 @@ class TrashItem extends AbstractToggleMenu
 
             if (Gate::allows(
                 BoardPermissionHandler::ACTION_MANAGE,
-                new Instance($boardPermission->name($doc->instanceId)))
-            ) {
+                new Instance($boardPermission->name($doc->instanceId))
+            )) {
                 $isManger = true;
             };
         }
@@ -52,26 +60,45 @@ class TrashItem extends AbstractToggleMenu
         return $isManger;
     }
 
+    /**
+     * get text
+     *
+     * @return string
+     */
     public function getText()
     {
         return xe_trans('xe::moveToTrash');
     }
 
+    /**
+     * get type
+     *
+     * @return string
+     */
     public function getType()
     {
         return static::MENUTYPE_LINK;
     }
 
+    /**
+     * get action url
+     *
+     * @return string
+     */
     public function getAction()
     {
         $doc = Board::find($this->identifier);
 
-        $config = app('xe.board.config')->get($doc->instanceId);
-
-        return app('xe.board.url')->get('trash', ['id' => $this->identifier], $config);
+        return app('xe.board.url')->get('trash', ['id' => $this->identifier], $doc->instanceId);
     }
 
+    /**
+     * get script
+     *
+     * @return null
+     */
     public function getScript()
     {
+        return null;
     }
 }

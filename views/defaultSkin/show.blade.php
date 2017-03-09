@@ -6,7 +6,6 @@
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.dataview.js')->appendTo('head')->load() }}
 {{ XeFrontend::css('/assets/vendor/slickgrid/slick.grid.css')->load() }}
 
-@if($visible == true)
     <div class="board_read">
         @foreach ($skinConfig['formColumns'] as $columnName)
             @if($columnName === 'title')
@@ -126,12 +125,6 @@
     </div>
     @endif
     <!-- // 댓글 -->
-@else
-    <script>
-        XE.toast('danger', '{{xe_trans('board::notFoundDocument')}}');
-    </script>
-@endif
-{{--end if visible == true --}}
 
 @if (isset($withoutList) === false || $withoutList === false)
     <!-- 리스트 -->

@@ -188,6 +188,31 @@
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
+                                                        <label>{{xe_trans('board::urlType')}} </label>
+                                                    </div>
+                                                    <select id="" name="urlType" class="form-control">
+                                                        <option value="documentId" {!! $config->get('urlType') == 'documentId' ? 'selected="selected"' : '' !!} >{{xe_trans('board::documentId')}}</option>
+                                                        <option value="slug" {!! $config->get('urlType') == 'slug' ? 'selected="selected"' : '' !!} >{{xe_trans('board::slug')}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
+                                                        <label>{{xe_trans('board::useDeleteToTrash')}} <small>{{xe_trans('board::useDeleteToTrashDescription')}}</small></label>
+                                                    </div>
+                                                    <select id="" name="deleteToTrash" class="form-control">
+                                                        <option value="true" {!! $config->get('deleteToTrash') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('deleteToTrash') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
 

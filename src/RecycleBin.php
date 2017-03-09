@@ -2,19 +2,20 @@
 /**
  * RecycleBin
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Trash\RecycleBinInterface;
-use Xpressengine\Plugins\Board\Models\Board as BoardModel;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 
 /**
  * RecycleBin
@@ -53,7 +54,7 @@ class RecycleBin implements RecycleBinInterface
         $handler = app('xe.board.handler');
         /** @var ConfigHandler $configManager */
         $configHandler = app('xe.board.config');
-        $boards = BoardModel::where('status', 'trash')->where('type', BoardModule::getId())->get();
+        $boards = Board::where('status', 'trash')->where('type', BoardModule::getId())->get();
 
         $configs = [];
         foreach ($boards as $board) {
@@ -76,7 +77,7 @@ class RecycleBin implements RecycleBinInterface
      */
     public static function summary()
     {
-        $count = BoardModel::where('status', 'trash')->where('type', BoardModule::getId())->count();
+        $count = Board::where('status', 'trash')->where('type', BoardModule::getId())->count();
 
         // todo: translation
         return sprintf('휴지통에 %s건의 문서가 있습니다.', $count);

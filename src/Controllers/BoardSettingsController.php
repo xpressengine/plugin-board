@@ -1,16 +1,16 @@
 <?php
 /**
- * ManagerController
+ * BoardSettingsController
+ *
+ * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Controllers;
 
 use App\Http\Sections\EditorSection;
@@ -26,7 +26,6 @@ use Xpressengine\Captcha\CaptchaManager;
 use Xpressengine\Captcha\Exceptions\ConfigurationNotExistsException;
 use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
-use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundConfigHttpException;
@@ -34,7 +33,7 @@ use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\InstanceManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\UrlHandler;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Routing\InstanceRouteHandler;
 use Xpressengine\Routing\RouteRepository;
 use Xpressengine\User\Models\Guest;
@@ -42,12 +41,16 @@ use Xpressengine\User\Models\User;
 use Xpressengine\Plugins\Comment\ManageSection as CommentSection;
 
 /**
- * ManagerController
+ * BoardSettingsController
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
-class ManagerController extends Controller
+class BoardSettingsController extends Controller
 {
     /**
      * @var Handler
@@ -129,7 +132,6 @@ class ManagerController extends Controller
      *
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
-     *
      * @return mixed
      */
     public function globalUpdate(Request $request, BoardPermissionHandler $boardPermission)
@@ -179,7 +181,7 @@ class ManagerController extends Controller
      *
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param CaptchaManager         $captcha         Captcha manager
-     * @param string                 $boardId         board id
+     * @param string                 $boardId         board instance id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function edit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha, $boardId)
@@ -215,9 +217,9 @@ class ManagerController extends Controller
     /**
      * update
      *
-     * @param Request $request
-     * @param BoardPermissionHandler $boardPermission
-     * @param string $boardId board id
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $boardId         board instance id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, BoardPermissionHandler $boardPermission, $boardId)
@@ -256,16 +258,20 @@ class ManagerController extends Controller
         }
 
         XeDB::beginTransaction();
-
         $config = $this->instanceManager->updateConfig($config->getPureAll());
-
         $boardPermission->set($request, $boardId);
-
         XeDB::commit();
 
         return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
     }
 
+    /**
+     * store category
+     *
+     * @param CategoryHandler $categoryHandler category handler
+     * @param Request         $request         request
+     * @return mixed
+     */
     public function storeCategory(CategoryHandler $categoryHandler, Request $request)
     {
         $boardId = $request->get('boardId');
@@ -294,6 +300,8 @@ class ManagerController extends Controller
     /**
      * document manager
      *
+     * @param Request         $request         request
+     * @param RouteRepository $routeRepository route repository
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function docsIndex(Request $request, RouteRepository $routeRepository)
@@ -348,6 +356,8 @@ class ManagerController extends Controller
     /**
      * document manager
      *
+     * @param Request         $request         request
+     * @param RouteRepository $routeRepository route repository
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function docsApprove(Request $request, RouteRepository $routeRepository)
@@ -399,6 +409,9 @@ class ManagerController extends Controller
     /**
      * document manager
      *
+     *
+     * @param Request         $request         request
+     * @param RouteRepository $routeRepository route repository
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function docsTrash(Request $request, RouteRepository $routeRepository)
@@ -450,6 +463,7 @@ class ManagerController extends Controller
     /**
      * update document approve status
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function approve(Request $request)
@@ -462,7 +476,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->put($item, ['approve' => $approved]);
         }
 
@@ -472,6 +485,7 @@ class ManagerController extends Controller
     /**
      * destroy document
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function destroy(Request $request)
@@ -482,7 +496,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->remove($item, $this->configHandler->get($item->instanceId));
         }
 
@@ -494,6 +507,7 @@ class ManagerController extends Controller
     /**
      * move to trash
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function trash(Request $request)
@@ -504,7 +518,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->trash($item, $this->configHandler->get($item->instanceId));
         }
 
@@ -516,6 +529,7 @@ class ManagerController extends Controller
     /**
      * move to restore
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function restore(Request $request)
@@ -526,7 +540,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $this->handler->restore($item, $this->configHandler->get($item->instanceId));
         }
 
@@ -536,6 +549,7 @@ class ManagerController extends Controller
     /**
      * move to move
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function move(Request $request)
@@ -544,16 +558,16 @@ class ManagerController extends Controller
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
         $instanceId = $request->get('instanceId');
-        $config = $this->configHandler->get($instanceId);
-        if ($config === null) {
+        $dstConfig = $this->configHandler->get($instanceId);
+        if ($dstConfig === null) {
             throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
         }
 
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
-            $this->handler->move($item, $config);
+            $originConfig = $this->configHandler->get($item->instanceId);
+            $this->handler->move($item, $dstConfig, $originConfig);
         }
 
         Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
@@ -564,6 +578,7 @@ class ManagerController extends Controller
     /**
      * move to copy
      *
+     * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
      */
     public function copy(Request $request)
@@ -580,7 +595,6 @@ class ManagerController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->setModelConfig($item, $this->configHandler->get($item->instanceId));
             $user = new Guest;
             if ($item->userId != '') {
                 $user = User::find($item->userId);

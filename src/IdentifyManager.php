@@ -2,15 +2,15 @@
 /**
  * IdentifyManager
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board;
 
 use Illuminate\Contracts\Hashing\Hasher;
@@ -21,8 +21,14 @@ use Xpressengine\Plugins\Board\Models\Board;
 /**
  * IdentifyManager
  *
+ * 비회원이 작성한 글의 인증 처리 관리
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class IdentifyManager
 {

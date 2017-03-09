@@ -1,16 +1,16 @@
 <?php
 /**
- * UserController
+ * BoardModuleController
+ *
+ * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Controllers;
 
 use XeDocument;
@@ -33,18 +33,17 @@ use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
-use Xpressengine\Plugins\Board\Exceptions\InvalidRequestException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
-use Xpressengine\Plugins\Board\Exceptions\RequiredValueHttpException;
 use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Purifier;
+use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
@@ -53,12 +52,18 @@ use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
 
 /**
- * UserController
+ * BoardModuleController
+ *
+ * 메뉴에서 게시판 추가할 때 추가된 게시판 관리
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
-class UserController extends Controller
+class BoardModuleController extends Controller
 {
     /**
      * @var string
@@ -93,10 +98,10 @@ class UserController extends Controller
     /**
      * UserController constructor.
      *
-     * @param Handler $handler
-     * @param ConfigHandler $configHandler
-     * @param UrlHandler $urlHandler
-     * @param BoardPermissionHandler $boardPermission
+     * @param Handler                $handler         board handler
+     * @param ConfigHandler          $configHandler   board config handler
+     * @param UrlHandler             $urlHandler      board url handler
+     * @param BoardPermissionHandler $boardPermission board permission handler
      */
     public function __construct(
         Handler $handler,
@@ -113,13 +118,14 @@ class UserController extends Controller
 
         $this->config = $configHandler->get($this->instanceId);
         if ($this->config !== null) {
+            $urlHandler->setInstanceId($this->config->get('boardId'));
             $urlHandler->setConfig($this->config);
 
             $this->isManager = false;
             if (Gate::allows(
                 BoardPermissionHandler::ACTION_MANAGE,
-                new Instance($boardPermission->name($this->instanceId)))
-            ) {
+                new Instance($boardPermission->name($this->instanceId))
+            )) {
                 $this->isManager = true;
             };
         }
@@ -137,25 +143,32 @@ class UserController extends Controller
     /**
      * index page
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param string                 $menuUrl
      * @return \Xpressengine\Presenter\RendererInterface
      * @throws AccessDeniedHttpException
      */
-    public function index(Request $request, BoardPermissionHandler $boardPermission, $menuUrl='')
+    public function index(BoardService $service, Request $request, BoardPermissionHandler $boardPermission)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
-        $notices = $this->notices($request, $boardPermission)->toArray();
-        $articles = $this->articles($request, $boardPermission, $menuUrl)->toArray();
+        $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
+        $paginate = $service->getItems($request, $this->config);
+        $fieldTypes = $service->getFieldTypes($this->config);
+        $categories = $service->getCategoryItems($this->config);
 
-        return XePresenter::makeAll('index', array_merge($notices, $articles));
+        return XePresenter::makeAll('index', [
+            'notices' => $notices,
+            'paginate' => $paginate,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+        ]);
     }
 
     /**
@@ -164,18 +177,19 @@ class UserController extends Controller
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission
      * @return mixed
+     * @deprecated
      */
     public function notices(Request $request, BoardPermissionHandler $boardPermission)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
-        $query = $this->handler->getModel($this->config)
-            ->where('instanceId', $this->instanceId)
+        $model = Board::division($this->instanceId);
+        $query = $model->where('instanceId', $this->instanceId)
             ->visible()->orderBy('head', 'desc');
 
         if ($request->has('favorite') === true) {
@@ -216,21 +230,24 @@ class UserController extends Controller
      * get articles
      *
      * @param Request                $request         request
-     * @param BoardPermissionHandler $boardPermission board permission
-     * @param null                   $id              document id
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
      * @return mixed
+     * @deprecated
      */
     public function articles(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id = null)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_LIST,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
-        $query = $this->handler->getModel($this->config)
-            ->where('instanceId', $this->instanceId)->visible();
+        /** @var Board $model */
+        $model = Board::division($this->instanceId);
+        $query = $model->where('instanceId', $this->instanceId)->visible();
 
         if ($this->config->get('category') === true) {
             $query->leftJoin(
@@ -255,7 +272,7 @@ class UserController extends Controller
         $this->handler->makeOrder($query, $request, $this->config);
 
         // eager loading favorite list
-        $query->with(['favorite' => function($favoriteQuery) {
+        $query->with(['favorite' => function ($favoriteQuery) {
             $favoriteQuery->where('userId', Auth::user()->getId());
         }, 'slug', 'data']);
 
@@ -290,26 +307,46 @@ class UserController extends Controller
     /**
      * show
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param string                 $menuUrl         first segment
      * @param string                 $id              document id
      * @return mixed
      */
-    public function show(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $id)
-    {
+    public function show(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $id
+    ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
-        $item = $this->get($boardPermission, $menuUrl, $id)->toArray();
-        $notices = $this->notices($request, $boardPermission)->toArray();
-        $articles = $this->articles($request, $boardPermission, $menuUrl, $id)->toArray();
+        $item = $service->getItem($id, Auth::user(), $this->config, $this->isManager);
 
-        return XePresenter::make('show', array_merge($item, $notices, $articles));
+        // 글 조회수 증가
+        if ($item->display == Board::DISPLAY_VISIBLE) {
+            $this->handler->incrementReadCount($item, Auth::user());
+        }
+
+        $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
+        $paginate = $service->getItems($request, $this->config, $id);
+        $fieldTypes = $service->getFieldTypes($this->config);
+        $categories = $service->getCategoryItems($this->config);
+
+        return XePresenter::make('show', [
+            'item' => $item,
+            'notices' => $notices,
+            'paginate' => $paginate,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+        ]);
     }
 
     /**
@@ -319,21 +356,21 @@ class UserController extends Controller
      * @param string                 $menuUrl         first segment
      * @param string                 $id              document id
      * @return mixed
+     * @deprecated
      */
     public function get(BoardPermissionHandler $boardPermission, $menuUrl, $id)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_READ,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
         /** @var UserInterface $user */
         $user = Auth::user();
         /** @var Board $item */
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $visible = false;
         if ($item->display == Document::DISPLAY_VISIBLE) {
@@ -372,69 +409,65 @@ class UserController extends Controller
     /**
      * show by slug
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param string                 $menuUrl         first segment
      * @param string                 $strSlug         document slug
      * @return \Xpressengine\Presenter\RendererInterface
-     * @throws Exception
      */
-    public function slug(Request $request, BoardPermissionHandler $boardPermission, $menuUrl, $strSlug)
-    {
+    public function slug(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $strSlug
+    ) {
         $slug = BoardSlug::where('slug', $strSlug)->where('instanceId', $this->instanceId)->first();
 
         if ($slug === null) {
             throw new NotFoundDocumentException;
         }
 
-        return $this->show($request, $boardPermission, $menuUrl, $slug->targetId);
+        return $this->show($service, $request, $boardPermission, $menuUrl, $slug->targetId);
     }
 
     /**
      * create
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param Validator              $validator       validator
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @return mixed
      */
-    public function create(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
-    {
+    public function create(
+        BoardService $service,
+        Request $request,
+        Validator $validator,
+        BoardPermissionHandler $boardPermission
+    ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
-        $head = '';
-
-        $categories = [];
-        if ($this->config->get('category') === true) {
-            $categoryItems = Category::find($this->config->get('categoryId'))->items;
-            foreach ($categoryItems as $categoryItem) {
-                $categories[] = [
-                    'value' => $categoryItem->id,
-                    'text' => $categoryItem->word,
-                ];
-            }
-        }
-
-        /** @var UserInterface $user */
-        $user = Auth::user();
-        $rules = $validator->getCreateRule($user, $this->config);
+        $categories = $service->getCategoryItems($this->config);
+        $rules = $validator->getCreateRule(Auth::user(), $this->config);
 
         return XePresenter::makeAll('create', [
-            'handler' => $this->handler,
-            'head' => $head,
             'categories' => $categories,
             'rules' => $rules,
+            'head' => '',
         ]);
     }
 
     /**
      * create
      *
+     * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param Validator              $validator       validator
      * @param BoardPermissionHandler $boardPermission board permission handler
@@ -442,6 +475,7 @@ class UserController extends Controller
      * @return mixed
      */
     public function store(
+        BoardService $service,
         Request $request,
         Validator $validator,
         BoardPermissionHandler $boardPermission,
@@ -449,48 +483,32 @@ class UserController extends Controller
     ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
-        $this->checkCaptcha();
+        // 유표성 체크
+        $this->validate($request, $validator->getCreateRule(Auth::user(), $this->config));
 
-        $user = Auth::user();
-
-        $this->validate($request, $validator->getCreateRule($user, $this->config));
-
-        $inputs = $request->all();
-        $inputs['instanceId'] = $this->instanceId;
-        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-
-        $inputs['content'] = purify($request->originAll()['content']);
-
+        // 공지 등록 권한 확인
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
-        // 암호 설정
-        if (empty($inputs['certifyKey']) === false) {
-            $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
-        }
-        
-        /** @var \Xpressengine\Editor\AbstractEditor $editor */
-        $editor = XeEditor::get($this->instanceId);
-        $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
-
-        // set file, tag
-        $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
-        $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
-
-        $board = $this->handler->add($inputs, $user, $this->config);
-
+        $item = $service->store($request, Auth::user(), $this->config, $identifyManager);
 
         return XePresenter::redirect()
-            ->to($this->urlHandler->getShow($board, $request->query->all()))
-            ->setData(['item' => $board]);
+            ->to($this->urlHandler->getShow($item, $request->query->all()))
+            ->setData(['item' => $item]);
     }
 
+    /**
+     * check captcha
+     *
+     * @return  bool
+     * @deprecated
+     */
     protected function checkCaptcha()
     {
         if ($this->config->get('useCaptcha', false) === true) {
@@ -500,10 +518,16 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 문자열을 넘겨 slug 반환
+     *
+     * @param Request $request request
+     * @return mixed
+     */
     public function hasSlug(Request $request)
     {
-        $slug = BoardSlug::convert('', $request->get('slug'));
-        $slug = BoardSlug::make($slug, $request->get('id'));
+        $slugText = BoardSlug::convert('', $request->get('slug'));
+        $slug = BoardSlug::make($slugText, $request->get('id'));
 
         return XePresenter::makeApi([
             'slug' => $slug,
@@ -513,175 +537,113 @@ class UserController extends Controller
     /**
      * edit
      *
-     * @param Request                $request         request
-     * @param Validator              $validator       validator
-     * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param IdentifyManager        $identifyManager identify manager
-     * @param string                 $menuUrl         first segment
-     * @param string                 $id              document id
+     * @param BoardService    $service         board service
+     * @param Request         $request         request
+     * @param Validator       $validator       validator
+     * @param IdentifyManager $identifyManager identify manager
+     * @param string          $menuUrl         first segment
+     * @param string          $id              document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function edit(
+        BoardService $service,
         Request $request,
         Validator $validator,
-        BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager,
         $menuUrl,
         $id
     ) {
-        $user = Auth::user();
-
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         if ($item === null) {
             throw new NotFoundDocumentException;
         }
 
         // 비회원이 작성 한 글일 때 인증페이지로 이동
-        if (
-            $this->isManager !== true &&
+        if ($this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            $user->getRating() != 'super'
-        ) {
-            return $this->guestId($menuUrl, $item->id);
+            Auth::user()->getRating() != 'super') {
+            return $this->guestId($validator, $menuUrl, $item->id);
         }
 
         // 접근 권한 확인
-        if ($this->isManager !== true && $item->userId !== $user->getId()) {
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
-        $categories = [];
-        if ($this->config->get('category') === true) {
-            $categoryItems = Category::find($this->config->get('categoryId'))->items;
-            foreach ($categoryItems as $categoryItem) {
-                $categories[] = [
-                    'value' => $categoryItem->id,
-                    'text' => $categoryItem->word,
-                ];
-            }
-        }
+        $categories = $service->getCategoryItems($this->config);
 
-        /** @var \Xpressengine\Plugins\Board\Validator $validator */
-        $validator = app('xe.board.validator');
-        $rules = $validator->getEditRule($user, $this->config);
-
-        $parent = null;
+        $rules = $validator->getEditRule(Auth::user(), $this->config);
 
         return XePresenter::make('edit', [
-            'config' => $this->config,
-            'handler' => $this->handler,
             'item' => $item,
-            'parent' => $parent,
             'categories' => $categories,
             'rules' => $rules,
+            'parent' => null,
         ]);
     }
 
     /**
      * update
      *
-     * @param Request                $request         request
-     * @param Validator              $validator       validator
-     * @param BoardPermissionHandler $boardPermission board permission handler
-     * @param IdentifyManager        $identifyManager identify manager
+     * @param BoardService    $service         board service
+     * @param Request         $request         request
+     * @param Validator       $validator       validator
+     * @param IdentifyManager $identifyManager identify manager
+     * @param string          $menuUrl         first segment
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function update(
+        BoardService $service,
         Request $request,
         Validator $validator,
-        BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager,
         $menuUrl
     ) {
-        $user = Auth::user();
-        $id = $request->get('id');
-
-        if ($id === null) {
-            throw new RequiredValueHttpException(['key' => 'id']);
-        }
-
-        // 글 수정 시 게시판 설정이 아닌 글의 상태에 따른 처리가 되어야 한다.
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($request->get('id'));
 
         // 비회원이 작성 한 글 인증
-        if (
-            $this->isManager !== true &&
+        if ($this->isManager !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
-            $user->getRating() != 'super'
-        ) {
+            Auth::user()->getRating() != 'super') {
             return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('edit', ['id' => $item->id]));
         }
 
-        // 접근 권한 확인
-        if ($this->isManager !== true && $item->userId !== $user->getId()) {
+        $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
+
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
-        $rules = $validator->getEditRule($user, $this->config);
-        $this->validate($request, $rules);
-
-        $inputs = $request->all();
-        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = purify($request->originAll()['content']);
-
+        // 공지 등록 권한 확인
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
-        if ($request->get('status') == Board::STATUS_NOTICE) {
-            $item->status = Board::STATUS_NOTICE;
-        } else if ($request->get('status') != Board::STATUS_NOTICE && $item->status == Board::STATUS_NOTICE) {
-            $item->status = Board::STATUS_PUBLIC;
-        }
-
-        // 암호 설정
-        $oldCertifyKey = $item->certifyKey;
-        if ($item->certifyKey != '' && isset($inputs['certifyKey']) === true && $inputs['certifyKey'] == '') {
-            $inputs['certifyKey'] = $item->certifyKey;
-        } elseif ($item->certifyKey != '' && isset($inputs['certifyKey']) === true && $inputs['certifyKey'] != '') {
-            $inputs['certifyKey'] = $identifyManager->hash($inputs['certifyKey']);
-        }
-
-        /** @var \Xpressengine\Editor\AbstractEditor $editor */
-        $editor = XeEditor::get($this->instanceId);
-        $inputs['format'] = $editor->htmlable() ? Board::FORMAT_HTML : Board::FORMAT_NONE;
-
-        // set file, tag
-        $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
-        $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
-
-        $board = $this->handler->put($item, $inputs, $this->config);
-
-        // 비회원 비밀번호를 변경 한 경우 세션 변경
-        if ($oldCertifyKey != '' && $oldCertifyKey != $board->certifyKey) {
-            $identifyManager->destroy($board);
-            $identifyManager->create($board);
-        }
+        $item = $service->update($item, $request, Auth::user(), $this->config, $identifyManager);
 
         return XePresenter::redirect()->to(
-            $this->urlHandler->getSlug(
-                $item->boardSlug->slug,
+            $this->urlHandler->getShow(
+                $item,
                 $request->query->all()
             )
-        )->setData(['item' => $board]);
+        )->setData(['item' => $item]);
     }
 
     /**
      * 비회원 인증 페이지
      *
-     * @param string $menuUrl  first segment
-     * @param string $id       document id
-     * @param string $referrer referrer url
+     * @param Validator $validator validator
+     * @param string    $menuUrl   first segment
+     * @param string    $id        document id
+     * @param string    $referrer  referrer url
      * @return mixed
      */
-    public function guestId($menuUrl, $id, $referrer = null)
+    public function guestId(Validator $validator, $menuUrl, $id, $referrer = null)
     {
-        $item = $this->handler->getModel($this->config)->find($id);
+        $item = Board::division($this->instanceId)->find($id);
 
         // 레퍼러는 현재 url
         if ($referrer == null) {
@@ -691,6 +653,7 @@ class UserController extends Controller
         return XePresenter::make('guestId', [
             'item' => $item,
             'referrer' => $referrer,
+            'rules' => $validator->guestCertifyRule(),
         ]);
     }
 
@@ -699,23 +662,21 @@ class UserController extends Controller
      *
      * @param Request         $request         request
      * @param IdentifyManager $identifyManager identify manager
+     * @param Validator       $validator       validator
+     * @param string          $menuUrl         first segment
+     * @param string          $id              document id
      * @return mixed
      */
-    public function guestCertify(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
-    {
-        $item = $this->handler->getModel($this->config)->find($id);
+    public function guestCertify(
+        Request $request,
+        IdentifyManager $identifyManager,
+        Validator $validator,
+        $menuUrl,
+        $id
+    ) {
+        $item = Board::division($this->instanceId)->find($id);
 
-        if ($item->certifyKey == '') {
-            throw new InvalidRequestException;
-        }
-
-        if ($request->get('email') == '') {
-            throw new RequiredValueHttpException(['name' => xe_trans('xe::email')]);
-        }
-
-        if ($request->get('certifyKey') == '') {
-            throw new RequiredValueHttpException(['name' => xe_trans('xe::password')]);
-        }
+        $this->validate($request, $validator->guestCertifyRule());
 
         if ($identifyManager->verify($item, $request->get('email'), $request->get('certifyKey')) === false) {
             throw new NotMatchedCertifyKeyException;
@@ -737,11 +698,10 @@ class UserController extends Controller
      */
     public function preview(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
     {
-        if (
-            Gate::denies(
+        if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId)))
-        ) {
+            new Instance($boardPermission->name($this->instanceId))
+        )) {
             throw new AccessDeniedHttpException;
         }
 
@@ -790,37 +750,46 @@ class UserController extends Controller
     /**
      * destroy
      *
+     * @param BoardService    $service         board service
      * @param Request         $request         request
+     * @param Validator       $validator       validator
      * @param IdentifyManager $identifyManager identify manager
      * @param string          $menuUrl         first segment
      * @param string          $id              document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function destroy(Request $request, IdentifyManager $identifyManager, $menuUrl, $id)
-    {
-        $user = Auth::user();
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+    public function destroy(
+        BoardService $service,
+        Request $request,
+        Validator $validator,
+        IdentifyManager $identifyManager,
+        $menuUrl,
+        $id
+    ) {
+        /** @var Board $item */
+        $item = Board::division($this->instanceId)->find($id);
 
-        // 비회원이 작성 한 글 인증
-        if (
-            $item->isGuest() === true &&
-            $identifyManager->identified($item) === false &&
-            $user->getRating() != 'super'
-        ) {
-            // 글 보기 페이지에서 삭제하기 다시 누르면 삭제 됨
-            return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
+        if ($item === null) {
+            throw new NotFoundDocumentException;
         }
 
-        if ($user->getRating() != 'super' && $user->getId() != $item->userId) {
+        // 비회원이 작성 한 글 인증
+        if ($item->isGuest() === true &&
+            $identifyManager->identified($item) === false &&
+            Auth::user()->getRating() != 'super') {
+            // 글 보기 페이지에서 삭제하기 다시 누르면 삭제 됨
+            return $this->guestId($validator, $menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
+        }
+
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
             throw new AccessDeniedHttpException;
         }
 
-        $this->handler->trash($item, $this->config);
-        $identifyManager->destroy($item);
+        $service->destroy($item, $this->config, $identifyManager);
 
-        $queries = $request->query->all();
-        return xeRedirect()->to($this->urlHandler->get('index', $queries))->setData(['item' => $item]);
+        return xeRedirect()->to(
+            $this->urlHandler->get('index', $request->query->all())
+        )->setData(['item' => $item]);
     }
 
     /**
@@ -834,8 +803,7 @@ class UserController extends Controller
         $user = Auth::user();
         $id = $request->get('id');
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         if ($user->getRating() != 'super' && $user->getId() != $item->userId) {
             throw new AccessDeniedHttpException;
@@ -843,9 +811,11 @@ class UserController extends Controller
 
         $this->handler->trash($item, $this->config);
 
-        return redirect()->to($this->urlHandler->get('index'))->with(
-            ['alert' => ['type' => 'success', 'message' => xe_trans('xe::complete')]]
-        );
+        return redirect()->to($this->urlHandler->get('index'))->with([
+            'alert' => [
+                'type' => 'success', 'message' => xe_trans('xe::complete')
+            ]
+        ]);
     }
 
     /**
@@ -860,15 +830,15 @@ class UserController extends Controller
         if (Auth::check() === false) {
             throw new AccessDeniedHttpException;
         }
-        $board = $this->handler->getModel($this->config)->find($id);
+        $item = Board::division($this->instanceId)->find($id);
 
         $userId = Auth::user()->getId();
         $favorite = false;
-        if ($this->handler->hasFavorite($board->id, $userId) === false) {
-            $this->handler->addFavorite($board->id, $userId);
+        if ($this->handler->hasFavorite($item->id, $userId) === false) {
+            $this->handler->addFavorite($item->id, $userId);
             $favorite = true;
         } else {
-            $this->handler->removeFavorite($board->id, $userId);
+            $this->handler->removeFavorite($item->id, $userId);
         }
 
         return XePresenter::makeApi(['favorite' => $favorite]);
@@ -878,6 +848,7 @@ class UserController extends Controller
      * 투표 정보
      *
      * @param Request $request request
+     * @param string  $id      document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function showVote(Request $request, $id)
@@ -894,8 +865,7 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        $board = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($board, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $voteCounter = $this->handler->getVoteCounter();
         $vote = $voteCounter->getByName($id, $user);
@@ -904,8 +874,8 @@ class UserController extends Controller
             'display' => $display,
             'id' => $id,
             'counts' => [
-                'assent' => $board->assentCount,
-                'dissent' => $board->dissentCount,
+                'assent' => $item->assentCount,
+                'dissent' => $item->dissentCount,
             ],
             'voteAt' => $vote['counterOption'],
         ]);
@@ -917,14 +887,14 @@ class UserController extends Controller
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
+     * @param string  $id      document id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function vote(Request $request, $menuUrl, $option, $id)
     {
         $author = Auth::user();
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         try {
             $this->handler->vote($item, $author, $option);
@@ -941,13 +911,14 @@ class UserController extends Controller
      * @param Request $request request
      * @param string  $menuUrl first segment
      * @param string  $option  options
+     * @param string  $id      document id
+     * @return mixed
      */
     public function votedUsers(Request $request, $menuUrl, $option, $id)
     {
         $limit = $request->get('limit', 10);
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
@@ -966,15 +937,14 @@ class UserController extends Controller
      * get voted user modal
      *
      * @param Request $request request
-     * @param string $menuUrl first segment
-     * @param string $option options
-     * @param string $id document id
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
+     * @param string  $id      document id
      * @return mixed
      */
     public function votedModal(Request $request, $menuUrl, $option, $id)
     {
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
@@ -992,10 +962,10 @@ class UserController extends Controller
     /**
      * get voted user list
      *
-     * @param Request $request
-     * @param $menuUrl
-     * @param $option
-     * @param $id
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $option  options
+     * @param string  $id      document id
      * @return mixed
      */
     public function votedUserList(Request $request, $menuUrl, $option, $id)
@@ -1003,8 +973,7 @@ class UserController extends Controller
         $startId = $request->get('startId');
         $limit = $request->get('limit', 10);
 
-        $item = $this->handler->getModel($this->config)->find($id);
-        $this->handler->setModelConfig($item, $this->config);
+        $item = Board::division($this->instanceId)->find($id);
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();

@@ -2,27 +2,32 @@
 /**
  * BoardCategory
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Models;
 
-use Illuminate\Database\Query\JoinClause;
-use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Database\Eloquent\DynamicModel;
-use Xpressengine\Http\Request;
+use Xpressengine\Category\Models\CategoryItem;
 
 /**
  * BoardCategory
  *
+ * @property string targetId
+ * @property int itemId
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class BoardCategory extends DynamicModel
 {
@@ -36,8 +41,13 @@ class BoardCategory extends DynamicModel
 
     protected $fillable = ['targetId', 'itemId'];
 
+    /**
+     * get category item
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function categoryItem()
     {
-        return $this->belongsTo('Xpressengine\Category\Models\CategoryItem', 'itemId');
+        return $this->belongsTo(CategoryItem::class, 'itemId');
     }
 }

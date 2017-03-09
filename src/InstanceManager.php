@@ -2,33 +2,40 @@
 /**
  * InstanceManager
  *
+ * PHP version 5
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board;
 
 use Category;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\DynamicField\DynamicFieldHandler;
+use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Comment\Handler as CommentHandler;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Permission\Grant;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistsInstanceException;
 use Xpressengine\Plugins\Board\Exceptions\InvalidConfigException;
-use Xpressengine\Plugins\Board\Exceptions\RequiredValueException;
+use Xpressengine\Plugins\Board\Exceptions\RequiredBoardIdException;
 use Xpressengine\Database\VirtualConnectionInterface as VirtualConnection;
 
 /**
  * InstanceManager
  *
+ * 메뉴에서 게시판 추가할 때 추가된 게시판 관리
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
 class InstanceManager
 {
@@ -97,7 +104,7 @@ class InstanceManager
     public function create(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException(['key' => 'boardId']);
+            throw new RequiredBoardIdException;
         }
 
         $config = $this->configHandler->get($params['boardId']);
@@ -109,9 +116,7 @@ class InstanceManager
 
         $documentConfig = $this->document->createInstance($params['boardId'], $params);
 
-        // create comment config(create new comment instance)
-        $this->commentHandler->createInstance($documentConfig->get('instanceId'), $documentConfig->get('division'));
-        $this->commentHandler->configure($this->commentHandler->getInstanceId($documentConfig->get('instanceId')), ['useWysiwyg' => true]);
+        $this->createCommentConfig($documentConfig);
 
         $params['documentGroup'] = $documentConfig->get('group');
         $params['commentGroup'] = 'comments_' . $documentConfig->get('instanceId');
@@ -126,6 +131,21 @@ class InstanceManager
     }
 
     /**
+     * create comment config(create new comment instance)
+     *
+     * @param ConfigEntity $config document config entity
+     * @return void
+     */
+    protected function createCommentConfig(ConfigEntity $config)
+    {
+        $this->commentHandler->createInstance($config->get('instanceId'), $config->get('division'));
+        $this->commentHandler->configure(
+            $this->commentHandler->getInstanceId($config->get('instanceId')),
+            ['useWysiwyg' => true]
+        );
+    }
+
+    /**
      * 게시판 설정 변경
      *
      * @param array $params parameters
@@ -134,7 +154,7 @@ class InstanceManager
     public function updateConfig(array $params)
     {
         if (empty($params['boardId']) === true) {
-            throw new RequiredValueException(['key' => 'boardId']);
+            throw new RequiredBoardIdException;
         }
 
         $config = $this->configHandler->get($params['boardId']);
@@ -145,15 +165,12 @@ class InstanceManager
         $configHandler = $this->document->getConfigHandler();
         $documentConfig = $configHandler->get($params['boardId']);
         foreach ($params as $key => $value) {
-            $config->set($key, $value);
             $documentConfig->set($key, $value);
         }
 
         $this->conn->beginTransaction();
-
-        $config = $this->configHandler->put($config->getPureAll());
+        $config = $this->configHandler->put($params);
         $this->document->getInstanceManager()->put($documentConfig);
-
         $this->conn->commit();
 
         return $config;
@@ -192,13 +209,14 @@ class InstanceManager
     /**
      * 게시판 요약 정보 반환
      *
-     * @param string  $instanceId instance id
-     * @param Handler $handler    board handler
+     * @param string $instanceId instance id
      * @return string
      */
-    public function summary($instanceId, Handler $handler)
+    public function summary($instanceId)
     {
-        $documentCount = $this->document->getModel($instanceId)->where('instanceId', $instanceId)->count();
+        /** @var Board $model */
+        $model = Board::division($instanceId);
+        $documentCount = $model->where('instanceId', $instanceId)->count();
         $configs = $this->configHandler->getDynamicFields($this->configHandler->get($instanceId));
         $dynamicFieldCount = count($configs);
 
@@ -206,6 +224,5 @@ class InstanceManager
             'documentCount' => $documentCount,
             'dynamicFieldCount' => $dynamicFieldCount,
         ];
-
     }
 }

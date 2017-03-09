@@ -1,12 +1,16 @@
 <?php
 /**
+ * DesignSelectSkin
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board\Skins\DynamicField;
 
 use View;
@@ -15,18 +19,28 @@ use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
 use App\FieldSkins\Category\DefaultSkin;
 
+/**
+ * DesignSelectSkin
+ *
+ * Category DynamicField 의 기본스킨으로 DesignSelectSkin 사용.
+ * register 에 등록되는 id 를 Category 기본스킨으로 해서 이 스킨이 적용되록 함.
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 class DesignSelectSkin extends DefaultSkin
 {
-    //
     /**
-     * name 규치에 맞지 않지만.. 이 이름으로 register 를 변경함
-     * Category 기본 게시판 스킨 변경
-     * BoardSkin 이 render 할 때 적용됨
+     * category default 스킨을 이 것으로 변경하기 위해 기본 스킨의 아이디로 등록
      *
      * @var string
      * @see BoardSkin::render()
      */
-    protected static $id = 'FieldType/xpressengine@Category/FieldSkin/xpressengine@default';
+    protected static $id = 'fieldType/xpressengine@Category/fieldSkin/xpressengine@default';
 
     /**
      * path delimiter
@@ -35,6 +49,11 @@ class DesignSelectSkin extends DefaultSkin
      */
     protected $delimiter = '.';
 
+    /**
+     * get name
+     *
+     * @return string
+     */
     public function name()
     {
         return 'Category Design select skin';
@@ -50,6 +69,12 @@ class DesignSelectSkin extends DefaultSkin
         return 'board::views.dynamicField.category.designSelect';
     }
 
+    /**
+     * get view for create
+     *
+     * @param array $args arguments
+     * @return \Illuminate\View\View
+     */
     public function create(array $args)
     {
         $selectItems = [];
@@ -63,9 +88,15 @@ class DesignSelectSkin extends DefaultSkin
 
         $this->addMergeData(['selectItems' => $selectItems]);
 
-          return parent::create($args);
+        return parent::create($args);
     }
 
+    /**
+     * get view for edit
+     *
+     * @param array $args arguments
+     * @return \Illuminate\View\View
+     */
     public function edit(array $args)
     {
         $selectItems = [];
@@ -82,12 +113,24 @@ class DesignSelectSkin extends DefaultSkin
         return parent::edit($args);
     }
 
+    /**
+     * get view for show
+     *
+     * @param array $args arguments
+     * @return \Illuminate\View\View
+     */
     public function show(array $args)
     {
         $this->path = parent::getPath();
         return parent::show($args);
     }
 
+    /**
+     * get view for search
+     *
+     * @param array $args arguments
+     * @return string
+     */
     public function search(array $args)
     {
         $selectItems = [];
@@ -118,100 +161,4 @@ class DesignSelectSkin extends DefaultSkin
             'config' => $config,
         ])->render();
     }
-
-//
-//    public function create(array $args)
-//    {
-//        $config = $this->config;
-//
-//        $categories = [];
-//        $categoryItems = Category::find($this->config->get('categoryId'))->items;
-//        foreach ($categoryItems as $categoryItem) {
-//            $categories[] = [
-//                'value' => $categoryItem->id,
-//                'text' => $categoryItem->word,
-//            ];
-//        }
-//
-//        return View::make($this->getViewPath('create'), [
-//            'config' => $config,
-//            'categories' => $categories,
-//        ])->render();
-//    }
-//
-//    public function edit(array $args)
-//    {
-//        $config = $this->config;
-//
-//        $categories = [];
-//        $categoryItems = Category::find($this->config->get('categoryId'))->items;
-//        foreach ($categoryItems as $categoryItem) {
-//            $categories[] = [
-//                'value' => $categoryItem->id,
-//                'text' => $categoryItem->word,
-//            ];
-//        }
-//
-//        $itemId = '';
-//        $item = null;
-//
-//        if (isset($args[$config->get('id') . 'ItemId'])) {
-//            $itemId = $args[$config->get('id') . 'ItemId'];
-//            $item = CategoryItem::find($itemId);
-//        }
-//
-//        return View::make($this->getViewPath('edit'), [
-//            'config' => $config,
-//            'categories' => $categories,
-//            'itemId' => $itemId,
-//            'item' => $item,
-//        ])->render();
-//    }
-//
-//    public function search(array $inputs)
-//    {
-//        $config = $this->config;
-//        if ($config->get('searchable') !== true) {
-//            return '';
-//        }
-//
-//        $categories = [];
-//        $categoryItems = Category::find($this->config->get('categoryId'))->items;
-//        foreach ($categoryItems as $categoryItem) {
-//            $categories[] = [
-//                'value' => $categoryItem->id,
-//                'text' => $categoryItem->word,
-//            ];
-//        }
-//
-//        $key = $config->get('id').'ItemId';
-//
-//        $itemId = '';
-//        $item = '';
-//        if (isset($inputs[$key])) {
-//            $itemId = $inputs[$key];
-//            $item = CategoryItem::find($itemId);
-//        }
-//
-//        return View::make($this->getViewPath('search'), [
-//            'config' => $config,
-//            'categories' => $categories,
-//            'itemId' => $itemId,
-//            'item' => $item,
-//        ])->render();
-//    }
-//
-//    public function show(array $args)
-//    {
-//        $this->path = parent::getPath();
-//
-//        return parent::show($args);
-//    }
-//
-//    public function settings(ConfigEntity $config = null)
-//    {
-//        $this->path = parent::getPath();
-//
-//        return parent::settings($config);
-//    }
 }

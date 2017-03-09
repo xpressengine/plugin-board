@@ -21,6 +21,10 @@ use Xpressengine\Http\Request;
 /**
  * BoardData
  *
+ * @property int favoriteId
+ * @property string targetId
+ * @property string userId
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Team (developers) <developers@xpressengine.com>

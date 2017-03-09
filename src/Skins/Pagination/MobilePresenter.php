@@ -1,13 +1,17 @@
 <?php
 /**
- * @author    XE Developers <developers@xpressengine.com>
- * @copyright 2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license   LGPL-2.1
- * @license   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
- * @link      https://xpressengine.io
+ * MobilePresenter
+ *
+ * PHP version 5
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
-
-namespace Xpressengine\Plugins\Board\Skins;
+namespace Xpressengine\Plugins\Board\Skins\Pagination;
 
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
 use Illuminate\Contracts\Pagination\Presenter as PresenterContract;
@@ -15,10 +19,18 @@ use Illuminate\Pagination\UrlWindowPresenterTrait;
 use Illuminate\Pagination\UrlWindow;
 
 /**
- * Class Paginationresenter
- * @package Xpressengine\Plugins\Board
+ * MobilePresenter
+ *
+ * mobile pagination 디자인 교체
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
  */
-class PaginationPresenter implements PresenterContract
+class MobilePresenter implements PresenterContract
 {
     use UrlWindowPresenterTrait;
 
@@ -39,14 +51,13 @@ class PaginationPresenter implements PresenterContract
     /**
      * Create a new Bootstrap presenter instance.
      *
-     * @param PaginatorContract $paginator paginator
-     * @param UrlWindow|null    $window    url window
-     * @param int               $pageCount page link count
+     * @param  PaginatorContract $paginator paginator
+     * @param  UrlWindow|null    $window    window
      */
-    public function __construct(PaginatorContract $paginator, UrlWindow $window = null, $pageCount = 3)
+    public function __construct(PaginatorContract $paginator, UrlWindow $window = null)
     {
         $this->paginator = $paginator;
-        $this->window = is_null($window) ? UrlWindow::make($paginator, $pageCount) : $window->get();
+        $this->window = is_null($window) ? UrlWindow::make($paginator) : $window->get();
     }
 
     /**
@@ -68,9 +79,9 @@ class PaginationPresenter implements PresenterContract
     {
         if ($this->hasPages()) {
             return sprintf(
-                '<div class="bd_paginate xe-hidden-xs">%s %s %s</div>',
+                '<div class="bd_paginate v2 xe-visible-xs">%s %s %s</div>',
                 $this->getPreviousButton(),
-                $this->getLinks(),
+                $this->getCurrentPosition(),
                 $this->getNextButton()
             );
         }
@@ -81,7 +92,7 @@ class PaginationPresenter implements PresenterContract
     /**
      * Get the previous page pagination element.
      *
-     * @param  string  $text
+     * @param string $text text
      * @return string
      */
     public function getPreviousButton($text = '&laquo;')
@@ -90,20 +101,22 @@ class PaginationPresenter implements PresenterContract
         // further back in the pages, so we will render a disabled previous button
         // when that is the case. Otherwise, we will give it an active "status".
         if ($this->paginator->currentPage() <= 1) {
-            return '<span class="btn_pg btn_prev"><i class="xi-angle-left"><span class="bd_hidden">'.$text.'</span></i></span>';
+            return '<span class="btn_pg btn_prev"><i class="xi-angle-left">'.
+            '<span class="bd_hidden">'.$text.'</span></i></span>';
         }
 
         $url = $this->paginator->url(
             $this->paginator->currentPage() - 1
         );
 
-        return '<a href="'.$url.'" class="btn_pg btn_prev"><i class="xi-angle-left"><span class="bd_hidden">'.$text.'</span></i></a>';
+        return '<a href="'.$url.'" class="btn_pg btn_prev"><i class="xi-angle-left">'.
+        '<span class="bd_hidden">'.$text.'</span></i></a>';
     }
 
     /**
      * Get the next page pagination element.
      *
-     * @param  string  $text
+     * @param string $text text
      * @return string
      */
     public function getNextButton($text = '&raquo;')
@@ -112,59 +125,25 @@ class PaginationPresenter implements PresenterContract
         // can't go any further into the pages, as we're already on this last page
         // that is available, so we will make it the "next" link style disabled.
         if (! $this->paginator->hasMorePages()) {
-            return '<span class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">'.$text.'</span></i></span>';
+            return '<span class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">'
+            .$text.'</span></i></span>';
         }
 
         $url = $this->paginator->url($this->paginator->currentPage() + 1);
 
-        return '<a href="'.$url.'" class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">'.$text.'</span></i></a>';
+        return '<a href="'.$url.'" class="btn_pg btn_next"><i class="xi-angle-right">'.
+        '<span class="bd_hidden">'.$text.'</span></i></a>';
     }
 
     /**
-     * Get HTML wrapper for an available page link.
-     *
-     * @param  string  $url
-     * @param  int  $page
-     * @param  string|null  $rel
-     * @return string
-     */
-    protected function getAvailablePageWrapper($url, $page, $rel = null)
-    {
-        $rel = is_null($rel) ? '' : ' rel="'.$rel.'"';
-
-        return '<a href="'.htmlentities($url).'"'.$rel.'>'.$page.'</a>';
-    }
-
-    /**
-     * Get HTML wrapper for disabled text.
-     *
-     * @param  string  $text
-     * @return string
-     */
-    protected function getDisabledTextWrapper($text)
-    {
-        return '<span>'.$text.'</span>';
-    }
-
-    /**
-     * Get HTML wrapper for active text.
-     *
-     * @param  string  $text
-     * @return string
-     */
-    protected function getActivePageWrapper($text)
-    {
-        return '<strong>'.$text.'</strong>';
-    }
-
-    /**
-     * Get a pagination "dot" element.
+     * get current position
      *
      * @return string
      */
-    protected function getDots()
+    public function getCurrentPosition()
     {
-        return $this->getDisabledTextWrapper('...');
+        return '<span class="pg_box"><strong>'.$this->currentPage().
+        '</strong> / <span>'.$this->lastPage().'</span></span>';
     }
 
     /**

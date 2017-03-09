@@ -21,6 +21,11 @@ use Xpressengine\Http\Request;
 /**
  * BoardData
  *
+ * @property string targetId
+ * @property int allowComment
+ * @property int useAlarm
+ * @property int fileCount
+ *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Team (developers) <developers@xpressengine.com>
@@ -46,6 +51,11 @@ class BoardData extends DynamicModel
         'fileCount' => 'int',
     ];
 
+    /**
+     * check alarm status
+     *
+     * @return bool
+     */
     public function isAlarm()
     {
         return $this->getAttribute('useAlarm') == 1;

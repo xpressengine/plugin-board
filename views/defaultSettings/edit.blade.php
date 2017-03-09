@@ -261,6 +261,41 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::urlType')}} </label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="urlType" @if($config->getPure('urlType') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="urlType" class="form-control" @if($config->getPure('urlType') === null) disabled="disabled" @endif>
+                                                    <option value="documentId" {!! $config->get('urlType') == 'documentId' ? 'selected="selected"' : '' !!} >{{xe_trans('board::documentId')}}</option>
+                                                    <option value="slug" {!! $config->get('urlType') == 'slug' ? 'selected="selected"' : '' !!} >{{xe_trans('board::slug')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::useDeleteToTrash')}} <small>{{xe_trans('board::useDeleteToTrashDescription')}} </small></label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="deleteToTrash" @if($config->getPure('deleteToTrash') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="deleteToTrash" class="form-control" @if($config->getPure('deleteToTrash') === null) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('deleteToTrash') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('deleteToTrash') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </div>

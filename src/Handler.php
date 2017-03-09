@@ -1,16 +1,16 @@
 <?php
 /**
- * Board handler
+ * Handler
+ *
+ * PHP version 5
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Developers <developers@xpressengine.com>
  * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     LGPL-2.1
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Config\ConfigEntity;
@@ -27,7 +27,7 @@ use Xpressengine\Plugins\Board\Models\BoardData;
 use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
-use Xpressengine\Plugins\Board\Modules\Board as BoardModule;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Tag\Tag;
@@ -35,9 +35,10 @@ use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
 use Xpressengine\Storage\File as FileModel;
+use Xpressengine\Plugins\Comment\Handler as CommentHandler;
 
 /**
- * Board handler
+ * Handler
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -74,6 +75,10 @@ class Handler
      */
     protected $voteCounter;
 
+    /**
+     * @var CommentHandler
+     */
+    protected $commentHandler;
 
     /**
      * Handler constructor.
@@ -83,19 +88,22 @@ class Handler
      * @param TagHandler      $tag             tag
      * @param Counter         $readCounter     read counter
      * @param Counter         $voteCounter     vote counter
+     * @param CommentHandler  $commentHandler  comment handler
      */
     public function __construct(
         DocumentHandler $documentHandler,
         Storage $storage,
         TagHandler $tag,
         Counter $readCounter,
-        Counter $voteCounter
+        Counter $voteCounter,
+        CommentHandler $commentHandler
     ) {
         $this->documentHandler = $documentHandler;
         $this->storage = $storage;
         $this->tag = $tag;
         $this->readCounter = $readCounter;
         $this->voteCounter = $voteCounter;
+        $this->commentHandler = $commentHandler;
     }
 
     /**
@@ -119,16 +127,16 @@ class Handler
     }
 
     /**
-     * 게시판에 글 등록 시 핸들러를 통해서 처리
-     * Interception 을 통해 다양한 서드파티 기능이 추가될 수 있다.
+     * 글 등록
      *
-     * @param array         $args arguments
-     * @param UserInterface $user
+     * @param array         $args   arguments
+     * @param UserInterface $user   user
+     * @param ConfigEntity  $config board config entity
      * @return Board
      */
     public function add(array $args, UserInterface $user, ConfigEntity $config)
     {
-        $model = $this->getModel($config);
+        $model = new Board;
         $model->getConnection()->beginTransaction();
 
         $args['type'] = BoardModule::getId();
@@ -151,9 +159,8 @@ class Handler
 
         // save Document
         $doc = $this->documentHandler->add($args);
-        $model = $this->getModel($config);
-        $board = $model->find($doc->id);
-        $this->setModelConfig($board, $config);
+
+        $board = Board::find($doc->id);
 
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
@@ -274,7 +281,7 @@ class Handler
      *
      * @param Board $board   board model
      * @param array $fileIds current uploaded file ids
-     * @retunr void
+     * @return void
      */
     protected function unsetFiles(Board $board, array $fileIds)
     {
@@ -321,7 +328,7 @@ class Handler
      *
      * @param Board        $board  board model
      * @param array        $args   arguments
-     * @param ConfigEntity $config config entity
+     * @param ConfigEntity $config board config entity
      * @return mixed
      */
     public function put(Board $board, array $args, ConfigEntity $config)
@@ -335,13 +342,11 @@ class Handler
             }
         }
 
-        $this->setModelConfig($board, $config);
-
-        $doc = $this->documentHandler->put($board);
+        $this->documentHandler->put($board);
 
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
-        $fileIds = $this->setFiles($board, $args);
+        $this->setFiles($board, $args);
         $this->setTags($board, $args);
         $this->unsetTags($board, $args);
         $this->saveData($board, $args);
@@ -373,9 +378,9 @@ class Handler
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
                 if ($item->boardSlug !== null) {
                     $item->boardSlug->delete();
                 }
@@ -390,7 +395,7 @@ class Handler
                 foreach ($tags as $tag) {
                     $tag->delete();
                 }
-                $item->delete();
+                $this->documentHandler->remove($item);
             }
         } else {
             if ($board->slug !== null) {
@@ -404,7 +409,7 @@ class Handler
             foreach ($tags as $tag) {
                 $tag->delete();
             }
-            $board->delete();
+            $this->documentHandler->remove($board);
         }
 
         $board->getConnection()->commit();
@@ -427,9 +432,9 @@ class Handler
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
                 $item->setTrash()->save();
             }
         } else {
@@ -456,9 +461,9 @@ class Handler
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
                 $item->setRestore()->save();
             }
         } else {
@@ -470,42 +475,40 @@ class Handler
 
     /**
      * 게시판 이동
-     * Document Package 에서 comment 를 지원하지 않아서 사용할 수 있는 인터페이스가 없음
      *
-     * @param Board        $board  board model
-     * @param ConfigEntity $config board config entity
+     * @param Board        $board        board model
+     * @param ConfigEntity $dstConfig    destination board config entity
+     * @param ConfigEntity $originConfig original board config entity
      * @return void
      */
-    public function move(Board $board, ConfigEntity $config)
+    public function move(Board $board, ConfigEntity $dstConfig, ConfigEntity $originConfig)
     {
         $board->getConnection()->beginTransaction();
 
-        $dstInstanceId = $config->get('boardId');
+        $dstInstanceId = $dstConfig->get('boardId');
 
         // 덧글이 있다면 덧글들을 모두 옯긴다.
-        if ($config->get('recursiveDelete') === true) {
-            $query = Board::where('head', $board->head);
+        if ($originConfig->get('recursiveDelete') === true) {
+            $query = Board::where('head', $board->head)->where('id', '<>', $board->id);
             if ($board->reply !== '' && $board->reply !== null) {
                 $query->where('reply', 'like', $board->reply . '%');
             }
+            /** @var Board[] $items */
             $items = $query->get();
             foreach ($items as $item) {
-                $this->setModelConfig($item, $config);
-                $item->instanceId = $dstInstanceId;
-                $item->save();
-
-                $slug = $board->boardSlug;
-                $slug->instanceId = $dstInstanceId;
-                $slug->save();
+                $this->move($item, $dstConfig, $originConfig);
             }
-        } else {
-            $board->instanceId = $dstInstanceId;
-            $board->save();
-
-            $slug = $board->boardSlug;
-            $slug->instanceId = $dstInstanceId;
-            $slug->save();
         }
+
+        $board->instanceId = $dstInstanceId;
+        $board->save();
+
+        $slug = $board->boardSlug;
+        $slug->instanceId = $dstInstanceId;
+        $slug->save();
+
+        // 댓글 인스턴스 변경 처리
+        $this->commentHandler->moveByTarget($board);
 
         $board->getConnection()->commit();
     }
@@ -542,6 +545,7 @@ class Handler
      *
      * @param ConfigEntity $config board config entity
      * @return Board
+     * @deprecated
      */
     public function getModel(ConfigEntity $config)
     {
@@ -558,6 +562,7 @@ class Handler
      * @param Board        $board  board model
      * @param ConfigEntity $config board config entity
      * @return Board
+     * @deprecated
      */
     public function setModelConfig(Board $board, ConfigEntity $config)
     {
@@ -570,21 +575,23 @@ class Handler
     /**
      * get notice
      *
-     * @param ConfigEntity $config
+     * @param ConfigEntity $config board config entity
+     * @param string       $userId user id
      * @return mixed
      * @deprecated controller 에서 model 사용
      */
     public function getsNotice(ConfigEntity $config, $userId)
     {
-        $query = $this->getModel($config)
-            ->where('instanceId', $config->get('boardId'))
+        $model = Board::division($config->get('boardId'));
+
+        $query = $model->where('instanceId', $config->get('boardId'))
             ->where('status', Document::STATUS_NOTICE)
             ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
             ->where('published', Document::PUBLISHED_PUBLISHED)
             ->orderBy('head', 'desc');
 
         // eager loading
-        $query->with(['favorite' => function($favoriteQuery) use ($userId) {
+        $query->with(['favorite' => function ($favoriteQuery) use ($userId) {
             $favoriteQuery->where('userId', $userId);
         }, 'slug', 'data']);
 
@@ -694,6 +701,7 @@ class Handler
         }
 
         $board->readCount = $this->readCounter->getPoint($board->id);
+        $board->timestamps = false;
         $board->save();
     }
 
@@ -703,6 +711,7 @@ class Handler
      * @param Board         $board  board model
      * @param UserInterface $user   user
      * @param string        $option 'assent' or 'dissent'
+     * @param int           $point  vote point
      * @return void
      */
     public function vote(Board $board, UserInterface $user, $option, $point = 1)
@@ -720,6 +729,7 @@ class Handler
      * @param Board         $board  board model
      * @param UserInterface $user   user
      * @param string        $option 'assent' or 'dissent'
+     * @param int           $point  vote point
      * @return void
      */
     public function incrementVoteCount(Board $board, UserInterface $user, $option, $point = 1)
@@ -767,11 +777,25 @@ class Handler
         return $this->voteCounter->has($board->id, $user, $option);
     }
 
+    /**
+     * check has favorite
+     *
+     * @param string $boardId board id
+     * @param string $userId  user id
+     * @return bool
+     */
     public function hasFavorite($boardId, $userId)
     {
         return BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->exists();
     }
 
+    /**
+     * add favorite
+     *
+     * @param string $boardId board id
+     * @param string $userId  user id
+     * @return void
+     */
     public function addFavorite($boardId, $userId)
     {
         if ($this->hasFavorite($boardId, $userId) === true) {
@@ -784,6 +808,13 @@ class Handler
         $favorite->save();
     }
 
+    /**
+     * remove favorite
+     *
+     * @param string $boardId board id
+     * @param string $userId  user id
+     * @return void
+     */
     public function removeFavorite($boardId, $userId)
     {
         if ($this->hasFavorite($boardId, $userId) === false) {
@@ -835,19 +866,21 @@ class Handler
      */
     public function pageResolver(Builder $query, ConfigEntity $config, $id)
     {
-        $query = clone $query;
-        $doc = $this->getModel($config)->find($id);
+        $clone = clone $query;
+        /** @var Board $model */
+        $model = Board::division($config->get('boardId'));
+        $doc = $model->find($id);
 
-        $orders = $query->getQuery()->orders;
-        $query->where(function ($query) use ($orders, $doc) {
+        $orders = $clone->getQuery()->orders;
+        $clone->where(function ($clone) use ($orders, $doc) {
             $orderCount = count($orders);
 
             for ($i=0; $i<$orderCount; $i++) {
-                $query->Orwhere(function ($query) use ($orders, $doc, $i) {
+                $clone->Orwhere(function ($clone) use ($orders, $doc, $i) {
                     if ($i != 0) {
                         for ($j=0; $j<$i; $j++) {
                             $op = '=';
-                            $query->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
+                            $clone->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
                         }
                     }
 
@@ -855,12 +888,12 @@ class Handler
                     if ($orders[$i]['direction'] == 'asc') {
                         $op = '<=';
                     }
-                    $query->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
+                    $clone->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
                 });
             }
         });
 
-        $count = $query->count();
+        $count = $clone->count();
 
         $page = (int)($count / $config->get('perPage'));
         if ($count % $config->get('perPage') != 0) {
