@@ -373,10 +373,10 @@ class Board extends Document implements CommentUsable, SeoUsable
     {
         /** @var Request $request */
         $request = app('request');
-        $this->attributes['links'] = [
-            'rel' => 'self',
-            'href' => app('Xpressengine\Plugins\Board\UrlHandler')->getShow($this, $request->query->all()),
-        ];
+//        $this->attributes['links'] = [
+//            'rel' => 'self',
+//            'href' => app('Xpressengine\Plugins\Board\UrlHandler')->getShow($this, $request->query->all()),
+//        ];
         $this->attributes['user'] = $this->user;
         $this->attributes['tags'] = $this->tags;
 

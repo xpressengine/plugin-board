@@ -139,7 +139,9 @@ class Handler
         $model = new Board;
         $model->getConnection()->beginTransaction();
 
-        $args['type'] = BoardModule::getId();
+        if (isset($args['type']) === false) {
+            $args['type'] = BoardModule::getId();
+        }
         $args['userId'] = $user->getId();
         if ($args['userId'] === null) {
             $args['userId'] = '';
@@ -794,7 +796,7 @@ class Handler
      *
      * @param string $boardId board id
      * @param string $userId  user id
-     * @return void
+     * @return BoardFavorite
      */
     public function addFavorite($boardId, $userId)
     {
@@ -806,6 +808,8 @@ class Handler
         $favorite->targetId = $boardId;
         $favorite->userId = $userId;
         $favorite->save();
+
+        return $favorite;
     }
 
     /**

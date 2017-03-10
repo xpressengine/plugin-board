@@ -96,7 +96,7 @@ class BoardModuleController extends Controller
     public $isManager = false;
 
     /**
-     * UserController constructor.
+     * constructor.
      *
      * @param Handler                $handler         board handler
      * @param ConfigHandler          $configHandler   board config handler

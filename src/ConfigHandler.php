@@ -118,11 +118,11 @@ class ConfigHandler
      */
     public function getDefault()
     {
-        $parent = $this->configManager->get(self::CONFIG_NAME);
+        $parent = $this->configManager->get(static::CONFIG_NAME);
 
         if ($parent == null) {
             $default = $this->defaultConfig;
-            $parent = $this->configManager->add(self::CONFIG_NAME, $default);
+            $parent = $this->configManager->add(static::CONFIG_NAME, $default);
         }
 
         return $parent;
@@ -136,7 +136,7 @@ class ConfigHandler
      */
     public function addDefault(array $args)
     {
-        return $this->configManager->add(self::CONFIG_NAME, $args);
+        return $this->configManager->add(static::CONFIG_NAME, $args);
     }
 
     /**
@@ -147,7 +147,7 @@ class ConfigHandler
      */
     public function putDefault(array $args)
     {
-        return $this->configManager->put(self::CONFIG_NAME, $args);
+        return $this->configManager->put(static::CONFIG_NAME, $args);
     }
 
     /**
@@ -158,7 +158,7 @@ class ConfigHandler
      */
     private function name($boardId)
     {
-        return sprintf('%s.%s', self::CONFIG_NAME, $boardId);
+        return sprintf('%s.%s', static::CONFIG_NAME, $boardId);
     }
 
     /**
@@ -203,7 +203,7 @@ class ConfigHandler
      */
     public function gets()
     {
-        $parent = $this->configManager->get(self::CONFIG_NAME);
+        $parent = $this->configManager->get(static::CONFIG_NAME);
         if ($parent === null) {
             return [];
         }
