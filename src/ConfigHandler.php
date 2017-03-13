@@ -68,6 +68,7 @@ class ConfigHandler
         'category' => false,
         'anonymity' => false,
         'anonymityName' => 'Anonymity',
+        'managerEmail' => '',
         'division' => false,
         'revision' => true,
         'dynamicFieldList' => [],

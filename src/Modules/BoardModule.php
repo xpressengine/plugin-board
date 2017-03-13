@@ -429,10 +429,23 @@ class BoardModule extends AbstractModule
             function ($func, $args, $user, $config) {
                 $board = $func($args, $user, $config);
 
+                /** @var ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+                $config = $configHandler->get($board->instanceId);
+                if ($config->get('managerEmail', '') === '') {
+                    return $board;
+                }
+
+                $managerEmails = explode(',', trim($config->get('managerEmail')));
+                if (count($managerEmails) == 0) {
+                    return $board;
+                }
+
                 /** @var UrlHandler $urlHandler */
                 $urlHandler = app('xe.board.url');
                 $urlHandler->setConfig($config);
                 $url = $urlHandler->getShow($board);
+
                 $data = [
                     'title' => xe_trans('board::newPostsRegistered'),
                     'contents' => sprintf(
@@ -442,18 +455,6 @@ class BoardModule extends AbstractModule
                         $board->pureContent
                     ),
                 ];
-
-                /** @var ConfigHandler $configHandler */
-                $configHandler = app('xe.board.config');
-                $config = $configHandler->get($board->instanceId);
-                if ($config->get('managerEmail') === null) {
-                    return $board;
-                }
-
-                $managerEmails = explode(',', trim($config->get('managerEmail')));
-                if (count($managerEmails) == 0) {
-                    return $board;
-                }
 
                 foreach ($managerEmails as $toMail) {
                     if (!$toMail) {
