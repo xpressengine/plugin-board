@@ -11,9 +11,9 @@
             @if($columnName === 'title')
                 <div class="read_header">
                     @if($item->status == $item::STATUS_NOTICE)
-                        <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $showCategoryItem){{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}@endif</span>
-                    @elseif($config->get('category') == true && $showCategoryItem)
-                        <span class="category">{{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}</span>
+                        <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $item->boardCategory !== null){{ xe_trans($item->boardCategory->word) }}@endif</span>
+                    @elseif($config->get('category') == true && $item->boardCategory !== null)
+                        <span class="category">{{ xe_trans($item->boardCategory->word) }}</span>
                     @endif
                     <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
 
