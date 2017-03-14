@@ -50,4 +50,14 @@ class BoardCategory extends DynamicModel
     {
         return $this->belongsTo(CategoryItem::class, 'itemId');
     }
+
+    /**
+     * get category item word
+     *
+     * @return mixed
+     */
+    public function getWord()
+    {
+        return $this->categoryItem->word;
+    }
 }
