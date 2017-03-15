@@ -543,64 +543,6 @@ class Handler
     }
 
     /**
-     * Proxy, Division 관련 설정이 된 Document model 반환
-     *
-     * @param ConfigEntity $config board config entity
-     * @return Board
-     * @deprecated
-     */
-    public function getModel(ConfigEntity $config)
-    {
-        $instanceId = $config->get('boardId');
-        $documentConfig = $this->documentHandler->getConfig($instanceId);
-        $board = new Board;
-        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($documentConfig));
-        return $board;
-    }
-
-    /**
-     * set model's config
-     *
-     * @param Board        $board  board model
-     * @param ConfigEntity $config board config entity
-     * @return Board
-     * @deprecated
-     */
-    public function setModelConfig(Board $board, ConfigEntity $config)
-    {
-        $instanceId = $config->get('boardId');
-        $documentConfig = $this->documentHandler->getConfig($instanceId);
-        $board->setConfig($documentConfig, $this->documentHandler->getDivisionTableName($documentConfig));
-        return $board;
-    }
-
-    /**
-     * get notice
-     *
-     * @param ConfigEntity $config board config entity
-     * @param string       $userId user id
-     * @return mixed
-     * @deprecated controller 에서 model 사용
-     */
-    public function getsNotice(ConfigEntity $config, $userId)
-    {
-        $model = Board::division($config->get('boardId'));
-
-        $query = $model->where('instanceId', $config->get('boardId'))
-            ->where('status', Document::STATUS_NOTICE)
-            ->whereIn('display', [Document::DISPLAY_VISIBLE, Document::DISPLAY_SECRET])
-            ->where('published', Document::PUBLISHED_PUBLISHED)
-            ->orderBy('head', 'desc');
-
-        // eager loading
-        $query->with(['favorite' => function ($favoriteQuery) use ($userId) {
-            $favoriteQuery->where('userId', $userId);
-        }, 'slug', 'data']);
-
-        return $query->get();
-    }
-
-    /**
      * 인터셥센을 이용해 서드파티가 처리할 수 있도록 메소드 사용
      *
      * @param Builder      $query   board model query builder
