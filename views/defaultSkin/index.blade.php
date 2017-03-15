@@ -20,7 +20,7 @@
             <li><a href="#" class="bd_search __xe-bd-search"><span class="xe-sr-only">{{ xe_trans('xe::search') }}</span><i class="xi-magnifier"></i></a></li>
             <li><a href="{{ $urlHandler->get('create') }}"><span class="xe-sr-only">{{ xe_trans('board::newPost') }}</span><i class="xi-pen-o"></i></a></li>
             @if ($isManager === true)
-            <li><a href="{{ route('manage.board.board.edit', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
+            <li><a href="{{ $urlHandler->managerUrl('config', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
             @endif
         </ul>
     </div>
@@ -251,7 +251,7 @@
         </thead>
         <tbody>
         <!-- NOTICE -->
-        @foreach($handler->getsNotice($config, Auth::user()->getId()) as $item)
+        @foreach($notices as $item)
         <tr class="notice">
             @if ($isManager === true)
             <td class="check">

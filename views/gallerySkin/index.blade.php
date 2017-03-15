@@ -21,7 +21,7 @@
             <li><a href="#" class="bd_search __xe-bd-search"><span class="xe-sr-only">{{ xe_trans('xe::search') }}</span><i class="xi-magnifier"></i></a></li>
             <li><a href="{{ $urlHandler->get('create') }}"><span class="xe-sr-only">{{ xe_trans('board::newPost') }}</span><i class="xi-pen-o"></i></a></li>
             @if ($isManager === true)
-                <li><a href="{{ route('manage.board.board.edit', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
+                <li><a href="{{ $urlHandler->managerUrl('config', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
             @endif
         </ul>
     </div>
@@ -223,7 +223,7 @@
             5컬럼 : g_col5 -->
     <div class="board_list v2 gallery g_col3">
         <ul>
-            @foreach($handler->getsNotice($config, Auth::user()->getId()) as $item)
+            @foreach($notices as $item)
                 <li>
                     <div class="thumb_area">
                         <a href="#">
