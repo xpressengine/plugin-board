@@ -250,12 +250,6 @@ class BoardModule extends AbstractModule
                     return $comment;
                 }
 
-                /** @var BoardHandler $handler */
-                $handler = app('xe.board.handler');
-                /** @var ConfigHandler $configHandler */
-                $configHandler = app('xe.board.config');
-
-                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                 $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                 $board->save();
 
@@ -277,12 +271,6 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    /** @var BoardHandler $handler */
-                    $handler = app('xe.board.handler');
-                    /** @var ConfigHandler $configHandler */
-                    $configHandler = app('xe.board.config');
-
-                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                     $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                     $board->save();
                 }
@@ -305,12 +293,6 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    /** @var BoardHandler $handler */
-                    $handler = app('xe.board.handler');
-                    /** @var ConfigHandler $configHandler */
-                    $configHandler = app('xe.board.config');
-
-                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                     $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                     $board->save();
                 }
@@ -333,12 +315,6 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    /** @var BoardHandler $handler */
-                    $handler = app('xe.board.handler');
-                    /** @var ConfigHandler $configHandler */
-                    $configHandler = app('xe.board.config');
-
-                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                     $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                     $board->save();
                 }
