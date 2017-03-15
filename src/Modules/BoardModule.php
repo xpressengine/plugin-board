@@ -383,12 +383,15 @@ class BoardModule extends AbstractModule
                 $urlHandler = app('xe.board.url');
                 $urlHandler->setConfig(app('xe.board.config')->get($board->instanceId));
                 $url = $urlHandler->getShow($board);
+                $parts = parse_url($url);
+                $semanticUrl = sprintf('%s://%s%s', $parts['scheme'], $parts['host'], $parts['path']);
+
                 $data = [
                     'title' => xe_trans('board::newCommentRegistered'),
                     'contents' => sprintf(
                         '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
                         $url,
-                        $url,
+                        $semanticUrl,
                         xe_trans(
                             'board::newCommentRegisteredBy',
                             ['displayName' => $comment->author->getDisplayName()]
@@ -445,13 +448,15 @@ class BoardModule extends AbstractModule
                 $urlHandler = app('xe.board.url');
                 $urlHandler->setConfig($config);
                 $url = $urlHandler->getShow($board);
+                $parts = parse_url($url);
+                $semanticUrl = sprintf('%s://%s%s', $parts['scheme'], $parts['host'], $parts['path']);
 
                 $data = [
                     'title' => xe_trans('board::newPostsRegistered'),
                     'contents' => sprintf(
                         '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
                         $url,
-                        $url,
+                        $semanticUrl,
                         $board->pureContent
                     ),
                 ];
