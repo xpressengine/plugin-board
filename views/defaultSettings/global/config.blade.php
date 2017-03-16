@@ -1,12 +1,11 @@
 @section('page_title')
     <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
-@endsection
+    @endsection
 
-@section('page_description')
-@endsection
+    @section('page_description')
+    @endsection
 
-{{ XeFrontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
-    <!-- Main content -->
+            <!-- Main content -->
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">
@@ -15,11 +14,8 @@
                         <div class="pull-left">
                             <h3 class="panel-title">{{xe_trans('board::boardDetailConfigures')}}</h3>
                         </div>
-                        <div class="pull-right">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="btn-link panel-toggle pull-right"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">{{xe_trans('fold')}}</span></a>
-                        </div>
                     </div>
-                    <form method="post" id="board_manage_form" action="{!! $urlHandler->managerUrl('global.update') !!}">
+                    <form method="post" id="board_manage_form" action="{!! $urlHandler->managerUrl('global.config.update') !!}">
                         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
                         <div id="collapseOne" class="panel-collapse collapse in">
                             <div class="panel-body">
@@ -53,20 +49,20 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 {{--<div class="form-group form-category-select">--}}
-                                                    {{--<div class="clearfix">--}}
-                                                        {{--<label>{{xe_trans('xe::category')}}</label>--}}
-                                                    {{--</div>--}}
-                                                    {{--<div class="row">--}}
-                                                        {{--<div class="col-sm-9">--}}
-                                                            {{--<select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-board-id="" data-url="{{route('manage.board.board.storeCategory')}}">--}}
-                                                                {{--<option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>--}}
-                                                                {{--<option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>--}}
-                                                            {{--</select>--}}
-                                                        {{--</div>--}}
-                                                        {{--<div class="col-sm-3">--}}
-                                                            {{--<button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') === false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
+                                                {{--<div class="clearfix">--}}
+                                                {{--<label>{{xe_trans('xe::category')}}</label>--}}
+                                                {{--</div>--}}
+                                                {{--<div class="row">--}}
+                                                {{--<div class="col-sm-9">--}}
+                                                {{--<select id="" name="category" class="form-control" data-id="{{ $config->get('categoryId') }}" data-board-id="" data-url="{{route('manage.board.board.storeCategory')}}">--}}
+                                                {{--<option value="true" {!! $config->get('category') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>--}}
+                                                {{--<option value="false" {!! $config->get('category') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>--}}
+                                                {{--</select>--}}
+                                                {{--</div>--}}
+                                                {{--<div class="col-sm-3">--}}
+                                                {{--<button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') === false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>--}}
+                                                {{--</div>--}}
+                                                {{--</div>--}}
                                                 {{--</div>--}}
                                             </div>
 
@@ -216,20 +212,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Permission -->
-                                @foreach ($perms as $perm)
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="">{{ $perm['title'] }} {{xe_trans('xe::permission')}}</label>
-                                                <div class="well">
-                                                    {!! uio('permission', $perm) !!}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-
                             </div>
                             <div class="panel-footer">
                                 <div class="pull-right">
@@ -238,22 +220,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div class="pull-left">
-                            <h3 class="panel-title">{{xe_trans('xe::toggleMenu')}}</h3>
-                        </div>
-                        <div class="pull-right">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="btn-link panel-toggle pull-right"><i class="xi-angle-down"></i><i class="xi-angle-up"></i><span class="sr-only">{{xe_trans('fold')}}</span></a>
-                        </div>
-                    </div>
-                    <div id="collapseTwo" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            {!! $toggleMenuSection !!}
-                        </div>
-                    </div>
                 </div>
 
             </div>

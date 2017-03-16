@@ -89,44 +89,71 @@ class BoardModule extends AbstractModule
     protected static function registerManageRoute()
     {
         Route::settings(self::getId(), function () {
-            Route::get('/', ['as' => 'manage.board.board.index', 'uses' => 'BoardSettingsController@index']);
+            // global
+            Route::get('/', ['as' => 'settings.board.board.index', 'uses' => 'BoardSettingsController@index']);
             Route::get(
-                '/global/edit',
-                ['as' => 'manage.board.board.global.edit', 'uses' => 'BoardSettingsController@globalEdit']
+                '/global/config',
+                ['as' => 'settings.board.board.global.config', 'uses' => 'BoardSettingsController@editGlobalConfig']
             );
             Route::post(
-                '/global/update',
-                ['as' => 'manage.board.board.global.update', 'uses' => 'BoardSettingsController@globalUpdate']
+                '/global/config/update',
+                ['as' => 'settings.board.board.global.config.update', 'uses' => 'BoardSettingsController@updateGlobalConfig']
             );
-            Route::get('edit/{boardId}', ['as' => 'manage.board.board.edit', 'uses' => 'BoardSettingsController@edit']);
+            Route::get(
+                '/global/permission',
+                ['as' => 'settings.board.board.global.permission', 'uses' => 'BoardSettingsController@editGlobalPermission']
+            );
+            Route::post(
+                '/global/permission/update',
+                ['as' => 'settings.board.board.global.permission.update', 'uses' => 'BoardSettingsController@updateGlobalPermission']
+            );
+            Route::get(
+                '/global/toggleMenu',
+                ['as' => 'settings.board.board.global.toggleMenu', 'uses' => 'BoardSettingsController@editGlobalToggleMenu']
+            );
+
+            // module
+            Route::get('config/{boardId}', ['as' => 'settings.board.board.config', 'uses' => 'BoardSettingsController@editConfig']);
+            Route::post(
+                'config/pdate/{boardId}',
+                ['as' => 'settings.board.board.config.update', 'uses' => 'BoardSettingsController@updateConfig']
+            );
+            Route::get('permission/{boardId}', ['as' => 'settings.board.board.permission', 'uses' => 'BoardSettingsController@editPermission']);
+            Route::post(
+                'permission/update/{boardId}',
+                ['as' => 'settings.board.board.permission.update', 'uses' => 'BoardSettingsController@updatePermission']
+            );
+            Route::get('skin/edit/{boardId}', ['as' => 'settings.board.board.skin', 'uses' => 'BoardSettingsController@editSkin']);
+            Route::get('editor/edit/{boardId}', ['as' => 'settings.board.board.editor', 'uses' => 'BoardSettingsController@editEditor']);
+            Route::get('dynamicField/edit/{boardId}', ['as' => 'settings.board.board.dynamicField', 'uses' => 'BoardSettingsController@editDynamicField']);
+            Route::get('toggleMenu/edit/{boardId}', ['as' => 'settings.board.board.toggleMenu', 'uses' => 'BoardSettingsController@editToggleMenu']);
+
             Route::post('storeCategory/', [
-                'as' => 'manage.board.board.storeCategory', 'uses' => 'BoardSettingsController@storeCategory'
+                'as' => 'settings.board.board.storeCategory', 'uses' => 'BoardSettingsController@storeCategory'
             ]);
-            Route::post(
-                'update/{boardId}',
-                ['as' => 'manage.board.board.update', 'uses' => 'BoardSettingsController@update']
-            );
+
+            // docs
             Route::get('docs', [
-                'as' => 'manage.board.board.docs.index',
+                'as' => 'settings.board.board.docs.index',
                 'uses' => 'BoardSettingsController@docsIndex',
                 'settings_menu' => 'contents.board.board'
             ]);
             Route::get('docs/trash', [
-                'as' => 'manage.board.board.docs.trash',
+                'as' => 'settings.board.board.docs.trash',
                 'uses' => 'BoardSettingsController@docsTrash',
                 'settings_menu' => 'contents.board.boardtrash'
             ]);
             Route::get('docs/approve', [
-                'as' => 'manage.board.board.docs.approve',
+                'as' => 'settings.board.board.docs.approve',
                 'uses' => 'BoardSettingsController@docsApprove',
                 'settings_menu' => 'contents.board.boardapprove'
             ]);
-            Route::post('approve', ['as' => 'manage.board.board.approve', 'uses' => 'BoardSettingsController@approve']);
-            Route::post('copy', ['as' => 'manage.board.board.copy', 'uses' => 'BoardSettingsController@copy']);
-            Route::post('destroy', ['as' => 'manage.board.board.destroy', 'uses' => 'BoardSettingsController@destroy']);
-            Route::post('trash', ['as' => 'manage.board.board.trash', 'uses' => 'BoardSettingsController@trash']);
-            Route::post('move', ['as' => 'manage.board.board.move', 'uses' => 'BoardSettingsController@move']);
-            Route::post('restore', ['as' => 'manage.board.board.restore', 'uses' => 'BoardSettingsController@restore']);
+            Route::post('approve', ['as' => 'settings.board.board.approve', 'uses' => 'BoardSettingsController@approve']);
+            Route::post('copy', ['as' => 'settings.board.board.copy', 'uses' => 'BoardSettingsController@copy']);
+            Route::post('destroy', ['as' => 'settings.board.board.destroy', 'uses' => 'BoardSettingsController@destroy']);
+            Route::post('trash', ['as' => 'settings.board.board.trash', 'uses' => 'BoardSettingsController@trash']);
+            Route::post('move', ['as' => 'settings.board.board.move', 'uses' => 'BoardSettingsController@move']);
+            Route::post('restore', ['as' => 'settings.board.board.restore', 'uses' => 'BoardSettingsController@restore']);
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
     }
 
@@ -472,7 +499,7 @@ class BoardModule extends AbstractModule
      */
     public static function getSettingsURI()
     {
-        return route('manage.board.board.global.edit');
+        return route('manage.board.board.global.config');
     }
 
     /**
@@ -586,7 +613,7 @@ class BoardModule extends AbstractModule
      */
     public static function getInstanceSettingURI($instanceId)
     {
-        return route('manage.board.board.edit', $instanceId);
+        return route('settings.board.board.config', $instanceId);
     }
 
     /**

@@ -111,7 +111,7 @@ class BoardSettingsController extends Controller
      * @param CaptchaManager         $captcha         Captcha manager
      * @return mixed|\Xpressengine\Presenter\RendererInterface
      */
-    public function globalEdit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha)
+    public function editGlobalConfig(BoardPermissionHandler $boardPermission, CaptchaManager $captcha)
     {
         $config = $this->configHandler->getDefault();
 
@@ -119,7 +119,7 @@ class BoardSettingsController extends Controller
 
         $toggleMenuSection = new ToggleMenuSection(BoardModule::getId());
 
-        return $this->presenter->make('global.edit', [
+        return $this->presenter->make('global.config', [
             'config' => $config,
             'perms' => $perms,
             'toggleMenuSection' => $toggleMenuSection,
@@ -130,11 +130,10 @@ class BoardSettingsController extends Controller
     /**
      * global config update
      *
-     * @param Request                $request         request
-     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param Request $request request
      * @return mixed
      */
-    public function globalUpdate(Request $request, BoardPermissionHandler $boardPermission)
+    public function updateGlobalConfig(Request $request)
     {
         if ($request->get('useCaptcha') === 'true') {
             $driver = config('captcha.driver');
@@ -145,71 +144,75 @@ class BoardSettingsController extends Controller
         }
 
         $config = $this->configHandler->getDefault();
-
-        $permissionNames = [];
-        $permissionNames['read'] = ['readMode', 'readRating', 'readUser', 'readExcept'];
-        $permissionNames['list'] = ['listMode', 'listRating', 'listUser', 'listExcept'];
-        $permissionNames['create'] = ['createMode', 'createRating', 'createUser', 'createExcept'];
-        $permissionNames['manage'] = ['manageMode', 'manageRating', 'manageUser', 'manageExcept'];
-        $inputs = $request->except(array_merge(
-            ['_token'],
-            $permissionNames['read'],
-            $permissionNames['list'],
-            $permissionNames['create'],
-            $permissionNames['manage']
-        ));
+        $inputs = $request->except('_token');
 
         foreach ($inputs as $key => $value) {
             $config->set($key, $value);
         }
 
         $params = $config->getPureAll();
+        $this->configHandler->putDefault($params);
 
-        XeDB::beginTransaction();
+        return redirect()->to($this->urlHandler->managerUrl('global.config'));
+    }
 
-        $config = $this->configHandler->putDefault($params);
+    /**
+     * global permission edit
+     *
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @return mixed|\Xpressengine\Presenter\RendererInterface
+     */
+    public function editGlobalPermission(BoardPermissionHandler $boardPermission)
+    {
+        $perms = $boardPermission->getGlobalPerms();
 
+        return $this->presenter->make('global.permission', [
+            'perms' => $perms,
+        ]);
+    }
+
+    /**
+     * global permission update
+     *
+     * @param Request $request request
+     * @param BoardPermissionHandler $boardPermission board permission
+     * @return mixed
+     */
+    public function updateGlobalPermission(Request $request, BoardPermissionHandler $boardPermission)
+    {
         $boardPermission->setGlobal($request);
 
-        XeDB::commit();
+        return redirect()->to($this->urlHandler->managerUrl('global.permission'));
+    }
 
-        return redirect()->to($this->urlHandler->managerUrl('global.edit'));
+    /**
+     * global board toggle menu
+     *
+     * @return mixed|\Xpressengine\Presenter\RendererInterface
+     */
+    public function editGlobalToggleMenu()
+    {
+        $toggleMenuSection = new ToggleMenuSection(BoardModule::getId());
+
+        return $this->presenter->make('global.toggleMenu', [
+            'toggleMenuSection' => $toggleMenuSection,
+        ]);
     }
 
     /**
      * edit
      *
-     * @param BoardPermissionHandler $boardPermission board permission handler
      * @param CaptchaManager         $captcha         Captcha manager
      * @param string                 $boardId         board instance id
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function edit(BoardPermissionHandler $boardPermission, CaptchaManager $captcha, $boardId)
+    public function editConfig(CaptchaManager $captcha, $boardId)
     {
         $config = $this->configHandler->get($boardId);
 
-        $skinSection = new SkinSection(BoardModule::getId(), $boardId);
-
-        $dynamicFieldSection = new DynamicFieldSection(
-            $config->get('documentGroup'),
-            XeDB::connection(),
-            $config->get('revision')
-        );
-
-        $toggleMenuSection = new ToggleMenuSection(BoardModule::getId(), $boardId);
-
-        $editorSection = new EditorSection($boardId);
-
-        $perms = $boardPermission->getPerms($boardId);
-
-        return $this->presenter->make('edit', [
+        return $this->presenter->make('module.config', [
             'config' => $config,
             'boardId' => $boardId,
-            'skinSection' => $skinSection,
-            'dynamicFieldSection' => $dynamicFieldSection,
-            'toggleMenuSection' => $toggleMenuSection,
-            'editorSection' => $editorSection,
-            'perms' => $perms,
             'captcha' => $captcha,
         ]);
     }
@@ -218,11 +221,10 @@ class BoardSettingsController extends Controller
      * update
      *
      * @param Request                $request         request
-     * @param BoardPermissionHandler $boardPermission board permission handler
      * @param string                 $boardId         board instance id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, BoardPermissionHandler $boardPermission, $boardId)
+    public function updateConfig(Request $request, $boardId)
     {
         if ($request->get('useCaptcha') === 'true') {
             $driver = config('captcha.driver');
@@ -233,20 +235,7 @@ class BoardSettingsController extends Controller
         }
 
         $config = $this->configHandler->get($boardId);
-
-        $permissionNames = [];
-        $permissionNames['read'] = ['readMode', 'readRating', 'readUser', 'readExcept'];
-        $permissionNames['list'] = ['listMode', 'listRating', 'listUser', 'listExcept'];
-        $permissionNames['create'] = ['createMode', 'createRating', 'createUser', 'createExcept'];
-        $permissionNames['manage'] = ['manageMode', 'manageRating', 'manageUser', 'manageExcept'];
-        $inputs = $request->except(array_merge(
-            ['_token'],
-            $permissionNames['read'],
-            $permissionNames['list'],
-            $permissionNames['create'],
-            $permissionNames['manage']
-        ));
-
+        $inputs = $request->except('_token');
         foreach ($inputs as $key => $value) {
             $config->set($key, $value);
         }
@@ -257,12 +246,9 @@ class BoardSettingsController extends Controller
             }
         }
 
-        XeDB::beginTransaction();
-        $config = $this->instanceManager->updateConfig($config->getPureAll());
-        $boardPermission->set($request, $boardId);
-        XeDB::commit();
+        $this->instanceManager->updateConfig($config->getPureAll());
 
-        return redirect()->to($this->urlHandler->managerUrl('edit', ['boardId' => $boardId]));
+        return redirect()->to($this->urlHandler->managerUrl('config', ['boardId' => $boardId]));
     }
 
     /**
@@ -296,6 +282,86 @@ class BoardSettingsController extends Controller
             $category->getAttributes()
         );
     }
+
+
+    public function editPermission(BoardPermissionHandler $boardPermission, $boardId)
+    {
+        $config = $this->configHandler->get($boardId);
+
+        $perms = $boardPermission->getPerms($boardId);
+
+        return $this->presenter->make('module.permission', [
+            'config' => $config,
+            'boardId' => $boardId,
+            'perms' => $perms,
+        ]);
+    }
+
+    public function updatePermission(Request $request, BoardPermissionHandler $boardPermission, $boardId)
+    {
+        $boardPermission->set($request, $boardId);
+
+        return redirect()->to($this->urlHandler->managerUrl('permission', ['boardId' => $boardId]));
+    }
+
+    public function editSkin($boardId)
+    {
+        $config = $this->configHandler->get($boardId);
+
+        $skinSection = new SkinSection(BoardModule::getId(), $boardId);
+
+        return $this->presenter->make('module.skin', [
+            'config' => $config,
+            'boardId' => $boardId,
+            'skinSection' => $skinSection,
+        ]);
+    }
+
+    public function editEditor($boardId)
+    {
+        $config = $this->configHandler->get($boardId);
+
+        $editorSection = new EditorSection($boardId);
+
+        return $this->presenter->make('module.editor', [
+            'config' => $config,
+            'boardId' => $boardId,
+            'editorSection' => $editorSection,
+        ]);
+    }
+
+    public function editDynamicField($boardId)
+    {
+        $config = $this->configHandler->get($boardId);
+
+        $dynamicFieldSection = new DynamicFieldSection(
+            $config->get('documentGroup'),
+            XeDB::connection(),
+            $config->get('revision')
+        );
+        return $this->presenter->make('module.dynamicField', [
+            'boardId' => $boardId,
+            'dynamicFieldSection' => $dynamicFieldSection,
+        ]);
+    }
+
+    public function editToggleMenu($boardId)
+    {
+        $toggleMenuSection = new ToggleMenuSection(BoardModule::getId(), $boardId);
+
+        return $this->presenter->make('module.toggleMenu', [
+            'boardId' => $boardId,
+            'toggleMenuSection' => $toggleMenuSection,
+        ]);
+    }
+
+
+
+
+
+
+
+
 
     /**
      * document manager
