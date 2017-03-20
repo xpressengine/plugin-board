@@ -499,7 +499,7 @@ class BoardModule extends AbstractModule
      */
     public static function getSettingsURI()
     {
-        return route('manage.board.board.global.config');
+        return route('settings.board.board.global.config');
     }
 
     /**
