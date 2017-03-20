@@ -46,6 +46,7 @@ class ListWidget extends AbstractWidget
     {
         $widgetConfig = $this->setting();
 
+        /** @var \Xpressengine\Plugins\Board\Handler $boardHandler */
         $boardHandler = app('xe.board.handler');
         $configHandler = app('xe.board.config');
         $urlHandler = app('xe.board.url');
@@ -63,9 +64,9 @@ class ListWidget extends AbstractWidget
          * 몇개, 게시판 아이디, 최근 몇일, 정렬 방법
          */
 
+        $model = Board::division($boardId);
         /** @var \Xpressengine\Database\DynamicQuery $query */
-        $query = $boardHandler->getModel($boardConfig);
-        $query = $query->where('instanceId', $boardId);
+        $query = $model->where('instanceId', $boardId);
         $query = $query->leftJoin(
             'board_gallery_thumbs',
             sprintf('%s.%s', $query->getQuery()->from, 'id'),
