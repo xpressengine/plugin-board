@@ -89,7 +89,7 @@
 
                 @if (Auth::check() === true)
                 <label class="xe-label">
-                    <input type="checkbox" name="useAlarm" value="1">
+                    <input type="checkbox" name="useAlarm" value="1" @if($config->get('newCommentNotice') == true) checked="checked" @endif >
                     <span class="xe-input-helper"></span>
                     <span class="xe-label-text">{{xe_trans('board::useAlarm')}}</span>
                 </label>

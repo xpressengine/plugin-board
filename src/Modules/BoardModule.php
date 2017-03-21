@@ -372,12 +372,6 @@ class BoardModule extends AbstractModule
                 if ($board->type != static::getId()) {
                     return $comment;
                 }
-                if ($board->userId == $comment->userId) {
-                    return $comment;
-                }
-                if ($board->userId == '') {
-                    return $comment;
-                }
                 if ($board->boardData->isAlarm() === false) {
                     return $comment;
                 }
@@ -392,19 +386,51 @@ class BoardModule extends AbstractModule
                 $data = [
                     'title' => xe_trans('board::newCommentRegistered'),
                     'contents' => sprintf(
-                        '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
+                        '<a href="%s" target="_blank">%s</a><br/>%s<br/><br/><br/>%s',
                         $url,
                         $semanticUrl,
                         xe_trans(
                             'board::newCommentRegisteredBy',
                             ['displayName' => $comment->author->getDisplayName()]
-                        )
+                        ),
+                        $comment->pureContent
                     ),
                 ];
 
-                Mail::send('emails.notice', $data, function ($m) use ($board) {
-                    $writer = $board->user;
-                    if ($writer->email != '') {
+                $emails = [];
+
+                // writer email
+                if ($board->email != null && $board->email != '') {
+                    $emails[] = $board->email;
+                } else {
+                    $emails[] = $board->user->email;
+                }
+
+                // comment writers
+                $model = Comment::division($comment->instanceId);
+                $query = $model->whereHas('target', function ($query) use ($board) {
+                    $query->where('targetId', $board->id);
+                })
+                ->where('display', '!=', Comment::DISPLAY_HIDDEN);
+                $comments = $query->get();
+                foreach ($comments as $dstComment) {
+                    if ($dstComment->email != null && $dstComment->email != '') {
+                        $emails[] = $dstComment->email;
+                    } else {
+                        $emails[] = $dstComment->user->email;
+                    }
+                }
+
+                foreach ($emails as $toMail) {
+                    if (!$toMail) {
+                        continue;
+                    }
+
+                    if ($toMail == $comment->user->email) {
+                        continue;
+                    }
+
+                    Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
@@ -412,10 +438,12 @@ class BoardModule extends AbstractModule
                         $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
 
                         $m->from($fromEmail, $applicationName);
-                        $m->to($writer->email, $writer->getDisplayName());
+                        $m->to($toMail);
                         $m->subject($subject);
-                    }
-                });
+                    });
+                }
+
+
 
                 return $comment;
             }
@@ -457,7 +485,9 @@ class BoardModule extends AbstractModule
                 $data = [
                     'title' => xe_trans('board::newPostsRegistered'),
                     'contents' => sprintf(
-                        '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
+                        '<span>%s : %s</span> <a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
+                        xe_trans('xe::writer'),
+                        $board->user->getDisplayName(),
                         $url,
                         $semanticUrl,
                         $board->pureContent
