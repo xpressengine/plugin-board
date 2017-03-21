@@ -125,9 +125,8 @@ $(function($) {
 		event.preventDefault();
 		var $target = $(event.target),
 			$anchor = $target.closest('a'),
-			id = $anchor.data('id')
-		url = $anchor.prop('href');
-
+			id = $anchor.data('id'),
+			url = $anchor.prop('href');
 		XE.ajax({
 			url: url,
 			type: 'post',
