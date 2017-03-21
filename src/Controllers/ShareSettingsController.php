@@ -14,6 +14,7 @@
 namespace Xpressengine\Plugins\Board\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Sections\ToggleMenuSection;
 use XePresenter;
 use XeConfig;
 use Xpressengine\Http\Request;
@@ -21,41 +22,12 @@ use Xpressengine\Plugins\Board\UIObjects\Share;
 
 class ShareSettingsController extends Controller
 {
-    public function edit()
+    public function config()
     {
-        $config = XeConfig::get('share');
-
-        $allItems = Share::getItems();
-
-        $items = [];
-        foreach ($config as $key) {
-            $items[$key] = $allItems[$key];
-            $items[$key]['activated'] = true;
-        }
-
-        foreach ($allItems as $key => $item) {
-            if (empty($items[$key]) === true) {
-                $items[$key] = $item;
-                $items[$key]['activated'] = false;
-            }
-        }
+        $toggleMenuSection = new ToggleMenuSection(Share::getId());
 
         return XePresenter::make('board::views.share.setting', [
-            'items' => $items,
+            'toggleMenuSection' => $toggleMenuSection,
         ]);
-    }
-
-    public function update(Request $request)
-    {
-        $inputs = $request->all();
-
-        $items = [];
-        foreach ($inputs['items'] as $key) {
-            $items[] = $key;
-        }
-
-        XeConfig::put(Share::CONFIG_NAME, $items);
-
-        return redirect()->to(route('manage.board.share.edit'));
     }
 }

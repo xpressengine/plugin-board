@@ -259,6 +259,10 @@ return [
         'ko' => '라인',
         'en' => 'Line',
     ],
+    'permalink' => [
+        'ko' => '고유 주소',
+        'en' => 'Permanent link',
+    ],
     'assentThisPostsOthers' => [
         'ko' => '님 외 :count 명이 이 글을 좋아합니다.',
         'en' => 'and :count others like this posts.',

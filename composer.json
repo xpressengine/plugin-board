@@ -82,6 +82,26 @@
           "name": "Share",
           "description": "share"
         },
+        "uiobject/board@share/toggleMenu/board@facebook": {
+          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\FacebookItem",
+          "name": "Facebook share toggle menu",
+          "description": ""
+        },
+        "uiobject/board@share/toggleMenu/board@line": {
+          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\LineItem",
+          "name": "Line share toggle menu",
+          "description": ""
+        },
+        "uiobject/board@share/toggleMenu/board@twitter": {
+          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\TwitterItem",
+          "name": "Twitter share toggle menu",
+          "description": ""
+        },
+        "uiobject/board@share/toggleMenu/board@copy": {
+          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\CopyItem",
+          "name": "Copy url share toggle menu",
+          "description": ""
+        },
         "widget/board@list": {
           "class": "Xpressengine\\Plugins\\Board\\Widgets\\ListWidget",
           "name": "게시물 리스트 위젯",

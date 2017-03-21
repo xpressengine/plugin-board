@@ -52,7 +52,7 @@ class BoardModule extends AbstractModule
     public static function boot()
     {
         self::registerArchiveRoute();
-        self::registerManageRoute();
+        self::registerSettingsRoute();
         self::registerInstanceRoute();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
@@ -86,7 +86,7 @@ class BoardModule extends AbstractModule
      *
      * @return void
      */
-    protected static function registerManageRoute()
+    protected static function registerSettingsRoute()
     {
         Route::settings(self::getId(), function () {
             // global

@@ -59,7 +59,6 @@
                 <a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->data->fileCount }}</strong></a>
                 <ul>
                     @foreach($item->files as $file)
-                        {{--<li><a href="{{$urlHandler->get('download', ['id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>--}}
                         <li><a href="{{ route('editor.file.download', ['instanceId' => $item->instanceId, 'id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
                     @endforeach
                 </ul>
@@ -74,7 +73,8 @@
                     <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
 
                     {!! uio('share', [
-                        'url' => urlencode(Request::url()),
+                        'item' => $item,
+                        'url' => Request::url(),
                     ]) !!}
                 </div>
 

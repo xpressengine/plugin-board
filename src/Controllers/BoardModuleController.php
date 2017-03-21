@@ -795,7 +795,8 @@ class BoardModuleController extends Controller
     /**
      * trash
      *
-     * @param Request $request request
+     * @param BoardService $server  board service
+     * @param Request      $request request
      * @return mixed
      */
     public function trash(BoardService $service, Request $request)
