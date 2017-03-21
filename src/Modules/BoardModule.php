@@ -189,7 +189,7 @@ class BoardModule extends AbstractModule
 
             Route::post('/preview', ['as' => 'preview', 'uses' => 'BoardModuleController@preview']);
             Route::post('/temporary', ['as' => 'temporary', 'uses' => 'BoardModuleController@temporary']);
-            Route::post('/trash', ['as' => 'trash', 'uses' => 'BoardModuleController@trash']);
+            Route::post('/trash/{id}', ['as' => 'trash', 'uses' => 'BoardModuleController@trash']);
 
             Route::post('/vote/{option}/{id}', ['as' => 'vote', 'uses' => 'BoardModuleController@vote']);
             Route::get('/vote/show/{id}', ['as' => 'showVote', 'uses' => 'BoardModuleController@showVote']);

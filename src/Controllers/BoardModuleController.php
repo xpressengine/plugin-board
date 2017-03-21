@@ -798,7 +798,7 @@ class BoardModuleController extends Controller
      * @param Request $request request
      * @return mixed
      */
-    public function trash(Request $request)
+    public function trash(BoardService $service, Request $request)
     {
         $user = Auth::user();
         $id = $request->get('id');
@@ -809,12 +809,15 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        // use page resolver
+        $items = $service->getItems($request, $this->config, $id);
+
         $this->handler->trash($item, $this->config);
 
-        return redirect()->to($this->urlHandler->get('index'))->with([
-            'alert' => [
-                'type' => 'success', 'message' => xe_trans('xe::complete')
-            ]
+        return xeRedirect()->to(
+            $this->urlHandler->get('index', $request->query->all())
+        )->setData([
+            'item' => $item,
         ]);
     }
 
