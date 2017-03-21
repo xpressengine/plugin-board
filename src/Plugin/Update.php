@@ -70,6 +70,11 @@ class Update
             return false;
         }
 
+        // ver 0.9.16
+        if (static::hasConfigNewCommentNotice() === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -134,6 +139,16 @@ class Update
 
             XeConfig::modify($config);
         }
+
+        // ver 0.9.16
+        if (static::hasConfigNewCommentNotice() === false) {
+            $config = XeConfig::get('module/board@board');
+            if ($config->get('newCommentNotice') === null) {
+                $config->set('newCommentNotice', true);
+            }
+
+            XeConfig::modify($config);
+        }
     }
 
     /**
@@ -188,6 +203,20 @@ class Update
     {
         $config = XeConfig::get('module/board@board');
         if ($config->get('deleteToTrash') === null) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * check configuration for newCommentNotice
+     *
+     * @return bool
+     */
+    protected static function hasConfigNewCommentNotice()
+    {
+        $config = XeConfig::get('module/board@board');
+        if ($config->get('newCommentNotice') === null) {
             return false;
         }
         return true;

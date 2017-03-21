@@ -185,6 +185,27 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
+                                                    <label>{{xe_trans('xe::orderType')}} </label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="orderType" @if($config->getPure('anonymity') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="orderType" class="form-control" @if($config->getPure('orderType') === null) disabled="disabled" @endif>
+                                                    <option value="">{{xe_trans('xe::select')}}</option>
+                                                    @foreach ($handler->getOrders() as $value)
+                                                        <option value="{{$value['value']}}" {!! $config->get('orderType') == $value['value'] ? 'selected="selected"' : '' !!} >{{xe_trans($value['text'])}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
                                                     <label>{{xe_trans('board::adminEmail')}} <small>{{xe_trans('board::adminEmailDescription')}} </small></label>
                                                     <div class="checkbox pull-right">
                                                         <label>
@@ -198,18 +219,16 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
-                                                    <label>{{xe_trans('xe::orderType')}} </label>
+                                                    <label>{{xe_trans('board::newCommentNotice')}} <small>{{xe_trans('board::newCommentNoticeDescription')}}</small></label>
                                                     <div class="checkbox pull-right">
                                                         <label>
-                                                            <input type="checkbox" class="inheritCheck" data-target="orderType" @if($config->getPure('anonymity') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                            <input type="checkbox" class="inheritCheck" data-target="newCommentNotice" @if($config->getPure('newCommentNotice') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <select id="" name="orderType" class="form-control" @if($config->getPure('orderType') === null) disabled="disabled" @endif>
-                                                    <option value="">{{xe_trans('xe::select')}}</option>
-                                                    @foreach ($handler->getOrders() as $value)
-                                                        <option value="{{$value['value']}}" {!! $config->get('orderType') == $value['value'] ? 'selected="selected"' : '' !!} >{{xe_trans($value['text'])}}</option>
-                                                    @endforeach
+                                                <select id="" name="newCommentNotice" class="form-control" @if($config->getPure('newCommentNotice') === null) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('newCommentNotice') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('newCommentNotice') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                 </select>
                                             </div>
                                         </div>

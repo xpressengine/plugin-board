@@ -132,6 +132,22 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <div class="clearfix">
+                                                        <label>{{xe_trans('xe::orderType')}} </label>
+                                                    </div>
+                                                    <select id="" name="orderType" class="form-control">
+                                                        <option value="">{{xe_trans('xe::select')}}</option>
+                                                        @foreach ($handler->getOrders() as $value)
+                                                            <option value="{{$value['value']}}" {!! $config->get('orderType') == $value['value'] ? 'selected="selected"' : '' !!} >{{xe_trans($value['text'])}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
                                                         <label>{{xe_trans('board::adminEmail')}} <small>{{xe_trans('board::adminEmailDescription')}} </small></label>
                                                     </div>
                                                     <input type="text" name="managerEmail" class="form-control" value="{{ Input::old('managerEmail', $config->get('managerEmail')) }}" />
@@ -140,13 +156,11 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <div class="clearfix">
-                                                        <label>{{xe_trans('xe::orderType')}} </label>
+                                                        <label>{{xe_trans('board::newCommentNotice')}} <small>{{xe_trans('board::newCommentNoticeDescription')}}</small></label>
                                                     </div>
-                                                    <select id="" name="orderType" class="form-control">
-                                                        <option value="">{{xe_trans('xe::select')}}</option>
-                                                        @foreach ($handler->getOrders() as $value)
-                                                            <option value="{{$value['value']}}" {!! $config->get('orderType') == $value['value'] ? 'selected="selected"' : '' !!} >{{xe_trans($value['text'])}}</option>
-                                                        @endforeach
+                                                    <select id="" name="newCommentNotice" class="form-control">
+                                                        <option value="true" {!! $config->get('newCommentNotice') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('newCommentNotice') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>
                                             </div>
