@@ -3,7 +3,7 @@
 {{ XeFrontend::js('plugins/board/assets/js/build/BoardTags.js')->appendTo('body')->load() }}
 
 <div class="board_write">
-    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast">
+    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$item->instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="id" value="{{$item->id}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
@@ -103,11 +103,9 @@
             </div>
             <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
                 {{--<a href="#" class="bd_btn btn_temp_save">임시저장</a>--}}
-                <a href="{{ $urlHandler->get('preview') }}" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
-                <a href="{{ $urlHandler->get('update') }}" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
+                <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
+                <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
             </div>
         </div>
-
     </form>
-
 </div>
