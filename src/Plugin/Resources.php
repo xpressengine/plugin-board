@@ -93,8 +93,8 @@ class Resources
      */
     public static function createShareConfig()
     {
-        $configManager = app('xe.config');
-        $configManager->add(Share::CONFIG_NAME, array_keys(Share::getItems()));
+//        $configManager = app('xe.config');
+//        $configManager->add(Share::CONFIG_NAME, array_keys(Share::getItems()));
     }
 
     /**
