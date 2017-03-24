@@ -1,13 +1,8 @@
-<div class="bd_share_area">
-    <a href="#" class="bd_ico bd_share"><i class="xi-external-link"></i><span class="xe-sr-only">{{ trans('board::share') }}</span></a>
-    <div class="ly_popup">
-        <ul>
-            @foreach ($items as $item)
-                <li><a href="{{$item['url']}}" target="_blank">
-                        @if($item['icon'] != '')<i class="{{$item['icon']}}"></i>@endif
-                        {{ xe_trans($item['label']) }}
-                    </a></li>
-            @endforeach
-        </ul>
-    </div>
-</div>
+<a href="#"
+   class="bd_ico xe-share"
+   data-toggle="xe-page-toggle-menu"
+   data-url="{{route('toggleMenuPage')}}"
+   data-data='{!! json_encode(['id'=>$item->id, 'type'=>'uiobject/board@share', 'instanceId'=>$item->instanceId, 'url'=>$url]) !!}'
+   data-side="dropdown-menu-right">
+    <i class="xi-external-link"></i><span class="xe-sr-only">{{ xe_trans('board::share') }}</span>
+</a>

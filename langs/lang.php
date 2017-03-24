@@ -200,8 +200,8 @@ return [
         'en' => 'Admin email',
     ],
     'adminEmailDescription' => [
-        'ko' => '글이나 댓글이 등록될때 등록된 메일주소로 메일이 발송됩니다. 콤마(,)로 연결시 다수의 메일주소로 발송할 수 있습니다.',
-        'en' => 'This message will be sent to your posts or comments registered email address when registering. Comma (,) as you can send to multiple e-mail addresses when connecting.',
+        'ko' => '새 글이 등록되면 등록된 주소로 이메일이 발송됩니다. 콤마(,)로 다수의 이메일 주소를 설정할 수 있습니다.',
+        'en' => 'When a new post is registered, email will be sent to the registered address. You can set multiple email addresses with a comma (,).',
     ],
     'addon' => [
         'ko' => '확장 기능',
@@ -258,6 +258,10 @@ return [
     'line' => [
         'ko' => '라인',
         'en' => 'Line',
+    ],
+    'permalink' => [
+        'ko' => '고유 주소',
+        'en' => 'Permanent link',
     ],
     'assentThisPostsOthers' => [
         'ko' => '님 외 :count 명이 이 글을 좋아합니다.',
@@ -392,5 +396,13 @@ You may receive an error occurs in the associated function if not in a state cap
     'useDeleteToTrashDescription' => [
         'ko' => '사용자가 게시물을 삭제할 때 휴지통으로 이동 시킵니다.',
         'en' => 'When a user deletes a article, it moved to the trash.',
-    ]
+    ],
+    'newCommentNotice' => [
+        'ko' => '새 댓글 알림',
+        'en' => 'New comment notice',
+    ],
+    'newCommentNoticeDescription' => [
+        'ko' => '새 댓글이 작성되면 글에 연관된 사용자에게 알립니다.',
+        'en' => 'When a new comment is created, it notifies the user associated with the post.',
+    ],
 ];

@@ -75,7 +75,7 @@ class BoardService
     {
         $model = Board::division($config->get('boardId'));
         $query = $model->where('instanceId', $config->get('boardId'))
-            ->visible()->orderBy('head', 'desc');
+            ->notice()->orderBy('head', 'desc');
 
         if ($request->has('favorite') === true) {
             $query->leftJoin(

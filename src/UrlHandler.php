@@ -185,6 +185,6 @@ class UrlHandler
      */
     public function managerUrl($name, $params = [])
     {
-        return route('manage.board.board.' . $name, $params);
+        return route('settings.board.board.' . $name, $params);
     }
 }

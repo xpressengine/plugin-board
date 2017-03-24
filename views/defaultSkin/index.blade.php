@@ -20,7 +20,7 @@
             <li><a href="#" class="bd_search __xe-bd-search"><span class="xe-sr-only">{{ xe_trans('xe::search') }}</span><i class="xi-magnifier"></i></a></li>
             <li><a href="{{ $urlHandler->get('create') }}"><span class="xe-sr-only">{{ xe_trans('board::newPost') }}</span><i class="xi-pen-o"></i></a></li>
             @if ($isManager === true)
-            <li><a href="{{ route('manage.board.board.edit', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
+            <li><a href="{{ $urlHandler->managerUrl('config', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
             @endif
         </ul>
     </div>
@@ -58,7 +58,7 @@
                                 'label' => xe_trans('xe::select'),
                                 'items' => $boardList,
                             ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-href="{{ $urlHandler->managerUrl('copy') }}">{{ xe_trans('xe::copy') }}</button>
+                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('copy') }}">{{ xe_trans('xe::copy') }}</button>
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                                 'label' => xe_trans('xe::select'),
                                 'items' => $boardList,
                             ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-href="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
+                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                         <label class="xe-control-label">{{ xe_trans('xe::trash') }}</label>
                     </div>
                     <div class="xe-col-sm-9">
-                        <a href="{{ $urlHandler->managerUrl('trash') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsMoveToTrash') }}</a>
+                        <a href="#" data-url="{{ $urlHandler->managerUrl('trash') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsMoveToTrash') }}</a>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                         <label class="xe-control-label">{{ xe_trans('xe::delete') }}</label>
                     </div>
                     <div class="xe-col-sm-9">
-                        <a href="{{ $urlHandler->managerUrl('destroy') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsDelete') }}</a>
+                        <a href="#" data-url="{{ $urlHandler->managerUrl('destroy') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsDelete') }}</a>
                     </div>
                 </div>
             </div>
@@ -251,7 +251,7 @@
         </thead>
         <tbody>
         <!-- NOTICE -->
-        @foreach($handler->getsNotice($config, Auth::user()->getId()) as $item)
+        @foreach($notices as $item)
         <tr class="notice">
             @if ($isManager === true)
             <td class="check">
@@ -262,7 +262,7 @@
                 </label>
             </td>
             @endif
-            <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
+            <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
             @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'title')
@@ -341,7 +341,7 @@
                 </label>
             </td>
             @endif
-            <td class="favorite xe-hidden-xs"><a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
+            <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
             @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'title')

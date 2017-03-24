@@ -77,7 +77,7 @@ class TrashItem extends AbstractToggleMenu
      */
     public function getType()
     {
-        return static::MENUTYPE_LINK;
+        return static::MENUTYPE_EXEC;
     }
 
     /**
@@ -89,7 +89,19 @@ class TrashItem extends AbstractToggleMenu
     {
         $doc = Board::find($this->identifier);
 
-        return app('xe.board.url')->get('trash', ['id' => $this->identifier], $doc->instanceId);
+        $url = app('xe.board.url')->get('trash', ['id' => $this->identifier], $doc->instanceId);
+
+        return 'var url = "' . $url . '" + window.location.search;
+            XE.ajax(url, {
+                type: "post",
+                dataType: "json",
+                data: {
+                    id: "' . $this->identifier . '"
+                },
+                success: function (data) {
+                    location.replace(data.links.href);
+                }
+            });';
     }
 
     /**

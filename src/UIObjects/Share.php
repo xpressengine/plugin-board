@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\UIObjects;
 
+use App\Facades\XeFrontend;
 use Xpressengine\UIObject\AbstractUIObject;
 use View;
 use Route;
@@ -30,15 +31,12 @@ use XeConfig;
  */
 class Share extends AbstractUIObject
 {
+    protected static $loaded = false;
+
     /**
      *
      */
-    const CONFIG_NAME = 'share';
-
-    /**
-     * @var string
-     */
-    protected static $id = 'uiobject/board@share';
+    const CONFIG_NAME = 'uiobject/board@share';
 
     /**
      * boot
@@ -47,7 +45,7 @@ class Share extends AbstractUIObject
      */
     public static function boot()
     {
-        self::registerManageRoute();
+        self::registerSettingsRoute();
     }
 
     /**
@@ -55,62 +53,63 @@ class Share extends AbstractUIObject
      *
      * @return void
      */
-    protected static function registerManageRoute()
+    protected static function registerSettingsRoute()
     {
         Route::settings(self::getId(), function () {
             Route::get(
-                '/edit',
-                ['as' => 'manage.board.share.edit', 'uses' => 'ShareSettingsController@edit']
-            );
-            Route::post(
-                '/update',
-                ['as' => 'manage.board.share.update', 'uses' => 'ShareSettingsController@update']
+                '/config',
+                ['as' => 'settings.board.share.config', 'uses' => 'ShareSettingsController@config']
             );
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
     }
 
-    /**
-     * get share items
-     *
-     * @return array
-     */
-    public static function getItems()
-    {
-        return [
-            'facebook' => [
-                'label' => 'board::facebook',
-                'url' => 'http://www.facebook.com/sharer/sharer.php?u=__url__',
-                'icon' => 'xi-facebook'
-            ],
-            'twitter' => [
-                'label' => 'board::twitter',
-                'url' => 'https://twitter.com/intent/tweet?url=__url__',
-                'icon' => 'xi-twitter'
-            ],
-            'line' => [
-                'label' => 'board::line',
-                'url' => 'http://line.me/R/msg/text/?title=__url__',
-                'icon' => 'xi-line'
-            ],
-        ];
-    }
+//    /**
+//     * get share items
+//     *
+//     * @return array
+//     */
+//    public static function getItems()
+//    {
+//        return [
+//            'facebook' => [
+//                'label' => 'board::facebook',
+//                'url' => 'http://www.facebook.com/sharer/sharer.php?u=__url__',
+//                'icon' => 'xi-facebook'
+//            ],
+//            'twitter' => [
+//                'label' => 'board::twitter',
+//                'url' => 'https://twitter.com/intent/tweet?url=__url__',
+//                'icon' => 'xi-twitter'
+//            ],
+//            'line' => [
+//                'label' => 'board::line',
+//                'url' => 'http://line.me/R/msg/text/?title=__url__',
+//                'icon' => 'xi-line'
+//            ],
+//            'copy' => [
+//                'label' => 'board::고유주소',
+//                'url' => '__url__',
+//                'icon' => 'xi-link'
+//            ]
+//        ];
+//    }
 
-    /**
-     * get activated items
-     *
-     * @return array
-     */
-    public function getActivated()
-    {
-        $config = XeConfig::get('share');
-        $allItems = static::getItems();
-        $items = [];
-        foreach ($config as $key) {
-            $items[] = $allItems[$key];
-        }
-
-        return $items;
-    }
+//    /**
+//     * get activated items
+//     *
+//     * @return array
+//     */
+//    public function getActivated()
+//    {
+//        $config = XeConfig::get('share');
+//        $allItems = static::getItems();
+//        $items = [];
+//        foreach ($config as $key) {
+//            $items[] = $allItems[$key];
+//        }
+//
+//        return $items;
+//    }
 
     /**
      * render
@@ -119,18 +118,20 @@ class Share extends AbstractUIObject
      */
     public function render()
     {
+        if (self::$loaded === false) {
+            self::$loaded = true;
+            XeFrontend::js('/plugins/board/assets/js/share.js')->load();
+        }
+
         $args = $this->arguments;
 
+        $item = $args['item'];
         $url = $args['url'];
-        $items = $this->getActivated();
-        foreach ($items as $key => $item) {
-            $item['url'] = str_replace('__url__', $url, $item['url']);
-            $items[$key] = $item;
-        }
+
 
         return View::make('board::views.uiobject.share', [
             'url' => $url,
-            'items' => $items,
+            'item' => $item,
         ])->render();
     }
 
@@ -141,6 +142,6 @@ class Share extends AbstractUIObject
      */
     public static function getSettingsURI()
     {
-        return route('manage.board.share.edit');
+        return route('settings.board.share.config');
     }
 }

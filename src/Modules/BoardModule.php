@@ -52,7 +52,7 @@ class BoardModule extends AbstractModule
     public static function boot()
     {
         self::registerArchiveRoute();
-        self::registerManageRoute();
+        self::registerSettingsRoute();
         self::registerInstanceRoute();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
@@ -86,47 +86,74 @@ class BoardModule extends AbstractModule
      *
      * @return void
      */
-    protected static function registerManageRoute()
+    protected static function registerSettingsRoute()
     {
         Route::settings(self::getId(), function () {
-            Route::get('/', ['as' => 'manage.board.board.index', 'uses' => 'BoardSettingsController@index']);
+            // global
+            Route::get('/', ['as' => 'settings.board.board.index', 'uses' => 'BoardSettingsController@index']);
             Route::get(
-                '/global/edit',
-                ['as' => 'manage.board.board.global.edit', 'uses' => 'BoardSettingsController@globalEdit']
+                '/global/config',
+                ['as' => 'settings.board.board.global.config', 'uses' => 'BoardSettingsController@editGlobalConfig']
             );
             Route::post(
-                '/global/update',
-                ['as' => 'manage.board.board.global.update', 'uses' => 'BoardSettingsController@globalUpdate']
+                '/global/config/update',
+                ['as' => 'settings.board.board.global.config.update', 'uses' => 'BoardSettingsController@updateGlobalConfig']
             );
-            Route::get('edit/{boardId}', ['as' => 'manage.board.board.edit', 'uses' => 'BoardSettingsController@edit']);
+            Route::get(
+                '/global/permission',
+                ['as' => 'settings.board.board.global.permission', 'uses' => 'BoardSettingsController@editGlobalPermission']
+            );
+            Route::post(
+                '/global/permission/update',
+                ['as' => 'settings.board.board.global.permission.update', 'uses' => 'BoardSettingsController@updateGlobalPermission']
+            );
+            Route::get(
+                '/global/toggleMenu',
+                ['as' => 'settings.board.board.global.toggleMenu', 'uses' => 'BoardSettingsController@editGlobalToggleMenu']
+            );
+
+            // module
+            Route::get('config/{boardId}', ['as' => 'settings.board.board.config', 'uses' => 'BoardSettingsController@editConfig']);
+            Route::post(
+                'config/pdate/{boardId}',
+                ['as' => 'settings.board.board.config.update', 'uses' => 'BoardSettingsController@updateConfig']
+            );
+            Route::get('permission/{boardId}', ['as' => 'settings.board.board.permission', 'uses' => 'BoardSettingsController@editPermission']);
+            Route::post(
+                'permission/update/{boardId}',
+                ['as' => 'settings.board.board.permission.update', 'uses' => 'BoardSettingsController@updatePermission']
+            );
+            Route::get('skin/edit/{boardId}', ['as' => 'settings.board.board.skin', 'uses' => 'BoardSettingsController@editSkin']);
+            Route::get('editor/edit/{boardId}', ['as' => 'settings.board.board.editor', 'uses' => 'BoardSettingsController@editEditor']);
+            Route::get('dynamicField/edit/{boardId}', ['as' => 'settings.board.board.dynamicField', 'uses' => 'BoardSettingsController@editDynamicField']);
+            Route::get('toggleMenu/edit/{boardId}', ['as' => 'settings.board.board.toggleMenu', 'uses' => 'BoardSettingsController@editToggleMenu']);
+
             Route::post('storeCategory/', [
-                'as' => 'manage.board.board.storeCategory', 'uses' => 'BoardSettingsController@storeCategory'
+                'as' => 'settings.board.board.storeCategory', 'uses' => 'BoardSettingsController@storeCategory'
             ]);
-            Route::post(
-                'update/{boardId}',
-                ['as' => 'manage.board.board.update', 'uses' => 'BoardSettingsController@update']
-            );
+
+            // docs
             Route::get('docs', [
-                'as' => 'manage.board.board.docs.index',
+                'as' => 'settings.board.board.docs.index',
                 'uses' => 'BoardSettingsController@docsIndex',
                 'settings_menu' => 'contents.board.board'
             ]);
             Route::get('docs/trash', [
-                'as' => 'manage.board.board.docs.trash',
+                'as' => 'settings.board.board.docs.trash',
                 'uses' => 'BoardSettingsController@docsTrash',
                 'settings_menu' => 'contents.board.boardtrash'
             ]);
             Route::get('docs/approve', [
-                'as' => 'manage.board.board.docs.approve',
+                'as' => 'settings.board.board.docs.approve',
                 'uses' => 'BoardSettingsController@docsApprove',
                 'settings_menu' => 'contents.board.boardapprove'
             ]);
-            Route::post('approve', ['as' => 'manage.board.board.approve', 'uses' => 'BoardSettingsController@approve']);
-            Route::post('copy', ['as' => 'manage.board.board.copy', 'uses' => 'BoardSettingsController@copy']);
-            Route::post('destroy', ['as' => 'manage.board.board.destroy', 'uses' => 'BoardSettingsController@destroy']);
-            Route::post('trash', ['as' => 'manage.board.board.trash', 'uses' => 'BoardSettingsController@trash']);
-            Route::post('move', ['as' => 'manage.board.board.move', 'uses' => 'BoardSettingsController@move']);
-            Route::post('restore', ['as' => 'manage.board.board.restore', 'uses' => 'BoardSettingsController@restore']);
+            Route::post('approve', ['as' => 'settings.board.board.approve', 'uses' => 'BoardSettingsController@approve']);
+            Route::post('copy', ['as' => 'settings.board.board.copy', 'uses' => 'BoardSettingsController@copy']);
+            Route::post('destroy', ['as' => 'settings.board.board.destroy', 'uses' => 'BoardSettingsController@destroy']);
+            Route::post('trash', ['as' => 'settings.board.board.trash', 'uses' => 'BoardSettingsController@trash']);
+            Route::post('move', ['as' => 'settings.board.board.move', 'uses' => 'BoardSettingsController@move']);
+            Route::post('restore', ['as' => 'settings.board.board.restore', 'uses' => 'BoardSettingsController@restore']);
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
     }
 
@@ -162,7 +189,7 @@ class BoardModule extends AbstractModule
 
             Route::post('/preview', ['as' => 'preview', 'uses' => 'BoardModuleController@preview']);
             Route::post('/temporary', ['as' => 'temporary', 'uses' => 'BoardModuleController@temporary']);
-            Route::post('/trash', ['as' => 'trash', 'uses' => 'BoardModuleController@trash']);
+            Route::post('/trash/{id}', ['as' => 'trash', 'uses' => 'BoardModuleController@trash']);
 
             Route::post('/vote/{option}/{id}', ['as' => 'vote', 'uses' => 'BoardModuleController@vote']);
             Route::get('/vote/show/{id}', ['as' => 'showVote', 'uses' => 'BoardModuleController@showVote']);
@@ -250,12 +277,6 @@ class BoardModule extends AbstractModule
                     return $comment;
                 }
 
-                /** @var BoardHandler $handler */
-                $handler = app('xe.board.handler');
-                /** @var ConfigHandler $configHandler */
-                $configHandler = app('xe.board.config');
-
-                $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                 $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                 $board->save();
 
@@ -277,12 +298,6 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    /** @var BoardHandler $handler */
-                    $handler = app('xe.board.handler');
-                    /** @var ConfigHandler $configHandler */
-                    $configHandler = app('xe.board.config');
-
-                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                     $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                     $board->save();
                 }
@@ -305,12 +320,6 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    /** @var BoardHandler $handler */
-                    $handler = app('xe.board.handler');
-                    /** @var ConfigHandler $configHandler */
-                    $configHandler = app('xe.board.config');
-
-                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                     $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                     $board->save();
                 }
@@ -333,12 +342,6 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    /** @var BoardHandler $handler */
-                    $handler = app('xe.board.handler');
-                    /** @var ConfigHandler $configHandler */
-                    $configHandler = app('xe.board.config');
-
-                    $handler->setModelConfig($board, $configHandler->get($board->instanceId));
                     $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
                     $board->save();
                 }
@@ -369,12 +372,6 @@ class BoardModule extends AbstractModule
                 if ($board->type != static::getId()) {
                     return $comment;
                 }
-                if ($board->userId == $comment->userId) {
-                    return $comment;
-                }
-                if ($board->userId == '') {
-                    return $comment;
-                }
                 if ($board->boardData->isAlarm() === false) {
                     return $comment;
                 }
@@ -383,22 +380,57 @@ class BoardModule extends AbstractModule
                 $urlHandler = app('xe.board.url');
                 $urlHandler->setConfig(app('xe.board.config')->get($board->instanceId));
                 $url = $urlHandler->getShow($board);
+                $parts = parse_url($url);
+                $semanticUrl = sprintf('%s://%s%s', $parts['scheme'], $parts['host'], $parts['path']);
+
                 $data = [
                     'title' => xe_trans('board::newCommentRegistered'),
                     'contents' => sprintf(
-                        '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
+                        '<a href="%s" target="_blank">%s</a><br/>%s<br/><br/><br/>%s',
                         $url,
-                        $url,
+                        $semanticUrl,
                         xe_trans(
                             'board::newCommentRegisteredBy',
                             ['displayName' => $comment->author->getDisplayName()]
-                        )
+                        ),
+                        $comment->pureContent
                     ),
                 ];
 
-                Mail::send('emails.notice', $data, function ($m) use ($board) {
-                    $writer = $board->user;
-                    if ($writer->email != '') {
+                $emails = [];
+
+                // writer email
+                if ($board->email != null && $board->email != '') {
+                    $emails[] = $board->email;
+                } else {
+                    $emails[] = $board->user->email;
+                }
+
+                // comment writers
+                $model = Comment::division($comment->instanceId);
+                $query = $model->whereHas('target', function ($query) use ($board) {
+                    $query->where('targetId', $board->id);
+                })
+                ->where('display', '!=', Comment::DISPLAY_HIDDEN);
+                $comments = $query->get();
+                foreach ($comments as $dstComment) {
+                    if ($dstComment->email != null && $dstComment->email != '') {
+                        $emails[] = $dstComment->email;
+                    } else {
+                        $emails[] = $dstComment->user->email;
+                    }
+                }
+
+                foreach ($emails as $toMail) {
+                    if (!$toMail) {
+                        continue;
+                    }
+
+                    if ($toMail == $comment->user->email) {
+                        continue;
+                    }
+
+                    Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
@@ -406,10 +438,12 @@ class BoardModule extends AbstractModule
                         $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
 
                         $m->from($fromEmail, $applicationName);
-                        $m->to($writer->email, $writer->getDisplayName());
+                        $m->to($toMail);
                         $m->subject($subject);
-                    }
-                });
+                    });
+                }
+
+
 
                 return $comment;
             }
@@ -429,24 +463,10 @@ class BoardModule extends AbstractModule
             function ($func, $args, $user, $config) {
                 $board = $func($args, $user, $config);
 
-                /** @var UrlHandler $urlHandler */
-                $urlHandler = app('xe.board.url');
-                $urlHandler->setConfig($config);
-                $url = $urlHandler->getShow($board);
-                $data = [
-                    'title' => xe_trans('board::newPostsRegistered'),
-                    'contents' => sprintf(
-                        '<a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
-                        $url,
-                        $url,
-                        $board->pureContent
-                    ),
-                ];
-
                 /** @var ConfigHandler $configHandler */
                 $configHandler = app('xe.board.config');
                 $config = $configHandler->get($board->instanceId);
-                if ($config->get('managerEmail') === null) {
+                if ($config->get('managerEmail', '') === '') {
                     return $board;
                 }
 
@@ -454,6 +474,25 @@ class BoardModule extends AbstractModule
                 if (count($managerEmails) == 0) {
                     return $board;
                 }
+
+                /** @var UrlHandler $urlHandler */
+                $urlHandler = app('xe.board.url');
+                $urlHandler->setConfig($config);
+                $url = $urlHandler->getShow($board);
+                $parts = parse_url($url);
+                $semanticUrl = sprintf('%s://%s%s', $parts['scheme'], $parts['host'], $parts['path']);
+
+                $data = [
+                    'title' => xe_trans('board::newPostsRegistered'),
+                    'contents' => sprintf(
+                        '<span>%s : %s</span> <a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
+                        xe_trans('xe::writer'),
+                        $board->user->getDisplayName(),
+                        $url,
+                        $semanticUrl,
+                        $board->pureContent
+                    ),
+                ];
 
                 foreach ($managerEmails as $toMail) {
                     if (!$toMail) {
@@ -490,7 +529,7 @@ class BoardModule extends AbstractModule
      */
     public static function getSettingsURI()
     {
-        return route('manage.board.board.global.edit');
+        return route('settings.board.board.global.config');
     }
 
     /**
@@ -604,7 +643,7 @@ class BoardModule extends AbstractModule
      */
     public static function getInstanceSettingURI($instanceId)
     {
-        return route('manage.board.board.edit', $instanceId);
+        return route('settings.board.board.config', $instanceId);
     }
 
     /**

@@ -1,8 +1,11 @@
 @section('page_title')
-    <h2>Share</h2>
-@endsection
+    <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
+    @endsection
 
-        <!-- Main content -->
+    @section('page_description')
+    @endsection
+
+            <!-- Main content -->
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">

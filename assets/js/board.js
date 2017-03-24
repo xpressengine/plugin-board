@@ -125,9 +125,8 @@ $(function($) {
 		event.preventDefault();
 		var $target = $(event.target),
 			$anchor = $target.closest('a'),
-			id = $anchor.data('id')
-		url = $anchor.prop('href');
-
+			id = $anchor.data('id'),
+			url = $anchor.data('url');
 		XE.ajax({
 			url: url,
 			type: 'post',
@@ -262,10 +261,7 @@ $(function($) {
 		event.preventDefault();
 		var $target = $(event.target).closest('a');
 
-		var url = $target.prop('href');
-		//if ($target.hasClass('voted')) {
-		//    url = $target.data('remove-url');
-		//}
+		var url = $target.data('url');
 
 		XE.ajax({
 			url: url,
@@ -281,7 +277,7 @@ $(function($) {
 	$('.bd_delete').on('click touchstart', function (event) {
 		event.preventDefault();
 		if (confirm(XE.Lang.trans('board::msgDeleteConfirm'))) {
-			var url = $(this).data('href');
+			var url = $(this).data('url');
 			var $form = $('<form>', {
 				action: url,
 				method: 'post'
@@ -305,7 +301,7 @@ $(function($) {
 			return;
 		}
 		var $target = $(event.target).closest('a');
-		var url = $target.prop('href');
+		var url = $target.data('url');
 		XE.page(url, '#bd_like_more'+$target.data('id'), {}, function() {
 			$('#bd_like_more'+$target.data('id')).show();
 		});
@@ -320,60 +316,6 @@ $(function($) {
 		var $target = $(event.target).closest('a');
 		var url = $target.prop('href');
 		XE.pageModal(url);
-	});
-
-	// click like number. show like member list
-	$('.bd_like_num-notuse').on('click touchstart', function(event) {
-		event.preventDefault();
-		var $target = $('.bd_like_more');
-
-		// on class 가 없다면 list 를 보기 위한 click
-		if ($target.hasClass('on') === false) {
-			var $modal = $('#xe-modal-list');
-
-			if ($modal.length != 0) {
-				$modal.empty();
-			}
-
-			$modal = $('<div class="modal fade" id="xe-Modal-list">');
-			$modal.xeModal({show:false});
-			$('body').append($modal);
-
-			getUsers.currentPage = 1;
-			getUsers.get($(event.target).attr('href'), function(json) {
-				// modal css load
-				//XE.cssLoad('/assets/vendor/core/css/modal.css');
-
-				// draw list
-				var $ul = $('<ul>').addClass('list-group');
-				$.each(json.users, function(index, user) {
-					var li = $('<li>').append(
-						$('<div>').append(
-							$('<div>').addClass('img_thmb').append($('<img>').attr('src', user.profileImage).attr('alt', user.displayName).attr('height', 48).attr('width', 48))
-						).append(
-							$('<div>').addClass('list_txt').append($('<a href="#">').addClass('__xe_member').text(user.displayName).attr('data-id', user.id).attr('data-text', user.displayName))
-						)
-					);
-					if (user.id == XE.options.loginUserId) {
-						//li.addClass('on');
-					}
-					$ul.append(li);
-				});
-
-				$modal.append($('<div class="modal-dialog">').append($('<div class="modal-content">').append(
-					$('<div class="modal-header bg_blue">').html('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="xi-close-thin"></i></button> <p class="modal-title">이 게시물을 좋아하는 사람들</p>')
-				).append($ul)));
-
-				$modal.xeModal({show:true});
-			});
-
-		} else {
-			var $modal = $('#xe-modal-list');
-			if ($modal.length != 0) {
-				$modal.xeModal({show: false});
-			}
-			$target.removeClass('on');
-		}
 	});
 
 	// open file
@@ -521,7 +463,7 @@ $(function($) {
 			type: 'post',
 			dataType: 'json',
 			data: {id:ids, instanceId: instanceId},
-			url: $(event.target).data('href'),
+			url: $(event.target).data('url'),
 			success: function(response) {
 				document.location.reload();
 			}
@@ -547,7 +489,7 @@ $(function($) {
 			type: 'post',
 			dataType: 'json',
 			data: {id:ids, instanceId: instanceId},
-			url: $(event.target).data('href'),
+			url: $(event.target).data('url'),
 			success: function(response) {
 				document.location.reload();
 			}
@@ -565,7 +507,7 @@ $(function($) {
 			type: 'post',
 			dataType: 'json',
 			data: {id:ids},
-			url: $(event.target).prop('href'),
+			url: $(event.target).data('url'),
 			success: function(response) {
 				document.location.reload();
 			}
@@ -583,13 +525,12 @@ $(function($) {
 			type: 'post',
 			dataType: 'json',
 			data: {id:ids},
-			url: $(event.target).prop('href'),
+			url: $(event.target).data('url'),
 			success: function(response) {
 				document.location.reload();
 			}
 		});
 	});
-
 
 	var hasChecked = function() {
 		if ($('.bd_manage_check:checked').length == 0) {

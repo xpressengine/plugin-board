@@ -11,9 +11,9 @@
             @if($columnName === 'title')
                 <div class="read_header">
                     @if($item->status == $item::STATUS_NOTICE)
-                        <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $showCategoryItem){{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}@endif</span>
-                    @elseif($config->get('category') == true && $showCategoryItem)
-                        <span class="category">{{ $showCategoryItem ? xe_trans($showCategoryItem->word) : '' }}</span>
+                        <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $item->boardCategory !== null){{ xe_trans($item->boardCategory->getWord()) }}@endif</span>
+                    @elseif($config->get('category') == true && $item->boardCategory !== null)
+                        <span class="category">{{ xe_trans($item->boardCategory->getWord()) }}</span>
                     @endif
                     <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
 
@@ -59,7 +59,6 @@
                 <a href="#" class="bd_btn_file"><i class="xi-clip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->data->fileCount }}</strong></a>
                 <ul>
                     @foreach($item->files as $file)
-                        {{--<li><a href="{{$urlHandler->get('download', ['id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>--}}
                         <li><a href="{{ route('editor.file.download', ['instanceId' => $item->instanceId, 'id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
                     @endforeach
                 </ul>
@@ -68,20 +67,21 @@
             <div class="bd_function">
                 <div class="bd_function_l">
                     <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
-                    <a href="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-heart"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
-                    <a href="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">{{$item->assentCount}}</a>
+                    <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-heart"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
+                    <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">{{$item->assentCount}}</a>
 
-                    <a href="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
+                    <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
 
                     {!! uio('share', [
-                        'url' => urlencode(Request::url()),
+                        'item' => $item,
+                        'url' => Request::url(),
                     ]) !!}
                 </div>
 
                 <div class="bd_function_r">
                     @if($isManager == true || $item->userId == Auth::user()->getId() || $item->userType === $item::USER_TYPE_GUEST)
                         <a href="{{ $urlHandler->get('edit', array_merge(Input::all(), ['id' => $item->id])) }}" class="bd_ico bd_modify"><i class="xi-eraser"></i><span class="xe-sr-only">{{ xe_trans('xe::update') }}</span></a>
-                        <a href="#" class="bd_ico bd_delete" data-href="{{ $urlHandler->get('destroy', array_merge(Input::all(), ['id' => $item->id])) }}"><i class="xi-trash"></i><span class="xe-sr-only">{{ xe_trans('xe::delete') }}</span></a>
+                        <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Input::all(), ['id' => $item->id])) }}"><i class="xi-trash"></i><span class="xe-sr-only">{{ xe_trans('xe::delete') }}</span></a>
                     @endif
                     <div class="bd_more_area">
                         <!-- [D] 클릭시 클래스 on 적용 -->
