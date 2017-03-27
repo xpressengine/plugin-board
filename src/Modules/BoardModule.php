@@ -421,6 +421,8 @@ class BoardModule extends AbstractModule
                     }
                 }
 
+                $emails = array_unique($emails);
+
                 foreach ($emails as $toMail) {
                     if (!$toMail) {
                         continue;
@@ -435,7 +437,7 @@ class BoardModule extends AbstractModule
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
                         $menuItem = app('xe.menu')->getItem($board->instanceId);
-                        $subject = sprintf('Re:[%s] %s', xe_trans($menuItem->title), $board->title);
+                        $subject = sprintf('Comment:[%s] %s', xe_trans($menuItem->title), $board->title);
 
                         $m->from($fromEmail, $applicationName);
                         $m->to($toMail);
