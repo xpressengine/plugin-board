@@ -375,14 +375,12 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function toArray()
     {
-        /** @var Request $request */
-        $request = app('request');
-//        $this->attributes['links'] = [
-//            'rel' => 'self',
-//            'href' => app('Xpressengine\Plugins\Board\UrlHandler')->getShow($this, $request->query->all()),
-//        ];
-        $this->attributes['user'] = $this->user;
-        $this->attributes['tags'] = $this->tags;
+        $this->slug;
+        $this->boardData;
+        $this->boardCategory;
+        $this->files;
+        $this->tags;
+        $this->user;
 
         return parent::toArray();
     }
