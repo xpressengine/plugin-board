@@ -307,7 +307,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getTitle()
     {
-        $title = $this->getAttribute('title');
+        $title = str_replace('"', '\"', $this->getAttribute('title'));
 
         return $title;
     }
@@ -319,7 +319,11 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getDescription()
     {
-        return $this->getAttribute('pureContent');
+        return str_replace(
+            ['"', "\n"],
+            ['\"', ''],
+            $this->getAttribute('pureContent')
+        );
     }
 
     /**
