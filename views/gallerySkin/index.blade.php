@@ -282,7 +282,7 @@
             @foreach($paginate as $item)
                 <li>
                     <div class="thumb_area">
-                        <a href="#">
+                        <a href="{{$urlHandler->getShow($item, Input::all())}}">
                             <img src="{{ $item->boardThumbnailPath }}" alt="">
                             @if($item->isNew($config->get('newTime')))
                             @endif

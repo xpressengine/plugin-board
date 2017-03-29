@@ -298,7 +298,7 @@
                     @endif
                 </div>
                 <div class="thumb_area">
-                    <a href="#">
+                    <a href="{{$urlHandler->getShow($item, Input::all())}}">
                         <img src="{{ $item->boardThumbnailPath }}" alt="">
                     </a>
                 </div>
