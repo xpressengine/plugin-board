@@ -468,6 +468,10 @@ class BoardModule extends AbstractModule
                 /** @var ConfigHandler $configHandler */
                 $configHandler = app('xe.board.config');
                 $config = $configHandler->get($board->instanceId);
+                if ($config == null) {
+                    return $board;
+                }
+
                 if ($config->get('managerEmail', '') === '') {
                     return $board;
                 }
