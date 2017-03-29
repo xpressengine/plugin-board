@@ -109,25 +109,6 @@ class UrlHandler
     }
 
     /**
-     * get slug url by document id
-     * document 에서 지원하는 slug 주소 반환
-     *
-     * @param string $id document id
-     * @return string
-     * @deprecated
-     */
-    public function getSlugById($id)
-    {
-        $slug = BoardSlug::where(id, $id)->where('instanceId', $this->config->get('boardId'));
-
-        if ($slug === null) {
-            return '';
-        }
-
-        return $this->getSlug($slug->slug, [], $slug->instanceId);
-    }
-
-    /**
      * get slug url
      *
      * @param string $slug       slug
