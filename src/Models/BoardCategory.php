@@ -60,4 +60,18 @@ class BoardCategory extends DynamicModel
     {
         return $this->categoryItem->word;
     }
+
+    /**
+     * get array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $this->categoryItem;
+        $this->categoryItem->trans_word = xe_trans($this->categoryItem->word);
+        $this->categoryItem->trans_description = xe_trans($this->categoryItem->description);
+
+        return parent::toArray();
+    }
 }
