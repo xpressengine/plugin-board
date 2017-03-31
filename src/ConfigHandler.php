@@ -99,21 +99,6 @@ class ConfigHandler
     }
 
     /**
-     * 비회원 글 생성 설정 체크
-     *
-     * @param ConfigEntity $config board config entity
-     * @return bool
-     * @deprecated 권한에서 처리하면 되는 내용
-     */
-    public function isGuestSupport(ConfigEntity $config)
-    {
-        if ($config->get('guest') !== true) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * 기본 게시판 설정 반환. 설정이 없을 경우 등록 후 반환
      *
      * @return ConfigEntity
