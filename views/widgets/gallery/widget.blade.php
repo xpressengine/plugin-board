@@ -8,7 +8,7 @@
             <li>
                 <a href="{{$urlHandler->getShow($item)}}">
                     <div class="xe-thumnail-box">
-                        <img src="<?php echo $item->boardThumbnailPath ? : 'http://placehold.it/300x200'?>" alt="" style="width:200px;">
+                        <img src="<?php echo $item->boardThumbnailPath ? : 'http://placehold.it/300x200'?>" alt="">
                     </div>
                     <div class="xe-title-area">
                         <div class="xe-title-category">
