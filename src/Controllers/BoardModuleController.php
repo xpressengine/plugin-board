@@ -359,7 +359,10 @@ class BoardModuleController extends Controller
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return $this->guestId($validator, $menuUrl, $item->id);
+            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+                'id' => $item->id,
+                'referrer' => app('url')->current(),
+            ]));
         }
 
         // 접근 권한 확인
@@ -403,7 +406,10 @@ class BoardModuleController extends Controller
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return $this->guestId($menuUrl, $item->id, $this->urlHandler->get('edit', ['id' => $item->id]));
+            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+                'id' => $item->id,
+                'referrer' => $this->urlHandler->get('edit', ['id' => $item->id]),
+            ]));
         }
 
         $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
@@ -430,19 +436,24 @@ class BoardModuleController extends Controller
     /**
      * 비회원 인증 페이지
      *
+     * @param Request   $request   request
      * @param Validator $validator validator
      * @param string    $menuUrl   first segment
      * @param string    $id        document id
      * @param string    $referrer  referrer url
      * @return mixed
      */
-    public function guestId(Validator $validator, $menuUrl, $id, $referrer = null)
+    public function guestId(Request $request, Validator $validator, $menuUrl, $id, $referrer = null)
     {
         $item = Board::division($this->instanceId)->find($id);
 
         // 레퍼러는 현재 url
         if ($referrer == null) {
             $referrer = app('url')->current();
+        }
+
+        if ($request->has('referrer')) {
+            $referrer = $request->get('referrer');
         }
 
         return XePresenter::make('guestId', [
@@ -572,8 +583,10 @@ class BoardModuleController extends Controller
         if ($item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            // 글 보기 페이지에서 삭제하기 다시 누르면 삭제 됨
-            return $this->guestId($validator, $menuUrl, $item->id, $this->urlHandler->get('show', ['id' => $item->id]));
+            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+                'id' => $item->id,
+                'referrer' => $this->urlHandler->get('show', ['id' => $item->id]),
+            ]));
         }
 
         if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
