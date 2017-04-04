@@ -77,6 +77,11 @@
           "name": "Design select",
           "description": "디자인 셀렉트"
         },
+        "uiobject/board@tag": {
+          "class": "Xpressengine\\Plugins\\Board\\UIObjects\\Tag",
+          "name": "Tag",
+          "description": "tag UIObject"
+        },
         "uiobject/board@share": {
           "class": "Xpressengine\\Plugins\\Board\\UIObjects\\Share",
           "name": "Share",
