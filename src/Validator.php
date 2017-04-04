@@ -144,7 +144,7 @@ class Validator
         return [
             'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
-            'certifyKey' => 'Required|AlphaNum|Between:4,64|',
+            'certifyKey' => 'Required|Between:4,64',
             'slug' => 'Required',
         ];
     }
@@ -159,7 +159,7 @@ class Validator
         return [
             'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
-            'certifyKey' => 'AlphaNum|Between:4,64|',
+            'certifyKey' => 'Between:4,64',
         ];
     }
 
