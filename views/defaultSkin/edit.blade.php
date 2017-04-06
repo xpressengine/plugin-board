@@ -39,7 +39,9 @@
                 </div>
 
                 @if($config->get('useTag') === true)
-                    <div id="xeBoardTagWrap" class="xe-select-label __xe-board-tag" data-placeholder="{{xe_trans('board::inputTag')}}" data-url="/editor/hashTag" data-tags='[@foreach($item->tags as $loop_key => $tag)"{{$tag->word}}" @if($loop_key+1 < $item->tags->count()) , @endif @endforeach]'></div>
+                    {!! uio('uiobject/board@tag', [
+                    'tags' => $item->tags->toArray()
+                    ]) !!}
                 @endif
             @else
                 <div class="__xe_{{$columnName}} __xe_section">

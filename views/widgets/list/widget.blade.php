@@ -1,6 +1,7 @@
+{{ XeFrontend::css('plugins/board/assets/css/widget.list.css')->load() }}
 <div class="list-widget">
-    <h3>{{xe_trans($menuItem->title)}}</h3>
-    <a href="{{instanceRoute('index', [], $menuItem->id)}}" class="link-more-board xe-hidden-sm xe-hidden-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    <h3 class="article-table-title">{{xe_trans($menuItem->title)}}</h3>
+    <a href="{{instanceRoute('index', [], $menuItem->id)}}" class="article-table-more xe-hidden-sm xe-hidden-x">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
     <a href="#"></a>
     <div class="table-wrap">
         <table class="article-table type2">

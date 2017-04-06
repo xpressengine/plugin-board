@@ -1,13 +1,14 @@
+{{ XeFrontend::css('plugins/board/assets/css/widget.gallery.css')->load() }}
 <div class="gallery-widget">
-    <h3>{{xe_trans($menuItem->title)}}</h3>
-    <a href="{{instanceRoute('index', [], $menuItem->id)}}" class="link-more-board xe-hidden-sm xe-hidden-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    <h3 class="article-table-title">{{xe_trans($menuItem->title)}}</h3>
+    <a href="{{instanceRoute('index', [], $menuItem->id)}}" class="article-table-more xe-hidden-sm xe-hidden-x">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
     <div class="article-thumnail">
         <ul>
             @foreach ($list as $item)
             <li>
                 <a href="{{$urlHandler->getShow($item)}}">
                     <div class="xe-thumnail-box">
-                        <img src="<?php echo $item->boardThumbnailPath ? : 'http://placehold.it/300x200'?>" alt="" style="width:200px;">
+                        <img src="<?php echo $item->boardThumbnailPath ? : 'http://placehold.it/300x200'?>" alt="">
                     </div>
                     <div class="xe-title-area">
                         <div class="xe-title-category">

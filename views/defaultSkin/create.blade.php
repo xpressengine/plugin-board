@@ -40,7 +40,7 @@
                 </div>
 
                 @if($config->get('useTag') === true)
-                    <div id="xeBoardTagWrap" class="xe-select-label __xe-board-tag" data-placeholder="{{xe_trans('board::inputTag')}}" data-url="/editor/hashTag" data-tags=""></div>
+                    {!! uio('uiobject/board@tag') !!}
                 @endif
             @else
                 <div class="__xe_{{$columnName}} __xe_section">

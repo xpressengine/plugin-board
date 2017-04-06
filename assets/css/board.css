@@ -7,7 +7,7 @@
 .bd_function .bd_like_num,
 .temp_save .temp_save_num,
 .board .more_info .mb_autohr,
-.write_footer .write_form_btn > a,
+.write_footer .write_form_btn > button,
 .temp_save_list .temp_title,
 .board .ly_popup li > a,
 .board_header .bd_btn_detail,
@@ -169,9 +169,9 @@
 }
 .board_header .bd_select_area,
 .board_header .xe-form-inline .xe-dropdown {
-  position: relative;  
+  position: relative;
   margin-right: 10px;
-  min-width: 120px;  
+  min-width: 120px;
 }
 .bd_select {
   overflow: hidden;
@@ -518,7 +518,7 @@
   background-color: #f4f4f4;
 }
 .board_list tr.readed td,
-.board_list tr.readed td > a, 
+.board_list tr.readed td > a,
 .board_list tr.readed td .bd_ico_lock {
   color: #bebebe;
 }
@@ -613,11 +613,11 @@
   font-size: 13px;
   color: #399cf7;
 }
-.board_list .bd_ico_file {  
-  margin-right: 2px;  
+.board_list .bd_ico_file {
+  margin-right: 2px;
 }
 .board_list .bd_ico_file i{
-  vertical-align: top;  
+  vertical-align: top;
   padding-top: 4px;
   color: #bebebe;
   font-size: 14px;
@@ -634,13 +634,13 @@
 }
 .board_list .bd_ico_lock{
   margin-right: 6px;
-  font-size: 15px;  
+  font-size: 15px;
   color: #2c2e37;
 }
 
 .board_list .bd_ico_reply{
   margin-right: 6px;
-  font-size: 15px;  
+  font-size: 15px;
   color: #5EA2F7;
   vertical-align: middle;
 }
@@ -694,7 +694,7 @@
   vertical-align: middle;
 }*/
 .board_list.v2 .title {
-  overflow: hidden;  
+  overflow: hidden;
   display: inline;
   max-height: 57px;
   margin-right: 5px;
@@ -1261,18 +1261,19 @@
   clear: both;
   content: "";
 }
-.write_footer .write_form_btn > a {
+.write_footer .write_form_btn > button {
   margin-left: 2px;
   color: #696e7a;
   border: 1px solid #f4f4f4;
   background-color: #f4f4f4;
   font-size: 15px;
+  line-height: 34px;
 }
-.write_footer .write_form_btn > a:first-child {
+.write_footer .write_form_btn > button:first-child {
   margin-left: 0;
 }
-.write_footer .write_form_btn > a:hover,
-.write_footer .write_form_btn > a:focus {
+.write_footer .write_form_btn > button:hover,
+.write_footer .write_form_btn > button:focus {
   border-color: #e2e2e2;
   background-color: #e2e2e2;
 }
@@ -1426,7 +1427,7 @@
   .board_header .board-sorting-area .xe-dropdown .xe-dropdown-menu {
     position: relative;
     border-color: #797B81;
-  } 
+  }
   .board_header .board-sorting-area .xe-dropdown+.xe-dropdown{
     margin-top:-1px;
   }
@@ -1669,7 +1670,7 @@
     padding-top: 20px;
     float: none;
   }
-  .write_footer .write_form_btn > a {
+  .write_footer .write_form_btn > button {
     float: left;
     min-width: auto;
     width: 32%;

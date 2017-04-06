@@ -2,7 +2,7 @@
   "name": "xpressengine-plugin/board",
   "description": "XpressEngine's plugin for bundle (XE)",
   "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
-  "version": "0.9.16",
+  "version": "0.9.17",
   "support": {
     "email": "developers@xpressengine.com"
   },
@@ -76,6 +76,11 @@
           "class": "Xpressengine\\Plugins\\Board\\UIObjects\\DesignSelect",
           "name": "Design select",
           "description": "디자인 셀렉트"
+        },
+        "uiobject/board@tag": {
+          "class": "Xpressengine\\Plugins\\Board\\UIObjects\\Tag",
+          "name": "Tag",
+          "description": "tag UIObject"
         },
         "uiobject/board@share": {
           "class": "Xpressengine\\Plugins\\Board\\UIObjects\\Share",
