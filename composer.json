@@ -130,6 +130,9 @@
   "autoload": {
     "psr-4": {
       "Xpressengine\\Plugins\\Board\\": "src/"
-    }
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   }
 }
