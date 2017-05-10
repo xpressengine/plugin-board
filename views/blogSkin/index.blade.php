@@ -236,7 +236,7 @@
                         <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                     @endif
                     @if ($item->data->fileCount > 0)
-                        <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                        <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
                     @endif
                     @if($item->isNew($config->get('newTime')))
                         <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
@@ -291,7 +291,7 @@
                         <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                     @endif
                     @if ($item->data->fileCount > 0)
-                        <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                        <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
                     @endif
                     @if($item->isNew($config->get('newTime')))
                         <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
