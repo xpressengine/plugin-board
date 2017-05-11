@@ -36,6 +36,8 @@ class Plugin extends AbstractPlugin
         Resources::bindClasses();
         Resources::registerTitleWithSlug();
         Resources::registerRecycleBin();
+        Resources::registerCommands();
+        Resources::setDefaultSkin();
     }
 
     /**

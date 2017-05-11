@@ -25,10 +25,12 @@ use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
 use Xpressengine\Plugins\Board\Services\BoardService;
+use Xpressengine\Plugins\Board\Skins\DefaultSkin;
 use Xpressengine\Plugins\Board\UIObjects\Title;
 use Xpressengine\Plugins\Board\UIObjects\Share;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
+use Xpressengine\Plugins\Board\Commands\BoardSkinMake;
 use Schema;
 use XeToggleMenu;
 use XeConfig;
@@ -39,6 +41,7 @@ use XeTrash;
 use XeCounter;
 use XeDynamicField;
 use XeDocument;
+use XeSkin;
 
 /**
  * Resources
@@ -220,5 +223,31 @@ class Resources
     public static function registerRecycleBin()
     {
         XeTrash::register(RecycleBin::class);
+    }
+
+    public static function registerCommands()
+    {
+        $events = app('events');
+
+        $commands = [
+            BoardSkinMake::class,
+        ];
+
+        $events->listen('artisan.start', function ($artisan) use ($commands) {
+            $artisan->resolveCommands($commands);
+        });
+    }
+
+    /**
+     * set default skin
+     *
+     * @return void
+     */
+    public static function setDefaultSkin()
+    {
+        XeSkin::setDefaultSkin(
+            BoardModule::getId(),
+            DefaultSkin::getId()
+        );
     }
 }
