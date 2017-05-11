@@ -25,9 +25,6 @@
             <div>
                 {!! $fieldType->getSkin()->show($fieldType->getConfig(), $doc->getAttributes()) !!}
             </div>
-        @else
-            <dt>이건 뭔데!!!!</dt>
-            <dd>{{ $columnName }}이건 뭐냐?</dd>
         @endif
     @endforeach
 </div>
