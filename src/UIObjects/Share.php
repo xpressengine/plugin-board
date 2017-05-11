@@ -84,7 +84,7 @@ class Share extends AbstractUIObject
 //            'line' => [
 //                'label' => 'board::line',
 //                'url' => 'http://line.me/R/msg/text/?title=__url__',
-//                'icon' => 'xi-line'
+//                'icon' => 'xi-line-messenger'
 //            ],
 //            'copy' => [
 //                'label' => 'board::고유주소',
