@@ -313,6 +313,16 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
+     * get compiled content
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return compile($this->instanceId, $this->content, $this->format === static::FORMAT_HTML);
+    }
+
+    /**
      * Returns description
      *
      * @return string

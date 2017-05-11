@@ -162,12 +162,14 @@ class BoardModuleController extends Controller
         $paginate = $service->getItems($request, $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);
         $categories = $service->getCategoryItems($this->config);
+        $orders = $this->handler->getOrders();
 
         return XePresenter::makeAll('index', [
             'notices' => $notices,
             'paginate' => $paginate,
             'categories' => $categories,
             'fieldTypes' => $fieldTypes,
+            'orders' => $orders,
         ]);
     }
 

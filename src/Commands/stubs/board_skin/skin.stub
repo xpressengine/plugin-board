@@ -1,0 +1,9 @@
+<?php
+namespace DummyNamespace;
+
+use Xpressengine\Plugins\Board\Skins\GenericBoardSkin;
+
+class DummyClass extends GenericBoardSkin
+{
+    protected static $path = 'DummyPluginId/DummySkinDirname';
+}
