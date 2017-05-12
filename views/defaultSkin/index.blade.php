@@ -10,14 +10,14 @@
                 <!-- 모바일뷰에서 노출되는 정렬 버튼 -->
     <div class="bd_manage_area xe-visible-xs">
         <!-- [D] 클릭시 클래스 on 추가 및 bd_align 영역 노출 -->
-        <a href="#" class="btn_mng bd_sorting __xe-bd-mobile-sorting"><i class="xi-funnel"></i> <span class="xe-sr-only">{{xe_trans('xe::order')}}</span></a>
+        <a href="#" class="btn_mng bd_sorting __xe-bd-mobile-sorting"><i class="xi-filter"></i> <span class="xe-sr-only">{{xe_trans('xe::order')}}</span></a>
     </div>
     <!-- /모바일뷰에서 노출되는 정렬 버튼 -->
 
     <div class="bd_btn_area">
         <ul>
             <!-- [D] 클릭시 클래스 on 및 추가 bd_search_area 영역 활성화 -->
-            <li><a href="#" class="bd_search __xe-bd-search"><span class="xe-sr-only">{{ xe_trans('xe::search') }}</span><i class="xi-magnifier"></i></a></li>
+            <li><a href="#" class="bd_search __xe-bd-search"><span class="xe-sr-only">{{ xe_trans('xe::search') }}</span><i class="xi-search"></i></a></li>
             <li><a href="{{ $urlHandler->get('create') }}"><span class="xe-sr-only">{{ xe_trans('board::newPost') }}</span><i class="xi-pen-o"></i></a></li>
             @if ($isManager === true)
             <li><a href="{{ $urlHandler->managerUrl('config', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
@@ -279,7 +279,7 @@
                                 <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                             @endif
                             @if ($item->data->fileCount > 0)
-                                <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                                <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
                             @endif
                             @if($item->isNew($config->get('newTime')))
                                 <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
@@ -357,7 +357,7 @@
                             <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                         @endif
                         @if ($item->data->fileCount > 0)
-                            <span class="bd_ico_file"><i class="xi-clip"></i><span class="xe-sr-only">file</span></span>
+                            <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
                         @endif
                         @if($item->isNew($config->get('newTime')))
                             <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>

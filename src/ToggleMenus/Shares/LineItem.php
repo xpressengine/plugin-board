@@ -36,7 +36,7 @@ class LineItem extends AbstractToggleMenu
     public function getAction()
     {
         $url = 'http://line.me/R/msg/text/?title=' . urlencode(app('request')->get('url'));
-        return '<a href="#" class="share-item" data-url="'.$url.'" data-type="line"><i class="xi-line"></i>'
+        return '<a href="#" class="share-item" data-url="'.$url.'" data-type="line"><i class="xi-line-messenger"></i>'
         .$this->getText().'</a>';
     }
 
