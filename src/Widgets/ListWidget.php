@@ -14,11 +14,11 @@
 namespace Xpressengine\Plugins\Board\Widgets;
 
 use Carbon\Carbon;
+use View;
+use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Widget\AbstractWidget;
-use View;
-use Xpressengine\Menu\Models\MenuItem;
 
 /**
  * ListWidget
@@ -78,8 +78,8 @@ class ListWidget extends AbstractWidget
         //$recent_date
         if ($recent_date !== 0) {
             $current = Carbon::now();
-            $query = $query->where('createdAt', '>=', $current->addDay(-1 * $recent_date)->toDateString() . ' 00:00:00')
-                ->where('createdAt', '<=', $current->addDay($recent_date)->toDateString() . ' 23:59:59');
+            $query = $query->where('createdAt', '>=', $current->addDay(-1 * $recent_date)->toDateString().' 00:00:00')
+                ->where('createdAt', '<=', $current->addDay($recent_date)->toDateString().' 23:59:59');
         }
 
         //$orderType
@@ -99,13 +99,15 @@ class ListWidget extends AbstractWidget
 
         $urlHandler = new UrlHandler($boardConfig);
 
-        return $view = View::make(sprintf('%s.widget', static::$viewAlias), [
-            'list' => $list,
-            'boardConfig' => $boardConfig,
-            'menuItem' => $menuItem,
-            'widgetConfig' => $widgetConfig,
-            'urlHandler' => $urlHandler,
-        ]);
+        return $this->renderSkin(
+            [
+                'list' => $list,
+                'boardConfig' => $boardConfig,
+                'menuItem' => $menuItem,
+                'widgetConfig' => $widgetConfig,
+                'urlHandler' => $urlHandler,
+            ]
+        );
     }
 
     /**

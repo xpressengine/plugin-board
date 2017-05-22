@@ -112,10 +112,15 @@
           "name": "게시물 리스트 위젯",
           "description": "게시물 리스트 보여주는 위젯"
         },
-        "widget/board@gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Widgets\\GalleryWidget",
-          "name": "게시물 갤러리 위젯",
-          "description": "게시물 갤러리 보여주는 위젯"
+        "widget/board@list/skin/board@default": {
+          "class": "Xpressengine\\Plugins\\Board\\Widgets\\Skins\\DefaultSkin",
+          "name": "기본 게시물 위젯 스킨",
+          "description": "게시물 리스트 위젯용 기본 스킨"
+        },
+        "widget/board@list/skin/board@gallery": {
+          "class": "Xpressengine\\Plugins\\Board\\Widgets\\Skins\\GallerySkin",
+          "name": "갤러리형 게시물 위젯 스킨",
+          "description": "갤러리형 게시물 리스트 위젯용 스킨"
         }
       },
       "screenshots" : [
