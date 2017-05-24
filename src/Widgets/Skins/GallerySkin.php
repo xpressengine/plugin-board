@@ -72,7 +72,7 @@ class GallerySkin extends GenericSkin
         // board gallery thumbnails 에 항목이 없는 경우
         if ($item->boardThumbnailFileId === null && $item->boardThumbnailPath === null) {
             // find file by document id
-            $files = File::getByFileable($item->id);
+            $files = \XeStorage::fetchByFileable($item->id);
             $fileId = '';
             $externalPath = '';
             $thumbnailPath = '';
