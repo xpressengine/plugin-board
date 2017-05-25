@@ -11,3 +11,5 @@
 </ul>
 
 {!! $content !!}
+
+{{ XeFrontend::js('assets/vendor/jqueryui/jquery-ui.min.js')->load() }}

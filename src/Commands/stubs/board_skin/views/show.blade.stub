@@ -1,0 +1,88 @@
+{{ XeFrontend::css('plugins/DummyPath/assets/css/skin.css')->load() }}
+
+{{ XeFrontend::js('plugins/board/assets/js/build/board.js')->appendTo('body')->load() }}
+
+{{ XeFrontend::js('/assets/core/common/js/toggleMenu.js')->appendTo('head')->load() }}
+
+<div class="board">
+    <div class="board_read">
+        <div class="read_header">
+            @if($item->status == $item::STATUS_NOTICE)
+                <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $item->boardCategory !== null){{ xe_trans($item->boardCategory->getWord()) }}@endif</span>
+            @elseif($config->get('category') == true && $item->boardCategory !== null)
+                <span class="category">{{ xe_trans($item->boardCategory->getWord()) }}</span>
+            @endif
+            <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
+
+            <div>
+                <span>{{xe_trans('xe::writer')}}</span>
+                @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                    <a href="{{ sprintf('/@%s', $item->getUserId()) }}" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{{ $item->writer }}</a>
+                @else
+                    <a>{{ $item->writer }}</a>
+                @endif
+            </div>
+            <div>
+                <span><i class="xi-time"></i> <span data-xe-timeago="{{$item->createdAt}}" title="{{$item->createdAt}}">{{$item->createdAt}}</span></span>
+                <span><i class="xi-eye"></i> {{$item->readCount}}</span>
+            </div>
+        </div>
+
+        <div class="read_body">
+            {!! $item->getContent() !!}
+        </div>
+
+        <div class="read_dynamicField">
+            @foreach ($configHandler->getDynamicFields($config) as $dynamicFieldConfig)
+                <div>
+                    {!! XeDynamicField::getByConfig($dynamicFieldConfig)->getSkin()->show($item->getAttributes()) !!}
+                </div>
+            @endforeach
+        </div>
+
+        <div class="read_footer">
+            <!-- attached files -->
+            @if (count($item->files) > 0)
+                <div>
+                    <ul>
+                        @foreach($item->files as $file)
+                            <li><a href="{{ route('editor.file.download', ['instanceId' => $item->instanceId, 'id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- buttons -->
+            <div>
+                <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-heart"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
+                <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">{{$item->assentCount}}</a>
+
+                <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
+
+                {!! uio('share', [
+                    'item' => $item,
+                    'url' => Request::url(),
+                ]) !!}
+
+                <a href="{{$urlHandler->get('index', Input::all())}}">{{ xe_trans('xe::list') }}</a>
+                @if($isManager == true || $item->userId == Auth::user()->getId() || $item->userType === $item::USER_TYPE_GUEST)
+                    <a href="{{ $urlHandler->get('edit', array_merge(Input::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::update') }}</a>
+                    <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Input::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::delete') }}</a>
+                @endif
+
+                <div class="bd_more_area">
+                    <!-- [D] 클릭시 클래스 on 적용 -->
+                    <a href="#" class="bd_ico bd_more_view" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instanceId]) !!}' data-side="dropdown-menu-right"><i class="xi-ellipsis-h"></i><span class="xe-sr-only">{{ xe_trans('xe::more') }}</span></a>
+                </div>
+                <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 -->
+    @if ($config->get('comment') === true && $item->boardData->allowComment === 1)
+        <div class="__xe_comment board_comment">
+            {!! uio('comment', ['target' => $item]) !!}
+        </div>
+    @endif
+</div>

@@ -2,8 +2,8 @@
     <label>게시판</label>
     <select name="board_id" class="form-control">
         @foreach ($boardList as $item)
-        <option value="{{$item['value']}}" @if(array_get($args, 'board_id') == $item['value']) selected="selected" @endif >{{xe_trans($item['text'])}}</option>
-         @endforeach
+            <option value="{{$item['value']}}" @if(array_get($args, 'board_id') == $item['value']) selected="selected" @endif >{{xe_trans($item['text'])}}</option>
+        @endforeach
     </select>
 </div>
 
