@@ -304,6 +304,7 @@ class BoardSkinMake extends SkinMake
             if (file_exists($stub)) {
                 $code = $this->files->get($stub);
                 $this->replaceCode($code, 'DummyPath', $replacePath);
+                $this->files->put($stub, $code);
 
                 $rename = sprintf('%s/views/%s.blade.php', $path, $fileName);
                 rename($stub, $rename);

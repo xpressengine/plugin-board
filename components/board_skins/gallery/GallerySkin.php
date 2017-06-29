@@ -1,16 +1,4 @@
 <?php
-/**
- * GallerySkin
- *
- * PHP version 5
- *
- * @category    Board
- * @package     Xpressengine\Plugins\Board
- * @author      XE Developers <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
- * @link        https://xpressengine.io
- */
 namespace Xpressengine\Plugins\Board\Skins;
 
 use Xpressengine\Config\ConfigEntity;
@@ -19,86 +7,38 @@ use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
-use Xpressengine\Presenter\Presenter;
-use Xpressengine\Routing\InstanceConfig;
+use Xpressengine\Storage\File;
+use Xpressengine\Plugins\Board\Modules\BoardModule;
 use XeSkin;
 use XePresenter;
 use View;
 use Event;
 use Input;
 use App;
-use Xpressengine\Storage\File;
-use Xpressengine\Plugins\Board\Modules\BoardModule;
 
-/**
- * GallerySkin
- *
- * @category    Board
- * @package     Xpressengine\Plugins\Board
- * @author      XE Developers <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
- * @link        https://xpressengine.io
- */
-class GallerySkin3 extends DefaultSkin
+class GallerySkin extends DefaultSkin
 {
-    /**
-     * @var string
-     */
-    protected static $skinAlias = 'board::views.gallerySkin';
+    protected static $path = 'board/components/board_skins/gallery';
 
     /**
      * @var array
      */
-    static protected $thumbSkins = [];
+    protected static $thumbSkins = [];
 
     /**
      * render
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\Support\Renderable|string
      */
     public function render()
     {
         $this->registerGetOrdersIntercept();
 
-        // call customizer
-        // view 아이디를 기준으로 Customizer 호출
-        $customizer = $this->view . 'Customizer';
-        if (method_exists($this, $customizer)) {
-            $this->$customizer();
-        }
-
-        $this->data['skinAlias'] = static::$skinAlias;
-
-        // 리스팅을 제외한 모든 디자인은 기본 스킨의 디자인 사용
-        if ($this->view === 'index') {
+        if (isset($this->data['paginate'])) {
             static::attachThumbnail($this->data['paginate']);
-
-            $contentView = View::make(
-                sprintf('%s.%s', static::$skinAlias, $this->view),
-                $this->data
-            );
-        } else {
-
-            if ($this->view === 'show') {
-                static::attachThumbnail($this->data['paginate']);
-            }
-
-            $contentView = View::make(
-                sprintf('%s.%s', parent::$skinAlias, $this->view),
-                $this->data
-            );
         }
 
-        if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
-            $view = $contentView->render();
-        } else {
-            // wrapped by _frame.blade.php
-            $view = View::make(sprintf('%s._frame', parent::$skinAlias), $this->data);
-            $view->content = $contentView->render();
-        }
-
-        return $view;
+        return parent::render();
     }
 
     /**
@@ -143,26 +83,6 @@ class GallerySkin3 extends DefaultSkin
                 return $notice;
             }
         );
-    }
-
-    /**
-     * get manage URI
-     *
-     * @return string
-     */
-    public static function getSettingsURI()
-    {
-    }
-
-    /**
-     * Register 에 등록될 때
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        static::addThumbSkin(static::getId());
-        static::interceptSetSkinTargetId();
     }
 
     /**
@@ -253,6 +173,7 @@ class GallerySkin3 extends DefaultSkin
         $mediaManager = App::make('xe.media');
 
         // board gallery thumbnails 에 항목이 없는 경우
+        dump($item);
         if ($item->boardThumbnailFileId === null && $item->boardThumbnailPath === null) {
             // find file by document id
             $files = File::getByFileable($item->id);
