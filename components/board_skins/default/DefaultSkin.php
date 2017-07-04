@@ -129,16 +129,20 @@ class DefaultSkin extends GenericBoardSkin
             if ($instanceId === $config->get('boardId')) {
                 continue;
             }
+            $menuItem = MenuItem::find($config->get('boardId'));
+            $title = xe_trans($menuItem->title);
 
             $boardName = $config->get('boardName');
-            if ($boardName === null || $boardName === '') {
-                $menuItem = MenuItem::find($config->get('boardId'));
-                $boardName = $menuItem->title;
+            if ($boardName) {
+                $boardName = xe_trans($boardName);
+                if ($boardName != '') {
+                    $title = sprintf('%s(%s)', $title, $boardName);
+                }
             }
 
             $boardList[] = [
                 'value' => $config->get('boardId'),
-                'text' => $boardName,
+                'text' => $title,
             ];
         }
         $this->data['boardList'] = $boardList;
