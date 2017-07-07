@@ -29,6 +29,7 @@ use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 use Xpressengine\User\UserInterface;
+use Xpressengine\Support\Purifier;
 
 /**
  * BoardService
@@ -162,7 +163,7 @@ class BoardService
                 ];
             }
         }
-        
+
         return $items;
     }
 
@@ -266,10 +267,13 @@ class BoardService
             $request->request->set('certifyKey', $identifyManager->hash($request->get('certifyKey')));
         }
 
+        $purifier = new Purifier();
+        $purifier->allowModule('XeEditorTool');
+
         $inputs = $request->request->all();
         $inputs['instanceId'] = $config->get('boardId');
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = purify($request->originAll()['content']);
+        $inputs['content'] = $purifier->purify($request->originAll()['content']);
 
         /** @var \Xpressengine\Editor\AbstractEditor $editor */
         $editor = XeEditor::get($config->get('boardId'));
@@ -308,9 +312,12 @@ class BoardService
             $request->request->set('certifyKey', $identifyManager->hash($newCertifyKey));
         }
 
+        $purifier = new Purifier();
+        $purifier->allowModule('XeEditorTool');
+
         $inputs = $request->all();
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = purify($request->originAll()['content']);
+        $inputs['content'] = $purifier->purify($request->originAll()['content']);
 
         if ($request->get('status') == Board::STATUS_NOTICE) {
             $item->status = Board::STATUS_NOTICE;
