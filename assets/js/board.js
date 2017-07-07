@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-var AssentVirtualGrid = (function() {
+window.AssentVirtualGrid = (function() {
 	var self, grid, dataView;
 	var ajaxRunning = false;    //ajax중인지
 	var startId,
@@ -50,7 +50,7 @@ var AssentVirtualGrid = (function() {
 			$(".slick-header").hide();
 
 
-			id= 0;
+			//id = 0;
 			ajaxRunning = false;
 			isLastRow = false;
 			startId = 0;
