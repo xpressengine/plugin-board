@@ -50,4 +50,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
+  externals: {
+    window: 'window',
+  },
 };

@@ -269,6 +269,7 @@ class BoardService
 
         $purifier = new Purifier();
         $purifier->allowModule('XeEditorTool');
+        $purifier->allowModule('HTML5');
 
         $inputs = $request->request->all();
         $inputs['instanceId'] = $config->get('boardId');
@@ -314,6 +315,7 @@ class BoardService
 
         $purifier = new Purifier();
         $purifier->allowModule('XeEditorTool');
+        $purifier->allowModule('HTML5');
 
         $inputs = $request->all();
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);

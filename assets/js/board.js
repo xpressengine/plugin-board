@@ -1,91 +1,43 @@
 import moment from 'moment';
+import window from 'window';
 
 window.AssentVirtualGrid = (function() {
-	var self, grid, dataView;
-	var ajaxRunning = false;    //ajax중인지
-	var startId,
-		limit,
-		isLastRow = false;      //마지막 row인지
+	var self;
+	var startId, limit;
 
 	return {
+		getTemplate: function () {
+			return [
+				'<!--[D] 링크가 아닌 경우 div 로 교체 -->',
+				'<a href="{{profilePage}}" class="list-inner-item">',
+				'<!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->',
+				'<div class="img-thumbnail"><img src="{{profileImage}}" width="48" height="48" alt="{{displayName}}" /></div>',
+				'<div class="list-text">',
+				'<p>{{displayName}}</p>',
+				'</div>',
+				'</a>',
+			].join("\n");
+		},
 		init: function() {
+			self = AssentVirtualGrid;
 
-			var self = AssentVirtualGrid;
-			var columns = [{
-				//selectable: false,
-				formatter: function(row, cell, value, columnDef, dataContext) {
-					var tmpl = [
-						'<!--[D] 링크가 아닌 경우 div 로 교체 -->',
-						'<a href="__profilePage__" class="list-inner-item">',
-						'<!--[D] 실제 이미지 사이즈는 모바일 대응 위해 일대일 비율로 96*96 이상-->',
-						'<div class="img-thumbnail"><img src="__src__" width="48" height="48" alt="__alt__" /></div>',
-						'<div class="list-text">',
-						'<p>__alt__</p>',
-						'</div>',
-						'</a>',
-					].join("\n");
-
-					return tmpl.replace(/__src__/g, dataContext.profileImage).replace(/__alt__/g, dataContext.displayName).replace(/__profilePage__/g, dataContext.profilePage);
-				}
-			}];
-
-			var options = {
-				editable: false,
-				enableAddRow: true,
-				enableColumnReorder: false,
-				enableCellNavigation: false,
-				// asyncEditorLoading: false,
-				// autoEdit: false,
-				rowHeight: 80,
-				headerHeight: 0,
-				showHeaderRow: false
-			};
-
-			// var data = [];
 			$(".xe-list-group").css("height", "365px");
-			dataView = new Slick.Data.DataView();
-			grid = new Slick.Grid(".xe-list-group", dataView, columns, options);
-			grid.setHeaderRowVisibility(false);
 
-			$(".slick-header").hide();
-
-
-			//id = 0;
-			ajaxRunning = false;
-			isLastRow = false;
 			startId = 0;
 			limit = 10;
-
-			self.getRows();
-			self.bindEvent();
+			
+			XeInfinite.init({
+				wrapper: ".xe-list-group",
+				template: self.getTemplate(),
+				loadRowCount: 3,
+				rowHeight: 80,
+				onGetRows: self.onGetRows
+			});
 
 			return self;
 		},
-		bindEvent: function() {
-			grid.onScroll.subscribe(function(e, args) {
-
-				var $viewport = $(".xe-modal").find(".slick-viewport"),
-					loadBlockCnt = 3;   //3 page 정도 남으면 reload함, 1page - modal body height 기준.
-
-				if(!ajaxRunning && !isLastRow && ($viewport[0].scrollHeight - $viewport.scrollTop()) < ($viewport.outerHeight() * loadBlockCnt)) {
-					AssentVirtualGrid.getRows();
-				}
-
-			});
-
-			dataView.onRowCountChanged.subscribe(function (e, args) {
-				grid.updateRowCount();
-				grid.render();
-			});
-
-			dataView.onRowsChanged.subscribe(function (e, args) {
-				grid.invalidateRows(args.rows);
-				grid.render();
-			});
-		},
-		getRows: function() {
-
-			ajaxRunning = true;
+		onGetRows: function() {
+			XeInfinite.setPrevent(true);
 
 			var data = {
 				limit: limit
@@ -101,20 +53,19 @@ window.AssentVirtualGrid = (function() {
 				dataType: 'json',
 				data: data,
 				success: function(data) {
-
 					if(data.nextStartId === 0) {
-						isLastRow = true;
+						XeInfinite.setPrevent(true);
+					} else {
+						XeInfinite.setPrevent(false);
 					}
 
 					startId = data.nextStartId;
 
 					for(var k = 0, max = data.list.length; k < max; k += 1) {
-						dataView.addItem(data.list[k]);
+						XeInfinite.addItems(data.list[k]);
 					}
 
 				}
-			}).done(function() {
-				ajaxRunning = false;
 			});
 		}
 	}

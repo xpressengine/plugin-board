@@ -805,7 +805,7 @@ class BoardModuleController extends Controller
             $user = $log->user;
             $profilePage = '#';
             if ($user->getId() != '') {
-                $profilePage = route('member.profile', ['member' => $user->getId()]);
+                $profilePage = route('user.profile', ['user' => $user->getId()]);
             }
             $list[] = [
                 'id' => $user->getId(),
