@@ -129,7 +129,7 @@
                 <tr class="no_article">
                     <!-- [D] 컬럼수에 따라 colspan 적용 -->
                     <td @if ($config->get('category') == true) colspan="9" @else colspan="8" @endif >
-                        <img src="/plugins/board/assets/img/img_pen.jpg" alt="">
+                        <img src="{{ asset('plugins/board/assets/img/img_pen.jpg') }}" alt="">
                         <p>{{ xe_trans('xe::noPost') }}</p>
                     </td>
                 </tr>
