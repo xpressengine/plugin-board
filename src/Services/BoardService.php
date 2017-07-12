@@ -19,6 +19,7 @@ use XeEditor;
 use XeCaptcha;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Config\ConfigEntity;
+use Xpressengine\Editor\PurifierModules\EditorTool;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
@@ -28,6 +29,7 @@ use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
+use Xpressengine\Support\PurifierModules\Html5;
 use Xpressengine\User\UserInterface;
 use Xpressengine\Support\Purifier;
 
@@ -260,6 +262,7 @@ class BoardService
      */
     public function store(Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager)
     {
+        dump(__METHOD__);
         $this->checkCaptcha($config);
 
         // 암호 설정
@@ -268,8 +271,8 @@ class BoardService
         }
 
         $purifier = new Purifier();
-        $purifier->allowModule('XeEditorTool');
-        $purifier->allowModule('HTML5');
+        $purifier->allowModule(EditorTool::class);
+        $purifier->allowModule(HTML5::class);
 
         $inputs = $request->request->all();
         $inputs['instanceId'] = $config->get('boardId');
@@ -314,8 +317,8 @@ class BoardService
         }
 
         $purifier = new Purifier();
-        $purifier->allowModule('XeEditorTool');
-        $purifier->allowModule('HTML5');
+        $purifier->allowModule(EditorTool::class);
+        $purifier->allowModule(HTML5::class);
 
         $inputs = $request->all();
         $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
