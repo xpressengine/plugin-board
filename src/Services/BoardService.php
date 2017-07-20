@@ -261,7 +261,6 @@ class BoardService
      */
     public function store(Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager)
     {
-        dump(__METHOD__);
         $this->checkCaptcha($config);
 
         // 암호 설정
