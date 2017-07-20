@@ -19,6 +19,7 @@ use XeEditor;
 use XeCaptcha;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Config\ConfigEntity;
+use Xpressengine\Editor\PurifierModules\EditorTool;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
@@ -28,6 +29,7 @@ use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
+use Xpressengine\Support\PurifierModules\Html5;
 use Xpressengine\User\UserInterface;
 
 /**
@@ -162,7 +164,7 @@ class BoardService
                 ];
             }
         }
-        
+
         return $items;
     }
 
@@ -268,8 +270,6 @@ class BoardService
 
         $inputs = $request->request->all();
         $inputs['instanceId'] = $config->get('boardId');
-        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = purify($request->originAll()['content']);
 
         /** @var \Xpressengine\Editor\AbstractEditor $editor */
         $editor = XeEditor::get($config->get('boardId'));
@@ -308,15 +308,13 @@ class BoardService
             $request->request->set('certifyKey', $identifyManager->hash($newCertifyKey));
         }
 
-        $inputs = $request->all();
-        $inputs['title'] = htmlspecialchars($request->originAll()['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = purify($request->originAll()['content']);
-
         if ($request->get('status') == Board::STATUS_NOTICE) {
             $item->status = Board::STATUS_NOTICE;
         } elseif ($request->get('status') != Board::STATUS_NOTICE && $item->status == Board::STATUS_NOTICE) {
             $item->status = Board::STATUS_PUBLIC;
         }
+
+        $inputs = $request->all();
 
         /** @var \Xpressengine\Editor\AbstractEditor $editor */
         $editor = XeEditor::get($config->get('boardId'));

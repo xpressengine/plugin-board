@@ -42,12 +42,14 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
-use Xpressengine\Plugins\Board\Purifier;
 use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
+use Xpressengine\Support\Purifier;
+use Xpressengine\Support\PurifierModules\Html5;
+use Xpressengine\Editor\PurifierModules\EditorContent;
 use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
 
@@ -300,6 +302,16 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        $purifier = new Purifier();
+        $purifier->allowModule(EditorContent::class);
+        $purifier->allowModule(HTML5::class);
+
+        $inputs = $request->all();
+        $originInputs = $request->originAll();
+        $inputs['title'] = htmlspecialchars($originInputs['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+        $inputs['content'] = $purifier->purify($originInputs['content']);
+        $request->replace($inputs);
+
         // 유표성 체크
         $this->validate($request, $validator->getCreateRule(Auth::user(), $this->config));
 
@@ -413,6 +425,16 @@ class BoardModuleController extends Controller
                 'referrer' => $this->urlHandler->get('edit', ['id' => $item->id]),
             ]));
         }
+
+        $purifier = new Purifier();
+        $purifier->allowModule(EditorContent::class);
+        $purifier->allowModule(HTML5::class);
+
+        $inputs = $request->all();
+        $originInputs = $request->originAll();
+        $inputs['title'] = htmlspecialchars($originInputs['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+        $inputs['content'] = $purifier->purify($originInputs['content']);
+        $request->replace($inputs);
 
         $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
 
@@ -805,7 +827,7 @@ class BoardModuleController extends Controller
             $user = $log->user;
             $profilePage = '#';
             if ($user->getId() != '') {
-                $profilePage = route('member.profile', ['member' => $user->getId()]);
+                $profilePage = route('user.profile', ['user' => $user->getId()]);
             }
             $list[] = [
                 'id' => $user->getId(),
