@@ -21,13 +21,13 @@ use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\InstanceManager;
-use Xpressengine\Plugins\Board\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
 use Xpressengine\Plugins\Board\Services\BoardService;
-use Xpressengine\Plugins\Board\Skins\DefaultSkin;
-use Xpressengine\Plugins\Board\UIObjects\Title;
-use Xpressengine\Plugins\Board\UIObjects\Share;
+use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
+use Xpressengine\Plugins\Board\Components\Skins\Board\Common\CommonSkin;
+use Xpressengine\Plugins\Board\Components\UIObjects\Title\TitleUIObject;
+use Xpressengine\Plugins\Board\Components\UIObjects\Share\ShareUIObject;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Plugins\Board\Commands\BoardSkinMake;
@@ -202,17 +202,11 @@ class Resources
     public static function registerTitleWithSlug()
     {
         /**
-         * @var $register \Xpressengine\Plugin\PluginRegister
          * @var $uiObjectHandler \Xpressengine\UIObject\UIObjectHandler
          */
-        $register = app('xe.pluginRegister');
         $uiObjectHandler = app('xe.uiobject');
-
-        $register->add(Title::class);
-        $uiObjectHandler->setAlias('titleWithSlug', Title::getId());
-
-        $register->add(Share::class);
-        $uiObjectHandler->setAlias('share', Share::getId());
+        $uiObjectHandler->setAlias('titleWithSlug', TitleUIObject::getId());
+        $uiObjectHandler->setAlias('share', ShareUIObject::getId());
     }
 
     /**
@@ -247,7 +241,7 @@ class Resources
     {
         XeSkin::setDefaultSkin(
             BoardModule::getId(),
-            DefaultSkin::getId()
+            CommonSkin::getId()
         );
     }
 }

@@ -22,7 +22,7 @@
       "icon": "icon.png",
       "component": {
         "module/board@board": {
-          "class": "Xpressengine\\Plugins\\Board\\Modules\\BoardModule",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Modules\\BoardModule",
           "name": "Board",
           "description": "XE Board 모듈",
           "screenshot" : [
@@ -30,7 +30,7 @@
           ]
         },
         "module/board@board/skin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Skins\\DefaultSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Common\\CommonSkin",
           "name": "게시판 기본 스킨",
           "description": "게시판 기본 스킨.",
           "screenshot" : [
@@ -39,7 +39,7 @@
           ]
         },
         "module/board@board/skin/board@gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Skins\\GallerySkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Gallery\\GallerySkin",
           "name": "게시판 갤러리 스킨",
           "description": "게시판 갤러리 스킨.",
           "screenshot" : [
@@ -48,7 +48,7 @@
           ]
         },
         "module/board@board/skin/board@blog": {
-          "class": "Xpressengine\\Plugins\\Board\\Skins\\BlogSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Blog\\BlogSkin",
           "name": "게시판 블로그 스킨",
           "description": "게시판 블로그 스킨.",
           "screenshot" : [
@@ -57,13 +57,13 @@
           ]
         },
         "module/board@board/settingsSkin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Skins\\SettingsSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Settings\\Common\\CommonSettingsSkin",
           "name": "게시판 관리자 기본 스킨",
           "description": "게시판 관리자 기본스킨",
           "screenshot" : []
         },
         "fieldType/xpressengine@Category/fieldSkin/xpressengine@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Skins\\DynamicField\\DesignSelectSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\DynamicField\\DesignSelectSkin",
           "name": "Category Design select",
           "description": ""
         },
@@ -73,71 +73,77 @@
           "description": "선택한 문서를 휴지통으로 보냅니다."
         },
         "uiobject/board@select": {
-          "class": "Xpressengine\\Plugins\\Board\\UIObjects\\DesignSelect",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\DesignSelect\\DesignSelectUIObject",
           "name": "Design select",
           "description": "디자인 셀렉트"
         },
         "uiobject/board@tag": {
-          "class": "Xpressengine\\Plugins\\Board\\UIObjects\\Tag",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Tag\\TagUIObject",
           "name": "Tag",
           "description": "tag UIObject"
         },
         "uiobject/board@share": {
-          "class": "Xpressengine\\Plugins\\Board\\UIObjects\\Share",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Share\\ShareUIObject",
           "name": "Share",
           "description": "share"
         },
+        "uiobject/board@title": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Title\\TitleUIObject",
+          "name": "Title",
+          "description": "title"
+        },
         "uiobject/board@share/toggleMenu/board@facebook": {
-          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\FacebookItem",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\FacebookItem",
           "name": "Facebook share toggle menu",
           "description": ""
         },
         "uiobject/board@share/toggleMenu/board@line": {
-          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\LineItem",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\LineItem",
           "name": "Line share toggle menu",
           "description": ""
         },
         "uiobject/board@share/toggleMenu/board@twitter": {
-          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\TwitterItem",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\TwitterItem",
           "name": "Twitter share toggle menu",
           "description": ""
         },
         "uiobject/board@share/toggleMenu/board@copy": {
-          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\Shares\\CopyItem",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\CopyItem",
           "name": "Copy url share toggle menu",
           "description": ""
         },
         "widget/board@list": {
-          "class": "Xpressengine\\Plugins\\Board\\Widgets\\ListWidget",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleListWidget",
           "name": "게시물 리스트 위젯",
           "description": "게시물 리스트 보여주는 위젯"
         },
         "widget/board@list/skin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Widgets\\Skins\\DefaultSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\Skins\\Common\\CommonSkin",
           "name": "기본 게시물 위젯 스킨",
           "description": "게시물 리스트 위젯용 기본 스킨"
         },
         "widget/board@list/skin/board@gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Widgets\\Skins\\GallerySkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\Skins\\Gallery\\GallerySkin",
           "name": "갤러리형 게시물 위젯 스킨",
           "description": "갤러리형 게시물 리스트 위젯용 스킨"
         }
-    },
-    "require": {
-        "xpressengine-plugin/ckeditor": "*",
-        "xpressengine-plugin/comment": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Xpressengine\\Plugins\\Board\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ],
-        "classmap": [
-            "components/board_skins/default/DefaultSkin.php",
-            "components/board_skins/blog/BlogSkin.php",
-            "components/board_skins/gallery/GallerySkin.php"
-        ]
+      },
+      "screenshots" : [
+        "/plugins/board/assets/img/screenshots/plugin1.png"
+      ]
     }
+  },
+  "require": {
+    "xpressengine-plugin/ckeditor": "*",
+    "xpressengine-plugin/comment": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Xpressengine\\Plugins\\Board\\": "src/",
+      "Xpressengine\\Plugins\\Board\\Components\\": "components/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  }
 }
