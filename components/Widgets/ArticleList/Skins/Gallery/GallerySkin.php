@@ -1,5 +1,5 @@
 <?php
-namespace Xpressengine\Plugins\Board\Widgets\Skins;
+namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList\Skins\Gallery;
 
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -12,7 +12,7 @@ class GallerySkin extends GenericSkin
     /**
      * @var string
      */
-    protected static $path = 'board.views.widgets.list.skins.gallery';
+    protected static $path = 'board::components/Widgets/ArticleList/Skins/Gallery/views';
 
     /**
      * @var string

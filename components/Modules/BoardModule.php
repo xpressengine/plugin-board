@@ -11,7 +11,7 @@
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-namespace Xpressengine\Plugins\Board\Modules;
+namespace Xpressengine\Plugins\Board\Components\Modules;
 
 use Route;
 use XeSkin;
@@ -29,8 +29,6 @@ use Xpressengine\Plugins\Comment\Models\Target as CommentTarget;
 
 /**
  * BoardModule
- *
- * AbstractModule 인터페이스 지원. 메뉴로 추가할 수 있음.
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board

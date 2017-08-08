@@ -1,9 +1,4 @@
-{{ XeFrontend::css('plugins/board/components/board_skins/default/assets/css/skin.css')->load() }}
-
-{{ XeFrontend::js('plugins/board/assets/js/build/board.js')->appendTo('body')->load() }}
-
 {{ XeFrontend::js('/assets/core/common/js/toggleMenu.js')->appendTo('head')->load() }}
-
 {{ XeFrontend::js('/assets/vendor/jqueryui/jquery.event.drag-2.2.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.core.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.formatters.js')->appendTo('head')->load() }}
@@ -11,7 +6,6 @@
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.dataview.js')->appendTo('head')->load() }}
 {{ XeFrontend::css('/assets/vendor/slickgrid/slick.grid.css')->load() }}
 
-<div class="board">
     <div class="board_read">
         @foreach ($skinConfig['formColumns'] as $columnName)
             @if($columnName === 'title')
@@ -60,15 +54,15 @@
 
         <div class="read_footer">
             @if (count($item->files) > 0)
-                <div class="bd_file_list">
-                    <!-- [D] 클릭시 클래스 on 적용 -->
-                    <a href="#" class="bd_btn_file"><i class="xi-paperclip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->data->fileCount }}</strong></a>
-                    <ul>
-                        @foreach($item->files as $file)
-                            <li><a href="{{ route('editor.file.download', ['instanceId' => $item->instanceId, 'id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="bd_file_list">
+                <!-- [D] 클릭시 클래스 on 적용 -->
+                <a href="#" class="bd_btn_file"><i class="xi-paperclip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->data->fileCount }}</strong></a>
+                <ul>
+                    @foreach($item->files as $file)
+                        <li><a href="{{ route('editor.file.download', ['instanceId' => $item->instanceId, 'id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
             <div class="bd_function">
                 <div class="bd_function_l">
@@ -126,14 +120,15 @@
     </style>
     <!-- 댓글 -->
     @if ($config->get('comment') === true && $item->boardData->allowComment === 1)
-        <div class="__xe_comment board_comment">
-            {!! uio('comment', ['target' => $item]) !!}
-        </div>
+    <div class="__xe_comment board_comment">
+        {!! uio('comment', ['target' => $item]) !!}
+    </div>
     @endif
-                <!-- // 댓글 -->
+    <!-- // 댓글 -->
 
-    @if (isset($withoutList) === false || $withoutList === false)
-                <!-- 리스트 -->
-        @include((new $_skin)->view('index'))
-    @endif
-</div>
+@if (isset($withoutList) === false || $withoutList === false)
+    <!-- 리스트 -->
+    @include($_skinPath.'/views/index')
+@endif
+
+

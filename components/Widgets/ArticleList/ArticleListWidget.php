@@ -11,7 +11,7 @@
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-namespace Xpressengine\Plugins\Board\Widgets;
+namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList;
 
 use Carbon\Carbon;
 use View;
@@ -30,7 +30,7 @@ use Xpressengine\Widget\AbstractWidget;
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-class ListWidget extends AbstractWidget
+class ArticleListWidget extends AbstractWidget
 {
     /**
      * @var string
