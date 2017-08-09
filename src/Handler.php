@@ -27,7 +27,7 @@ use Xpressengine\Plugins\Board\Models\BoardData;
 use Xpressengine\Plugins\Board\Models\BoardFavorite;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
-use Xpressengine\Plugins\Board\Modules\BoardModule;
+use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Storage\File;
 use Xpressengine\Storage\Storage;
 use Xpressengine\Tag\Tag;

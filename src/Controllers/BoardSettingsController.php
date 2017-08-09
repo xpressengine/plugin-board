@@ -355,14 +355,6 @@ class BoardSettingsController extends Controller
         ]);
     }
 
-
-
-
-
-
-
-
-
     /**
      * document manager
      *

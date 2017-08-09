@@ -4,7 +4,7 @@ namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList\Skins\Galler
 use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
-use Xpressengine\Plugins\Board\Modules\BoardModule;
+use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Skin\GenericSkin;
 
 class GallerySkin extends GenericSkin
