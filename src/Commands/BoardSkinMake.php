@@ -32,7 +32,7 @@ class BoardSkinMake extends SkinMake
     protected $signature = 'make:board_skin
                         {plugin_dir : destination plugin directory name}
                         {skin_dir : skin name, make directory name}
-                        {--path= : The path of skin directory. If first segment is same, it will be ignored. default path is components/board_skins/skin_name}
+                        {--path= : The path of skin directory. If first segment is same, it will be ignored. default path is components/Skins/Board/skin_name}
                         {--id= : The path of skin class file}
                         {--title= : The title of the skin, default skin id}
                         {--description= : The description of the skin}';
@@ -67,7 +67,11 @@ class BoardSkinMake extends SkinMake
         $skinId = $this->getSkinId($plugin, $skinClass, $skinTarget); // myplugin@skin
         $skinTitle = $this->getSkinTitle();
         $description = $this->getSkinDescription($skinId, $plugin);
-        $skinNamespace = $this->getSkinNamespaceName($namespace);
+        $skinNamespace = sprintf(
+            '%s\\%s',
+            $this->getSkinNamespaceName($namespace),
+            ucwords(camel_case($skinDir))
+        );
 
         $this->attr = compact(
             'plugin',
@@ -182,8 +186,8 @@ class BoardSkinMake extends SkinMake
 
         if ($path === false || $path === null) {
             $path = sprintf(
-                'components/board_skins/%s',
-                $skinDir
+                'components/Skins/Board/%s',
+                ucwords(camel_case($skinDir))
             );
         } else {
             $parts = explode('/', $path);
@@ -255,6 +259,15 @@ class BoardSkinMake extends SkinMake
     }
 
     /**
+     * @param $namespace
+     * @return string
+     */
+    protected function getSkinNamespaceName($namespace)
+    {
+        return sprintf('%s\\Components\\Skins\\Board', $namespace);
+    }
+
+    /**
      * attr
      *
      * @param $key
@@ -304,6 +317,7 @@ class BoardSkinMake extends SkinMake
             if (file_exists($stub)) {
                 $code = $this->files->get($stub);
                 $this->replaceCode($code, 'DummyPath', $replacePath);
+                $this->files->put($stub, $code);
 
                 $rename = sprintf('%s/views/%s.blade.php', $path, $fileName);
                 rename($stub, $rename);
