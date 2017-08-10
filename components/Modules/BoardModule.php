@@ -555,7 +555,7 @@ class BoardModule extends AbstractModule
     {
         $skins = XeSkin::getList('module/board@board');
 
-        return View::make('board::views/menuType/create', [
+        return View::make('board::components/Modules/views/create', [
             'boardId' => null,
             'config' => app('xe.board.config')->getDefault(),
             'skins' => $skins,
@@ -590,7 +590,7 @@ class BoardModule extends AbstractModule
     {
         $skins = XeSkin::getList(self::getId());
 
-        return View::make('board::views/menuType/edit', [
+        return View::make('board::components/Modules/views/edit', [
             'boardId' => $instanceId,
             'config' => app('xe.board.config')->get($instanceId),
             'skins' => $skins,
