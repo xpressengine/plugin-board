@@ -15,7 +15,7 @@ namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Trash\RecycleBinInterface;
 use Xpressengine\Plugins\Board\Models\Board;
-use Xpressengine\Plugins\Board\Modules\BoardModule;
+use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 
 /**
  * RecycleBin
