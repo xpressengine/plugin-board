@@ -5,5 +5,5 @@ use Xpressengine\Plugins\Board\Components\Skins\Board\Gallery\GallerySkin;
 
 class BlogSkin extends GallerySkin
 {
-    protected static $path = 'board::components/Skins/Board/Blog';
+    protected static $path = 'board/components/Skins/Board/Blog';
 }

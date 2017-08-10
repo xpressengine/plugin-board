@@ -19,7 +19,7 @@ use App;
 
 class GallerySkin extends CommonSkin
 {
-    protected static $path = 'board::components/Skins/Board/Gallery';
+    protected static $path = 'board/components/Skins/Board/Gallery';
 
     /**
      * @var array

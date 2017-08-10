@@ -33,7 +33,7 @@ class CommonSettingsSkin extends AbstractSkin
     /**
      * @var string
      */
-    protected static $skinAlias = 'board::components/Skins/Board/Settings/Common/views';
+    protected static $skinAlias = 'board/components/Skins/Board/Settings/Common/views';
 
     /**
      * render
