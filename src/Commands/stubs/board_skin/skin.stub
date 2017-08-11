@@ -1,7 +1,7 @@
 <?php
 namespace DummyNamespace;
 
-use Xpressengine\Plugins\Board\Skins\GenericBoardSkin;
+use Xpressengine\Plugins\Board\GenericBoardSkin;
 
 class DummyClass extends GenericBoardSkin
 {

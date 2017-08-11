@@ -1,7 +1,7 @@
 <?php
 namespace Xpressengine\Plugins\Board\Components\Skins\Board\Common;
 
-use Xpressengine\Plugins\Board\Skins\GenericBoardSkin;
+use Xpressengine\Plugins\Board\GenericBoardSkin;
 use View;
 use XeFrontend;
 use XeRegister;
