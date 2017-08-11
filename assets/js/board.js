@@ -351,16 +351,13 @@ $(function($) {
 });
 
 $(function($) {
-	var _submitting = false;
-
 	$('.__board_form').on('click', '.__xe_btn_submit', function (event) {
 		event.preventDefault();
 		var $this = $(this);
 		var form = $this.closest('form');
 
-		if(!_submitting) {
+		if(!form.data('valid-result')) {
 			form.trigger('submit');
-			_submitting = true;
 		}
 	}).on('click', '.__xe_btn_preview', function (event) {
 		event.preventDefault();
