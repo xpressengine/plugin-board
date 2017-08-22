@@ -35,7 +35,7 @@ class ArticleListWidget extends AbstractWidget
     /**
      * @var string
      */
-    protected static $viewAlias = 'board::views.widgets.list';
+    protected static $path = 'board/components/Widgets/ArticleList';
 
     /**
      * Get the evaluated contents of the object.
@@ -119,7 +119,7 @@ class ArticleListWidget extends AbstractWidget
      */
     public function renderSetting(array $args = [])
     {
-        return $view = View::make(sprintf('%s.%s', static::$viewAlias, 'setting'), [
+        return $view = View::make(sprintf('%s/views/setting', static::$path), [
             'args' => $args,
             'boardList' => $this->getBoardList(),
         ]);

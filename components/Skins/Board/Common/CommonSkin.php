@@ -249,14 +249,11 @@ class CommonSkin extends GenericBoardSkin
             $arr = explode(':', request()->get('instanceId'));
             $instanceId = $arr[1];
 
-            return View::make(
-                sprintf('%s/views/setting', CommonSkin::$path),
-                [
-                    'sortListColumns' => $this->getSortListColumns($config, $instanceId),
-                    'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
-                    'config' => $config
-                ]
-            );
+            return View::make(sprintf('%s/views/setting', CommonSkin::$path), [
+                'sortListColumns' => $this->getSortListColumns($config, $instanceId),
+                'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
+                'config' => $config
+            ]);
         } else {
             return parent::renderSetting($config);
         }

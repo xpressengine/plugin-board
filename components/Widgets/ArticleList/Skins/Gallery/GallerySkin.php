@@ -6,13 +6,14 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Skin\GenericSkin;
+use View;
 
 class GallerySkin extends GenericSkin
 {
     /**
      * @var string
      */
-    protected static $path = 'board::components/Widgets/ArticleList/Skins/Gallery/views';
+    protected static $path = 'board/components/Widgets/ArticleList/Skins/Gallery';
 
     /**
      * @var string
@@ -43,7 +44,6 @@ class GallerySkin extends GenericSkin
 
         return parent::render();
     }
-
 
     /**
      * attach thumbnail for list
@@ -151,4 +151,16 @@ class GallerySkin extends GenericSkin
         return $path;
     }
 
+    /**
+     * 위젯 설정 페이지에 출력할 폼을 출력한다.
+     *
+     * @param array $args 설정값
+     *
+     * @return string
+     */
+    public function renderSetting(array $args = [])
+    {
+        return $view = View::make(sprintf('%s/views/setting', static::$path), [
+        ]);
+    }
 }
