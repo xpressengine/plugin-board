@@ -63,12 +63,12 @@
           "screenshot" : []
         },
         "fieldType/xpressengine@Category/fieldSkin/xpressengine@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\DynamicField\\DesignSelectSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\DynamicFields\\Category\\Skins\\DesignSelect\\DesignSelectSkin",
           "name": "Category Design select",
           "description": ""
         },
         "module/board@board/toggleMenu/xpressengine@trashItem": {
-          "class": "Xpressengine\\Plugins\\Board\\ToggleMenus\\TrashItem",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\TrashItem",
           "name": "휴지통",
           "description": "선택한 문서를 휴지통으로 보냅니다."
         },
@@ -113,17 +113,17 @@
           "description": ""
         },
         "widget/board@list": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleListWidget",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
           "name": "게시물 리스트 위젯",
           "description": "게시물 리스트 보여주는 위젯"
         },
         "widget/board@list/skin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\Skins\\Common\\CommonSkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Common\\CommonSkin",
           "name": "기본 게시물 위젯 스킨",
           "description": "게시물 리스트 위젯용 기본 스킨"
         },
         "widget/board@list/skin/board@gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\Skins\\Gallery\\GallerySkin",
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Gallery\\GallerySkin",
           "name": "갤러리형 게시물 위젯 스킨",
           "description": "갤러리형 게시물 리스트 위젯용 스킨"
         }

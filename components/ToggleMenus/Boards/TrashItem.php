@@ -11,7 +11,7 @@
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
  * @link        https://xpressengine.io
  */
-namespace Xpressengine\Plugins\BoardComponents\ToggleMenus\Boards;
+namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards;
 
 use Gate;
 use Xpressengine\Plugins\Board\Models\Board;

@@ -1,5 +1,5 @@
 <?php
-namespace Xpressengine\Plugins\Board\ToggleMenus\Components\Shares;
+namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Shares;
 
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
 
