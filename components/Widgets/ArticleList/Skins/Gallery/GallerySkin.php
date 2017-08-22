@@ -15,18 +15,6 @@ class GallerySkin extends GenericSkin
      */
     protected static $path = 'board/components/Widgets/ArticleList/Skins/Gallery';
 
-    /**
-     * @var string
-     */
-    protected static $viewDir = '';
-
-    protected static $info = [
-        'support' => [
-            'mobile' => true,
-            'desktop' => true
-        ]
-    ];
-
     public function render()
     {
         $data = $this->data;

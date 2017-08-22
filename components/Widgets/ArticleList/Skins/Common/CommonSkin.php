@@ -12,18 +12,6 @@ class CommonSkin extends GenericSkin
     protected static $path = 'board/components/Widgets/ArticleList/Skins/Common';
 
     /**
-     * @var string
-     */
-    protected static $viewDir = '';
-
-    protected static $info = [
-        'support' => [
-            'mobile' => true,
-            'desktop' => true
-        ]
-    ];
-
-    /**
      * 위젯 설정 페이지에 출력할 폼을 출력한다.
      *
      * @param array $args 설정값

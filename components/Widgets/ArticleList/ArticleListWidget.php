@@ -111,22 +111,6 @@ class ArticleListWidget extends AbstractWidget
     }
 
     /**
-     * 지정된 스킨을 통해 widget을 출력한다.
-     *
-     * @param array $data 스킨에 전달할 데이터
-     *
-     * @return string
-     */
-    public function renderSkin(array $data)
-    {
-        $skinId = array_get($this->config, '@attributes.skin-id');
-
-        $skin = app('xe.skin')->get($skinId, $this->config);
-
-        return $skin->setData($data)->setView('views.widget')->render();
-    }
-
-    /**
      * 위젯 설정 페이지에 출력할 폼을 출력한다.
      *
      * @param array $args 설정값
