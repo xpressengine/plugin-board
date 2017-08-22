@@ -14,6 +14,7 @@
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Plugin\AbstractPlugin;
+use Xpressengine\Plugins\Board\Components\Skins\Board\Common\CommonSkin;
 use Xpressengine\Plugins\Board\Plugin\Database;
 use Xpressengine\Plugins\Board\Plugin\Resources;
 use Xpressengine\Plugins\Board\Plugin\Update;
@@ -38,6 +39,7 @@ class Plugin extends AbstractPlugin
         Resources::registerRecycleBin();
         Resources::registerCommands();
         Resources::setDefaultSkin();
+        CommonSkin::interceptDynamicField();
     }
 
     /**

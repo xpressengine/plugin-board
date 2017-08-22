@@ -1,16 +1,21 @@
 <?php
 namespace Xpressengine\Plugins\Board\Components\Skins\Board\Common;
 
+use Xpressengine\DynamicField\ColumnEntity;
+use Xpressengine\DynamicField\DynamicFieldHandler;
+use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\GenericBoardSkin;
 use View;
 use XeFrontend;
 use XeRegister;
 use XePresenter;
+Use XeSkin;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Components\DynamicFields\Category\Skins\DesignSelect\DesignSelectSkin;
 use Xpressengine\Plugins\Board\Pagination\MobilePresenter;
 use Xpressengine\Plugins\Board\Pagination\BasePresenter;
+use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 
@@ -42,6 +47,40 @@ class CommonSkin extends GenericBoardSkin
     protected $defaultSelectedFormColumns = [
         'title', 'content',
     ];
+
+
+    /**
+     * intercept DynamicField 업데이트
+     *
+     * @return void
+     */
+    public static function interceptDynamicField()
+    {
+        intercept(
+            DynamicFieldHandler::class . '@create',
+            'board@commonSkin::createDynamicField',
+            function ($func, ConfigEntity $config, ColumnEntity $column = null) {
+                $func($config, $column);
+
+                // remove prefix name of group
+                $instanceId = str_replace('documents_', '', $config->get('group'));
+                $skinInstanceId = sprintf('%s:%s', BoardModule::getId(), $instanceId);
+                $skinId = static::getId();
+
+                /** @var \Xpressengine\Skin\GenericSkin $skin */
+                $skin = XeSkin::get($skinId);
+
+                $skinConfig = XeSkin::getStore()->getConfigs($skinInstanceId, $skinId);
+
+                $skinInstance = new static;
+                $skinConfig['formColumns'] = $skinInstance->getSortFormColumns($skinConfig, $instanceId);
+
+                $skinConfig = $skin->resolveSetting($skinConfig);
+                $skin->setting($skinConfig);
+                XeSkin::saveConfig($skinInstanceId, $skin);
+            }
+        );
+    }
 
     /**
      * render
@@ -199,24 +238,28 @@ class CommonSkin extends GenericBoardSkin
      */
     public function renderSetting(array $config = [])
     {
-        if ($config === []) {
-            $config = [
-                'listColumns' => $this->defaultSelectedListColumns,
-                'formColumns' => $this->defaultSelectedFormColumns,
-            ];
+        if (static::class == self::class) {
+            if ($config === []) {
+                $config = [
+                    'listColumns' => $this->defaultSelectedListColumns,
+                    'formColumns' => $this->defaultSelectedFormColumns,
+                ];
+            }
+
+            $arr = explode(':', request()->get('instanceId'));
+            $instanceId = $arr[1];
+
+            return View::make(
+                sprintf('%s/views/setting', CommonSkin::$path),
+                [
+                    'sortListColumns' => $this->getSortListColumns($config, $instanceId),
+                    'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
+                    'config' => $config
+                ]
+            );
+        } else {
+            return parent::renderSetting($config);
         }
-
-        $arr = explode(':', request()->get('instanceId'));
-        $instanceId = $arr[1];
-
-        return View::make(
-            sprintf('%s/views/setting', CommonSkin::$path),
-            [
-                'sortListColumns' => $this->getSortListColumns($config, $instanceId),
-                'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
-                'config' => $config
-            ]
-        );
     }
 
     /**

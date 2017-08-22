@@ -24,7 +24,7 @@
                                 <div class="xe-btn-toggle pull-right">
                                     <label>
                                         <span class="sr-only">toggle</span>
-                                        <input type="checkbox" name="listColumns[]" value="{{ $columnName }}" @if(in_array($columnName, $config['listColumns'])) checked="checked" @endif @if(in_array($columnName, ['title']))  @endif />
+                                        <input type="checkbox" name="listColumns[]" value="{{ $columnName }}" @if(in_array($columnName, $config['listColumns'])) checked="checked" @endif />
                                         <span class="toggle"></span>
                                     </label>
                                 </div>
@@ -61,13 +61,14 @@
                                 <span class="item-subtext">{{ $columnName }}</span>
                             </td>
                             <td>
-                                <div class="xe-btn-toggle pull-right">
-                                    <label>
-                                        <span class="sr-only">toggle</span>
-                                        <input type="checkbox" name="formColumns[]" value="{{ $columnName }}" @if(in_array($columnName, $config['formColumns'])) checked="checked" @endif @if(in_array($columnName, ['title', 'content']))  @endif />
-                                        <span class="toggle"></span>
-                                    </label>
-                                </div>
+                                <input type="hidden" name="formColumns[]" value="{{ $columnName }}" />
+                                {{--<div class="xe-btn-toggle pull-right">--}}
+                                    {{--<label>--}}
+                                        {{--<span class="sr-only">toggle</span>--}}
+                                        {{--<input type="checkbox" name="formColumns[]" value="{{ $columnName }}" @if(in_array($columnName, $config['formColumns'])) checked="checked" @endif @if(in_array($columnName, ['title', 'content']))  @endif />--}}
+                                        {{--<span class="toggle"></span>--}}
+                                    {{--</label>--}}
+                                {{--</div>--}}
                             </td>
                         </tr>
                     @endforeach
@@ -104,6 +105,7 @@
                 list.push($(this).val());
             });
 
+            $('[name="sortListColumns[]"]').remove();
             for (var i in list) {
                 $(this).append($('<input type="hidden" name="sortListColumns[]">').val(list[i]));
             }
@@ -113,6 +115,7 @@
                 list.push($(this).val());
             });
 
+            $('[name="sortFormColumns[]"]').remove();
             for (var i in list) {
                 $(this).append($('<input type="hidden" name="sortFormColumns[]">').val(list[i]));
             }
