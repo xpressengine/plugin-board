@@ -169,6 +169,10 @@ class InstanceManager
         }
 
         $this->conn->beginTransaction();
+
+        $params['documentGroup'] = $documentConfig->get('group');
+        $params['commentGroup'] = 'comments_' . $documentConfig->get('instanceId');
+
         $config = $this->configHandler->put($params);
         $this->document->getInstanceManager()->put($documentConfig);
         $this->conn->commit();
