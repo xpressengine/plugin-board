@@ -18,15 +18,15 @@ use App\Http\Sections\ToggleMenuSection;
 use XePresenter;
 use XeConfig;
 use Xpressengine\Http\Request;
-use Xpressengine\Plugins\Board\UIObjects\Share;
+use Xpressengine\Plugins\Board\Components\UIObjects\Share\ShareUIObject;
 
 class ShareSettingsController extends Controller
 {
     public function config()
     {
-        $toggleMenuSection = new ToggleMenuSection(Share::getId());
+        $toggleMenuSection = new ToggleMenuSection(ShareUIObject::getId());
 
-        return XePresenter::make('board::views.share.setting', [
+        return XePresenter::make('board::components/UIObjects/Share/setting', [
             'toggleMenuSection' => $toggleMenuSection,
         ]);
     }

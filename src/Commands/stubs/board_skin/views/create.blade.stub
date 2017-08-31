@@ -12,13 +12,13 @@
             <fieldset>
                 <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
                 <input type="hidden" name="head" value="{{$head}}" />
-                <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
+                <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parent_id')) }}" />
 
                 <div class="write_header">
                     @if($config->get('category') == true)
                         <div>
                             <label>{{xe_trans('xe::category')}}</label>
-                            <select name="categoryItemId">
+                            <select name="category_item_id">
                                 <option value="">{{xe_trans('xe::select')}}</option>
                                 @foreach ($categories as $category)
                                     <option value="{{$category['value']}}" >{{xe_trans($category['text'])}}</option>
@@ -57,7 +57,7 @@
                     @if (Auth::check() === false)
                         <div>
                             <input type="text" name="writer" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer') }}">
-                            <input type="password" name="certifyKey" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                            <input type="password" name="certify_key" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
                             <input type="email" name="email" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email') }}">
                         </div>
                     @endif
@@ -71,7 +71,7 @@
                     @if($config->get('comment') === true)
                         <div>
                             <label>
-                                <input type="checkbox" name="allowComment" value="1" checked="checked">
+                                <input type="checkbox" name="allow_comment" value="1" checked="checked">
                                 <span>{{xe_trans('board::allowComment')}}</span>
                             </label>
                         </div>
@@ -80,7 +80,7 @@
                     @if (Auth::check() === true)
                         <div>
                             <label>
-                                <input type="checkbox" name="useAlarm" value="1" @if($config->get('newCommentNotice') == true) checked="checked" @endif>
+                                <input type="checkbox" name="use_alarm" value="1" @if($config->get('newCommentNotice') == true) checked="checked" @endif>
                                 <span>{{xe_trans('board::useAlarm')}}</span>
                             </label>
                         </div>

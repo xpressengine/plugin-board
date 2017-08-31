@@ -8,17 +8,17 @@
 
 <div class="board">
     <div class="board_write">
-        <form method="post" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$item->instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
+        <form method="post" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$item->instance_id}}" data-url-preview="{{ $urlHandler->get('preview') }}">
             <fieldset>
                 <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
                 <input type="hidden" name="id" value="{{$item->id}}" />
-                <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
+                <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parent_id')) }}" />
 
                 <div class="write_header">
                     @if($config->get('category') == true)
                         <div>
                             <label>{{xe_trans('xe::category')}}</label>
-                            <select name="categoryItemId">
+                            <select name="category_item_id">
                                 <option value="">{{xe_trans('xe::select')}}</option>
                                 @foreach ($categories as $category)
                                     <option value="{{$category['value']}}" @if($item->boardCategory == $category['value']) selected="selected" @endif >{{xe_trans($category['text'])}}</option>
@@ -58,7 +58,7 @@
                     @if ($item->userType == $item::USER_TYPE_GUEST)
                         <div>
                             <input type="text" name="writer" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer', $item->writer) }}">
-                            <input type="password" name="certifyKey" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                            <input type="password" name="certify_key" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
                             <input type="email" name="email" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email', $item->email) }}">
                         </div>
                     @endif
@@ -66,7 +66,7 @@
                     @if($config->get('comment') === true)
                         <div>
                             <label>
-                                <input type="checkbox" name="allowComment" value="1" @if($item->boardData->allowComment == 1) checked="checked" @endif>
+                                <input type="checkbox" name="allow_comment" value="1" @if($item->boardData->allow_comment == 1) checked="checked" @endif>
                                 <span>{{xe_trans('board::allowComment')}}</span>
                             </label>
                         </div>
@@ -75,7 +75,7 @@
                     @if (Auth::check() === true)
                         <div>
                             <label>
-                                <input type="checkbox" name="useAlarm" value="1" @if($item->boardData->useAlarm == 1) checked="checked" @endif>
+                                <input type="checkbox" name="use_alarm" value="1" @if($item->boardData->use_alarm == 1) checked="checked" @endif>
                                 <span>{{xe_trans('board::useAlarm')}}</span>
                             </label>
                         </div>

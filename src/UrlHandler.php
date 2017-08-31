@@ -105,7 +105,7 @@ class UrlHandler
 
         $id = $board->id;
         $params['id'] = $id;
-        return $this->get('show', $params, $board->instanceId);
+        return $this->get('show', $params, $board->instance_id);
     }
 
     /**

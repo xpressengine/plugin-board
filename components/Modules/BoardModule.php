@@ -54,8 +54,10 @@ class BoardModule extends AbstractModule
         self::registerInstanceRoute();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
-        self::registerCommentAlarmIntercept();
-        self::registerManagerAlarmIntercept();
+        if (app()->runningInConsole() === false) {
+            self::registerCommentAlarmIntercept();
+            self::registerManagerAlarmIntercept();
+        }
     }
 
     /**

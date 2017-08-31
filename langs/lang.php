@@ -78,11 +78,23 @@ return [
         'ko' => '작성',
         'en' => 'Created At',
     ],
+    'created_at' => [
+        'ko' => '작성',
+        'en' => 'Created At',
+    ],
     'updatedAt' => [
         'ko' => '수정일',
         'en' => 'Updated At',
     ],
+    'updated_at' => [
+        'ko' => '수정일',
+        'en' => 'Updated At',
+    ],
     'readCount' => [
+        'ko' => '조회수',
+        'en' => 'Read',
+    ],
+    'read_count' => [
         'ko' => '조회수',
         'en' => 'Read',
     ],
@@ -147,7 +159,15 @@ return [
         'ko' => '추천수',
         'en' => 'Recommend',
     ],
+    'assent_count' => [
+        'ko' => '추천수',
+        'en' => 'Recommend',
+    ],
     'dissentCount' => [
+        'ko' => '비추천수',
+        'en' => 'Disapprove',
+    ],
+    'dissent_count' => [
         'ko' => '비추천수',
         'en' => 'Disapprove',
     ],

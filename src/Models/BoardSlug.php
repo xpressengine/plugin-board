@@ -41,7 +41,7 @@ class BoardSlug extends DynamicModel
     public $timestamps = false;
 
     protected $fillable = [
-        'targetId', 'slug', 'title', 'instanceId',
+        'target_id', 'slug', 'title', 'instance_id',
     ];
 
     /**
@@ -203,6 +203,6 @@ class BoardSlug extends DynamicModel
      */
     public function board()
     {
-        return $this->hasOne('Xpressengine\Plugins\Board\Models\Board', 'id', 'targetId');
+        return $this->hasOne(Board::class, 'id', 'target_id');
     }
 }

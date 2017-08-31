@@ -62,10 +62,10 @@
                             @foreach($documents as $document)
                                 <tr>
                                     <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
-                                    <td><a href="/{{ $urls[$document->instanceId] }}/show/{{ $document->id }}" target="_blank"><strong>[{{ $urls[$document->instanceId] }}]</strong> {{ $document->title }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
+                                    <td><a href="/{{ $urls[$document->instance_id] }}/show/{{ $document->id }}" target="_blank"><strong>[{{ $urls[$document->instance_id] }}]</strong> {{ $document->title }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
                                     <td><a href="#">{{ $document->writer }}</a></td>
-                                    <td>{{ $document->assentCount }}/{{ $document->readCount }}</td>
-                                    <td><a href="#">{{ $document->createdAt }}</a></td>
+                                    <td>{{ $document->assent_count }}/{{ $document->read_count }}</td>
+                                    <td><a href="#">{{ $document->created_at }}</a></td>
                                     <td><a href="#">{{ $document->ipaddress }}</a></td>
                                     <td><span class="label label-green">{{ $document->display }}</span></td>
                                     <td><span class="label label-grey">{{ $document->approved }}</span></td>

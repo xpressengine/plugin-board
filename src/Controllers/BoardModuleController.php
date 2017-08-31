@@ -237,13 +237,13 @@ class BoardModuleController extends Controller
         $menuUrl,
         $strSlug
     ) {
-        $slug = BoardSlug::where('slug', $strSlug)->where('instanceId', $this->instanceId)->first();
+        $slug = BoardSlug::where('slug', $strSlug)->where('instance_id', $this->instanceId)->first();
 
         if ($slug === null) {
             throw new NotFoundDocumentException;
         }
 
-        return $this->show($service, $request, $boardPermission, $menuUrl, $slug->targetId);
+        return $this->show($service, $request, $boardPermission, $menuUrl, $slug->target_id);
     }
 
     /**
@@ -508,7 +508,7 @@ class BoardModuleController extends Controller
 
         $this->validate($request, $validator->guestCertifyRule());
 
-        if ($identifyManager->verify($item, $request->get('email'), $request->get('certifyKey')) === false) {
+        if ($identifyManager->verify($item, $request->get('email'), $request->get('certify_key')) === false) {
             throw new NotMatchedCertifyKeyException;
         }
 
@@ -557,8 +557,8 @@ class BoardModuleController extends Controller
         }
 
         $showCategoryItem = null;
-        if ($request->get('categoryItemId', '') !== '') {
-            $showCategoryItem = CategoryItem::find($request->get('categoryItemId'));
+        if ($request->get('category_item_id', '') !== '') {
+            $showCategoryItem = CategoryItem::find($request->get('category_item_id'));
         }
 
         /** @var \Xpressengine\Editor\AbstractEditor $editor */
@@ -627,7 +627,7 @@ class BoardModuleController extends Controller
     /**
      * trash
      *
-     * @param BoardService $server  board service
+     * @param BoardService $service board service
      * @param Request      $request request
      * @return mixed
      */
@@ -710,10 +710,10 @@ class BoardModuleController extends Controller
             'display' => $display,
             'id' => $id,
             'counts' => [
-                'assent' => $item->assentCount,
-                'dissent' => $item->dissentCount,
+                'assent' => $item->assent_count,
+                'dissent' => $item->dissent_count,
             ],
-            'voteAt' => $vote['counterOption'],
+            'voteAt' => $vote->counter_option,
         ]);
     }
 
@@ -758,8 +758,8 @@ class BoardModuleController extends Controller
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
-        $logs = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
-            ->where('counterOption', $option)->take($limit)->get();
+        $logs = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
+            ->where('counter_option', $option)->take($limit)->get();
 
         return apiRender('votedUsers', [
             'urlHandler' => $this->urlHandler,
@@ -784,8 +784,8 @@ class BoardModuleController extends Controller
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
-        $count = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
-            ->where('counterOption', $option)->count();
+        $count = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
+            ->where('counter_option', $option)->count();
 
         return apiRender('votedModal', [
             'urlHandler' => $this->urlHandler,
@@ -813,8 +813,8 @@ class BoardModuleController extends Controller
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
-        $query = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
-            ->where('counterOption', $option);
+        $query = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
+            ->where('counter_option', $option);
 
         if ($startId != null) {
             $query->where('id', '<', $startId);
@@ -833,7 +833,7 @@ class BoardModuleController extends Controller
                 'id' => $user->getId(),
                 'displayName' => $user->getDisplayName(),
                 'profileImage' => $user->getProfileImage(),
-                'createdAt' => (string)$log->createdAt,
+                'createdAt' => (string)$log->created_at,
                 'profilePage' => $profilePage,
             ];
         }

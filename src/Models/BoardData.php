@@ -43,12 +43,12 @@ class BoardData extends DynamicModel
 
     protected $primaryKey = 'targetId';
 
-    protected $fillable = ['allowComment', 'useAlarm', 'fileCount'];
+    protected $fillable = ['allow_comment', 'use_alarm', 'file_count'];
 
     protected $casts = [
-        'allowComment' => 'int',
-        'useAlarm' => 'int',
-        'fileCount' => 'int',
+        'allow_comment' => 'int',
+        'use_alarm' => 'int',
+        'file_count' => 'int',
     ];
 
     /**
@@ -58,6 +58,6 @@ class BoardData extends DynamicModel
      */
     public function isAlarm()
     {
-        return $this->getAttribute('useAlarm') == 1;
+        return $this->getAttribute('use_alarm') == 1;
     }
 }
