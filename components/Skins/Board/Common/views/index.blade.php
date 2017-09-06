@@ -27,17 +27,17 @@
     <div class="xe-form-inline xe-hidden-xs board-sorting-area __xe-forms">
         @if($config->get('category') == true)
         {!! uio('uiobject/board@select', [
-            'name' => 'categoryItemId',
+            'name' => 'category_item_id',
             'label' => xe_trans('xe::category'),
-            'value' => Input::get('categoryItemId'),
+            'value' => Input::get('category_item_id'),
             'items' => $categories,
         ]) !!}
         @endif
 
         {!! uio('uiobject/board@select', [
-            'name' => 'orderType',
+            'name' => 'order_type',
             'label' => xe_trans('xe::order'),
-            'value' => Input::get('orderType'),
+            'value' => Input::get('order_type'),
             'items' => $handler->getOrders(),
         ]) !!}
     </div>
@@ -115,13 +115,13 @@
     <div class="bd_search_area">
         <form method="get" class="__xe_simple_search" action="{{ $urlHandler->get('index') }}">
         <div class="bd_search_box">
-            <input type="text" name="title_pureContent" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Input::get('title_pureContent') }}">
+            <input type="text" name="title_pure_content" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Input::get('title_pure_content') }}">
             <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
             <a href="#" class="bd_btn_detail" title="{{ xe_trans('board::boardDetailSearch') }}">{{ xe_trans('board::detailSearch') }}</a>
         </div>
         </form>
         <form method="get" class="__xe_search" action="{{ $urlHandler->get('index') }}">
-            <input type="hidden" name="orderType" value="{{ input::get('orderType') }}" />
+            <input type="hidden" name="order_type" value="{{ input::get('order_type') }}" />
         <div class="bd_search_detail">
             <div class="bd_search_detail_option">
                 <div class="xe-row">
@@ -133,9 +133,9 @@
                             </div>
                             <div class="xe-col-sm-9">
                                     {!! uio('uiobject/board@select', [
-                                        'name' => 'categoryItemId',
+                                        'name' => 'category_item_id',
                                         'label' => xe_trans('xe::category'),
-                                        'value' => Input::get('categoryItemId'),
+                                        'value' => Input::get('category_item_id'),
                                         'items' => $categories,
                                     ]) !!}
                             </div>
@@ -148,7 +148,7 @@
                                 <label class="xe-control-label">{{ xe_trans('board::titleAndContent') }}</label>
                             </div>
                             <div class="xe-col-sm-9">
-                                <input type="text" name="title_pureContent" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Input::get('title_pureContent') }}">
+                                <input type="text" name="title_pure_content" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Input::get('title_pure_content') }}">
                             </div>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                                     ]) !!}
                                 </div>
                                 <div class="xe-form-inline">
-                                    <input type="text" name="startCreatedAt" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Input::get('startCreatedAt')}}"> - <input type="text" name="endCreatedAt" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Input::get('endCreatedAt')}}">
+                                    <input type="text" name="start_created_at" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Input::get('start_created_at')}}"> - <input type="text" name="end_created_at" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Input::get('end_created_at')}}">
                                 </div>
                             </div>
                         </div>
@@ -275,10 +275,10 @@
                                 <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                             @endif
                             <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                            @if($item->commentCount > 0)
-                                <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
+                            @if($item->comment_count > 0)
+                                <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
                             @endif
-                            @if ($item->data->fileCount > 0)
+                            @if ($item->data->file_count > 0)
                                 <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
                             @endif
                             @if($item->isNew($config->get('newTime')))
@@ -290,9 +290,9 @@
                                 @else
                                     <a class="mb_author">{!! $item->writer !!}</a>
                                 @endif
-                                <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
-                                <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
-                                <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
+                                <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{ $item->created_at }}</span></span>
+                                <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                                <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
                             </div>
                         </td>
                 @elseif ($columnName == 'writer')
@@ -303,9 +303,9 @@
                             <a>{!! $item->writer !!}</a>
                         @endif
                     </td>
-                @elseif ($columnName == 'readCount')
+                @elseif ($columnName == 'read_count')
                     <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
-                @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
+                @elseif (in_array($columnName, ['created_at', 'updated_at', 'deleted_at']))
                     <td class="time xe-hidden-xs column-{{$columnName}}" data-xe-timeago="{{ $item->{$columnName} }}">{{ $item->{$columnName} }}</td>
                 @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                     <td class="xe-hidden-xs column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>
@@ -353,10 +353,10 @@
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
                         <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                        @if($item->commentCount > 0)
-                            <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
+                        @if($item->comment_count > 0)
+                            <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
                         @endif
-                        @if ($item->data->fileCount > 0)
+                        @if ($item->data->file_count > 0)
                             <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
                         @endif
                         @if($item->isNew($config->get('newTime')))
@@ -368,9 +368,9 @@
                             @else
                                 <a class="mb_author">{!! $item->writer !!}</a>
                             @endif
-                            <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->createdAt }}">{{ $item->createdAt }}</span></span>
-                            <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->readCount }}</span>
-                            <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->commentCount }}</a>
+                            <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{ $item->created_at }}</span></span>
+                            <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                            <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
                         </div>
                     </td>
                 @elseif ($columnName == 'writer')
@@ -381,9 +381,9 @@
                             <a>{!! $item->writer !!}</a>
                         @endif
                     </td>
-                @elseif ($columnName == 'readCount')
+                @elseif ($columnName == 'read_count')
                     <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
-                @elseif (in_array($columnName, ['createdAt', 'updatedAt', 'deletedAt']))
+                @elseif (in_array($columnName, ['created_at', 'updated_at', 'deleted_at']))
                     <td class="time xe-hidden-xs column-{{$columnName}}" data-xe-timeago="{{ $item->{$columnName} }}">{{ $item->{$columnName} }}</td>
                 @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                     <td class="xe-hidden-xs column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>

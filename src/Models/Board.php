@@ -51,8 +51,8 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getUserId()
     {
-        $userId = $this->getAttribute('userId');
-        if ($this->getAttribute('userType') === self::USER_TYPE_ANONYMITY) {
+        $userId = $this->getAttribute('user_id');
+        if ($this->getAttribute('user_type') === self::USER_TYPE_ANONYMITY) {
             $userId = '';
         }
 
@@ -77,8 +77,8 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function assents()
     {
-        return $this->hasMany(CounterLog::class, 'targetId')
-            ->where('counterName', 'vote')->where('counterOption', 'assent');
+        return $this->hasMany(CounterLog::class, 'target_id')
+            ->where('counter_name', 'vote')->where('counter_option', 'assent');
     }
 
     /**
@@ -88,7 +88,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function boardData()
     {
-        return $this->hasOne(BoardData::class, 'targetId');
+        return $this->hasOne(BoardData::class, 'target_id');
     }
 
     /**
@@ -98,7 +98,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function boardSlug()
     {
-        return $this->hasOne(BoardSlug::class, 'targetId');
+        return $this->hasOne(BoardSlug::class, 'target_id');
     }
 
     /**
@@ -108,7 +108,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function boardCategory()
     {
-        return $this->hasOne(BoardCategory::class, 'targetId');
+        return $this->hasOne(BoardCategory::class, 'target_id');
     }
 
     /**
@@ -118,7 +118,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function files()
     {
-        return $this->belongsToMany(File::class, 'fileables', 'fileableId', 'fileId');
+        return $this->belongsToMany(File::class, 'fileables', 'fileable_id', 'file_id');
     }
 
     /**
@@ -128,7 +128,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'userId');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     /**
@@ -138,7 +138,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'targetId');
+        return $this->hasMany(Comment::class, 'target_id');
     }
 
     /**
@@ -148,7 +148,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'taggables', 'taggableId', 'tagId');
+        return $this->belongsToMany(Tag::class, 'taggables', 'taggable_id', 'tag_id');
     }
 
     /**
@@ -184,7 +184,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function favorite()
     {
-        return $this->belongsTo(BoardFavorite::class, 'id', 'targetId');
+        return $this->belongsTo(BoardFavorite::class, 'id', 'target_id');
     }
 
     /**
@@ -194,7 +194,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function slug()
     {
-        return $this->belongsTo(BoardSlug::class, 'id', 'targetId');
+        return $this->belongsTo(BoardSlug::class, 'id', 'target_id');
     }
 
     /**
@@ -204,7 +204,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function data()
     {
-        return $this->belongsTo(BoardData::class, 'id', 'targetId');
+        return $this->belongsTo(BoardData::class, 'id', 'target_id');
     }
 
     /**
@@ -214,7 +214,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function isGuest()
     {
-        return $this->getAttribute('userType') === self::USER_TYPE_GUEST;
+        return $this->getAttribute('user_type') === self::USER_TYPE_GUEST;
     }
 
     /**
@@ -234,7 +234,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getInstanceId()
     {
-        return $this->getAttribute('instanceId');
+        return $this->getAttribute('instance_id');
     }
 
     /**
@@ -319,7 +319,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getContent()
     {
-        return compile($this->instanceId, $this->content, $this->format === static::FORMAT_HTML);
+        return compile($this->instance_id, $this->content, $this->format === static::FORMAT_HTML);
     }
 
     /**
@@ -332,7 +332,7 @@ class Board extends Document implements CommentUsable, SeoUsable
         return str_replace(
             ['"', "\n"],
             ['\"', ''],
-            $this->getAttribute('pureContent')
+            $this->getAttribute('pure_content')
         );
     }
 
