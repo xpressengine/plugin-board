@@ -75,6 +75,11 @@ class Update
             return false;
         }
 
+        // ver 0.9.22
+        if ($installedVersion !== null && static::hasCommonSkinConfig($installedVersion) === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -149,6 +154,19 @@ class Update
 
             XeConfig::modify($config);
         }
+
+        // ver 0.9.22
+        if ($installedVersion !== null && static::hasCommonSkinConfig($installedVersion) === false) {
+            $menuItems = \XpressEngine\Menu\Models\MenuItem::where('type', 'board@board')->get();
+
+            foreach ($menuItems as $menuItem) {
+                $config = XeConfig::get('skins.configs.module/board@board:' . $menuItem->id);
+                if ($config != null) {
+                    $config->set('module/board@board/skin/board@default', []);
+                    XeConfig::modify($config);
+                }
+            }
+        }
     }
 
     /**
@@ -219,6 +237,21 @@ class Update
         if ($config->get('newCommentNotice') === null) {
             return false;
         }
+        return true;
+    }
+
+    /**
+     * 0.9.21 이하 버전은 기본 스킨 설정 변경
+     *
+     * @param string $installedVersion installed version
+     * @return bool
+     */
+    protected static function hasCommonSkinConfig($installedVersion)
+    {
+        if (version_compare($installedVersion, '0.9.21', '<=')) {
+            return false;
+        }
+
         return true;
     }
 }

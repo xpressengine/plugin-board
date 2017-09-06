@@ -1,5 +1,5 @@
 {!! uio('uiobject/board@select', [
-    'name' => $key['itemId'],
+    'name' => $key['item_id'],
     'label' => xe_trans($config->get('label')),
     'value' => $data['categoryItem'] != null ? $data['categoryItem']->id : '',
     'items' => $data['selectItems'],
