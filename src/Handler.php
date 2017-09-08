@@ -149,6 +149,9 @@ class Handler
         if (empty($args['writer'])) {
             $args['writer'] = $user->getDisplayName();
         }
+        if (isset($args['certify_key']) === false) {
+            $args['certify_key'] = '';
+        }
 
         if ($config->get('anonymity') === true) {
             $args['writer'] = $config->get('anonymityName');
