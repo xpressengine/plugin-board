@@ -337,11 +337,11 @@
 
 <div class="board_footer">
     <!-- PAGINATAION PC-->
-    {!! $paginationPresenter->render() !!}
+    {!! $paginate->render('board::components.Skins.Board.Common.views.default-pagination') !!}
             <!-- /PAGINATION PC-->
 
     <!-- PAGINATAION Mobile -->
-    {!! $paginationMobilePresenter->render() !!}
+    {!! $paginate->render('board::components.Skins.Board.Common.views.simple-pagination') !!}
             <!-- /PAGINATION Mobile -->
 </div>
 <div class="bd_dimmed"></div>
