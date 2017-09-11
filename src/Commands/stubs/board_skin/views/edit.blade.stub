@@ -12,7 +12,7 @@
             <fieldset>
                 <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
                 <input type="hidden" name="id" value="{{$item->id}}" />
-                <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
+                <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parentId')) }}" />
 
                 <div class="write_header">
                     @if($config->get('category') == true)
@@ -28,7 +28,7 @@
                     @endif
                     <div>
                         {!! uio('titleWithSlug', [
-                        'title' => Input::old('title', $item->title),
+                        'title' => Request::old('title', $item->title),
                         'slug' => $item->getSlug(),
                         'titleClassName' => 'bd_input',
                         'config' => $config
@@ -38,7 +38,7 @@
 
                 <div class="write_body">
                     {!! editor($config->get('boardId'), [
-                      'content' => Input::old('content', $item->content),
+                      'content' => Request::old('content', $item->content),
                     ], $item->id) !!}
 
                     @if($config->get('useTag') === true)
@@ -57,9 +57,9 @@
                 <div class="write_footer">
                     @if ($item->userType == $item::USER_TYPE_GUEST)
                         <div>
-                            <input type="text" name="writer" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer', $item->writer) }}">
+                            <input type="text" name="writer" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer', $item->writer) }}">
                             <input type="password" name="certifyKey" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
-                            <input type="email" name="email" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email', $item->email) }}">
+                            <input type="email" name="email" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email', $item->email) }}">
                         </div>
                     @endif
 

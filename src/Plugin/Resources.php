@@ -123,11 +123,12 @@ class Resources
         /** @var \Illuminate\Foundation\Application $app */
         $app = app();
 
-        $app->singleton(['xe.plugin.board' => Plugin::class], function ($app) {
+        $app->singleton(Plugin::class, function ($app) {
             return XePlugin::getPlugin('board');
         });
+        $app->alias(Plugin::class, 'xe.plugin.board');
 
-        $app->singleton(['xe.board.handler' => Handler::class], function ($app) {
+        $app->singleton(Handler::class, function ($app) {
             /** @var Handler $proxyHandler */
             $proxyHandler = XeInterception::proxy(Handler::class);
 
@@ -147,8 +148,9 @@ class Resources
             );
             return $handler;
         });
+        $app->alias(Handler::class, 'xe.board.handler');
 
-        $app->singleton(['xe.board.config' => ConfigHandler::class], function ($app) {
+        $app->singleton(ConfigHandler::class, function ($app) {
 
             return new ConfigHandler(
                 app('xe.config'),
@@ -156,20 +158,24 @@ class Resources
                 XeDocument::getConfigHandler()
             );
         });
+        $app->alias(ConfigHandler::class, 'xe.board.config');
 
-        $app->singleton(['xe.board.url' => UrlHandler::class], function ($app) {
+        $app->singleton(UrlHandler::class, function ($app) {
             return new UrlHandler();
         });
+        $app->alias(UrlHandler::class, 'xe.board.url');
 
-        $app->singleton(['xe.board.validator' => Validator::class], function ($app) {
+        $app->singleton(Validator::class, function ($app) {
             return new Validator(app('xe.board.config'), app('xe.dynamicField'));
         });
+        $app->alias(Validator::class, 'xe.board.validator');
 
-        $app->singleton(['xe.board.identify' => IdentifyManager::class], function ($app) {
+        $app->singleton(IdentifyManager::class, function ($app) {
             return new IdentifyManager(app('session'), app('xe.document'), app('hash'));
         });
+        $app->alias(IdentifyManager::class, 'xe.board.identify');
 
-        $app->singleton(['xe.board.instance' => InstanceManager::class], function ($app) {
+        $app->singleton(InstanceManager::class, function ($app) {
             return new InstanceManager(
                 XeDB::connection('document'),
                 app('xe.document'),
@@ -179,19 +185,22 @@ class Resources
                 app('xe.plugin.comment')->getHandler()
             );
         });
+        $app->alias(InstanceManager::class, 'xe.board.instance');
 
-        $app->singleton(['xe.board.permission' => BoardPermissionHandler::class], function ($app) {
+        $app->singleton(BoardPermissionHandler::class, function ($app) {
             $boardPermission = new BoardPermissionHandler(app('xe.permission'), app('xe.board.config'));
             $boardPermission->setPrefix(BoardModule::getId());
             return $boardPermission;
         });
+        $app->alias(BoardPermissionHandler::class, 'xe.board.permission');
 
-        $app->singleton(['xe.board.service' => BoardService::class], function ($app) {
+        $app->singleton(BoardService::class, function ($app) {
             $proxyHandler = XeInterception::proxy(BoardService::class);
 
             $instance = new $proxyHandler(app('xe.board.handler'), app('xe.board.config'));
             return $instance;
         });
+        $app->alias(BoardService::class, 'xe.board.service');
     }
 
     /**

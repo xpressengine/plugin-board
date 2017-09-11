@@ -29,7 +29,7 @@
         {!! uio('uiobject/board@select', [
             'name' => 'categoryItemId',
             'label' => xe_trans('xe::category'),
-            'value' => Input::get('categoryItemId'),
+            'value' => Request::get('categoryItemId'),
             'items' => $categories,
         ]) !!}
         @endif
@@ -37,7 +37,7 @@
         {!! uio('uiobject/board@select', [
             'name' => 'orderType',
             'label' => xe_trans('xe::order'),
-            'value' => Input::get('orderType'),
+            'value' => Request::get('orderType'),
             'items' => $handler->getOrders(),
         ]) !!}
     </div>
@@ -115,13 +115,13 @@
     <div class="bd_search_area">
         <form method="get" class="__xe_simple_search" action="{{ $urlHandler->get('index') }}">
         <div class="bd_search_box">
-            <input type="text" name="title_pureContent" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Input::get('title_pureContent') }}">
+            <input type="text" name="title_pureContent" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pureContent') }}">
             <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
             <a href="#" class="bd_btn_detail" title="{{ xe_trans('board::boardDetailSearch') }}">{{ xe_trans('board::detailSearch') }}</a>
         </div>
         </form>
         <form method="get" class="__xe_search" action="{{ $urlHandler->get('index') }}">
-            <input type="hidden" name="orderType" value="{{ input::get('orderType') }}" />
+            <input type="hidden" name="orderType" value="{{ Request::get('orderType') }}" />
         <div class="bd_search_detail">
             <div class="bd_search_detail_option">
                 <div class="xe-row">
@@ -135,7 +135,7 @@
                                     {!! uio('uiobject/board@select', [
                                         'name' => 'categoryItemId',
                                         'label' => xe_trans('xe::category'),
-                                        'value' => Input::get('categoryItemId'),
+                                        'value' => Request::get('categoryItemId'),
                                         'items' => $categories,
                                     ]) !!}
                             </div>
@@ -148,7 +148,7 @@
                                 <label class="xe-control-label">{{ xe_trans('board::titleAndContent') }}</label>
                             </div>
                             <div class="xe-col-sm-9">
-                                <input type="text" name="title_pureContent" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Input::get('title_pureContent') }}">
+                                <input type="text" name="title_pureContent" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Request::get('title_pureContent') }}">
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                                 <label class="xe-control-label">{{ xe_trans('xe::writer') }}</label>
                             </div>
                             <div class="xe-col-sm-9">
-                                <input type="text" name="writer" class="xe-form-control" title="{{ xe_trans('xe::writer') }}" value="{{ Input::get('writer') }}">
+                                <input type="text" name="writer" class="xe-form-control" title="{{ xe_trans('xe::writer') }}" value="{{ Request::get('writer') }}">
                             </div>
                         </div>
                     </div>
@@ -174,12 +174,12 @@
                                     {!! uio('uiobject/board@select', [
                                         'name' => 'period',
                                         'label' => xe_trans('xe::select'),
-                                        'value' => Input::get('period'),
+                                        'value' => Request::get('period'),
                                         'items' => $terms,
                                     ]) !!}
                                 </div>
                                 <div class="xe-form-inline">
-                                    <input type="text" name="startCreatedAt" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Input::get('startCreatedAt')}}"> - <input type="text" name="endCreatedAt" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Input::get('endCreatedAt')}}">
+                                    <input type="text" name="startCreatedAt" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Request::get('startCreatedAt')}}"> - <input type="text" name="endCreatedAt" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Request::get('endCreatedAt')}}">
                                 </div>
                             </div>
                         </div>
@@ -194,7 +194,7 @@
                         <label class="xe-control-label">{{ xe_trans($typeConfig->get('label')) }}</label>
                     </div>
                     <div class="xe-col-sm-9">
-                        {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Input::all()) !!}
+                        {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Request::all()) !!}
                     </div>
                 </div>
                     @endif
@@ -230,10 +230,10 @@
                 </label>
             </th>
             @endif
-            @if(Input::has('favorite'))
-                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', Input::except(['favorite', 'page']))}}"><i class="xi-star-o on"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
+            @if(Request::has('favorite'))
+                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', Request::except(['favorite', 'page']))}}"><i class="xi-star-o on"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
             @else
-                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', array_merge(Input::except('page'), ['favorite' => 1]))}}"><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
+                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1]))}}"><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
             @endif
 
             @foreach ($skinConfig['listColumns'] as $columnName)
@@ -274,7 +274,7 @@
                             @if ($item->display == $item::DISPLAY_SECRET)
                                 <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                             @endif
-                            <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                            <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
                             @if($item->commentCount > 0)
                                 <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                             @endif
@@ -352,7 +352,7 @@
                         @if ($item->display == $item::DISPLAY_SECRET)
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
-                        <a href="{{$urlHandler->getShow($item, Input::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                        <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
                         @if($item->commentCount > 0)
                             <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
                         @endif
@@ -400,11 +400,11 @@
 
 <div class="board_footer">
     <!-- PAGINATAION PC-->
-    {!! $paginationPresenter->render() !!}
+    {!! $paginate->render('board::components.Skins.Board.Common.views.default-pagination') !!}
     <!-- /PAGINATION PC-->
 
     <!-- PAGINATAION Mobile -->
-    {!! $paginationMobilePresenter->render() !!}
+    {!! $paginate->render('board::components.Skins.Board.Common.views.simple-pagination') !!}
     <!-- /PAGINATION Mobile -->
 </div>
 <div class="bd_dimmed"></div>

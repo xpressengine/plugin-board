@@ -64,10 +64,10 @@
                     'url' => Request::url(),
                 ]) !!}
 
-                <a href="{{$urlHandler->get('index', Input::all())}}">{{ xe_trans('xe::list') }}</a>
+                <a href="{{$urlHandler->get('index', Request::all())}}">{{ xe_trans('xe::list') }}</a>
                 @if($isManager == true || $item->userId == Auth::user()->getId() || $item->userType === $item::USER_TYPE_GUEST)
-                    <a href="{{ $urlHandler->get('edit', array_merge(Input::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::update') }}</a>
-                    <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Input::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::delete') }}</a>
+                    <a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::update') }}</a>
+                    <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::delete') }}</a>
                 @endif
 
                 <div class="bd_more_area">

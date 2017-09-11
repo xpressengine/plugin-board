@@ -69,7 +69,7 @@ class GallerySkin extends CommonSkin
                 $notice = $func($config, $userId);
 
                 // 공지 제외하고 보기 옵션 처리
-                if (Input::get('orderType') == 'exceptNotice') {
+                if (Request::get('orderType') == 'exceptNotice') {
                     return [];
                 }
 

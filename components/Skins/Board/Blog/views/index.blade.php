@@ -30,7 +30,7 @@
             {!! uio('uiobject/board@select', [
                 'name' => 'categoryItemId',
                 'label' => xe_trans('xe::category'),
-                'value' => Input::get('categoryItemId'),
+                'value' => Request::get('categoryItemId'),
                 'items' => $categories,
             ]) !!}
         @endif
@@ -38,7 +38,7 @@
         {!! uio('uiobject/board@select', [
             'name' => 'orderType',
             'label' => xe_trans('xe::order'),
-            'value' => Input::get('orderType'),
+            'value' => Request::get('orderType'),
             'items' => $handler->getOrders(),
         ]) !!}
     </div>
@@ -116,13 +116,13 @@
     <div class="bd_search_area">
         <form method="get" class="__xe_simple_search" action="{{ $urlHandler->get('index') }}">
             <div class="bd_search_box">
-                <input type="text" name="title_pureContent" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Input::get('title_pureContent') }}">
+                <input type="text" name="title_pureContent" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pureContent') }}">
                 <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
                 <a href="#" class="bd_btn_detail" title="{{ xe_trans('board::boardDetailSearch') }}">{{ xe_trans('board::detailSearch') }}</a>
             </div>
         </form>
         <form method="get" class="__xe_search" action="{{ $urlHandler->get('index') }}">
-            <input type="hidden" name="orderType" value="{{ input::get('orderType') }}" />
+            <input type="hidden" name="orderType" value="{{ Request::get('orderType') }}" />
             <div class="bd_search_detail">
                 <div class="bd_search_detail_option">
                     <div class="xe-row">
@@ -136,7 +136,7 @@
                                         {!! uio('uiobject/board@select', [
                                             'name' => 'categoryItemId',
                                             'label' => xe_trans('xe::category'),
-                                            'value' => Input::get('categoryItemId'),
+                                            'value' => Request::get('categoryItemId'),
                                             'items' => $categories,
                                         ]) !!}
                                     </div>
@@ -149,7 +149,7 @@
                                     <label class="xe-control-label">{{ xe_trans('board::titleAndContent') }}</label>
                                 </div>
                                 <div class="xe-col-sm-9">
-                                    <input type="text" name="title_pureContent" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Input::get('title_pureContent') }}">
+                                    <input type="text" name="title_pureContent" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Request::get('title_pureContent') }}">
                                 </div>
                             </div>
                         </div>
@@ -161,7 +161,7 @@
                                     <label class="xe-control-label">{{ xe_trans('xe::writer') }}</label>
                                 </div>
                                 <div class="xe-col-sm-9">
-                                    <input type="text" name="writer" class="xe-form-control" title="{{ xe_trans('xe::writer') }}" value="{{ Input::get('writer') }}">
+                                    <input type="text" name="writer" class="xe-form-control" title="{{ xe_trans('xe::writer') }}" value="{{ Request::get('writer') }}">
                                 </div>
                             </div>
                         </div>
@@ -175,12 +175,12 @@
                                         {!! uio('uiobject/board@select', [
                                             'name' => 'period',
                                             'label' => xe_trans('xe::select'),
-                                            'value' => Input::get('period'),
+                                            'value' => Request::get('period'),
                                             'items' => $terms,
                                         ]) !!}
                                     </div>
                                     <div class="xe-form-inline">
-                                        <input type="text" name="startCreatedAt" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Input::get('startCreatedAt')}}"> - <input type="text" name="endCreatedAt" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Input::get('endCreatedAt')}}">
+                                        <input type="text" name="startCreatedAt" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Request::get('startCreatedAt')}}"> - <input type="text" name="endCreatedAt" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Request::get('endCreatedAt')}}">
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                             <label class="xe-control-label">{{ xe_trans($typeConfig->get('label')) }}</label>
                         </div>
                         <div class="xe-col-sm-9">
-                            {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Input::all()) !!}
+                            {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Request::all()) !!}
                         </div>
                     </div>
                     @endif
@@ -229,7 +229,7 @@
                     @if ($item->display == $item::DISPLAY_SECRET)
                         <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                     @endif
-                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                    <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
                         {!! $item->title !!}
                     </a>
                     @if($item->commentCount > 0)
@@ -284,7 +284,7 @@
                     @if ($item->display == $item::DISPLAY_SECRET)
                         <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                     @endif
-                    <a class="title" href="{{$urlHandler->getShow($item, Input::all())}}" id="title_{{$item->id}}">
+                    <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
                         {!! $item->title !!}
                     </a>
                     @if($item->commentCount > 0)
@@ -298,7 +298,7 @@
                     @endif
                 </div>
                 <div class="thumb_area">
-                    <a href="{{$urlHandler->getShow($item, Input::all())}}">
+                    <a href="{{$urlHandler->getShow($item, Request::all())}}">
                         <img src="{{ $item->boardThumbnailPath }}" alt="">
                     </a>
                 </div>

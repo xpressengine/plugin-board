@@ -23,18 +23,18 @@
                         <div class="input-group search-group">
                             <form>
                                 <div class="input-group-btn __xe_btn_search_target">
-                                    <input type="hidden" name="searchTarget" value="{{ Input::get('searchTarget') }}">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Input::has('searchTarget') && Input::get('searchTarget') != '' ? xe_trans('board::' . Input::get('searchTarget')) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
+                                    <input type="hidden" name="searchTarget" value="{{ Request::get('searchTarget') }}">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Request::has('searchTarget') && Request::get('searchTarget') != '' ? xe_trans('board::' . Request::get('searchTarget')) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li @if(Input::get('searchTarget') == '') class="active" @endif><a href="#" value="">{{xe_trans('board::select')}}</a></li>
-                                        <li @if(Input::get('searchTarget') == 'titleAndcontent') class="active" @endif><a href="#" value="titleAndcontent">{{xe_trans('board::titleAndContent')}}</a></li>
-                                        <li @if(Input::get('searchTarget') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
-                                        <li @if(Input::get('searchTarget') == 'content') class="active" @endif><a href="#" value="content">{{xe_trans('board::content')}}</a></li>
-                                        <li @if(Input::get('searchTarget') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
+                                        <li @if(Request::get('searchTarget') == '') class="active" @endif><a href="#" value="">{{xe_trans('board::select')}}</a></li>
+                                        <li @if(Request::get('searchTarget') == 'titleAndcontent') class="active" @endif><a href="#" value="titleAndcontent">{{xe_trans('board::titleAndContent')}}</a></li>
+                                        <li @if(Request::get('searchTarget') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
+                                        <li @if(Request::get('searchTarget') == 'content') class="active" @endif><a href="#" value="content">{{xe_trans('board::content')}}</a></li>
+                                        <li @if(Request::get('searchTarget') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
                                     </ul>
                                 </div>
                                 <div class="search-input-group">
-                                    <input type="text" name="searchKeyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Input::get('searchKeyword')}}">
+                                    <input type="text" name="searchKeyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Request::get('searchKeyword')}}">
                                     <button class="btn-link">
                                         <i class="xi-search"></i><span class="sr-only">{{xe_trans('xe::search')}}</span>
                                     </button>
@@ -226,34 +226,34 @@
         approve: function ($f) {
             $('<input>').attr('type', 'hidden').attr('name', 'approved').val('approved').appendTo($f);
 
-            $f.attr('action', '{!! $urlHandler->managerUrl('approve', Input::all()) !!}');
+            $f.attr('action', '{!! $urlHandler->managerUrl('approve', Request::all()) !!}');
             send($f);
         },
         reject: function ($f) {
             $('<input>').attr('type', 'hidden').attr('name', 'approved').val('rejected').appendTo($f);
 
-            $f.attr('action', '{!! $urlHandler->managerUrl('approve', Input::all()) !!}');
+            $f.attr('action', '{!! $urlHandler->managerUrl('approve', Request::all()) !!}');
             send($f);
         },
         destroy: function ($f) {
-            $f.attr('action', '{!! $urlHandler->managerUrl('destroy', Input::all()) !!}');
+            $f.attr('action', '{!! $urlHandler->managerUrl('destroy', Request::all()) !!}');
             send($f);
         },
         trash: function ($f) {
-            $f.attr('action', '{!! $urlHandler->managerUrl('trash', Input::all()) !!}');
+            $f.attr('action', '{!! $urlHandler->managerUrl('trash', Request::all()) !!}');
             send($f);
         },
         move: function ($f) {
             moveModal.show($f);
         },
         restore: function ($f) {
-            $f.attr('action', '{!! $urlHandler->managerUrl('restore', Input::all()) !!}');
+            $f.attr('action', '{!! $urlHandler->managerUrl('restore', Request::all()) !!}');
             send($f);
         }
     };
 
     var moveDocument = function($f) {
-            {{--$f.attr('action', '{!! $urlHandler->managerUrl('move', Input::all()) !!}');--}}
+            {{--$f.attr('action', '{!! $urlHandler->managerUrl('move', Request::all()) !!}');--}}
             {{--$f.submit();--}}
         send($f);
     }

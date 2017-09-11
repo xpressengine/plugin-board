@@ -6,7 +6,7 @@
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$item->instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="id" value="{{$item->id}}" />
-        <input type="hidden" name="queryString" value="{{ http_build_query(Input::except('parentId')) }}" />
+        <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parentId')) }}" />
         @foreach ($skinConfig['formColumns'] as $columnName)
             @if($columnName === 'title')
                 <div class="write_header">
@@ -22,7 +22,7 @@
                     </div>
                     <div class="write_title">
                         {!! uio('titleWithSlug', [
-                        'title' => Input::old('title', $item->title),
+                        'title' => Request::old('title', $item->title),
                         'slug' => $item->getSlug(),
                         'titleClassName' => 'bd_input',
                         'config' => $config
@@ -33,7 +33,7 @@
                 <div class="write_body">
                     <div class="write_form_editor">
                         {!! editor($config->get('boardId'), [
-                          'content' => Input::old('content', $item->content),
+                          'content' => Request::old('content', $item->content),
                         ], $item->id) !!}
                     </div>
                 </div>
@@ -64,9 +64,9 @@
             <div class="write_form_input">
                 @if ($item->userType == $item::USER_TYPE_GUEST)
                     <div class="xe-form-inline">
-                        <input type="text" name="writer" class="xe-form-control" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Input::old('writer', $item->writer) }}">
+                        <input type="text" name="writer" class="xe-form-control" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer', $item->writer) }}">
                         <input type="password" name="certifyKey" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
-                        <input type="email" name="email" class="xe-form-control" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Input::old('email', $item->email) }}">
+                        <input type="email" name="email" class="xe-form-control" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email', $item->email) }}">
                     </div>
                 @endif
             </div>

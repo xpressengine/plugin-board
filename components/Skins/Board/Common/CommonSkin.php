@@ -13,9 +13,6 @@ Use XeSkin;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Components\DynamicFields\Category\Skins\DesignSelect\DesignSelectSkin;
-use Xpressengine\Plugins\Board\Pagination\MobilePresenter;
-use Xpressengine\Plugins\Board\Pagination\BasePresenter;
-use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 
@@ -161,7 +158,6 @@ class CommonSkin extends GenericBoardSkin
 
     /**
      * set pagination presenter
-     * 스킨에서 추가한 만든 pagination presenter 사용
      *
      * @return void
      * @see views/defaultSkin/index.blade.php
@@ -170,8 +166,6 @@ class CommonSkin extends GenericBoardSkin
     {
         if (isset($this->data['paginate'])) {
             $this->data['paginate']->setPath($this->data['urlHandler']->get('index'));
-            $this->data['paginationPresenter'] = new BasePresenter($this->data['paginate']);
-            $this->data['paginationMobilePresenter'] = new MobilePresenter($this->data['paginate']);
         }
     }
 
@@ -320,6 +314,7 @@ class CommonSkin extends GenericBoardSkin
         } else {
             $sortFormColumns = $config['sortFormColumns'];
         }
+//        dump($instanceId);
         $dynamicFields = $configHandler->getDynamicFields($configHandler->get($instanceId));
         $currentDynamicFields = [];
         /**

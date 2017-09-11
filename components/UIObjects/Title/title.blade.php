@@ -64,7 +64,7 @@
                     dataType: 'json',
                     success: function(res) {
                         $container.find('.__xe_slug_edit input').val(res.slug);
-                        $container.find('.current-slug').text('{{instanceRoute('slug')}}/' + res.slug);
+                        $container.find('.current-slug').text('{{instanceRoute('slug', ['slug' => ''])}}/' + res.slug);
 
                         callback();
                     }
@@ -80,14 +80,14 @@
 
     <div class="__xe_slug_edit" style="display:none;">
         <i class="xi-link"></i>
-        <span class="edit-slug">{{instanceRoute('slug')}}/<input type="text" name="{{ $slugDomName }}" value="{{ $slug }}"/></span>
+        <span class="edit-slug">{{instanceRoute('slug', ['slug' => ''])}}/<input type="text" name="{{ $slugDomName }}" value="{{ $slug }}"/></span>
         <span><a href="#" class="ok">OK</a></span>
         <span><a href="#" class="cancel">Cancel</a></span>
     </div>
 
     <div class="__xe_slug_show" style="display:none;">
         <i class="xi-link"></i>
-        <span class="current-slug">{{instanceRoute('slug')}}/{{ $slug }}</span>
+        <span class="current-slug">{{instanceRoute('slug', ['slug' => ''])}}/{{ $slug }}</span>
         <span><a href="#" class="edit">Edit</a></span>
     </div>
 </div>

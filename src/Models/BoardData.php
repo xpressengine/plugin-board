@@ -45,6 +45,8 @@ class BoardData extends DynamicModel
 
     protected $fillable = ['allowComment', 'useAlarm', 'fileCount'];
 
+    public $incrementing = false;
+
     protected $casts = [
         'allowComment' => 'int',
         'useAlarm' => 'int',

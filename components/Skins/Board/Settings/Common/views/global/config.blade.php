@@ -33,7 +33,7 @@
                                                     <div class="clearfix">
                                                         <label>{{xe_trans('board::perPage')}} <small>{{xe_trans('board::perPageDescription')}} </small></label>
                                                     </div>
-                                                    <input type="text" id="" name="perPage" class="form-control" value="{{Input::old('perPage', $config->get('perPage'))}}"/>
+                                                    <input type="text" id="" name="perPage" class="form-control" value="{{Request::old('perPage', $config->get('perPage'))}}"/>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -41,7 +41,7 @@
                                                     <div class="clearfix">
                                                         <label>{{xe_trans('board::newArticleTime')}} <small>{{xe_trans('board::newArticleTimeDescription')}} </small></label>
                                                     </div>
-                                                    <input type="text" id="" name="newTime" class="form-control" value="{{Input::old('newTime', $config->get('newTime'))}}"/>
+                                                    <input type="text" id="" name="newTime" class="form-control" value="{{Request::old('newTime', $config->get('newTime'))}}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -123,7 +123,7 @@
                                                     <div class="clearfix">
                                                         <label>{{xe_trans('board::anonymityName')}} <small>{{xe_trans('board::anonymityDescription')}} </small></label>
                                                     </div>
-                                                    <input type="text" name="anonymityName" class="form-control" value="{{ Input::old('anonymityName', $config->get('anonymityName')) }}" />
+                                                    <input type="text" name="anonymityName" class="form-control" value="{{ Request::old('anonymityName', $config->get('anonymityName')) }}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -150,7 +150,7 @@
                                                     <div class="clearfix">
                                                         <label>{{xe_trans('board::adminEmail')}} <small>{{xe_trans('board::adminEmailDescription')}} </small></label>
                                                     </div>
-                                                    <input type="text" name="managerEmail" class="form-control" value="{{ Input::old('managerEmail', $config->get('managerEmail')) }}" />
+                                                    <input type="text" name="managerEmail" class="form-control" value="{{ Request::old('managerEmail', $config->get('managerEmail')) }}" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
