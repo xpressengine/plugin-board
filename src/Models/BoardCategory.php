@@ -19,8 +19,8 @@ use Xpressengine\Category\Models\CategoryItem;
 /**
  * BoardCategory
  *
- * @property string targetId
- * @property int itemId
+ * @property string target_id
+ * @property int item_id
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -37,9 +37,9 @@ class BoardCategory extends DynamicModel
 
     public $timestamps = false;
 
-    protected $primaryKey = 'targetId';
+    protected $primaryKey = 'target_id';
 
-    protected $fillable = ['targetId', 'itemId'];
+    protected $fillable = ['target_id', 'item_id'];
 
     /**
      * get category item
@@ -48,7 +48,7 @@ class BoardCategory extends DynamicModel
      */
     public function categoryItem()
     {
-        return $this->belongsTo(CategoryItem::class, 'itemId');
+        return $this->belongsTo(CategoryItem::class, 'item_id');
     }
 
     /**

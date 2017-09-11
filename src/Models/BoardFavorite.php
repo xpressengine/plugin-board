@@ -38,7 +38,7 @@ class BoardFavorite extends DynamicModel
 
     public $timestamps = false;
 
-    protected $primaryKey = 'favoriteId';
+    protected $primaryKey = 'favorite_id';
 
-    protected $fillable = ['targetId', 'userId'];
+    protected $fillable = ['target_id', 'user_id'];
 }

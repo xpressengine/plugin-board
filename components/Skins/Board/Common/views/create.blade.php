@@ -14,7 +14,7 @@
                     <div class="write_category">
                         @if($config->get('category') == true)
                             {!! uio('uiobject/board@select', [
-                                'name' => 'categoryItemId',
+                                'name' => 'category_item_id',
                                 'label' => xe_trans('xe::category'),
                                 'value' => '',
                                 'items' => $categories,
@@ -81,7 +81,7 @@
             <div class="xe-form-inline">
                 @if($config->get('comment') === true)
                 <label class="xe-label">
-                    <input type="checkbox" name="allowComment" value="1" checked="checked">
+                    <input type="checkbox" name="allow_comment" value="1" checked="checked">
                     <span class="xe-input-helper"></span>
                     <span class="xe-label-text">{{xe_trans('board::allowComment')}}</span>
                 </label>
@@ -89,7 +89,7 @@
 
                 @if (Auth::check() === true)
                 <label class="xe-label">
-                    <input type="checkbox" name="useAlarm" value="1" @if($config->get('newCommentNotice') == true) checked="checked" @endif >
+                    <input type="checkbox" name="use_alarm" value="1" @if($config->get('newCommentNotice') == true) checked="checked" @endif >
                     <span class="xe-input-helper"></span>
                     <span class="xe-label-text">{{xe_trans('board::useAlarm')}}</span>
                 </label>

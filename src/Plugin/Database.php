@@ -59,13 +59,13 @@ class Database
             $schema->create('board_data', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
-                $table->string('targetId', 36);
+                $table->string('target_id', 36);
 
-                $table->integer('allowComment')->default(1);
-                $table->integer('useAlarm')->default(1);
-                $table->integer('fileCount')->default(0);
+                $table->integer('allow_comment')->default(1);
+                $table->integer('use_alarm')->default(1);
+                $table->integer('file_count')->default(0);
 
-                $table->primary(array('targetId'));
+                $table->primary(array('target_id'));
             });
         }
     }
@@ -82,11 +82,11 @@ class Database
             $schema->create('board_favorites', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
-                $table->bigIncrements('favoriteId');
-                $table->string('targetId', 36);
-                $table->string('userId', 36);
+                $table->bigIncrements('favorite_id');
+                $table->string('target_id', 36);
+                $table->string('user_id', 36);
 
-                $table->index(array('targetId', 'userId'));
+                $table->index(array('target_id', 'user_id'));
             });
         }
     }
@@ -104,14 +104,14 @@ class Database
                 $table->engine = "InnoDB";
 
                 $table->bigIncrements('id');
-                $table->string('targetId', 36);
-                $table->string('instanceId', 36);
+                $table->string('target_id', 36);
+                $table->string('instance_id', 36);
                 $table->string('slug', 190);
                 $table->string('title', 180);
 
                 $table->unique(array('slug'));
                 $table->index(array('title'));
-                $table->index(array('targetId'));
+                $table->index(array('target_id'));
             });
         }
     }
@@ -128,10 +128,10 @@ class Database
             $schema->create('board_category', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
-                $table->string('targetId', 36);
-                $table->integer('itemId');
+                $table->string('target_id', 36);
+                $table->integer('item_id');
 
-                $table->primary(array('targetId'));
+                $table->primary(array('target_id'));
             });
         }
     }
@@ -148,12 +148,12 @@ class Database
             $schema->create('board_gallery_thumbs', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
-                $table->string('targetId', 36);
-                $table->string('boardThumbnailFileId', 255);
-                $table->string('boardThumbnailExternalPath', 255);
-                $table->string('boardThumbnailPath', 255);
+                $table->string('target_id', 36);
+                $table->string('board_thumbnail_file_id', 255);
+                $table->string('board_thumbnail_external_path', 255);
+                $table->string('board_thumbnail_path', 255);
 
-                $table->primary(array('targetId'));
+                $table->primary(array('target_id'));
             });
         }
     }

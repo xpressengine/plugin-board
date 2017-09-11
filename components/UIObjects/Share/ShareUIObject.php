@@ -65,54 +65,6 @@ class ShareUIObject extends AbstractUIObject
         }, ['namespace' => 'Xpressengine\Plugins\Board\Controllers']);
     }
 
-//    /**
-//     * get share items
-//     *
-//     * @return array
-//     */
-//    public static function getItems()
-//    {
-//        return [
-//            'facebook' => [
-//                'label' => 'board::facebook',
-//                'url' => 'http://www.facebook.com/sharer/sharer.php?u=__url__',
-//                'icon' => 'xi-facebook'
-//            ],
-//            'twitter' => [
-//                'label' => 'board::twitter',
-//                'url' => 'https://twitter.com/intent/tweet?url=__url__',
-//                'icon' => 'xi-twitter'
-//            ],
-//            'line' => [
-//                'label' => 'board::line',
-//                'url' => 'http://line.me/R/msg/text/?title=__url__',
-//                'icon' => 'xi-line-messenger'
-//            ],
-//            'copy' => [
-//                'label' => 'board::고유주소',
-//                'url' => '__url__',
-//                'icon' => 'xi-link'
-//            ]
-//        ];
-//    }
-
-//    /**
-//     * get activated items
-//     *
-//     * @return array
-//     */
-//    public function getActivated()
-//    {
-//        $config = XeConfig::get('share');
-//        $allItems = static::getItems();
-//        $items = [];
-//        foreach ($config as $key) {
-//            $items[] = $allItems[$key];
-//        }
-//
-//        return $items;
-//    }
-
     /**
      * render
      *

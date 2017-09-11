@@ -101,7 +101,7 @@ class IdentifyManager
             return false;
         }
 
-        return $this->hasher->check($certifyKey, $board->certifyKey);
+        return $this->hasher->check($certifyKey, $board->certify_key);
     }
 
     /**
@@ -124,7 +124,7 @@ class IdentifyManager
     public function create(Board $board)
     {
         $this->session->put($this->getKey($board->id), [
-            'certifyKey' => $board->certifyKey,
+            'certifyKey' => $board->certify_key,
             'expire' => $this->expireTime(),
         ]);
     }
@@ -160,7 +160,7 @@ class IdentifyManager
     public function validate(Board $board)
     {
         $session = $this->get($board);
-        if ($board->certifyKey != $session['certifyKey']) {
+        if ($board->certify_key != $session['certifyKey']) {
             return false;
         }
 

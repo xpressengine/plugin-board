@@ -24,11 +24,11 @@ class CommonSkin extends GenericBoardSkin
      * @var array
      */
     protected $defaultListColumns = [
-        'title', 'writer', 'assentCount', 'readCount', 'createdAt', 'updatedAt', 'dissentCount',
+        'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count',
     ];
 
     protected $defaultSelectedListColumns = [
-        'title', 'writer',  'assentCount', 'readCount', 'createdAt',
+        'title', 'writer',  'assent_count', 'read_count', 'created_at',
     ];
 
     /**
@@ -61,20 +61,26 @@ class CommonSkin extends GenericBoardSkin
 
                 // remove prefix name of group
                 $instanceId = str_replace('documents_', '', $config->get('group'));
-                $skinInstanceId = sprintf('%s:%s', BoardModule::getId(), $instanceId);
-                $skinId = static::getId();
 
-                /** @var \Xpressengine\Skin\GenericSkin $skin */
-                $skin = XeSkin::get($skinId);
+                /** @var \Xpressengine\Plugins\Board\ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+                $boardConfig = $configHandler->get($instanceId);
+                if ($boardConfig !== null) {
+                    $skinInstanceId = sprintf('%s:%s', BoardModule::getId(), $instanceId);
+                    $skinId = static::getId();
 
-                $skinConfig = XeSkin::getStore()->getConfigs($skinInstanceId, $skinId);
+                    /** @var \Xpressengine\Skin\GenericSkin $skin */
+                    $skin = XeSkin::get($skinId);
 
-                $skinInstance = new static;
-                $skinConfig['formColumns'] = $skinInstance->getSortFormColumns($skinConfig, $instanceId);
+                    $skinConfig = XeSkin::getStore()->getConfigs($skinInstanceId, $skinId);
 
-                $skinConfig = $skin->resolveSetting($skinConfig);
-                $skin->setting($skinConfig);
-                XeSkin::saveConfig($skinInstanceId, $skin);
+                    $skinInstance = new static;
+                    $skinConfig['formColumns'] = $skinInstance->getSortFormColumns($skinConfig, $instanceId);
+
+                    $skinConfig = $skin->resolveSetting($skinConfig);
+                    $skin->setting($skinConfig);
+                    XeSkin::saveConfig($skinInstanceId, $skin);
+                }
             }
         );
     }
@@ -314,7 +320,6 @@ class CommonSkin extends GenericBoardSkin
         } else {
             $sortFormColumns = $config['sortFormColumns'];
         }
-//        dump($instanceId);
         $dynamicFields = $configHandler->getDynamicFields($configHandler->get($instanceId));
         $currentDynamicFields = [];
         /**

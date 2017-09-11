@@ -142,21 +142,24 @@ class Handler
         if (isset($args['type']) === false) {
             $args['type'] = BoardModule::getId();
         }
-        $args['userId'] = $user->getId();
-        if ($args['userId'] === null) {
-            $args['userId'] = '';
+        $args['user_id'] = $user->getId();
+        if ($args['user_id'] === null) {
+            $args['user_id'] = '';
         }
         if (empty($args['writer'])) {
             $args['writer'] = $user->getDisplayName();
         }
+        if (isset($args['certify_key']) === false) {
+            $args['certify_key'] = '';
+        }
 
         if ($config->get('anonymity') === true) {
             $args['writer'] = $config->get('anonymityName');
-            $args['userType'] = Board::USER_TYPE_ANONYMITY;
+            $args['user_type'] = Board::USER_TYPE_ANONYMITY;
         }
 
         if ($user instanceof Guest) {
-            $args['userType'] = Board::USER_TYPE_GUEST;
+            $args['user_type'] = Board::USER_TYPE_GUEST;
         }
 
         // save Document
@@ -185,11 +188,11 @@ class Handler
     protected function saveData(Board $board, array $args)
     {
         $allowComment = 1;
-        if (empty($args['allowComment']) || $args['allowComment'] !== '1') {
+        if (empty($args['allow_comment']) || $args['allow_comment'] !== '1') {
             $allowComment = 0;
         }
         $useAlarm = 1;
-        if (empty($args['useAlarm']) || $args['useAlarm'] !== '1') {
+        if (empty($args['use_alarm']) || $args['use_alarm'] !== '1') {
             $useAlarm = 0;
         }
         $fileCount = FileModel::getByFileable($board->id)->count();
@@ -197,14 +200,14 @@ class Handler
         $data = $board->boardData;
         if ($data === null) {
             $data = new BoardData([
-                'allowComment' => $allowComment,
-                'useAlarm' => $useAlarm,
-                'fileCount' => $fileCount,
+                'allow_comment' => $allowComment,
+                'use_alarm' => $useAlarm,
+                'file_count' => $fileCount,
             ]);
         } else {
-            $data->allowComment = $allowComment;
-            $data->useAlarm = $useAlarm;
-            $data->fileCount = $fileCount;
+            $data->allow_comment = $allowComment;
+            $data->use_alarm = $useAlarm;
+            $data->file_count = $fileCount;
         }
 
         $board->boardData()->save($data);
@@ -225,7 +228,7 @@ class Handler
             $slug = new BoardSlug([
                 'slug' => $args['slug'],
                 'title' => $args['title'],
-                'instanceId' => $args['instanceId'],
+                'instance_id' => $args['instance_id'],
             ]);
         } else {
             $slug->slug = $args['slug'];
@@ -245,16 +248,16 @@ class Handler
     protected function saveCategory(Board $board, array $args)
     {
         // save Category
-        if (empty($args['categoryItemId']) == false) {
+        if (empty($args['category_item_id']) == false) {
             // update 처리
             $boardCategory = $board->boardCategory;
             if ($boardCategory == null) {
                 $boardCategory = new BoardCategory([
-                    'targetId' => $board->id,
-                    'itemId' => $args['categoryItemId'],
+                    'target_id' => $board->id,
+                    'item_id' => $args['category_item_id'],
                 ]);
             } else {
-                $boardCategory->itemId = $args['categoryItemId'];
+                $boardCategory->itemId = $args['category_item_id'];
             }
 
             $boardCategory->save();
@@ -502,11 +505,11 @@ class Handler
             }
         }
 
-        $board->instanceId = $dstInstanceId;
+        $board->instance_id = $dstInstanceId;
         $board->save();
 
         $slug = $board->boardSlug;
-        $slug->instanceId = $dstInstanceId;
+        $slug->instance_id = $dstInstanceId;
         $slug->save();
 
         // 댓글 인스턴스 변경 처리
@@ -529,12 +532,12 @@ class Handler
 
         $args = array_merge($board->getDynamicAttributes(), $board->getAttributes());
         $args['id'] = null;
-        $args['instanceId'] = $config->get('boardId');
+        $args['instance_id'] = $config->get('boardId');
         $args['slug'] = $board->boardSlug->slug;
-        $args['categoryItemId'] = '';
+        $args['category_item_id'] = '';
         $boardCategory = $board->boardCategory;
         if ($boardCategory != null) {
-            $args['categoryItemId'] = $boardCategory->itemId;
+            $args['category_item_id'] = $boardCategory->item_id;
         }
 
         $this->add($args, $user, $config);
@@ -552,10 +555,10 @@ class Handler
      */
     public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
     {
-        if ($request->get('title_pureContent', '') !== '') {
+        if ($request->get('title_pure_content', '') !== '') {
             $query = $query->whereNested(function ($query) use ($request) {
-                $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_pureContent')))
-                    ->orWhere('pureContent', 'like', sprintf('%%%s%%', $request->get('title_pureContent')));
+                $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_pure_content')))
+                    ->orWhere('pure_content', 'like', sprintf('%%%s%%', $request->get('title_pure_content')));
             });
         }
 
@@ -570,16 +573,16 @@ class Handler
             $query = $query->where('writer', $request->get('writer'));
         }
 
-        if ($request->get('categoryItemId', '') !== '') {
-            $query = $query->where('itemId', $request->get('categoryItemId'));
+        if ($request->get('category_item_id', '') !== '') {
+            $query = $query->where('item_id', $request->get('category_item_id'));
         }
 
-        if ($request->get('startCreatedAt', '') !== '') {
-            $query = $query->where('createdAt', '>=', $request->get('startCreatedAt') . ' 00:00:00');
+        if ($request->get('start_created_at', '') !== '') {
+            $query = $query->where('created_at', '>=', $request->get('start_created_at') . ' 00:00:00');
         }
 
-        if ($request->get('endCreatedAt', '') !== '') {
-            $query = $query->where('createdAt', '<=', $request->get('endCreatedAt') . ' 23:59:59');
+        if ($request->get('end_created_at', '') !== '') {
+            $query = $query->where('created_at', '<=', $request->get('end_created_at') . ' 23:59:59');
         }
 
         $query->getProxyManager()->wheres($query->getQuery(), $request->all());
@@ -597,18 +600,18 @@ class Handler
      */
     public function makeOrder(Builder $query, Request $request, ConfigEntity $config)
     {
-        $orderType = $request->get('orderType', '');
-        if ($orderType === '' && $config->get('orderType') != null) {
-            $orderType = $config->get('orderType', '');
+        $orderType = $request->get('order_type', '');
+        if ($orderType === '' && $config->get('order_type') != null) {
+            $orderType = $config->get('order_type', '');
         }
 
         if ($orderType == '') {
             $query->orderBy('head', 'desc');
-        } elseif ($orderType == 'assentCount') {
-            $query->orderBy('assentCount', 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recentlyCreated') {
+        } elseif ($orderType == 'assent_count') {
+            $query->orderBy('assent_count', 'desc')->orderBy('head', 'desc');
+        } elseif ($orderType == 'recently_created') {
             $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recentlyUpdated') {
+        } elseif ($orderType == 'recently_updated') {
             $query->orderBy(Board::UPDATED_AT, 'desc')->orderBy('head', 'desc');
         }
 
@@ -625,9 +628,9 @@ class Handler
     public function getOrders()
     {
         return [
-            ['value' => 'assentCount', 'text' => 'board::assentOrder'],
-            ['value' => 'recentlyCreated', 'text' => 'board::recentlyCreated'],
-            ['value' => 'recentlyUpdated', 'text' => 'board::recentlyUpdated'],
+            ['value' => 'assent_count', 'text' => 'board::assentOrder'],
+            ['value' => 'recently_created', 'text' => 'board::recentlyCreated'],
+            ['value' => 'recently_updated', 'text' => 'board::recentlyUpdated'],
         ];
     }
 
@@ -644,7 +647,7 @@ class Handler
             $this->readCounter->add($board->id, $user);
         }
 
-        $board->readCount = $this->readCounter->getPoint($board->id);
+        $board->read_count = $this->readCounter->getPoint($board->id);
         $board->timestamps = false;
         $board->save();
     }
@@ -680,9 +683,9 @@ class Handler
     {
         $this->voteCounter->add($board->id, $user, $option, $point);
 
-        $columnName = 'assentCount';
+        $columnName = 'assent_count';
         if ($option == 'dissent') {
-            $columnName = 'dissentCount';
+            $columnName = 'dissent_count';
         }
         $board->{$columnName} = $this->voteCounter->getPoint($board->id, $option);
         $board->save();
@@ -700,9 +703,9 @@ class Handler
     {
         $this->voteCounter->remove($board->id, $user, $option);
 
-        $columnName = 'assentCount';
+        $columnName = 'assent_count';
         if ($option == 'dissent') {
-            $columnName = 'dissentCount';
+            $columnName = 'dissent_count';
         }
         $board->{$columnName} = $this->voteCounter->getPoint($board->id, $option);
         $board->save();
@@ -730,7 +733,7 @@ class Handler
      */
     public function hasFavorite($boardId, $userId)
     {
-        return BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->exists();
+        return BoardFavorite::where('target_id', $boardId)->where('user_id', $userId)->exists();
     }
 
     /**
@@ -747,8 +750,8 @@ class Handler
         }
 
         $favorite = new BoardFavorite;
-        $favorite->targetId = $boardId;
-        $favorite->userId = $userId;
+        $favorite->target_id = $boardId;
+        $favorite->user_id = $userId;
         $favorite->save();
 
         return $favorite;
@@ -767,7 +770,7 @@ class Handler
             throw new NotFoundFavoriteHttpException;
         }
 
-        BoardFavorite::where('targetId', $boardId)->where('userId', $userId)->delete();
+        BoardFavorite::where('target_id', $boardId)->where('user_id', $userId)->delete();
     }
 
     /**
