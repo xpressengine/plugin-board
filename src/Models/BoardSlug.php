@@ -19,8 +19,8 @@ use Xpressengine\Database\Eloquent\DynamicModel;
  * BoardSlug
  *
  * @property int id
- * @property string targetId
- * @property string instanceId
+ * @property string target_id
+ * @property string instance_id
  * @property string slug
  * @property string title
  *

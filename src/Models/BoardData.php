@@ -21,7 +21,7 @@ use Xpressengine\Http\Request;
 /**
  * BoardData
  *
- * @property string targetId
+ * @property string target_id
  * @property int allowComment
  * @property int useAlarm
  * @property int fileCount
@@ -41,7 +41,7 @@ class BoardData extends DynamicModel
 
     public $timestamps = false;
 
-    protected $primaryKey = 'targetId';
+    protected $primaryKey = 'target_id';
 
     protected $fillable = ['allow_comment', 'use_alarm', 'file_count'];
 

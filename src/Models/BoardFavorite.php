@@ -21,8 +21,8 @@ use Xpressengine\Http\Request;
 /**
  * BoardData
  *
- * @property int favoriteId
- * @property string targetId
+ * @property int favorite_id
+ * @property string target_id
  * @property string userId
  *
  * @category    Board
