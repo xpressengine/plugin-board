@@ -3,10 +3,10 @@
 {{ XeFrontend::js('plugins/board/assets/js/build/BoardTags.js')->appendTo('body')->load() }}
 
 <div class="board_write">
-    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$item->instance_id}}" data-url-preview="{{ $urlHandler->get('preview') }}">
+    <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$item->instance_id}}" data-url-preview="{{ $urlHandler->get('preview') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="id" value="{{$item->id}}" />
-        <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parentId')) }}" />
+        <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}" />
         @foreach ($skinConfig['formColumns'] as $columnName)
             @if($columnName === 'title')
                 <div class="write_header">
@@ -65,7 +65,7 @@
                 @if ($item->user_type == $item::USER_TYPE_GUEST)
                     <div class="xe-form-inline">
                         <input type="text" name="writer" class="xe-form-control" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer', $item->writer) }}">
-                        <input type="password" name="certifyKey" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                        <input type="password" name="certify_key" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
                         <input type="email" name="email" class="xe-form-control" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email', $item->email) }}">
                     </div>
                 @endif

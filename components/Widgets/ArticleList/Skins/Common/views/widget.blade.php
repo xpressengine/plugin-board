@@ -17,17 +17,17 @@
                 <!-- 카테고리 링크를 제공하지 않는 경우 a를 span으로 교체 <td><span class="xe-badge xe-primary">세미나/이벤트</span></td> -->
                 <td>
                     @if ($boardConfig->get('category') == true && $item->boardCategory !== null)
-                    <a href="{{instanceRoute('index', [], $menuItem->id, ['categoryId' => $item->boardCategory->itemId])}}" class="xe-badge">{{xe_trans($item->boardCategory->categoryItem->word)}}</a>
+                    <a href="{{instanceRoute('index', [], $menuItem->id, ['categoryId' => $item->boardCategory->item_id])}}" class="xe-badge">{{xe_trans($item->boardCategory->categoryItem->word)}}</a>
                     @endif
                 </td>
                 <td class="title">
                     <a href="{{$urlHandler->getShow($item)}}">
                         <strong class="xe-ellipsis">{!! $item->title !!}</strong>
-                        <p class="xe-ellipsis xe-hidden-sm xe-hidden-xs">{{$item->pureContent}} </p>
+                        <p class="xe-ellipsis xe-hidden-sm xe-hidden-xs">{{$item->pure_content}} </p>
                     </a>
                 </td>
                 <td class="xe-hidden-sm xe-hidden-xs">
-                    <em data-xe-timeago="{{$item->createdAt}}">{{$item->createdAt}}</em>
+                    <em data-xe-timeago="{{$item->created_at}}">{{$item->created_at}}</em>
                 </td>
             </tr>
             @endforeach

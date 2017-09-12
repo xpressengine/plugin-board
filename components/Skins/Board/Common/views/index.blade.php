@@ -115,7 +115,7 @@
     <div class="bd_search_area">
         <form method="get" class="__xe_simple_search" action="{{ $urlHandler->get('index') }}">
         <div class="bd_search_box">
-            <input type="text" name="title_pureContent" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pureContent') }}">
+            <input type="text" name="title_pure_content" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pureContent') }}">
             <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
             <a href="#" class="bd_btn_detail" title="{{ xe_trans('board::boardDetailSearch') }}">{{ xe_trans('board::detailSearch') }}</a>
         </div>
@@ -148,7 +148,7 @@
                                 <label class="xe-control-label">{{ xe_trans('board::titleAndContent') }}</label>
                             </div>
                             <div class="xe-col-sm-9">
-                                <input type="text" name="title_pureContent" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Request::get('title_pureContent') }}">
+                                <input type="text" name="title_pure_content" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Request::get('title_pureContent') }}">
                             </div>
                         </div>
                     </div>
@@ -275,8 +275,8 @@
                                 <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                             @endif
                             <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                            @if($item->commentCount > 0)
-                                <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
+                            @if($item->comment_count > 0)
+                                <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
                             @endif
                             @if ($item->data->file_count > 0)
                                 <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
@@ -353,8 +353,8 @@
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
                         <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                        @if($item->commentCount > 0)
-                            <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->commentCount }}</a>
+                        @if($item->comment_count > 0)
+                            <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
                         @endif
                         @if ($item->data->file_count > 0)
                             <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>

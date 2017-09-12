@@ -257,7 +257,7 @@ class Handler
                     'item_id' => $args['category_item_id'],
                 ]);
             } else {
-                $boardCategory->itemId = $args['category_item_id'];
+                $boardCategory->item_id = $args['category_item_id'];
             }
 
             $boardCategory->save();

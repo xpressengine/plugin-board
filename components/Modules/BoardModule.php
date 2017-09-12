@@ -277,7 +277,7 @@ class BoardModule extends AbstractModule
                     return $comment;
                 }
 
-                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                 $board->save();
 
                 return $comment;
@@ -298,7 +298,7 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                     $board->save();
                 }
 
@@ -320,7 +320,7 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                     $board->save();
                 }
 
@@ -342,7 +342,7 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                     $board->save();
                 }
 
@@ -393,7 +393,7 @@ class BoardModule extends AbstractModule
                             'board::newCommentRegisteredBy',
                             ['displayName' => $comment->author->getDisplayName()]
                         ),
-                        $comment->pureContent
+                        $comment->pure_content
                     ),
                 ];
 
@@ -409,7 +409,7 @@ class BoardModule extends AbstractModule
                 // comment writers
                 $model = Comment::division($comment->instance_id);
                 $query = $model->whereHas('target', function ($query) use ($board) {
-                    $query->where('targetId', $board->id);
+                    $query->where('target_id', $board->id);
                 })
                 ->where('display', '!=', Comment::DISPLAY_HIDDEN);
                 $comments = $query->get();
@@ -496,7 +496,7 @@ class BoardModule extends AbstractModule
                         $board->user->getDisplayName(),
                         $url,
                         $semanticUrl,
-                        $board->pureContent
+                        $board->pure_content
                     ),
                 ];
 

@@ -713,7 +713,7 @@ class BoardModuleController extends Controller
                 'assent' => $item->assent_count,
                 'dissent' => $item->dissent_count,
             ],
-            'voteAt' => $vote->counter_option,
+            'voteAt' => $vote ? $vote->counter_option : null,
         ]);
     }
 

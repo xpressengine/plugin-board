@@ -8,11 +8,11 @@
 
 <div class="board">
     <div class="board_write">
-        <form method="post" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$item->instance_id}}" data-url-preview="{{ $urlHandler->get('preview') }}">
+        <form method="post" class="__board_form" action="{{ $urlHandler->get('update') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$item->instance_id}}" data-url-preview="{{ $urlHandler->get('preview') }}">
             <fieldset>
                 <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
                 <input type="hidden" name="id" value="{{$item->id}}" />
-                <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parentId')) }}" />
+                <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}" />
 
                 <div class="write_header">
                     @if($config->get('category') == true)
@@ -55,10 +55,10 @@
                 </div>
 
                 <div class="write_footer">
-                    @if ($item->userType == $item::USER_TYPE_GUEST)
+                    @if ($item->user_type == $item::USER_TYPE_GUEST)
                         <div>
                             <input type="text" name="writer" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer', $item->writer) }}">
-                            <input type="password" name="certifyKey" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                            <input type="password" name="certify_key" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
                             <input type="email" name="email" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email', $item->email) }}">
                         </div>
                     @endif

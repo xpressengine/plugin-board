@@ -8,11 +8,11 @@
 
 <div class="board">
     <div class="board_write">
-        <form method="post" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instanceId="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
+        <form method="post" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
             <fieldset>
                 <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
                 <input type="hidden" name="head" value="{{$head}}" />
-                <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parentId')) }}" />
+                <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}" />
 
                 <div class="write_header">
                     @if($config->get('category') == true)
@@ -57,7 +57,7 @@
                     @if (Auth::check() === false)
                         <div>
                             <input type="text" name="writer" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer') }}">
-                            <input type="password" name="certifyKey" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
+                            <input type="password" name="certify_key" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}">
                             <input type="email" name="email" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email') }}">
                         </div>
                     @endif

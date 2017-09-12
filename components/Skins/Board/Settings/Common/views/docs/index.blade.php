@@ -195,7 +195,7 @@
 
             var url = '{!! $urlHandler->managerUrl('move') !!}';
             var params = this.frm.serialize();
-            params = params + '&instanceId=' + instanceId;
+            params = params + '&instance_id=' + instanceId;
 
             var _this = this;
             $.ajax({

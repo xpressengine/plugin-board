@@ -264,8 +264,8 @@ class BoardService
         $this->checkCaptcha($config);
 
         // 암호 설정
-        if ($request->has('certifyKey') === true) {
-            $request->request->set('certifyKey', $identifyManager->hash($request->get('certifyKey')));
+        if ($request->has('certify_key') === true) {
+            $request->request->set('certify_key', $identifyManager->hash($request->get('certify_key')));
         }
 
         $inputs = $request->request->all();
@@ -301,11 +301,11 @@ class BoardService
     ) {
         // 암호 설정
         $oldCertifyKey = $item->certify_key;
-        $newCertifyKey = $request->get('certifyKey', '');
+        $newCertifyKey = $request->get('certify_key', '');
         if ($item->certify_key != '' && $newCertifyKey == '') {
-            $request->request->set('certifyKey', $item->certify_key);
+            $request->request->set('certify_key', $item->certify_key);
         } elseif ($item->certify_key != '' && $newCertifyKey != '') {
-            $request->request->set('certifyKey', $identifyManager->hash($newCertifyKey));
+            $request->request->set('certify_key', $identifyManager->hash($newCertifyKey));
         }
 
         if ($request->get('status') == Board::STATUS_NOTICE) {
@@ -327,7 +327,7 @@ class BoardService
         $item = $this->handler->put($item, $inputs, $config);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
-        if ($oldCertifyKey != '' && $oldCertifyKey != $item->certifyKey) {
+        if ($oldCertifyKey != '' && $oldCertifyKey != $item->certify_key) {
             $identifyManager->destroy($item);
             $identifyManager->create($item);
         }

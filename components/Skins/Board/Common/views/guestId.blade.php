@@ -16,7 +16,7 @@
             </div>
             <div class="auth-group">
                 <label for="pwd" class="sr-only">{{ xe_trans('xe::password') }}</label>
-                <input name="certifyKey" type="password" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}">
+                <input name="certify_key" type="password" class="xe-form-control" placeholder="{{ xe_trans('xe::password') }}">
             </div>
 
             <button type="submit" class="xe-btn xe-btn-primary">{{ xe_trans('xe::confirm') }}</button>

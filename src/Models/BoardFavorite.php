@@ -23,7 +23,7 @@ use Xpressengine\Http\Request;
  *
  * @property int favorite_id
  * @property string target_id
- * @property string userId
+ * @property string user_id
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board

@@ -124,7 +124,7 @@ class IdentifyManager
     public function create(Board $board)
     {
         $this->session->put($this->getKey($board->id), [
-            'certifyKey' => $board->certify_key,
+            'certify_key' => $board->certify_key,
             'expire' => $this->expireTime(),
         ]);
     }
@@ -160,7 +160,7 @@ class IdentifyManager
     public function validate(Board $board)
     {
         $session = $this->get($board);
-        if ($board->certify_key != $session['certifyKey']) {
+        if ($board->certify_key != $session['certify_key']) {
             return false;
         }
 

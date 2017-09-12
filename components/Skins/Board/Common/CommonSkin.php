@@ -246,7 +246,7 @@ class CommonSkin extends GenericBoardSkin
                 ];
             }
 
-            $arr = explode(':', request()->get('instanceId'));
+            $arr = explode(':', request()->get('instance_id'));
             $instanceId = $arr[1];
 
             return View::make(sprintf('%s/views/setting', CommonSkin::$path), [

@@ -65,7 +65,7 @@
                 ]) !!}
 
                 <a href="{{$urlHandler->get('index', Request::all())}}">{{ xe_trans('xe::list') }}</a>
-                @if($isManager == true || $item->userId == Auth::user()->getId() || $item->userType === $item::USER_TYPE_GUEST)
+                @if($isManager == true || $item->user_id == Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
                     <a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::update') }}</a>
                     <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}">{{ xe_trans('xe::delete') }}</a>
                 @endif
@@ -80,7 +80,7 @@
     </div>
 
     <!-- 댓글 -->
-    @if ($config->get('comment') === true && $item->boardData->allowComment === 1)
+    @if ($config->get('comment') === true && $item->boardData->allow_comment === 1)
         <div class="__xe_comment board_comment">
             {!! uio('comment', ['target' => $item]) !!}
         </div>

@@ -148,9 +148,9 @@ class ArchivesController extends Controller
         if ($orderType == '') {
             $query->where('head', '>=', $slug->board->head);
         } elseif ($orderType == 'assent_count') {
-            $query->where('assent_count', '>', $slug->board->assentCount)
+            $query->where('assent_count', '>', $slug->board->assent_count)
                 ->orWhere(function ($query) use ($slug) {
-                    $query->where('assent_count', '=', $slug->board->assentCount);
+                    $query->where('assent_count', '=', $slug->board->assent_count);
                     $query->where('head', '>=', $slug->board->head);
                 });
         } elseif ($orderType == 'recently_created') {

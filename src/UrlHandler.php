@@ -99,7 +99,7 @@ class UrlHandler
         if ($config !== null && $config->get('urlType') == 'slug') {
             $slug = $board->slug;
             if ($slug != null) {
-                return $this->getSlug($slug->slug, $params, $slug->instanceId);
+                return $this->getSlug($slug->slug, $params, $slug->instance_id);
             }
         }
 

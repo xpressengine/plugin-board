@@ -180,7 +180,7 @@ $(function($) {
 		event.preventDefault();
 
 		var $frm = $('.__xe_search');
-		$frm.find('[name="title_pureContent"]').val($(this).find('[name="title_pureContent"]').val());
+		$frm.find('[name="title_pure_content"]').val($(this).find('[name="title_pure_content"]').val());
 		$frm.submit();
 	});
 
@@ -375,7 +375,7 @@ $(function($) {
 	}).on('click', '.__xe_temp_btn_save', function (event) {
 		//var form = $('#board_form');
 		//var temporary = $('textarea', form).temporary({
-		//    key: 'document|' + form.data('instanceId'),
+		//    key: 'document|' + form.data('instance_id'),
 		//    btnLoad: $('.__xe_temp_btn_load', form),
 		//    btnSave: $('.__xe_temp_btn_save', form),
 		//    container: $('.__xe_temp_container', form),
@@ -410,7 +410,7 @@ $(function($) {
 		$.ajax({
 			type: 'post',
 			dataType: 'json',
-			data: {id:ids, instanceId: instanceId},
+			data: {id:ids, instance_id: instanceId},
 			url: $(event.target).data('url'),
 			success: function(response) {
 				document.location.reload();
@@ -436,7 +436,7 @@ $(function($) {
 		$.ajax({
 			type: 'post',
 			dataType: 'json',
-			data: {id:ids, instanceId: instanceId},
+			data: {id:ids, instance_id: instanceId},
 			url: $(event.target).data('url'),
 			success: function(response) {
 				document.location.reload();

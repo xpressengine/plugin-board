@@ -20,7 +20,7 @@
             </div>
             <div>
                 <label for="pwd" class="sr-only">{{ xe_trans('xe::password') }}</label>
-                <input name="certifyKey" type="password" placeholder="{{ xe_trans('xe::password') }}">
+                <input name="certify_key" type="password" placeholder="{{ xe_trans('xe::password') }}">
             </div>
 
             <button type="submit">{{ xe_trans('xe::confirm') }}</button>

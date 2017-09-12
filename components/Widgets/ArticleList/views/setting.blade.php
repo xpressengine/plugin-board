@@ -22,6 +22,6 @@
     <select name="order_type" class="form-control">
         <option value="recentlyCreated" @if(array_get($args, 'order_type') == 'recentlyCreated') selected="selected" @endif >{{xe_trans('board::recentlyCreated')}}</option>
         <option value="recentlyUpdated" @if(array_get($args, 'order_type') == 'recentlyUpdated') selected="selected" @endif >{{xe_trans('board::recentlyUpdated')}}</option>
-        <option value="assentCount" @if(array_get($args, 'order_type') == 'assentCount') selected="selected" @endif >{{xe_trans('board::assentOrder')}}</option>
+        <option value="assent_count" @if(array_get($args, 'order_type') == 'assent_count') selected="selected" @endif >{{xe_trans('board::assentOrder')}}</option>
     </select>
 </div>

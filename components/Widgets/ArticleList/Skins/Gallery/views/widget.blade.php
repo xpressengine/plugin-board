@@ -8,7 +8,7 @@
             <li>
                 <a href="{{$urlHandler->getShow($item)}}">
                     <div class="xe-thumnail-box">
-                        <img src="<?php echo $item->boardThumbnailPath ? : 'http://placehold.it/300x200'?>" alt="">
+                        <img src="<?php echo $item->board_thumbnail_path ? : 'http://placehold.it/300x200'?>" alt="">
                     </div>
                     <div class="xe-title-area">
                         <div class="xe-title-category">
@@ -18,7 +18,7 @@
                             @endif
                         </div>
                         <div class="xe-title-text xe-ellipsis"><span class="xe-sr-only">{{xe_trans('title')}}</span>{!! $item->title !!}</div>
-                        <div class="xe-upload-time xe-visible-lg"><span class="xe-sr-only">Uploaded at</span><em data-xe-timeago="{{$item->createdAt}}">{{$item->createdAt}}</em></div>
+                        <div class="xe-upload-time xe-visible-lg"><span class="xe-sr-only">Uploaded at</span><em data-xe-timeago="{{$item->created_at}}">{{$item->created_at}}</em></div>
                     </div>
                 </a>
             </li>

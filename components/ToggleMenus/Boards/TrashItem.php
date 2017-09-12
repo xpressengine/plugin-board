@@ -45,13 +45,13 @@ class TrashItem extends AbstractToggleMenu
         $configHandler = app('xe.board.config');
         $boardPermission = app('xe.board.permission');
 
-        $config = $configHandler->get($doc->instanceId);
+        $config = $configHandler->get($doc->instance_id);
         $isManger = false;
         if ($config !== null) {
 
             if (Gate::allows(
                 BoardPermissionHandler::ACTION_MANAGE,
-                new Instance($boardPermission->name($doc->instanceId))
+                new Instance($boardPermission->name($doc->instance_id))
             )) {
                 $isManger = true;
             };
@@ -89,7 +89,7 @@ class TrashItem extends AbstractToggleMenu
     {
         $doc = Board::find($this->identifier);
 
-        $url = app('xe.board.url')->get('trash', ['id' => $this->identifier], $doc->instanceId);
+        $url = app('xe.board.url')->get('trash', ['id' => $this->identifier], $doc->instance_id);
 
         return 'var url = "' . $url . '" + window.location.search;
             XE.ajax(url, {

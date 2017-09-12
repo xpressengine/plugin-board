@@ -615,7 +615,7 @@ class BoardSettingsController extends Controller
         $documentIds = $request->get('id');
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
-        $instanceId = $request->get('instanceId');
+        $instanceId = $request->get('instance_id');
         $dstConfig = $this->configHandler->get($instanceId);
         if ($dstConfig === null) {
             throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
@@ -644,7 +644,7 @@ class BoardSettingsController extends Controller
         $documentIds = $request->get('id');
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
-        $instanceId = $request->get('instanceId');
+        $instanceId = $request->get('instance_id');
         $config = $this->configHandler->get($instanceId);
         if ($config === null) {
             throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
@@ -655,7 +655,7 @@ class BoardSettingsController extends Controller
         foreach ($items as $item) {
             $user = new Guest;
             if ($item->userId != '') {
-                $user = User::find($item->userId);
+                $user = User::find($item->user_id);
             }
 
             $this->handler->copy($item, $user, $config);

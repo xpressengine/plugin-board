@@ -2,7 +2,7 @@
 <div>
     Revision NO : {{ $doc->revisionNo }}
     /
-    Update date : {{ $doc->updatedAt }}
+    Update date : {{ $doc->updated_at }}
 </div>
 
 <div class="board-contents">
@@ -10,9 +10,9 @@
         @if ($columnName == 'title')
 
             <h2 class="page-header">
-                <p>[{{ $doc->instanceId }}]</p>
+                <p>[{{ $doc->instance_id }}]</p>
                 {!! $doc->title !!}
-                <small class="pull-right">Date: {{$doc->updatedAt}}</small>
+                <small class="pull-right">Date: {{$doc->updated_at}}</small>
             </h2>
             <div class="content-right">
                 <span class="xe-user" data-id="{{$doc->getUserId()}}">{!! $doc->writer !!}</span>

@@ -34,7 +34,7 @@
             <fieldset>
                 <div>
                     <label>{{ xe_trans('board::titleAndContent') }}</label>
-                    <input type="text" name="title_pureContent" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pureContent') }}">
+                    <input type="text" name="title_pure_content" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pureContent') }}">
                 </div>
                 <div>
                     <label>{{ xe_trans('xe::writer') }}</label>
@@ -83,11 +83,11 @@
                 @endif
                 <th scope="col">{{ xe_trans('board::title') }}</th>
                 <th scope="col">{{ xe_trans('board::writer') }}</th>
-                <th scope="col">{{ xe_trans('board::assentCount') }}</th>
-                <th scope="col">{{ xe_trans('board::dissentCount') }}</th>
-                <th scope="col">{{ xe_trans('board::readCount') }}</th>
-                <th scope="col">{{ xe_trans('board::createdAt') }}</th>
-                <th scope="col">{{ xe_trans('board::updatedAt') }}</th>
+                <th scope="col">{{ xe_trans('board::assent_count') }}</th>
+                <th scope="col">{{ xe_trans('board::dissent_count') }}</th>
+                <th scope="col">{{ xe_trans('board::read_count') }}</th>
+                <th scope="col">{{ xe_trans('board::created_at') }}</th>
+                <th scope="col">{{ xe_trans('board::updated_at') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -99,8 +99,8 @@
                     @endif
                     <td>
                         <a href="{{$urlHandler->getShow($item, Request::all())}}">{!! $item->title !!}</a>
-                        @if($item->commentCount > 0)
-                            <span><i class="xi-comment"></i>{{ $item->commentCount }}</span>
+                        @if($item->comment_count > 0)
+                            <span><i class="xi-comment"></i>{{ $item->comment_count }}</span>
                         @endif
                         @if ($item->data->file_count > 0)
                             <span ><i class="xi-clip"></i>file</span>
@@ -144,8 +144,8 @@
                     @endif
                     <td>
                         <a href="{{$urlHandler->getShow($item, Request::all())}}">{!! $item->title !!}</a>
-                        @if($item->commentCount > 0)
-                            <span><i class="xi-comment"></i>{{ $item->commentCount }}</span>
+                        @if($item->comment_count > 0)
+                            <span><i class="xi-comment"></i>{{ $item->comment_count }}</span>
                         @endif
                         @if ($item->data->fileCount > 0)
                             <span ><i class="xi-clip"></i>file</span>
