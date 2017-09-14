@@ -239,8 +239,6 @@ class Resources
 
     public static function registerCommands()
     {
-        $events = app('events');
-
         $commands = [
             BoardSkinMake::class,
         ];
