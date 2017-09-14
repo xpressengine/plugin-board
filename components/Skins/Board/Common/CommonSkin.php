@@ -3,9 +3,12 @@ namespace Xpressengine\Plugins\Board\Components\Skins\Board\Common;
 
 use Xpressengine\DynamicField\ColumnEntity;
 use Xpressengine\DynamicField\DynamicFieldHandler;
+use Xpressengine\Permission\Instance;
+use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\GenericBoardSkin;
 use View;
+use Gate;
 use XeFrontend;
 use XeRegister;
 use XePresenter;
@@ -107,6 +110,7 @@ class CommonSkin extends GenericBoardSkin
 
         // set skin path
         $this->data['_skinPath'] = static::$path;
+        $this->data['isManager'] = $this->isManager();
 
         /**
          * If view file is not 'index.blade.php' then change view path to CommonSkin's path.
@@ -344,5 +348,19 @@ class CommonSkin extends GenericBoardSkin
         }
 
         return $sortFormColumns;
+    }
+
+    /**
+     * is manager
+     *
+     * @return bool
+     */
+    protected function isManager()
+    {
+        $boardPermission = app('xe.board.permission');
+        return isset($this->data['instanceId']) && Gate::allows(
+            BoardPermissionHandler::ACTION_MANAGE,
+            new Instance($boardPermission->name($this->data['instanceId']))
+        ) ? true : false;
     }
 }
