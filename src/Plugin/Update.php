@@ -19,6 +19,12 @@ use XeToggleMenu;
 use XeConfig;
 use XeDB;
 use XePlugin;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\CopyItem;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\FacebookItem;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\LineItem;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\TwitterItem;
+use Xpressengine\Plugins\Board\Components\UIObjects\Share\ShareUIObject;
+use Xpressengine\Plugins\Board\ConfigHandler;
 
 /**
  * Update
@@ -44,7 +50,7 @@ class Update
     public static function check($installedVersion = null)
     {
         // ver 0.9.1
-        if (XeConfig::get(XeToggleMenu::getConfigKey('module/board@board', null)) == null) {
+        if (XeConfig::get(XeToggleMenu::getConfigKey(ConfigHandler::CONFIG_NAME, null)) == null) {
             return false;
         }
 
@@ -80,6 +86,11 @@ class Update
             return false;
         }
 
+        // ver 0.9.22
+        if (static::hasShareToggleMenuConfig() === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -94,8 +105,8 @@ class Update
         Resources::putLang();
 
         // ver 0.9.1
-        if (XeConfig::get(XeToggleMenu::getConfigKey('module/board@board', null)) == null) {
-            XeToggleMenu::setActivates('module/board@board', null, [
+        if (XeConfig::get(XeToggleMenu::getConfigKey(ConfigHandler::CONFIG_NAME, null)) == null) {
+            XeToggleMenu::setActivates(ConfigHandler::CONFIG_NAME, null, [
                 'module/board@board/toggleMenu/xpressengine@trashItem',
             ]);
         }
@@ -113,7 +124,7 @@ class Update
 
         // ver 0.9.5
         if (static::hasConfigCaptchaTag() === false) {
-            $config = XeConfig::get('module/board@board');
+            $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
             if ($config->get('useCaptcha') === null) {
                 $config->set('useCaptcha', false);
             }
@@ -127,7 +138,7 @@ class Update
 
         // ver 0.9.14
         if (static::hasConfigUrlType() === false) {
-            $config = XeConfig::get('module/board@board');
+            $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
             if ($config->get('urlType') === null) {
                 $config->set('urlType', 'slug');
             }
@@ -137,7 +148,7 @@ class Update
 
         // ver 0.9.14
         if (static::hasConfigDeleteToTrash() === false) {
-            $config = XeConfig::get('module/board@board');
+            $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
             if ($config->get('deleteToTrash') === null) {
                 $config->set('deleteToTrash', false);
             }
@@ -147,7 +158,7 @@ class Update
 
         // ver 0.9.16
         if (static::hasConfigNewCommentNotice() === false) {
-            $config = XeConfig::get('module/board@board');
+            $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
             if ($config->get('newCommentNotice') === null) {
                 $config->set('newCommentNotice', true);
             }
@@ -167,6 +178,16 @@ class Update
                 }
             }
         }
+
+        // ver 0.9.22
+        if (static::hasShareToggleMenuConfig() === false) {
+            XeToggleMenu::setActivates(ShareUIObject::CONFIG_NAME, null, [
+                CopyItem::getId(),
+                FacebookItem::getId(),
+                LineItem::getId(),
+                TwitterItem::getId(),
+            ]);
+        }
     }
 
     /**
@@ -176,7 +197,7 @@ class Update
      */
     protected static function hasConfigCaptchaTag()
     {
-        $config = XeConfig::get('module/board@board');
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
         if ($config->get('useCaptcha') === null || $config->get('useTag') === null) {
             return false;
         }
@@ -205,7 +226,7 @@ class Update
      */
     protected static function hasConfigUrlType()
     {
-        $config = XeConfig::get('module/board@board');
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
         if ($config->get('urlType') === null) {
             return false;
         }
@@ -219,7 +240,7 @@ class Update
      */
     protected static function hasConfigDeleteToTrash()
     {
-        $config = XeConfig::get('module/board@board');
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
         if ($config->get('deleteToTrash') === null) {
             return false;
         }
@@ -233,7 +254,7 @@ class Update
      */
     protected static function hasConfigNewCommentNotice()
     {
-        $config = XeConfig::get('module/board@board');
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
         if ($config->get('newCommentNotice') === null) {
             return false;
         }
@@ -252,6 +273,20 @@ class Update
             return false;
         }
 
+        return true;
+    }
+
+    /**
+     * check configuration for share toggle menu
+     *
+     * @return bool
+     */
+    protected static function hasShareToggleMenuConfig()
+    {
+        $config = XeConfig::get(XeToggleMenu::getConfigKey(ShareUIObject::CONFIG_NAME, null));
+        if ($config=== null) {
+            return false;
+        }
         return true;
     }
 }

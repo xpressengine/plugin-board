@@ -28,6 +28,10 @@ use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Components\Skins\Board\Common\CommonSkin;
 use Xpressengine\Plugins\Board\Components\UIObjects\Title\TitleUIObject;
 use Xpressengine\Plugins\Board\Components\UIObjects\Share\ShareUIObject;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\CopyItem;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\FacebookItem;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\LineItem;
+use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\TwitterItem;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Plugins\Board\Commands\BoardSkinMake;
@@ -96,8 +100,12 @@ class Resources
      */
     public static function createShareConfig()
     {
-//        $configManager = app('xe.config');
-//        $configManager->add(Share::CONFIG_NAME, array_keys(Share::getItems()));
+        XeToggleMenu::setActivates(ShareUIObject::CONFIG_NAME, null, [
+            CopyItem::getId(),
+            FacebookItem::getId(),
+            LineItem::getId(),
+            TwitterItem::getId(),
+        ]);
     }
 
     /**
