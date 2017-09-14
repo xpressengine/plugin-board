@@ -46,6 +46,7 @@ use XeCounter;
 use XeDynamicField;
 use XeDocument;
 use XeSkin;
+use Illuminate\Console\Application as Artisan;
 
 /**
  * Resources
@@ -244,7 +245,7 @@ class Resources
             BoardSkinMake::class,
         ];
 
-        $events->listen('artisan.start', function ($artisan) use ($commands) {
+        Artisan::starting(function ($artisan) use ($commands) {
             $artisan->resolveCommands($commands);
         });
     }
