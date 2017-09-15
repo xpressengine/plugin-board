@@ -44,7 +44,7 @@
                 @endif
             @else
                 <div class="__xe_{{$columnName}} __xe_section">
-                    {!! dfCreate($config->get('documentGroup'), $columnName, Request::all()) !!}
+                    {!! df_create($config->get('documentGroup'), $columnName, Request::all()) !!}
                 </div>
             @endif
         @endforeach
@@ -53,7 +53,7 @@
         @foreach ($configHandler->getDynamicFields($config) as $dynamicFieldConfig)
             @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null)
                 <div class="__xe_{{$dynamicFieldConfig->get('id')}} __xe_section">
-                    {!! dfCreate($dynamicFieldConfig->get('group'), $dynamicFieldConfig->get('id'), Request::all()) !!}
+                    {!! df_create($dynamicFieldConfig->get('group'), $dynamicFieldConfig->get('id'), Request::all()) !!}
                 </div>
             @endif
         @endforeach

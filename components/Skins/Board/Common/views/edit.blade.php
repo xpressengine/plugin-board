@@ -45,7 +45,7 @@
                 @endif
             @else
                 <div class="__xe_{{$columnName}} __xe_section">
-                    {!! dfEdit($config->get('documentGroup'), $columnName, $item->getAttributes()) !!}
+                    {!! df_edit($config->get('documentGroup'), $columnName, $item->getAttributes()) !!}
                 </div>
             @endif
         @endforeach

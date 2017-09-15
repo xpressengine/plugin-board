@@ -363,7 +363,7 @@ class BoardModuleController extends Controller
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
                 'id' => $item->id,
                 'referrer' => app('url')->current(),
             ]));
@@ -410,7 +410,7 @@ class BoardModuleController extends Controller
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
                 'id' => $item->id,
                 'referrer' => $this->urlHandler->get('edit', ['id' => $item->id]),
             ]));
@@ -505,7 +505,7 @@ class BoardModuleController extends Controller
         // 인증 되었다면 DB의 인증키를 세션에 저장
         $identifyManager->create($item);
 
-        return xeRedirect()->to($request->get('referrer', 'edit'));
+        return xe_redirect()->to($request->get('referrer', 'edit'));
     }
 
     /**
@@ -597,7 +597,7 @@ class BoardModuleController extends Controller
         if ($item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
                 'id' => $item->id,
                 'referrer' => $this->urlHandler->get('show', ['id' => $item->id]),
             ]));
@@ -609,7 +609,7 @@ class BoardModuleController extends Controller
 
         $service->destroy($item, $this->config, $identifyManager);
 
-        return xeRedirect()->to(
+        return xe_redirect()->to(
             $this->urlHandler->get('index', $request->query->all())
         )->setData(['item' => $item]);
     }
@@ -637,7 +637,7 @@ class BoardModuleController extends Controller
 
         $this->handler->trash($item, $this->config);
 
-        return xeRedirect()->to(
+        return xe_redirect()->to(
             $this->urlHandler->get('index', $request->query->all())
         )->setData([
             'item' => $item,
@@ -751,7 +751,7 @@ class BoardModuleController extends Controller
         $logs = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
             ->where('counter_option', $option)->take($limit)->get();
 
-        return apiRender('votedUsers', [
+        return api_render('votedUsers', [
             'urlHandler' => $this->urlHandler,
             'option' => $option,
             'item' => $item,
@@ -777,7 +777,7 @@ class BoardModuleController extends Controller
         $count = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
             ->where('counter_option', $option)->count();
 
-        return apiRender('votedModal', [
+        return api_render('votedModal', [
             'urlHandler' => $this->urlHandler,
             'option' => $option,
             'item' => $item,

@@ -76,7 +76,7 @@ class UrlHandler
         if ($instanceId == null) {
             $instanceId = $this->instanceId;
         }
-        return instanceRoute($name, $params, $instanceId);
+        return instance_route($name, $params, $instanceId);
     }
 
     /**
