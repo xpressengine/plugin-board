@@ -69,16 +69,16 @@ class GallerySkin extends CommonSkin
                 $notice = $func($config, $userId);
 
                 // 공지 제외하고 보기 옵션 처리
-                if (Input::get('orderType') == 'exceptNotice') {
+                if (Request::get('orderType') == 'exceptNotice') {
                     return [];
                 }
 
                 foreach ($notice as $item) {
                     $thumbItem = BoardGalleryThumb::find($item->id);
                     if ($thumbItem !== null) {
-                        $item->boardThumbnailFileId = $thumbItem->boardThumbnailFileId;
-                        $item->boardThumbnailExternalPath = $thumbItem->boardThumbnailExternalPath;
-                        $item->boardThumbnailPath = $thumbItem->boardThumbnailPath;
+                        $item->board_thumbnail_file_id = $thumbItem->board_thumbnail_file_id;
+                        $item->board_thumbnail_external_path = $thumbItem->board_thumbnail_external_path;
+                        $item->board_thumbnail_path = $thumbItem->board_thumbnail_path;
                     }
                 }
 
@@ -143,7 +143,7 @@ class GallerySkin extends CommonSkin
                             'board_gallery_thumbs',
                             sprintf('%s.%s', $query->getQuery()->from, 'id'),
                             '=',
-                            sprintf('%s.%s', 'board_gallery_thumbs', 'targetId')
+                            sprintf('%s.%s', 'board_gallery_thumbs', 'target_id')
                         );
                     });
                 }
@@ -176,7 +176,7 @@ class GallerySkin extends CommonSkin
         $mediaManager = App::make('xe.media');
 
         // board gallery thumbnails 에 항목이 없는 경우
-        if ($item->boardThumbnailFileId === null && $item->boardThumbnailPath === null) {
+        if ($item->board_thumbnail_file_id === null && $item->board_thumbnail_path === null) {
             // find file by document id
             $files = XeStorage::fetchByFileable($item->id);
             $fileId = '';
@@ -216,9 +216,9 @@ class GallerySkin extends CommonSkin
                 }
             }
 
-            $item->boardThumbnailFileId = $fileId;
-            $item->boardThumbnailExternalPath = $externalPath;
-            $item->boardThumbnailPath = $thumbnailPath;
+            $item->board_thumbnail_file_id = $fileId;
+            $item->board_thumbnail_external_path = $externalPath;
+            $item->board_thumbnail_path = $thumbnailPath;
 
             $model = BoardGalleryThumb::find($item->id);
             if ($model === null) {
@@ -226,17 +226,17 @@ class GallerySkin extends CommonSkin
             }
 
             $model->fill([
-                'targetId' => $item->id,
-                'boardThumbnailFileId' => $fileId,
-                'boardThumbnailExternalPath' => $externalPath,
-                'boardThumbnailPath' => $thumbnailPath,
+                'target_id' => $item->id,
+                'board_thumbnail_file_id' => $fileId,
+                'board_thumbnail_external_path' => $externalPath,
+                'board_thumbnail_path' => $thumbnailPath,
             ]);
             $model->save();
         }
 
         // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
-        if ($item->boardThumbnailPath == '') {
-            $item->boardThumbnailPath = 'http://placehold.it/300x200';
+        if ($item->board_thumbnail_path == '') {
+            $item->board_thumbnail_path = 'http://placehold.it/300x200';
         }
     }
 

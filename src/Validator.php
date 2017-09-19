@@ -103,7 +103,7 @@ class Validator
     {
         return [
             'email' => 'Required|Email',
-            'certifyKey' => 'Required',
+            'certify_key' => 'Required',
         ];
     }
 
@@ -144,7 +144,7 @@ class Validator
         return [
             'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
-            'certifyKey' => 'Required|Between:4,64',
+            'certify_key' => 'Required|Between:4,64',
             'slug' => 'Required',
         ];
     }
@@ -159,7 +159,7 @@ class Validator
         return [
             'writer' => 'Required|Min:2',
             'email' => 'Required|Between:3,64|Email',
-            'certifyKey' => 'Between:4,64',
+            'certify_key' => 'Between:4,64',
         ];
     }
 
@@ -185,7 +185,7 @@ class Validator
     public function category()
     {
         return [
-            'categoryItemId' =>  'Required',
+            'category_item_id' =>  'Required',
         ];
     }
 }

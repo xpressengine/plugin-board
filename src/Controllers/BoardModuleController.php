@@ -94,22 +94,22 @@ class BoardModuleController extends Controller
 
     /**
      * @var bool
+     *
+     * @deprecated
      */
     public $isManager = false;
 
     /**
      * constructor.
      *
-     * @param Handler                $handler         board handler
-     * @param ConfigHandler          $configHandler   board config handler
-     * @param UrlHandler             $urlHandler      board url handler
-     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param Handler       $handler       board handler
+     * @param ConfigHandler $configHandler board config handler
+     * @param UrlHandler    $urlHandler    board url handler
      */
     public function __construct(
         Handler $handler,
         ConfigHandler $configHandler,
-        UrlHandler $urlHandler,
-        BoardPermissionHandler $boardPermission
+        UrlHandler $urlHandler
     ) {
         $instanceConfig = InstanceConfig::instance();
         $this->instanceId = $instanceConfig->getInstanceId();
@@ -117,19 +117,10 @@ class BoardModuleController extends Controller
         $this->handler = $handler;
         $this->configHandler = $configHandler;
         $this->urlHandler = $urlHandler;
-
         $this->config = $configHandler->get($this->instanceId);
         if ($this->config !== null) {
             $urlHandler->setInstanceId($this->config->get('boardId'));
             $urlHandler->setConfig($this->config);
-
-            $this->isManager = false;
-            if (Gate::allows(
-                BoardPermissionHandler::ACTION_MANAGE,
-                new Instance($boardPermission->name($this->instanceId))
-            )) {
-                $this->isManager = true;
-            };
         }
 
         // set Skin
@@ -137,7 +128,6 @@ class BoardModuleController extends Controller
         XePresenter::share('handler', $handler);
         XePresenter::share('configHandler', $configHandler);
         XePresenter::share('urlHandler', $urlHandler);
-        XePresenter::share('isManager', $this->isManager);
         XePresenter::share('instanceId', $this->instanceId);
         XePresenter::share('config', $this->config);
     }
@@ -199,7 +189,7 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $item = $service->getItem($id, Auth::user(), $this->config, $this->isManager);
+        $item = $service->getItem($id, Auth::user(), $this->config, $this->isManager());
 
         // 글 조회수 증가
         if ($item->display == Board::DISPLAY_VISIBLE) {
@@ -237,13 +227,13 @@ class BoardModuleController extends Controller
         $menuUrl,
         $strSlug
     ) {
-        $slug = BoardSlug::where('slug', $strSlug)->where('instanceId', $this->instanceId)->first();
+        $slug = BoardSlug::where('slug', $strSlug)->where('instance_id', $this->instanceId)->first();
 
         if ($slug === null) {
             throw new NotFoundDocumentException;
         }
 
-        return $this->show($service, $request, $boardPermission, $menuUrl, $slug->targetId);
+        return $this->show($service, $request, $boardPermission, $menuUrl, $slug->target_id);
     }
 
     /**
@@ -316,7 +306,7 @@ class BoardModuleController extends Controller
         $this->validate($request, $validator->getCreateRule(Auth::user(), $this->config));
 
         // 공지 등록 권한 확인
-        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
+        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager() === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
@@ -369,18 +359,18 @@ class BoardModuleController extends Controller
         }
 
         // 비회원이 작성 한 글일 때 인증페이지로 이동
-        if ($this->isManager !== true &&
+        if ($this->isManager() !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
                 'id' => $item->id,
                 'referrer' => app('url')->current(),
             ]));
         }
 
         // 접근 권한 확인
-        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager()) == false) {
             throw new AccessDeniedHttpException;
         }
 
@@ -416,11 +406,11 @@ class BoardModuleController extends Controller
         $item = Board::division($this->instanceId)->find($request->get('id'));
 
         // 비회원이 작성 한 글 인증
-        if ($this->isManager !== true &&
+        if ($this->isManager() !== true &&
             $item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
                 'id' => $item->id,
                 'referrer' => $this->urlHandler->get('edit', ['id' => $item->id]),
             ]));
@@ -438,12 +428,12 @@ class BoardModuleController extends Controller
 
         $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
 
-        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager()) == false) {
             throw new AccessDeniedHttpException;
         }
 
         // 공지 등록 권한 확인
-        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager === false) {
+        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager() === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
@@ -508,14 +498,14 @@ class BoardModuleController extends Controller
 
         $this->validate($request, $validator->guestCertifyRule());
 
-        if ($identifyManager->verify($item, $request->get('email'), $request->get('certifyKey')) === false) {
+        if ($identifyManager->verify($item, $request->get('email'), $request->get('certify_key')) === false) {
             throw new NotMatchedCertifyKeyException;
         }
 
         // 인증 되었다면 DB의 인증키를 세션에 저장
         $identifyManager->create($item);
 
-        return xeRedirect()->to($request->get('referrer', 'edit'));
+        return xe_redirect()->to($request->get('referrer', 'edit'));
     }
 
     /**
@@ -557,8 +547,8 @@ class BoardModuleController extends Controller
         }
 
         $showCategoryItem = null;
-        if ($request->get('categoryItemId', '') !== '') {
-            $showCategoryItem = CategoryItem::find($request->get('categoryItemId'));
+        if ($request->get('category_item_id', '') !== '') {
+            $showCategoryItem = CategoryItem::find($request->get('category_item_id'));
         }
 
         /** @var \Xpressengine\Editor\AbstractEditor $editor */
@@ -607,19 +597,19 @@ class BoardModuleController extends Controller
         if ($item->isGuest() === true &&
             $identifyManager->identified($item) === false &&
             Auth::user()->getRating() != 'super') {
-            return xeRedirect()->to($this->urlHandler->get('guest.id', [
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
                 'id' => $item->id,
                 'referrer' => $this->urlHandler->get('show', ['id' => $item->id]),
             ]));
         }
 
-        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager) == false) {
+        if ($service->hasItemPerm($item, Auth::user(), $identifyManager, $this->isManager()) == false) {
             throw new AccessDeniedHttpException;
         }
 
         $service->destroy($item, $this->config, $identifyManager);
 
-        return xeRedirect()->to(
+        return xe_redirect()->to(
             $this->urlHandler->get('index', $request->query->all())
         )->setData(['item' => $item]);
     }
@@ -627,7 +617,7 @@ class BoardModuleController extends Controller
     /**
      * trash
      *
-     * @param BoardService $server  board service
+     * @param BoardService $service board service
      * @param Request      $request request
      * @return mixed
      */
@@ -647,7 +637,7 @@ class BoardModuleController extends Controller
 
         $this->handler->trash($item, $this->config);
 
-        return xeRedirect()->to(
+        return xe_redirect()->to(
             $this->urlHandler->get('index', $request->query->all())
         )->setData([
             'item' => $item,
@@ -710,10 +700,10 @@ class BoardModuleController extends Controller
             'display' => $display,
             'id' => $id,
             'counts' => [
-                'assent' => $item->assentCount,
-                'dissent' => $item->dissentCount,
+                'assent' => $item->assent_count,
+                'dissent' => $item->dissent_count,
             ],
-            'voteAt' => $vote['counterOption'],
+            'voteAt' => $vote ? $vote->counter_option : null,
         ]);
     }
 
@@ -758,10 +748,10 @@ class BoardModuleController extends Controller
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
-        $logs = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
-            ->where('counterOption', $option)->take($limit)->get();
+        $logs = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
+            ->where('counter_option', $option)->take($limit)->get();
 
-        return apiRender('votedUsers', [
+        return api_render('votedUsers', [
             'urlHandler' => $this->urlHandler,
             'option' => $option,
             'item' => $item,
@@ -784,10 +774,10 @@ class BoardModuleController extends Controller
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
-        $count = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
-            ->where('counterOption', $option)->count();
+        $count = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
+            ->where('counter_option', $option)->count();
 
-        return apiRender('votedModal', [
+        return api_render('votedModal', [
             'urlHandler' => $this->urlHandler,
             'option' => $option,
             'item' => $item,
@@ -813,8 +803,8 @@ class BoardModuleController extends Controller
 
         $counter = $this->handler->getVoteCounter();
         $logModel = $counter->newModel();
-        $query = $logModel->where('counterName', $counter->getName())->where('targetId', $id)
-            ->where('counterOption', $option);
+        $query = $logModel->where('counter_name', $counter->getName())->where('target_id', $id)
+            ->where('counter_option', $option);
 
         if ($startId != null) {
             $query->where('id', '<', $startId);
@@ -833,7 +823,7 @@ class BoardModuleController extends Controller
                 'id' => $user->getId(),
                 'displayName' => $user->getDisplayName(),
                 'profileImage' => $user->getProfileImage(),
-                'createdAt' => (string)$log->createdAt,
+                'createdAt' => (string)$log->created_at,
                 'profilePage' => $profilePage,
             ];
         }
@@ -848,5 +838,19 @@ class BoardModuleController extends Controller
             'list' => $list,
             'nextStartId' => $nextStartId,
         ]);
+    }
+
+    /**
+     * is manager
+     *
+     * @return bool
+     */
+    protected function isManager()
+    {
+        $boardPermission = app('xe.board.permission');
+        return Gate::allows(
+            BoardPermissionHandler::ACTION_MANAGE,
+            new Instance($boardPermission->name($this->instanceId))
+        ) ? true : false;
     }
 }

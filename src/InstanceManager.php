@@ -220,7 +220,7 @@ class InstanceManager
     {
         /** @var Board $model */
         $model = Board::division($instanceId);
-        $documentCount = $model->where('instanceId', $instanceId)->count();
+        $documentCount = $model->where('instance_id', $instanceId)->count();
         $configs = $this->configHandler->getDynamicFields($this->configHandler->get($instanceId));
         $dynamicFieldCount = count($configs);
 

@@ -66,27 +66,27 @@ class ArticleListWidget extends AbstractWidget
 
         $model = Board::division($boardId);
         /** @var \Xpressengine\Database\DynamicQuery $query */
-        $query = $model->where('instanceId', $boardId);
+        $query = $model->where('instance_id', $boardId);
         $query = $query->leftJoin(
             'board_gallery_thumbs',
             sprintf('%s.%s', $query->getQuery()->from, 'id'),
             '=',
-            sprintf('%s.%s', 'board_gallery_thumbs', 'targetId')
+            sprintf('%s.%s', 'board_gallery_thumbs', 'target_id')
         );
         $query = $query->visible();
 
         //$recent_date
         if ($recent_date !== 0) {
             $current = Carbon::now();
-            $query = $query->where('createdAt', '>=', $current->addDay(-1 * $recent_date)->toDateString().' 00:00:00')
-                ->where('createdAt', '<=', $current->addDay($recent_date)->toDateString().' 23:59:59');
+            $query = $query->where('created_at', '>=', $current->addDay(-1 * $recent_date)->toDateString().' 00:00:00')
+                ->where('created_at', '<=', $current->addDay($recent_date)->toDateString().' 23:59:59');
         }
 
         //$orderType
         if ($orderType == '') {
             $query = $query->orderBy('head', 'desc');
-        } elseif ($orderType == 'assentCount') {
-            $query = $query->orderBy('assentCount', 'desc')->orderBy('head', 'desc');
+        } elseif ($orderType == 'assent_count') {
+            $query = $query->orderBy('assent_count', 'desc')->orderBy('head', 'desc');
         } elseif ($orderType == 'recentlyCreated') {
             $query = $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
         } elseif ($orderType == 'recentlyUpdated') {

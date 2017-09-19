@@ -7,6 +7,8 @@
 
 <!-- BOARD -->
 <div class="board">
-    @yield('content', isset($content) ? $content : '')
+    @section('content')
+        {!! isset($content) ? $content : '' !!}
+    @show
 </div>
 <!-- /BOARD -->

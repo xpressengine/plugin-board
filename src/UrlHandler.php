@@ -76,7 +76,7 @@ class UrlHandler
         if ($instanceId == null) {
             $instanceId = $this->instanceId;
         }
-        return instanceRoute($name, $params, $instanceId);
+        return instance_route($name, $params, $instanceId);
     }
 
     /**
@@ -99,13 +99,13 @@ class UrlHandler
         if ($config !== null && $config->get('urlType') == 'slug') {
             $slug = $board->slug;
             if ($slug != null) {
-                return $this->getSlug($slug->slug, $params, $slug->instanceId);
+                return $this->getSlug($slug->slug, $params, $slug->instance_id);
             }
         }
 
         $id = $board->id;
         $params['id'] = $id;
-        return $this->get('show', $params, $board->instanceId);
+        return $this->get('show', $params, $board->instance_id);
     }
 
     /**

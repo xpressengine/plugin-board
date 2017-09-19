@@ -16,7 +16,7 @@
                 <div class="img-thumbnail"><img src="{{$log->user->getProfileImage()}}" width="48" height="48" alt="{{$log->user->getDisplayName()}}"></div>
                 <div class="list-text">
                     <p>{{$log->user->getDisplayName()}}</p>
-                    <span class="sub-text" data-xe-timeago="{{ $item->createdAt }}">{{$log->createdAt}}</span>
+                    <span class="sub-text" data-xe-timeago="{{ $item->created_at }}">{{$log->created_at}}</span>
                 </div>
             </a>
         </li>

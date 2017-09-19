@@ -54,8 +54,10 @@ class BoardModule extends AbstractModule
         self::registerInstanceRoute();
         self::registerSettingsMenu();
         self::registerCommentCountIntercept();
-        self::registerCommentAlarmIntercept();
-        self::registerManagerAlarmIntercept();
+        if (app()->runningInConsole() === false) {
+            self::registerCommentAlarmIntercept();
+            self::registerManagerAlarmIntercept();
+        }
     }
 
     /**
@@ -266,7 +268,7 @@ class BoardModule extends AbstractModule
             function ($func, array $inputs, $user = null) {
                 $comment = $func($inputs, $user);
 
-                $board = BoardModel::find($comment->target->targetId);
+                $board = BoardModel::find($comment->target->target_id);
 
                 if ($board == null) {
                     return $comment;
@@ -275,7 +277,7 @@ class BoardModule extends AbstractModule
                     return $comment;
                 }
 
-                $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                 $board->save();
 
                 return $comment;
@@ -288,7 +290,7 @@ class BoardModule extends AbstractModule
             function ($func, Comment $comment) {
                 $result = $func($comment);
 
-                if ($board = BoardModel::find($comment->target->targetId)) {
+                if ($board = BoardModel::find($comment->target->target_id)) {
                     if ($board == null) {
                         return $result;
                     }
@@ -296,7 +298,7 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                     $board->save();
                 }
 
@@ -310,7 +312,7 @@ class BoardModule extends AbstractModule
             function ($func, Comment $comment) {
                 $result = $func($comment);
 
-                if ($board = BoardModel::find($comment->target->targetId)) {
+                if ($board = BoardModel::find($comment->target->target_id)) {
                     if ($board == null) {
                         return $result;
                     }
@@ -318,7 +320,7 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                     $board->save();
                 }
 
@@ -332,7 +334,7 @@ class BoardModule extends AbstractModule
             function ($func, Comment $comment) {
                 $result = $func($comment);
 
-                if ($board = BoardModel::find($comment->target->targetId)) {
+                if ($board = BoardModel::find($comment->target->target_id)) {
                     if ($board == null) {
                         return $result;
                     }
@@ -340,7 +342,7 @@ class BoardModule extends AbstractModule
                         return $result;
                     }
 
-                    $board->commentCount = CommentTarget::where('targetId', $board->id)->count();
+                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
                     $board->save();
                 }
 
@@ -362,7 +364,7 @@ class BoardModule extends AbstractModule
             function ($func, $inputs, $user = null) {
                 $comment = $func($inputs, $user);
 
-                $board = BoardModel::find($comment->target->targetId);
+                $board = BoardModel::find($comment->target->target_id);
 
                 if ($board == null) {
                     return $comment;
@@ -376,7 +378,7 @@ class BoardModule extends AbstractModule
 
                 /** @var UrlHandler $urlHandler */
                 $urlHandler = app('xe.board.url');
-                $urlHandler->setConfig(app('xe.board.config')->get($board->instanceId));
+                $urlHandler->setConfig(app('xe.board.config')->get($board->instance_id));
                 $url = $urlHandler->getShow($board);
                 $parts = parse_url($url);
                 $semanticUrl = sprintf('%s://%s%s', $parts['scheme'], $parts['host'], $parts['path']);
@@ -391,7 +393,7 @@ class BoardModule extends AbstractModule
                             'board::newCommentRegisteredBy',
                             ['displayName' => $comment->author->getDisplayName()]
                         ),
-                        $comment->pureContent
+                        $comment->pure_content
                     ),
                 ];
 
@@ -405,9 +407,9 @@ class BoardModule extends AbstractModule
                 }
 
                 // comment writers
-                $model = Comment::division($comment->instanceId);
+                $model = Comment::division($comment->instance_id);
                 $query = $model->whereHas('target', function ($query) use ($board) {
-                    $query->where('targetId', $board->id);
+                    $query->where('target_id', $board->id);
                 })
                 ->where('display', '!=', Comment::DISPLAY_HIDDEN);
                 $comments = $query->get();
@@ -434,7 +436,7 @@ class BoardModule extends AbstractModule
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
-                        $menuItem = app('xe.menu')->getItem($board->instanceId);
+                        $menuItem = app('xe.menu')->getItem($board->instance_id);
                         $subject = sprintf('Comment:[%s] %s', xe_trans($menuItem->title), $board->title);
 
                         $m->from($fromEmail, $applicationName);
@@ -465,7 +467,7 @@ class BoardModule extends AbstractModule
 
                 /** @var ConfigHandler $configHandler */
                 $configHandler = app('xe.board.config');
-                $config = $configHandler->get($board->instanceId);
+                $config = $configHandler->get($board->instance_id);
                 if ($config == null) {
                     return $board;
                 }
@@ -494,7 +496,7 @@ class BoardModule extends AbstractModule
                         $board->user->getDisplayName(),
                         $url,
                         $semanticUrl,
-                        $board->pureContent
+                        $board->pure_content
                     ),
                 ];
 
@@ -506,7 +508,7 @@ class BoardModule extends AbstractModule
                         $fromEmail = app('config')->get('mail.from.address');
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
-                        $menuItem = app('xe.menu')->getItem($board->instanceId);
+                        $menuItem = app('xe.menu')->getItem($board->instance_id);
                         $subject = sprintf(
                             '[%s - %s] %s',
                             $applicationName,

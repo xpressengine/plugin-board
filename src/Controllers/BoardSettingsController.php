@@ -370,10 +370,10 @@ class BoardSettingsController extends Controller
 
         $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
         foreach ($instanceRoutes as $route) {
-            $instanceIds[] = $route->instanceId;
-            $urls[$route->instanceId] = $route->url;
+            $instanceIds[] = $route->instance_id;
+            $urls[$route->instance_id] = $route->url;
             $instances[] = [
-                'id' => $route->instanceId,
+                'id' => $route->instance_id,
                 'name' => $route->url,
             ];
         }
@@ -402,10 +402,10 @@ class BoardSettingsController extends Controller
         }
 
         // 정렬 처리
-        $orders = ['createdAt' => 'desc'];
+        $orders = ['created_at' => 'desc'];
 
-        $query = Board::whereIn('instanceId', $instanceIds)->where('status', Board::STATUS_PUBLIC);
-        $query->orderBy('createdAt', 'desc');
+        $query = Board::whereIn('instance_id', $instanceIds)->where('status', Board::STATUS_PUBLIC);
+        $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
         return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls'));
@@ -426,10 +426,10 @@ class BoardSettingsController extends Controller
 
         $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
         foreach ($instanceRoutes as $aliasRoute) {
-            $instanceIds[] = $aliasRoute->instanceId;
-            $urls[$aliasRoute->instanceId] = $aliasRoute->url;
+            $instanceIds[] = $aliasRoute->instance_id;
+            $urls[$aliasRoute->instance_id] = $aliasRoute->url;
             $instances[] = [
-                'id' => $aliasRoute->instanceId,
+                'id' => $aliasRoute->instance_id,
                 'name' => $aliasRoute->url,
             ];
         }
@@ -457,8 +457,8 @@ class BoardSettingsController extends Controller
             }
         }
 
-        $query = Board::whereIn('instanceId', $instanceIds)->where('approved', Board::APPROVED_REJECTED);
-        $query->orderBy('createdAt', 'desc');
+        $query = Board::whereIn('instance_id', $instanceIds)->where('approved', Board::APPROVED_REJECTED);
+        $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
         return $this->presenter->make('docs.approve', compact('documents', 'instances', 'urls'));
@@ -480,10 +480,10 @@ class BoardSettingsController extends Controller
 
         $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
         foreach ($instanceRoutes as $route) {
-            $instanceIds[] = $route->instanceId;
-            $urls[$route->instanceId] = $route->url;
+            $instanceIds[] = $route->instance_id;
+            $urls[$route->instance_id] = $route->url;
             $instances[] = [
-                'id' => $route->instanceId,
+                'id' => $route->instance_id,
                 'name' => $route->url,
             ];
         }
@@ -511,8 +511,8 @@ class BoardSettingsController extends Controller
             }
         }
 
-        $query = Board::whereIn('instanceId', $instanceIds)->where('status', Board::STATUS_TRASH);
-        $query->orderBy('createdAt', 'desc');
+        $query = Board::whereIn('instance_id', $instanceIds)->where('status', Board::STATUS_TRASH);
+        $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
         return $this->presenter->make('docs.trash', compact('documents', 'instances', 'urls'));
@@ -554,7 +554,7 @@ class BoardSettingsController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->remove($item, $this->configHandler->get($item->instanceId));
+            $this->handler->remove($item, $this->configHandler->get($item->instance_id));
         }
 
         Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
@@ -576,7 +576,7 @@ class BoardSettingsController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->trash($item, $this->configHandler->get($item->instanceId));
+            $this->handler->trash($item, $this->configHandler->get($item->instance_id));
         }
 
         Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
@@ -598,7 +598,7 @@ class BoardSettingsController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $this->handler->restore($item, $this->configHandler->get($item->instanceId));
+            $this->handler->restore($item, $this->configHandler->get($item->instance_id));
         }
 
         return $this->presenter->makeApi([]);
@@ -615,7 +615,7 @@ class BoardSettingsController extends Controller
         $documentIds = $request->get('id');
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
-        $instanceId = $request->get('instanceId');
+        $instanceId = $request->get('instance_id');
         $dstConfig = $this->configHandler->get($instanceId);
         if ($dstConfig === null) {
             throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
@@ -624,7 +624,7 @@ class BoardSettingsController extends Controller
         $items = Board::find($documentIds);
 
         foreach ($items as $item) {
-            $originConfig = $this->configHandler->get($item->instanceId);
+            $originConfig = $this->configHandler->get($item->instance_id);
             $this->handler->move($item, $dstConfig, $originConfig);
         }
 
@@ -644,7 +644,7 @@ class BoardSettingsController extends Controller
         $documentIds = $request->get('id');
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
-        $instanceId = $request->get('instanceId');
+        $instanceId = $request->get('instance_id');
         $config = $this->configHandler->get($instanceId);
         if ($config === null) {
             throw new NotFoundConfigHttpException(['instanceId' => $instanceId]);
@@ -655,7 +655,7 @@ class BoardSettingsController extends Controller
         foreach ($items as $item) {
             $user = new Guest;
             if ($item->userId != '') {
-                $user = User::find($item->userId);
+                $user = User::find($item->user_id);
             }
 
             $this->handler->copy($item, $user, $config);

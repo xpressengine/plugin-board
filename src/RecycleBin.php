@@ -58,13 +58,13 @@ class RecycleBin implements RecycleBinInterface
 
         $configs = [];
         foreach ($boards as $board) {
-            if (isset($configs[$board->instanceId]) === false) {
-                $configs[$board->instanceId] = $configHandler->get($board->instanceId);
+            if (isset($configs[$board->instance_id]) === false) {
+                $configs[$board->instance_id] = $configHandler->get($board->instance_id);
             }
 
             // 인스턴스 설정 정보를 찾을 수 없을 경우 삭제할 수 없는 문제 있음
-            if (isset($configs[$board->instanceId]) === true) {
-                $handler->remove($board, $configs[$board->instanceId]);
+            if (isset($configs[$board->instance_id]) === true) {
+                $handler->remove($board, $configs[$board->instance_id]);
             }
         }
     }

@@ -76,7 +76,7 @@ class BoardService
     public function getNoticeItems(Request $request, ConfigEntity $config, $userId)
     {
         $model = Board::division($config->get('boardId'));
-        $query = $model->where('instanceId', $config->get('boardId'))
+        $query = $model->where('instance_id', $config->get('boardId'))
             ->notice()->orderBy('head', 'desc');
 
         if ($request->has('favorite') === true) {
@@ -84,9 +84,9 @@ class BoardService
                 'board_favorites',
                 sprintf('%s.%s', $query->getQuery()->from, 'id'),
                 '=',
-                sprintf('%s.%s', 'board_favorites', 'targetId')
+                sprintf('%s.%s', 'board_favorites', 'target_id')
             );
-            $query->where('board_favorites.userId', $userId);
+            $query->where('board_favorites.user_id', $userId);
         }
 
         Event::fire('xe.plugin.board.notice', [$query]);
@@ -106,14 +106,14 @@ class BoardService
     {
         /** @var Board $model */
         $model = Board::division($config->get('boardId'));
-        $query = $model->where('instanceId', $config->get('boardId'))->visible();
+        $query = $model->where('instance_id', $config->get('boardId'))->visible();
 
         if ($config->get('category') === true) {
             $query->leftJoin(
                 'board_category',
                 sprintf('%s.%s', $query->getQuery()->from, 'id'),
                 '=',
-                sprintf('%s.%s', 'board_category', 'targetId')
+                sprintf('%s.%s', 'board_category', 'target_id')
             );
         }
 
@@ -122,9 +122,9 @@ class BoardService
                 'board_favorites',
                 sprintf('%s.%s', $query->getQuery()->from, 'id'),
                 '=',
-                sprintf('%s.%s', 'board_favorites', 'targetId')
+                sprintf('%s.%s', 'board_favorites', 'target_id')
             );
-            $query->where('board_favorites.userId', Auth::user()->getId());
+            $query->where('board_favorites.user_id', Auth::user()->getId());
         }
 
         $this->handler->makeWhere($query, $request, $config);
@@ -132,7 +132,7 @@ class BoardService
 
         // eager loading favorite list
         $query->with(['favorite' => function ($favoriteQuery) {
-            $favoriteQuery->where('userId', Auth::user()->getId());
+            $favoriteQuery->where('user_id', Auth::user()->getId());
         }, 'slug', 'data']);
 
         Event::fire('xe.plugin.board.articles', [$query]);
@@ -179,7 +179,7 @@ class BoardService
     {
         $showCategoryItem = null;
         if ($config->get('category') && $item->boardCategory) {
-            $showCategoryItem = $item->boardCategory->categoryItem;
+            $showCategoryItem = $item->boardCategory->category_item;
         }
         return $showCategoryItem;
     }
@@ -264,12 +264,12 @@ class BoardService
         $this->checkCaptcha($config);
 
         // 암호 설정
-        if ($request->has('certifyKey') === true) {
-            $request->request->set('certifyKey', $identifyManager->hash($request->get('certifyKey')));
+        if ($request->has('certify_key') === true) {
+            $request->request->set('certify_key', $identifyManager->hash($request->get('certify_key')));
         }
 
         $inputs = $request->request->all();
-        $inputs['instanceId'] = $config->get('boardId');
+        $inputs['instance_id'] = $config->get('boardId');
 
         /** @var \Xpressengine\Editor\AbstractEditor $editor */
         $editor = XeEditor::get($config->get('boardId'));
@@ -300,12 +300,12 @@ class BoardService
         IdentifyManager $identifyManager
     ) {
         // 암호 설정
-        $oldCertifyKey = $item->certifyKey;
-        $newCertifyKey = $request->get('certifyKey', '');
-        if ($item->certifyKey != '' && $newCertifyKey == '') {
-            $request->request->set('certifyKey', $item->certifyKey);
-        } elseif ($item->certifyKey != '' && $newCertifyKey != '') {
-            $request->request->set('certifyKey', $identifyManager->hash($newCertifyKey));
+        $oldCertifyKey = $item->certify_key;
+        $newCertifyKey = $request->get('certify_key', '');
+        if ($item->certify_key != '' && $newCertifyKey == '') {
+            $request->request->set('certify_key', $item->certify_key);
+        } elseif ($item->certify_key != '' && $newCertifyKey != '') {
+            $request->request->set('certify_key', $identifyManager->hash($newCertifyKey));
         }
 
         if ($request->get('status') == Board::STATUS_NOTICE) {
@@ -327,7 +327,7 @@ class BoardService
         $item = $this->handler->put($item, $inputs, $config);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
-        if ($oldCertifyKey != '' && $oldCertifyKey != $item->certifyKey) {
+        if ($oldCertifyKey != '' && $oldCertifyKey != $item->certify_key) {
             $identifyManager->destroy($item);
             $identifyManager->create($item);
         }
@@ -368,9 +368,9 @@ class BoardService
         $perm = false;
         if ($force === true) {
             $perm = true;
-        } elseif ($item->userId == $user->getId()) {
+        } elseif ($item->user_id == $user->getId()) {
             $perm = true;
-        } elseif ($item->userId == '' && $user->getId() === null &&
+        } elseif ($item->user_id == '' && $user->getId() === null &&
             $identifyManager->identified($item) === true) {
             $perm = true;
         }

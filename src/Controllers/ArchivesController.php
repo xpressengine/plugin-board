@@ -54,11 +54,11 @@ class ArchivesController extends Controller
     {
         $slug = BoardSlug::where('slug', $slug)->first();
 
-        $instanceId = $slug->instanceId;
-        $id = $slug->targetId;
+        $instanceId = $slug->instance_id;
+        $id = $slug->target_id;
 
         $instanceConfig = InstanceConfig::instance();
-        $instanceConfig->setInstanceId($slug->instanceId);
+        $instanceConfig->setInstanceId($slug->instance_id);
 
         /**
          * @var Handler $handler
@@ -138,28 +138,28 @@ class ArchivesController extends Controller
         $config = $configHandler->get($instanceId);
         /** @var Board $model */
         $model = Board::division($instanceId);
-        $query = $model->where('instanceId', $instanceId)->visible();
+        $query = $model->where('instance_id', $instanceId)->visible();
 
-        $orderType = $request->get('orderType', '');
-        if ($orderType === '' && $config->get('orderType') != null) {
-            $orderType = $config->get('orderType', '');
+        $orderType = $request->get('order_type', '');
+        if ($orderType === '' && $config->get('order_type') != null) {
+            $orderType = $config->get('order_type', '');
         }
 
         if ($orderType == '') {
             $query->where('head', '>=', $slug->board->head);
-        } elseif ($orderType == 'assentCount') {
-            $query->where('assentCount', '>', $slug->board->assentCount)
+        } elseif ($orderType == 'assent_count') {
+            $query->where('assent_count', '>', $slug->board->assent_count)
                 ->orWhere(function ($query) use ($slug) {
-                    $query->where('assentCount', '=', $slug->board->assentCount);
+                    $query->where('assent_count', '=', $slug->board->assent_count);
                     $query->where('head', '>=', $slug->board->head);
                 });
-        } elseif ($orderType == 'recentlyCreated') {
+        } elseif ($orderType == 'recently_created') {
             $query->where(Board::CREATED_AT, '>', $slug->board->{Board::CREATED_AT})
                 ->orWhere(function ($query) use ($slug) {
                     $query->where(Board::CREATED_AT, '=', $slug->board->{Board::CREATED_AT});
                     $query->where('head', '>=', $slug->board->head);
                 });
-        } elseif ($orderType == 'recentlyUpdated') {
+        } elseif ($orderType == 'recently_updated') {
             $query->where(Board::UPDATED_AT, '>', $slug->board->{Board::UPDATED_AT})
                 ->orWhere(function ($query) use ($slug) {
                     $query->where(Board::UPDATED_AT, '=', $slug->board->{Board::UPDATED_AT});

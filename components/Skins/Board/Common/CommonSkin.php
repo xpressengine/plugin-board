@@ -3,9 +3,12 @@ namespace Xpressengine\Plugins\Board\Components\Skins\Board\Common;
 
 use Xpressengine\DynamicField\ColumnEntity;
 use Xpressengine\DynamicField\DynamicFieldHandler;
+use Xpressengine\Permission\Instance;
+use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\GenericBoardSkin;
 use View;
+use Gate;
 use XeFrontend;
 use XeRegister;
 use XePresenter;
@@ -13,9 +16,6 @@ Use XeSkin;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Components\DynamicFields\Category\Skins\DesignSelect\DesignSelectSkin;
-use Xpressengine\Plugins\Board\Pagination\MobilePresenter;
-use Xpressengine\Plugins\Board\Pagination\BasePresenter;
-use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 
@@ -27,11 +27,11 @@ class CommonSkin extends GenericBoardSkin
      * @var array
      */
     protected $defaultListColumns = [
-        'title', 'writer', 'assentCount', 'readCount', 'createdAt', 'updatedAt', 'dissentCount',
+        'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count',
     ];
 
     protected $defaultSelectedListColumns = [
-        'title', 'writer',  'assentCount', 'readCount', 'createdAt',
+        'title', 'writer',  'assent_count', 'read_count', 'created_at',
     ];
 
     /**
@@ -64,20 +64,26 @@ class CommonSkin extends GenericBoardSkin
 
                 // remove prefix name of group
                 $instanceId = str_replace('documents_', '', $config->get('group'));
-                $skinInstanceId = sprintf('%s:%s', BoardModule::getId(), $instanceId);
-                $skinId = static::getId();
 
-                /** @var \Xpressengine\Skin\GenericSkin $skin */
-                $skin = XeSkin::get($skinId);
+                /** @var \Xpressengine\Plugins\Board\ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+                $boardConfig = $configHandler->get($instanceId);
+                if ($boardConfig !== null) {
+                    $skinInstanceId = sprintf('%s:%s', BoardModule::getId(), $instanceId);
+                    $skinId = static::getId();
 
-                $skinConfig = XeSkin::getStore()->getConfigs($skinInstanceId, $skinId);
+                    /** @var \Xpressengine\Skin\GenericSkin $skin */
+                    $skin = XeSkin::get($skinId);
 
-                $skinInstance = new static;
-                $skinConfig['formColumns'] = $skinInstance->getSortFormColumns($skinConfig, $instanceId);
+                    $skinConfig = XeSkin::getStore()->getConfigs($skinInstanceId, $skinId);
 
-                $skinConfig = $skin->resolveSetting($skinConfig);
-                $skin->setting($skinConfig);
-                XeSkin::saveConfig($skinInstanceId, $skin);
+                    $skinInstance = new static;
+                    $skinConfig['formColumns'] = $skinInstance->getSortFormColumns($skinConfig, $instanceId);
+
+                    $skinConfig = $skin->resolveSetting($skinConfig);
+                    $skin->setting($skinConfig);
+                    XeSkin::saveConfig($skinInstanceId, $skin);
+                }
             }
         );
     }
@@ -104,6 +110,7 @@ class CommonSkin extends GenericBoardSkin
 
         // set skin path
         $this->data['_skinPath'] = static::$path;
+        $this->data['isManager'] = $this->isManager();
 
         /**
          * If view file is not 'index.blade.php' then change view path to CommonSkin's path.
@@ -161,7 +168,6 @@ class CommonSkin extends GenericBoardSkin
 
     /**
      * set pagination presenter
-     * 스킨에서 추가한 만든 pagination presenter 사용
      *
      * @return void
      * @see views/defaultSkin/index.blade.php
@@ -170,8 +176,6 @@ class CommonSkin extends GenericBoardSkin
     {
         if (isset($this->data['paginate'])) {
             $this->data['paginate']->setPath($this->data['urlHandler']->get('index'));
-            $this->data['paginationPresenter'] = new BasePresenter($this->data['paginate']);
-            $this->data['paginationMobilePresenter'] = new MobilePresenter($this->data['paginate']);
         }
     }
 
@@ -246,7 +250,7 @@ class CommonSkin extends GenericBoardSkin
                 ];
             }
 
-            $arr = explode(':', request()->get('instanceId'));
+            $arr = explode(':', request()->get('instance_id'));
             $instanceId = $arr[1];
 
             return View::make(sprintf('%s/views/setting', CommonSkin::$path), [
@@ -344,5 +348,19 @@ class CommonSkin extends GenericBoardSkin
         }
 
         return $sortFormColumns;
+    }
+
+    /**
+     * is manager
+     *
+     * @return bool
+     */
+    protected function isManager()
+    {
+        $boardPermission = app('xe.board.permission');
+        return isset($this->data['instanceId']) && Gate::allows(
+            BoardPermissionHandler::ACTION_MANAGE,
+            new Instance($boardPermission->name($this->data['instanceId']))
+        ) ? true : false;
     }
 }

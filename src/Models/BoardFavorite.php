@@ -21,9 +21,9 @@ use Xpressengine\Http\Request;
 /**
  * BoardData
  *
- * @property int favoriteId
- * @property string targetId
- * @property string userId
+ * @property int favorite_id
+ * @property string target_id
+ * @property string user_id
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -38,7 +38,7 @@ class BoardFavorite extends DynamicModel
 
     public $timestamps = false;
 
-    protected $primaryKey = 'favoriteId';
+    protected $primaryKey = 'favorite_id';
 
-    protected $fillable = ['targetId', 'userId'];
+    protected $fillable = ['target_id', 'user_id'];
 }

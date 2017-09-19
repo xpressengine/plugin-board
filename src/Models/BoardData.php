@@ -21,7 +21,7 @@ use Xpressengine\Http\Request;
 /**
  * BoardData
  *
- * @property string targetId
+ * @property string target_id
  * @property int allowComment
  * @property int useAlarm
  * @property int fileCount
@@ -41,14 +41,16 @@ class BoardData extends DynamicModel
 
     public $timestamps = false;
 
-    protected $primaryKey = 'targetId';
+    protected $primaryKey = 'target_id';
 
-    protected $fillable = ['allowComment', 'useAlarm', 'fileCount'];
+    protected $fillable = ['allow_comment', 'use_alarm', 'file_count'];
+
+    public $incrementing = false;
 
     protected $casts = [
-        'allowComment' => 'int',
-        'useAlarm' => 'int',
-        'fileCount' => 'int',
+        'allow_comment' => 'int',
+        'use_alarm' => 'int',
+        'file_count' => 'int',
     ];
 
     /**
@@ -58,6 +60,6 @@ class BoardData extends DynamicModel
      */
     public function isAlarm()
     {
-        return $this->getAttribute('useAlarm') == 1;
+        return $this->getAttribute('use_alarm') == 1;
     }
 }

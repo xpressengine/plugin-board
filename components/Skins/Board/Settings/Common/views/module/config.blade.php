@@ -32,7 +32,7 @@
                                                 <div class="clearfix">
                                                     <label>{{xe_trans('board::boardName')}} </label>
                                                 </div>
-                                                {!! uio('langText', ['placeholder'=>'', 'langKey'=>Input::old('boardName', $config->get('boardName')), 'name'=>'boardName']) !!}
+                                                {!! uio('langText', ['placeholder'=>'', 'langKey'=>Request::old('boardName', $config->get('boardName')), 'name'=>'boardName']) !!}
                                             </div>
                                         </div>
                                     </div>
@@ -48,7 +48,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <input type="text" id="" name="perPage" class="form-control" value="{{Input::old('perPage', $config->get('perPage'))}}" @if($config->getPure('perPage') === null) disabled="disabled" @endif/>
+                                                <input type="text" id="" name="perPage" class="form-control" value="{{Request::old('perPage', $config->get('perPage'))}}" @if($config->getPure('perPage') === null) disabled="disabled" @endif/>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -61,7 +61,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <input type="text" id="" name="newTime" class="form-control" value="{{Input::old('newTime', $config->get('newTime'))}}" @if($config->getPure('newTime') === null) disabled="disabled" @endif/>
+                                                <input type="text" id="" name="newTime" class="form-control" value="{{Request::old('newTime', $config->get('newTime'))}}" @if($config->getPure('newTime') === null) disabled="disabled" @endif/>
                                             </div>
                                         </div>
                                     </div>
@@ -176,7 +176,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="anonymityName" class="form-control" @if($config->getPure('anonymityName') === null) disabled="disabled" @endif value="{{ Input::old('anonymityName', $config->get('anonymityName')) }}" />
+                                                <input type="text" name="anonymityName" class="form-control" @if($config->getPure('anonymityName') === null) disabled="disabled" @endif value="{{ Request::old('anonymityName', $config->get('anonymityName')) }}" />
                                             </div>
                                         </div>
                                     </div>
@@ -213,7 +213,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <input type="text" name="managerEmail" class="form-control" @if($config->getPure('managerEmail') === null) disabled="disabled" @endif value="{{ Input::old('managerEmail', $config->get('managerEmail')) }}" />
+                                                <input type="text" name="managerEmail" class="form-control" @if($config->getPure('managerEmail') === null) disabled="disabled" @endif value="{{ Request::old('managerEmail', $config->get('managerEmail')) }}" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
