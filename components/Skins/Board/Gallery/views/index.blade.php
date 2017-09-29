@@ -266,7 +266,10 @@
                             <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                                 <span class="autohr_area">
                                     @if ($item->hasAuthor())
-                                        <a href="#" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                                        <a href="#" class="mb_autohr"
+                                           data-toggle="xe-page-toggle-menu"
+                                           data-url="{{ route('toggleMenuPage') }}"
+                                           data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
                                     @else
                                         <a class="mb_autohr">{!! $item->writer !!}</a>
                                     @endif
@@ -321,7 +324,7 @@
                             <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
                                 @if ($item->hasAuthor())
-                                    <a href="#" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{!! $item->writer !!}</a>
+                                    <a href="#" class="mb_autohr" data-toggle="xe-page-toggle-menu" data-url="{{ route('toggleMenuPage') }}" data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
                                 @else
                                     <a class="mb_autohr">{!! $item->writer !!}</a>
                                 @endif

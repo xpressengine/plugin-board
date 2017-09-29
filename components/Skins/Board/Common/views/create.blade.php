@@ -59,6 +59,8 @@
         @endforeach
     </div>
 
+    {{--<div class="draft_container"></div>--}}
+
     <!-- 비로그인 -->
     <div class="write_footer">
         <div class="write_form_input">
@@ -111,6 +113,7 @@
             </div>
         </div>
         <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
+            {{--<a href="#" class="bd_btn btn_temp_load __xe_temp_btn_load">임시저장 로드</a>--}}
             {{--<a href="#" class="bd_btn btn_temp_save __xe_temp_btn_save">임시저장</a>--}}
             <a href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</a>
             <a href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</a>
@@ -118,3 +121,31 @@
     </div>
     </form>
 </div>
+
+{{--<script type="text/javascript">--}}
+    {{--$(function () {--}}
+        {{--var form = $('#board_form');--}}
+        {{--var draft = $('#xeContentEditor', form).draft({--}}
+            {{--key: 'document|' + form.data('instance_id'),--}}
+            {{--btnLoad: $('.__xe_temp_btn_load', form),--}}
+            {{--btnSave: $('.__xe_temp_btn_save', form),--}}
+            {{--container: $('.draft_container', form),--}}
+            {{--withForm: true,--}}
+            {{--apiUrl: {--}}
+              {{--draft: {--}}
+                {{--add: xeBaseURL + '/draft/store',--}}
+                {{--update: xeBaseURL + '/draft/update',--}}
+                {{--delete: xeBaseURL + '/draft/destroy',--}}
+                {{--list: xeBaseURL + '/draft',--}}
+              {{--},--}}
+              {{--auto: {--}}
+                {{--set: xeBaseURL + '/draft/setAuto',--}}
+                {{--unset: xeBaseURL + '/draft/destroyAuto'--}}
+              {{--}--}}
+            {{--},--}}
+            {{--callback: function (data) {--}}
+                {{--XEeditor.getEditor('XEckeditor').editorList['xeContentEditor'].setContents(data.content);--}}
+            {{--}--}}
+        {{--});--}}
+    {{--});--}}
+{{--</script>--}}

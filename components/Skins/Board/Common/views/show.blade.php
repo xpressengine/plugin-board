@@ -1,4 +1,3 @@
-{{ XeFrontend::js('/assets/core/common/js/toggleMenu.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/jqueryui/jquery.event.drag-2.2.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.core.js')->appendTo('head')->load() }}
 {{ XeFrontend::js('/assets/vendor/slickgrid/slick.formatters.js')->appendTo('head')->load() }}
@@ -20,7 +19,10 @@
                     <div class="more_info">
                         <!-- [D] 클릭시 클래스 on 적용 -->
                         @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr" data-toggle="xeUserMenu" data-user-id="{{$item->getUserId()}}">{{ $item->writer }}</a>
+                            <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
+                               data-toggle="xe-page-toggle-menu"
+                               data-url="{{ route('toggleMenuPage') }}"
+                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{{ $item->writer }}</a>
                         @else
                             <a class="mb_autohr">{{ $item->writer }}</a>
                         @endif

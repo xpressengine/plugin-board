@@ -1,6 +1,9 @@
 <ul>
     @foreach ($logs as $log)
-        <li @if($log->user->getId() == Auth::user()->getId()) class="on" @endif><a href="#" data-toggle="xeUserMenu" data-user-id="{{$log->user->getId()}}"><img src="{{$log->user->getProfileImage()}}" alt="{{$log->user->getDisplayName()}}" title="{{$log->user->getDisplayName()}}"></a></li>
+        <li @if($log->user->getId() == Auth::user()->getId()) class="on" @endif><a href="#"
+                                                                                   data-toggle="xe-page-toggle-menu"
+                                                                                   data-url="{{ route('toggleMenuPage') }}"
+                                                                                   data-data='{!! json_encode(['id'=>$log->user->getId(), 'type'=>'user']) !!}'><img src="{{$log->user->getProfileImage()}}" alt="{{$log->user->getDisplayName()}}" title="{{$log->user->getDisplayName()}}"></a></li>
     @endforeach
 </ul>
 <!-- [D] 최대 10명까지 노출하고 나머지 사용자는 modal에서 처리 -->
