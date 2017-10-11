@@ -182,14 +182,16 @@ class BoardModuleController extends Controller
         $menuUrl,
         $id
     ) {
-        if (Gate::denies(
-            BoardPermissionHandler::ACTION_READ,
-            new Instance($boardPermission->name($this->instanceId))
-        )) {
+        $user = Auth::user();
+        $item = $service->getItem($id, $user, $this->config, $this->isManager());
+
+        $identifyManager = app('xe.board.identify');
+        if ($service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
+            && Gate::denies(BoardPermissionHandler::ACTION_READ,
+            new Instance($boardPermission->name($this->instanceId)))
+        ) {
             throw new AccessDeniedHttpException;
         }
-
-        $item = $service->getItem($id, Auth::user(), $this->config, $this->isManager());
 
         // 글 조회수 증가
         if ($item->display == Board::DISPLAY_VISIBLE) {
