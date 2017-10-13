@@ -11,11 +11,12 @@ use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
 use XeStorage;
 use XeSkin;
-use XePresenter;
 use View;
 use Event;
 use Input;
 use App;
+use Xpressengine\Presenter\Presenter;
+use Xpressengine\Routing\InstanceConfig;
 
 class GallerySkin extends CommonSkin
 {
@@ -25,6 +26,14 @@ class GallerySkin extends CommonSkin
      * @var array
      */
     protected static $thumbSkins = [];
+
+    public static function boot()
+    {
+        if (static::class == self::class) {
+            static::interceptSetSkinTargetId();
+            static::registerGetOrdersIntercept();
+        }
+    }
 
     /**
      * render
@@ -50,7 +59,7 @@ class GallerySkin extends CommonSkin
      *
      * @return void
      */
-    protected function registerGetOrdersIntercept()
+    protected static function registerGetOrdersIntercept()
     {
         intercept(
             sprintf('%s@getOrders', BoardHandler::class),
