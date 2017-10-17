@@ -108,8 +108,8 @@ $(function($) {
 
 		var startDate = '',
 			endDate = moment().format('YYYY-MM-DD'),
-			$startDate = $(event.target).closest('.__xe-period').find('[name="startCreatedAt"]'),
-			$endDate = $(event.target).closest('.__xe-period').find('[name="endCreatedAt"]');
+			$startDate = $(event.target).closest('.__xe-period').find('[name="start_created_at"]'),
+			$endDate = $(event.target).closest('.__xe-period').find('[name="end_created_at"]');
 
 		switch (period) {
 			case '1week' :
