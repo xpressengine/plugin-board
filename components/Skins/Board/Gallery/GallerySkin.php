@@ -31,7 +31,6 @@ class GallerySkin extends CommonSkin
     {
         if (static::class == self::class) {
             static::interceptSetSkinTargetId();
-            static::registerGetOrdersIntercept();
         }
     }
 

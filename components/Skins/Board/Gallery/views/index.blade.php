@@ -28,17 +28,17 @@
     <div class="xe-form-inline xe-hidden-xs board-sorting-area __xe-forms">
         @if($config->get('category') == true)
             {!! uio('uiobject/board@select', [
-                'name' => 'categoryItemId',
+                'name' => 'category_item_id',
                 'label' => xe_trans('xe::category'),
-                'value' => Request::get('categoryItemId'),
+                'value' => Request::get('category_item_id'),
                 'items' => $categories,
             ]) !!}
         @endif
 
         {!! uio('uiobject/board@select', [
-            'name' => 'orderType',
+            'name' => 'order_type',
             'label' => xe_trans('xe::order'),
-            'value' => Request::get('orderType'),
+            'value' => Request::get('order_type'),
             'items' => $handler->getOrders(),
         ]) !!}
     </div>
@@ -116,13 +116,13 @@
     <div class="bd_search_area">
         <form method="get" class="__xe_simple_search" action="{{ $urlHandler->get('index') }}">
             <div class="bd_search_box">
-                <input type="text" name="title_pure_content" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pureContent') }}">
+                <input type="text" name="title_pure_content" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pure_content') }}">
                 <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
                 <a href="#" class="bd_btn_detail" title="{{ xe_trans('board::boardDetailSearch') }}">{{ xe_trans('board::detailSearch') }}</a>
             </div>
         </form>
         <form method="get" class="__xe_search" action="{{ $urlHandler->get('index') }}">
-            <input type="hidden" name="orderType" value="{{ Request::get('orderType') }}" />
+            <input type="hidden" name="order_type" value="{{ Request::get('order_type') }}" />
             <div class="bd_search_detail">
                 <div class="bd_search_detail_option">
                     <div class="xe-row">
@@ -134,9 +134,9 @@
                                     </div>
                                     <div class="xe-col-sm-9">
                                         {!! uio('uiobject/board@select', [
-                                            'name' => 'categoryItemId',
+                                            'name' => 'category_item_id',
                                             'label' => xe_trans('xe::category'),
-                                            'value' => Request::get('categoryItemId'),
+                                            'value' => Request::get('category_item_id'),
                                             'items' => $categories,
                                         ]) !!}
                                     </div>
@@ -149,7 +149,7 @@
                                     <label class="xe-control-label">{{ xe_trans('board::titleAndContent') }}</label>
                                 </div>
                                 <div class="xe-col-sm-9">
-                                    <input type="text" name="title_pure_content" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Request::get('title_pureContent') }}">
+                                    <input type="text" name="title_pure_content" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Request::get('title_pure_content') }}">
                                 </div>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                                         ]) !!}
                                     </div>
                                     <div class="xe-form-inline">
-                                        <input type="text" name="startCreatedAt" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Request::get('startCreatedAt')}}"> - <input type="text" name="endCreatedAt" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Request::get('endCreatedAt')}}">
+                                        <input type="text" name="start_created_at" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Request::get('start_created_at')}}"> - <input type="text" name="end_created_at" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Request::get('end_created_at')}}">
                                     </div>
                                 </div>
                             </div>
