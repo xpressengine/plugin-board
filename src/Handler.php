@@ -555,33 +555,33 @@ class Handler
      */
     public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
     {
-        if ($request->get('title_pure_content', '') !== '') {
+        if ($request->get('title_pure_content') != null && $request->get('title_pure_content') !== '') {
             $query = $query->whereNested(function ($query) use ($request) {
                 $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_pure_content')))
                     ->orWhere('pure_content', 'like', sprintf('%%%s%%', $request->get('title_pure_content')));
             });
         }
 
-        if ($request->get('title_content', '') !== '') {
+        if ($request->get('title_content') != null && $request->get('title_content') !== '') {
             $query = $query->whereNested(function ($query) use ($request) {
                 $query->where('title', 'like', sprintf('%%%s%%', $request->get('title_content')))
                     ->orWhere('content', 'like', sprintf('%%%s%%', $request->get('title_content')));
             });
         }
 
-        if ($request->get('writer', '') !== '') {
+        if ($request->get('writer') != null && $request->get('writer') !== '') {
             $query = $query->where('writer', $request->get('writer'));
         }
 
-        if ($request->get('category_item_id', '') !== '') {
+        if ($request->get('category_item_id') != null && $request->get('category_item_id') !== '') {
             $query = $query->where('item_id', $request->get('category_item_id'));
         }
 
-        if ($request->get('start_created_at', '') !== '') {
+        if ($request->get('start_created_at') != null && $request->get('start_created_at') !== '') {
             $query = $query->where('created_at', '>=', $request->get('start_created_at') . ' 00:00:00');
         }
 
-        if ($request->get('end_created_at', '') !== '') {
+        if ($request->get('end_created_at') != null && $request->get('end_created_at') !== '') {
             $query = $query->where('created_at', '<=', $request->get('end_created_at') . ' 23:59:59');
         }
 
@@ -601,8 +601,8 @@ class Handler
     public function makeOrder(Builder $query, Request $request, ConfigEntity $config)
     {
         $orderType = $request->get('order_type', '');
-        if ($orderType === '' && $config->get('order_type') != null) {
-            $orderType = $config->get('order_type', '');
+        if ($orderType === '' && $config->get('orderType') != null) {
+            $orderType = $config->get('orderType', '');
         }
 
         if ($orderType == '') {
