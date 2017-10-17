@@ -198,8 +198,12 @@ class CommonSkin extends GenericBoardSkin
             if ($instanceId === $config->get('boardId')) {
                 continue;
             }
+
+            $title = $config->get('boardId');
             $menuItem = MenuItem::find($config->get('boardId'));
-            $title = xe_trans($menuItem->title);
+            if ($menuItem) {
+                $title = xe_trans($menuItem->title);
+            }
 
             $boardName = $config->get('boardName');
             if ($boardName) {
