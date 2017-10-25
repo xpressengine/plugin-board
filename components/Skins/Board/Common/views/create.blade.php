@@ -16,7 +16,7 @@
                             {!! uio('uiobject/board@select', [
                                 'name' => 'category_item_id',
                                 'label' => xe_trans('xe::category'),
-                                'value' => '',
+                                'value' => Request::get('category_item_id'),
                                 'items' => $categories,
                             ]) !!}
                         @endif
