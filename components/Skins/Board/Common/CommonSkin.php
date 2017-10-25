@@ -52,7 +52,10 @@ class CommonSkin extends GenericBoardSkin
     /**
      * intercept DynamicField 업데이트
      *
+     * beta.24. 정렬 기능을 게시판 고유 기능으로 변경
+     *
      * @return void
+     * @deprecated beta.24. use Plugin\Resources::interceptDynamicField() instead
      */
     public static function interceptDynamicField()
     {
@@ -246,25 +249,32 @@ class CommonSkin extends GenericBoardSkin
      */
     public function renderSetting(array $config = [])
     {
-        if (static::class == self::class) {
-            if ($config === []) {
-                $config = [
-                    'listColumns' => $this->defaultSelectedListColumns,
-                    'formColumns' => $this->defaultSelectedFormColumns,
-                ];
-            }
+        /**
+         * beta.24
+         * 스킨 설정의 컬럼 정보 수정 기능은 게시판 컬럼 설정으로 이동
+         *
+         */
+//        if (static::class == self::class) {
+//            if ($config === []) {
+//                $config = [
+//                    'listColumns' => $this->defaultSelectedListColumns,
+//                    'formColumns' => $this->defaultSelectedFormColumns,
+//                ];
+//            }
+//
+//            $arr = explode(':', request()->get('instanceId'));
+//            $instanceId = $arr[1];
+//
+//            return View::make(sprintf('%s/views/setting', CommonSkin::$path), [
+//                'sortListColumns' => $this->getSortListColumns($config, $instanceId),
+//                'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
+//                'config' => $config
+//            ]);
+//        } else {
+//            return parent::renderSetting($config);
+//        }
 
-            $arr = explode(':', request()->get('instanceId'));
-            $instanceId = $arr[1];
-
-            return View::make(sprintf('%s/views/setting', CommonSkin::$path), [
-                'sortListColumns' => $this->getSortListColumns($config, $instanceId),
-                'sortFormColumns' => $this->getSortFormColumns($config, $instanceId),
-                'config' => $config
-            ]);
-        } else {
-            return parent::renderSetting($config);
-        }
+        return parent::renderSetting($config);
     }
 
     /**
@@ -273,6 +283,7 @@ class CommonSkin extends GenericBoardSkin
      * @param array  $config     board config
      * @param string $instanceId board instance id
      * @return array
+     * @deprecated since beta.24. use ConfigHandler::getSortListColumns() instead
      */
     protected function getSortListColumns(array $config, $instanceId)
     {
@@ -317,6 +328,7 @@ class CommonSkin extends GenericBoardSkin
      * @param array  $config     board config
      * @param string $instanceId board instance id
      * @return array
+     * @deprecated since beta.24. use ConfigHandler::getSortFormColumns() instead
      */
     protected function getSortFormColumns(array $config, $instanceId)
     {

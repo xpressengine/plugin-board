@@ -39,7 +39,7 @@ class Plugin extends AbstractPlugin
         Resources::registerRecycleBin();
         Resources::registerCommands();
         Resources::setDefaultSkin();
-        CommonSkin::interceptDynamicField();
+        Resources::interceptDynamicField();
     }
 
     /**

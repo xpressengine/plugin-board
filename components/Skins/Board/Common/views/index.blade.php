@@ -98,7 +98,7 @@
         <div class="xe-row">
             <div class="xe-col-sm-6">
                 <div class="xe-row __xe_delete">
-                    <div class="xe-col-sm-3">
+                    <div class="xe-col-sm-3">a
                         <label class="xe-control-label">{{ xe_trans('xe::delete') }}</label>
                     </div>
                     <div class="xe-col-sm-9">
@@ -230,14 +230,15 @@
                 </label>
             </th>
             @endif
-            @if(Request::has('favorite'))
-                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', Request::except(['favorite', 'page']))}}"><i class="xi-star-o on"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
-            @else
-                <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1]))}}"><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
-            @endif
 
             @foreach ($skinConfig['listColumns'] as $columnName)
-                @if ($columnName == 'title')
+                @if ($columnName == 'favorite')
+                    @if(Request::has('favorite'))
+                        <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', Request::except(['favorite', 'page']))}}"><i class="xi-star-o on"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
+                    @else
+                        <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1]))}}"><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
+                    @endif
+                @elseif ($columnName == 'title')
                     @if ($config->get('category') == true)
                         <th scope="col" class="column-th-category"><span>{{ xe_trans('board::category') }}</span></th>
                     @endif
@@ -262,10 +263,10 @@
                 </label>
             </td>
             @endif
-            <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
-
             @foreach ($skinConfig['listColumns'] as $columnName)
-                @if ($columnName == 'title')
+                @if ($columnName == 'favorite')
+                        <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
+                @elseif ($columnName == 'title')
                     @if ($config->get('category') == true)
                         <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                     @endif
@@ -347,10 +348,11 @@
                 </label>
             </td>
             @endif
-            <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
 
             @foreach ($skinConfig['listColumns'] as $columnName)
-                @if ($columnName == 'title')
+                @if ($columnName == 'favorite')
+                        <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
+                @elseif ($columnName == 'title')
                     @if ($config->get('category') == true)
                         <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                     @endif

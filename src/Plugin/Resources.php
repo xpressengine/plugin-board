@@ -35,6 +35,8 @@ use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\TwitterItem;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Plugins\Board\Commands\BoardSkinMake;
+use Xpressengine\DynamicField\ColumnEntity;
+use Xpressengine\Config\ConfigEntity;
 use Schema;
 use XeToggleMenu;
 use XeConfig;
@@ -258,6 +260,28 @@ class Resources
         XeSkin::setDefaultSkin(
             BoardModule::getId(),
             CommonSkin::getId()
+        );
+    }
+
+    public static function interceptDynamicField()
+    {
+        intercept(
+            DynamicFieldHandler::class . '@create',
+            'board@commonSkin::createDynamicField',
+            function ($func, ConfigEntity $config, ColumnEntity $column = null) {
+                $func($config, $column);
+
+                // remove prefix name of group
+                $instanceId = str_replace('documents_', '', $config->get('group'));
+
+                /** @var \Xpressengine\Plugins\Board\ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+                $boardConfig = $configHandler->get($instanceId);
+                if ($boardConfig !== null) {
+                    $boardConfig->set('formColumns', $configHandler->getSortFormColumns($boardConfig));
+                    XeConfig::modify($boardConfig);
+                }
+            }
         );
     }
 }

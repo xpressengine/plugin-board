@@ -425,4 +425,12 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '새 댓글이 작성되면 글에 연관된 사용자에게 알립니다.',
         'en' => 'When a new comment is created, it notifies the user associated with the post.',
     ],
+    'outputOrder' => [
+        'ko' => '출력 순서',
+        'en' => 'Output order',
+    ],
+    'inputOutputOrder' => [
+        'ko' => '입력/출력 순서',
+        'en' => 'Input/Output order',
+    ],
 ];

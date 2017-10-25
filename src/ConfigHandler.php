@@ -82,6 +82,31 @@ class ConfigHandler
     ];
 
     /**
+     * @var array
+     */
+    const DEFAULT_LIST_COLUMNS = [
+        'favorite', 'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count',
+    ];
+
+    const DEFAULT_SELECTED_LIST_COLUMNS = [
+        'favorite', 'title', 'writer',  'assent_count', 'read_count', 'created_at',
+    ];
+
+    /**
+     * @var array
+     */
+    const DEFAULT_FORM_COLUMNS = [
+        'title', 'content',
+    ];
+
+    /**
+     * @var array
+     */
+    const DEFAULT_SELECTED_FORM_COLUMNS = [
+        'title', 'content',
+    ];
+
+    /**
      * create instance
      *
      * @param ConfigManager             $configManager config manager
@@ -235,5 +260,89 @@ class ConfigHandler
     public function getDocument($boardId)
     {
         return $this->document->get($boardId);
+    }
+
+    /**
+     * get sort list columns
+     *
+     * @param ConfigEntity $config board config
+     * @return array
+     */
+    public function getSortListColumns(ConfigEntity $config)
+    {
+        if (empty($config->get('sortListColumns'))) {
+            $sortListColumns = self::DEFAULT_LIST_COLUMNS;
+        } else {
+            $sortListColumns = $config->get('sortListColumns');
+        }
+
+        $dynamicFields = $this->getDynamicFields($config);
+        $currentDynamicFields = [];
+        /**
+         * @var ConfigEntity $dynamicFieldConfig
+         */
+        foreach ($dynamicFields as $dynamicFieldConfig) {
+            if ($dynamicFieldConfig->get('use') === true) {
+                $currentDynamicFields[] = $dynamicFieldConfig->get('id');
+            }
+
+            if ($dynamicFieldConfig->get('use') === true &&
+                in_array($dynamicFieldConfig->get('id'), $sortListColumns) === false) {
+                $sortListColumns[] = $dynamicFieldConfig->get('id');
+            }
+        }
+
+        $usableColumns = array_merge(self::DEFAULT_LIST_COLUMNS, $currentDynamicFields);
+        foreach ($sortListColumns as $index => $column) {
+            if (in_array($column, $usableColumns) === false) {
+                unset($sortListColumns[$index]);
+            }
+        }
+
+        // for beta.24 updated users
+        if (in_array('favorite', $sortListColumns) == false) {
+            array_unshift($sortListColumns, 'favorite');
+        }
+
+        return $sortListColumns;
+    }
+
+    /**
+     * get sort form columns
+     *
+     * @param ConfigEntity $config board config
+     * @return array
+     */
+    public function getSortFormColumns(ConfigEntity $config)
+    {
+        if (empty($config->get('sortFormColumns'))) {
+            $sortFormColumns = self::DEFAULT_FORM_COLUMNS;
+        } else {
+            $sortFormColumns = $config->get('sortFormColumns');
+        }
+        $dynamicFields = $this->getDynamicFields($config);
+        $currentDynamicFields = [];
+        /**
+         * @var ConfigEntity $dynamicFieldConfig
+         */
+        foreach ($dynamicFields as $dynamicFieldConfig) {
+            if ($dynamicFieldConfig->get('use') === true) {
+                $currentDynamicFields[] = $dynamicFieldConfig->get('id');
+            }
+
+            if ($dynamicFieldConfig->get('use') === true &&
+                in_array($dynamicFieldConfig->get('id'), $sortFormColumns) === false) {
+                $sortFormColumns[] = $dynamicFieldConfig->get('id');
+            }
+        }
+
+        $usableColumns = array_merge(self::DEFAULT_FORM_COLUMNS, $currentDynamicFields);
+        foreach ($sortFormColumns as $index => $column) {
+            if (in_array($column, $usableColumns) === false) {
+                unset($sortFormColumns[$index]);
+            }
+        }
+
+        return $sortFormColumns;
     }
 }

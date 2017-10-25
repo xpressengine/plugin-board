@@ -330,6 +330,40 @@ class BoardSettingsController extends Controller
         ]);
     }
 
+    public function editColumns($boardId)
+    {
+        $config = $this->configHandler->get($boardId);
+
+        $sortListColumns = $this->configHandler->getSortListColumns($config);
+        $sortFormColumns = $this->configHandler->getSortFormColumns($config);
+
+        return $this->presenter->make('module.columns', [
+            'boardId' => $boardId,
+            'sortListColumns' => $sortListColumns,
+            'sortFormColumns' => $sortFormColumns,
+            'config' => $config,
+        ]);
+    }
+
+    public function updateColumns(Request $request, $boardId)
+    {
+        $config = $this->configHandler->get($boardId);
+        $inputs = $request->except('_token');
+        foreach ($inputs as $key => $value) {
+            $config->set($key, $value);
+        }
+
+        foreach ($config->getPureAll() as $key => $value) {
+            if ($config->getParent()->get($key) != null && isset($inputs[$key]) === false) {
+                unset($config[$key]);
+            }
+        }
+
+        $this->instanceManager->updateConfig($config->getPureAll());
+
+        return redirect()->to($this->urlHandler->managerUrl('columns', ['boardId' => $boardId]));
+    }
+
     public function editDynamicField($boardId)
     {
         $config = $this->configHandler->get($boardId);

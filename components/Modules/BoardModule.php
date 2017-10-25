@@ -115,7 +115,7 @@ class BoardModule extends AbstractModule
             // module
             Route::get('config/{boardId}', ['as' => 'settings.board.board.config', 'uses' => 'BoardSettingsController@editConfig']);
             Route::post(
-                'config/pdate/{boardId}',
+                'config/update/{boardId}',
                 ['as' => 'settings.board.board.config.update', 'uses' => 'BoardSettingsController@updateConfig']
             );
             Route::get('permission/{boardId}', ['as' => 'settings.board.board.permission', 'uses' => 'BoardSettingsController@editPermission']);
@@ -125,6 +125,8 @@ class BoardModule extends AbstractModule
             );
             Route::get('skin/edit/{boardId}', ['as' => 'settings.board.board.skin', 'uses' => 'BoardSettingsController@editSkin']);
             Route::get('editor/edit/{boardId}', ['as' => 'settings.board.board.editor', 'uses' => 'BoardSettingsController@editEditor']);
+            Route::get('columns/edit/{boardId}', ['as' => 'settings.board.board.columns', 'uses' => 'BoardSettingsController@editColumns']);
+            Route::post('columns/update/{boardId}', ['as' => 'settings.board.board.columns.update', 'uses' => 'BoardSettingsController@updateColumns']);
             Route::get('dynamicField/edit/{boardId}', ['as' => 'settings.board.board.dynamicField', 'uses' => 'BoardSettingsController@editDynamicField']);
             Route::get('toggleMenu/edit/{boardId}', ['as' => 'settings.board.board.toggleMenu', 'uses' => 'BoardSettingsController@editToggleMenu']);
 
