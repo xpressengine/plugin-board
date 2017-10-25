@@ -156,12 +156,14 @@ class CommonSkin extends GenericBoardSkin
     protected function setSkinConfig()
     {
         // 기본 설정
-        if (empty($this->config['listColumns'])) {
-            $this->config['listColumns'] = $this->data['config']->get('listColumns');
-        }
-        if (empty($this->config['formColumns'])) {
-            $this->config['formColumns'] = $this->data['config']->get('formColumns');
-        }
+//        if (empty($this->config['listColumns'])) {
+//            $this->config['listColumns'] = $this->data['config']->get('listColumns');
+//        }
+//        if (empty($this->config['formColumns'])) {
+//            $this->config['formColumns'] = $this->data['config']->get('formColumns');
+//        }
+        $this->config['listColumns'] = $this->data['config']->get('listColumns');
+        $this->config['formColumns'] = $this->data['config']->get('formColumns');
         $this->data['skinConfig'] = $this->config;
     }
 
