@@ -25,17 +25,23 @@ class CommonSkin extends GenericBoardSkin
 
     /**
      * @var array
+     * @deprecated beta.24.
      */
     protected $defaultListColumns = [
         'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count',
     ];
 
+    /**
+     * @var array
+     * @deprecated beta.24.
+     */
     protected $defaultSelectedListColumns = [
         'title', 'writer',  'assent_count', 'read_count', 'created_at',
     ];
 
     /**
      * @var array
+     * @deprecated beta.24.
      */
     protected $defaultFormColumns = [
         'title', 'content',
@@ -43,6 +49,7 @@ class CommonSkin extends GenericBoardSkin
 
     /**
      * @var array
+     * @deprecated beta.24.
      */
     protected $defaultSelectedFormColumns = [
         'title', 'content',
@@ -150,10 +157,10 @@ class CommonSkin extends GenericBoardSkin
     {
         // 기본 설정
         if (empty($this->config['listColumns'])) {
-            $this->config['listColumns'] = $this->defaultSelectedListColumns;
+            $this->config['listColumns'] = $this->data['config']->get('listColumns');
         }
         if (empty($this->config['formColumns'])) {
-            $this->config['formColumns'] = $this->defaultSelectedFormColumns;
+            $this->config['formColumns'] = $this->data['config']->get('formColumns');
         }
         $this->data['skinConfig'] = $this->config;
     }
