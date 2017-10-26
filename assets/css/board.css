@@ -475,6 +475,7 @@
   border: 0;
   border-top: 1px solid #f4f4f4;
   color: #2c2e37;
+  table-layout: fixed;
 }
 .board_list a {
   text-decoration: none;
@@ -538,6 +539,19 @@
 .board_list td.title .title_text{
   margin-right: 5px;
 }
+
+.board_list.ellipsis td.title{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.board_list .col_1 {width: 38px}
+.board_list .col_2 {width: 45px}
+.board_list .col_3 {width: 87px}
+.board_list .col_4 {width: auto}
+.board_list .col_5 {width: 73px}
+.board_list .col_6 {width: 73px}
+.board_list .col_7 {width: 81px}
 
 .board_list td.title .title_text:visited,
 .board_list.v2 .title:visited{
@@ -1454,6 +1468,13 @@
   .board_list table {
     border-color: #ddd;
   }
+  .board_list .col_1 {width: 42px}
+  .board_list .col_2 {width: auto}
+  .board_list .col_3 {width: auto}
+  .board_list .col_4 {width: auto}
+  .board_list .col_5 {width: auto}
+  .board_list .col_6 {width: auto}
+  .board_list .col_7 {width: auto}
   .board_list tr.readed .mb_autohr {
     color: #bebebe;
   }
