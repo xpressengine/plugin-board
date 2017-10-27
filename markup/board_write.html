@@ -41,7 +41,104 @@
                         <div class="temp_save">
                             <a href="#" class="temp_save_num"><strong>3</strong>개의 임시 저장 글</a>
                         </div>
+                        <label>제목</label>
                         <input type="text" class="xe-form-control" placeholder="제목을 입력하세요" title="제목">
+                    </div>
+                    <div class="write_content">
+                        <div>
+                            <div class="xe-form-group xe-write">
+                                <label>프로젝트 분야</label>
+                                <select name="datahub_project_field_id" class="xe-form-control">
+                                    <option value="">선택 </option>
+                                    <option value="7">사물인터넷</option>
+                                    <option value="8">클라우드</option>
+                                    <option value="9">빅데이터</option>
+                                    <option value="10">모바일</option>
+                                    <option value="11">정보시스템</option>
+                                    <option value="12">보안</option>
+                                    <option value="13">자율주행/커넥티드카</option>
+                                    <option value="14">인공지능(AI)</option>
+                                    <option value="15">가상/증강 현실</option>
+                                    <option value="16">스마트 팩토리</option>
+                                    <option value="17">헬스 케어</option>
+                                    <option value="18">드론/로봇</option>
+                                    <option value="19">스마트 디바이스</option>
+                                    <option value="20">생체인싱</option>
+                                    <option value="21">블록체인</option>
+                                    <option value="22">핀테크</option>
+                                    <option value="23">게임</option>
+                                    <option value="24">기타</option>
+                                </select>
+                            </div>
+
+                            <div class="xe-form-group xe-write">
+                                <label>프로젝트 품목</label>
+                                <select name="datahub_project_item_id" class="xe-form-control">
+                                    <option value="">선택 </option>
+                                    <option value="25">패키지SW</option>
+                                    <option value="26">IT 서비스</option>
+                                    <option value="27">임베디드 SW</option>
+                                    <option value="28">SoC-IP</option>
+                                </select>
+                            </div>
+
+                            <div class="xe-form-group xe-write">
+                                <label>프로젝트 형태</label>
+                                <select name="datahub_project_form_id" class="xe-form-control">
+                                    <option value="">선택 </option>
+                                    <option value="29">제품</option>
+                                    <option value="30">기술</option>
+                                    <option value="31">SoC-IP</option>
+                                </select>
+                            </div>
+
+                            <div class="xe-form-group xe-write">
+                                <label>연도</label>
+                                <select name="datahub_year" class="xe-form-control">
+                                    <option value="2017">2017 년</option>
+                                    <option value="2016">2016 년</option>
+                                    <option value="2015">2015 년</option>
+                                    <option value="2014">2014 년</option>
+                                    <option value="2013">2013 년</option>
+                                    <option value="2012">2012 년</option>
+                                    <option value="2011">2011 년</option>
+                                    <option value="2010">2010 년</option>
+                                    <option value="2009">2009 년</option>
+                                    <option value="2008">2008 년</option>
+                                </select>
+                            </div>
+
+                            <div class="xe-form-group xe-write">
+                                <label>참고 자료</label>
+                                <input type="file" name="datahub_doc_file_id" class="xe-form-control">
+                            </div>
+
+                            <div class="xe-form-group xe-write">
+                                <label>소스 파일</label>
+                                <input type="file" name="datahub_source_file_id" class="xe-form-control">
+                            </div>
+
+                            <div class="xe-form-group xe-write">
+                                <label>소스코드 URL</label>
+                                <input type="text" name="datahub_project_url" class="xe-form-control">
+                            </div>
+
+                            <div class="xe-form-group xe-write">
+                                <label>최종 업데이트</label>
+                                <input type="text" name="datahub_project_updated_at" class="xe-form-control hasDatepicker" id="dp1509091839414">
+                            </div>
+
+                        </div>
+
+                        <script type="text/javascript">
+                            $(function () {
+                                var options = {
+                                    dateFormat: 'yy-mm-dd'
+                                };
+
+                                $('input[name="datahub_project_updated_at"]').datepicker(options);
+                            });
+                        </script>
                     </div>
                 </div>
                 <div class="write_body">
@@ -74,7 +171,7 @@
                     <div class="write_form_btn nologin">
                         <button type="submit" class="bd_btn btn_preview">미리보기</button>
                         <button type="submit" class="bd_btn btn_submit">등록</button>
-                        
+
                         <!-- <a href="#" class="bd_btn btn_preview">미리보기</a> -->
                         <!-- <a href="#" class="bd_btn btn_submit">등록</a> -->
                     </div>

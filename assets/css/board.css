@@ -62,7 +62,8 @@
   margin: 0;
 }
 .board label {
-  display: inline-block;
+  display: table-cell;
+  width: 100px;
   margin: 0;
   font-weight: normal;
 }
@@ -476,6 +477,9 @@
   border-top: 1px solid #f4f4f4;
   color: #2c2e37;
 }
+.board_list.ellipsis table {
+  table-layout: fixed;
+}
 .board_list a {
   text-decoration: none;
   color: #2c2e37;
@@ -510,6 +514,20 @@
   text-align: center;
   font-size: 14px;
 }
+
+.board_list.ellipsis .check {width: 38px}
+.board_list.ellipsis .favorite {width: 45px}
+.board_list.ellipsis .category {width: 87px}
+.board_list.ellipsis .title { width: auto}
+.board_list.ellipsis .author {width: 73px}
+.board_list.ellipsis .read_num {width: 73px}
+.board_list.ellipsis .time {width: 81px}
+.board_list.ellipsis  .title_text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .board_list tr:last-childtd {
   border: 0;
 }
@@ -1157,13 +1175,24 @@
   vertical-align: top;
 }
 .write_title {
+  display: table;
+  width: 100%;
   position: relative;
   margin-bottom: 10px;
 }
 .write_title .xe-form-control {
+  display: table-cell;
   width: 100%;
   padding-left: 16px;
 }
+.write_content .xe-form-group.xe-write{
+  display: table;
+  width: 100%;
+}
+.write_content .xe-form-group.xe-write select{
+  display: table-cell;
+}
+
 .temp_save {
   position: absolute;
   right: 0;
@@ -1454,6 +1483,13 @@
   .board_list table {
     border-color: #ddd;
   }
+  .board_list td.check {width: 42px}
+  .board_list td.favorite,
+  .board_list td.category,
+  .board_list td.title,
+  .board_list td.author,
+  .board_list td.read_num,
+  .board_list td.time { width: auto}
   .board_list tr.readed .mb_autohr {
     color: #bebebe;
   }
@@ -1625,6 +1661,14 @@
     width: 100%;
     max-width: none;
   }
+
+  .write_title,
+  .write_title .xe-form-control,
+  .write_content .xe-form-group.xe-write,
+  .write_content .xe-form-group.xe-write select{
+    display: block;
+  }
+
   .temp_save {
     position: static;
     margin-bottom: 10px;
