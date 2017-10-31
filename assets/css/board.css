@@ -33,6 +33,9 @@
   vertical-align: top;
   border: 0;
 }
+.board td{
+  width:inherit !important;
+}
 .board caption,
 .board legend {
   visibility: hidden;
