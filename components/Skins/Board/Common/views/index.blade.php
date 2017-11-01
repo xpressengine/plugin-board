@@ -244,7 +244,11 @@
                     @endif
                     <th scope="col" class="title column-th-{{$columnName}}"><span>{{ xe_trans('board::title') }}</span></th>
                 @else
-                    <th scope="col" class="column-th-{{$columnName}}"><span>{{ xe_trans('board::'.$columnName) }}</span></th>
+                    @if (isset($dynamicFieldsById[$columnName]))
+                        <th scope="col" class="column-th-{{$columnName}}"><span>{{ xe_trans($dynamicFieldsById[$columnName]->get('label')) }}</span></th>
+                    @else
+                        <th scope="col" class="column-th-{{$columnName}}"><span>{{ xe_trans('board::'.$columnName) }}</span></th>
+                    @endif
                 @endif
             @endforeach
         </tr>
