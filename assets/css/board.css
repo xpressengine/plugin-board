@@ -1369,7 +1369,7 @@
     position: relative;
     z-index: 20;
     margin-bottom: 0;
-    background-color: #fff;
+    background-color: transparent;
   }
   .board_header .bd_manage_area {
     min-width: 42px;
