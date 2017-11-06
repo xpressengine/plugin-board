@@ -156,12 +156,18 @@ class BoardModuleController extends Controller
         $categories = $service->getCategoryItems($this->config);
         $orders = $this->handler->getOrders();
 
+        $dynamicFieldsById = [];
+        foreach($fieldTypes as $fieldType) {
+            $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
+        }
+
         return XePresenter::makeAll('index', [
             'notices' => $notices,
             'paginate' => $paginate,
             'categories' => $categories,
             'fieldTypes' => $fieldTypes,
             'orders' => $orders,
+            'dynamicFieldsById' => $dynamicFieldsById,
         ]);
     }
 
