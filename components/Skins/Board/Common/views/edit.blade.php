@@ -44,15 +44,17 @@
                     ]) !!}
                 @endif
             @else
+                @if($config->get('use') == true)
                 <div class="__xe_{{$columnName}} __xe_section">
                     {!! df_edit($config->get('documentGroup'), $columnName, $item->getAttributes()) !!}
                 </div>
+                @endif
             @endif
         @endforeach
 
         <div class="dynamic-field">
             @foreach ($configHandler->getDynamicFields($config) as $dynamicFieldConfig)
-                @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null)
+                @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null && $dynamicFieldConfig->get('use') == true)
                     <div class="__xe_{{$dynamicFieldConfig->get('id')}} __xe_section">
                         {!! $fieldType->getSkin()->edit($item->getAttributes()) !!}
                     </div>

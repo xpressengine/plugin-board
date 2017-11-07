@@ -37,13 +37,20 @@
                         {!! compile($item->instance_id, $item->content, $item->format === Xpressengine\Plugins\Board\Models\Board::FORMAT_HTML) !!}
                     </div>
                 </div>
-            @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
+            @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null && $config->get('use') == true)
                 <div class="__xe_{{$columnName}} __xe_section">
                     {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
                 </div>
             @endif
         @endforeach
 
+        @foreach ($configHandler->getDynamicFields($config) as $dynamicFieldConfig)
+            @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null && $dynamicFieldConfig->get('use') == true)
+            <div class="__xe_{{$columnName}} __xe_section">
+                {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
+            </div>
+            @endif
+        @endforeach
         <div class="read_footer">
             @if (count($item->files) > 0)
             <div class="bd_file_list">
