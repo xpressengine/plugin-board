@@ -32,32 +32,6 @@ use Xpressengine\Permission\Instance;
 class PrintItem extends AbstractToggleMenu
 {
     /**
-     * check permission
-     *
-     * @return bool
-     */
-    public function allows()
-    {
-        $doc = Board::find($this->identifier);
-        $configHandler = app('xe.board.config');
-        $boardPermission = app('xe.board.permission');
-
-        $config = $configHandler->get($doc->instance_id);
-        $isManger = false;
-        if ($config !== null) {
-
-            if (Gate::allows(
-                BoardPermissionHandler::ACTION_MANAGE,
-                new Instance($boardPermission->name($doc->instance_id))
-            )) {
-                $isManger = true;
-            };
-        }
-
-        return $isManger;
-    }
-
-    /**
      * get text
      *
      * @return string
