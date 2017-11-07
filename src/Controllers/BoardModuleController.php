@@ -209,12 +209,18 @@ class BoardModuleController extends Controller
         $fieldTypes = $service->getFieldTypes($this->config);
         $categories = $service->getCategoryItems($this->config);
 
+        $dynamicFieldsById = [];
+        foreach($fieldTypes as $fieldType) {
+            $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
+        }
+
         return XePresenter::make('show', [
             'item' => $item,
             'notices' => $notices,
             'paginate' => $paginate,
             'categories' => $categories,
             'fieldTypes' => $fieldTypes,
+            'dynamicFieldsById' => $dynamicFieldsById,
         ]);
     }
 
@@ -268,11 +274,19 @@ class BoardModuleController extends Controller
 
         $categories = $service->getCategoryItems($this->config);
         $rules = $validator->getCreateRule(Auth::user(), $this->config);
+        $fieldTypes = $service->getFieldTypes($this->config);
+
+        $dynamicFieldsById = [];
+        foreach($fieldTypes as $fieldType) {
+            $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
+        }
 
         return XePresenter::makeAll('create', [
             'categories' => $categories,
             'rules' => $rules,
             'head' => '',
+            'fieldTypes' => $fieldTypes,
+            'dynamicFieldsById' => $dynamicFieldsById,
         ]);
     }
 
@@ -386,11 +400,20 @@ class BoardModuleController extends Controller
 
         $rules = $validator->getEditRule(Auth::user(), $this->config);
 
+        $fieldTypes = $service->getFieldTypes($this->config);
+
+        $dynamicFieldsById = [];
+        foreach($fieldTypes as $fieldType) {
+            $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
+        }
+
         return XePresenter::make('edit', [
             'item' => $item,
             'categories' => $categories,
             'rules' => $rules,
             'parent' => null,
+            'fieldTypes' => $fieldTypes,
+            'dynamicFieldsById' => $dynamicFieldsById,
         ]);
     }
 
