@@ -224,6 +224,43 @@ class BoardModuleController extends Controller
         ]);
     }
 
+    public function print(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $id
+    )
+    {
+        $user = Auth::user();
+        $item = $service->getItem($id, $user, $this->config, $this->isManager());
+
+        $identifyManager = app('xe.board.identify');
+        if ($service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
+            && Gate::denies(BoardPermissionHandler::ACTION_READ,
+                new Instance($boardPermission->name($this->instanceId)))
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        $fieldTypes = $service->getFieldTypes($this->config);
+        $categories = $service->getCategoryItems($this->config);
+
+        $dynamicFieldsById = [];
+        foreach($fieldTypes as $fieldType) {
+            $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
+        }
+
+        XePresenter::htmlRenderPopup();
+
+        return XePresenter::make('print', [
+            'item' => $item,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+            'dynamicFieldsById' => $dynamicFieldsById,
+        ]);
+    }
+
     /**
      * show by slug
      *

@@ -433,4 +433,8 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '입력/출력 순서',
         'en' => 'Input/Output order',
     ],
+    'print' => [
+        'ko' => '인쇄',
+        'en' => 'Print',
+    ],
 ];

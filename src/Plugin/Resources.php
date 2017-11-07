@@ -93,6 +93,7 @@ class Resources
         // create toggle menu
         XeToggleMenu::setActivates('module/board@board', null, [
             'module/board@board/toggleMenu/xpressengine@trashItem',
+            'module/board@board/toggleMenu/xpressengine@printItem',
         ]);
     }
 
