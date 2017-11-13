@@ -165,16 +165,17 @@ $(function($) {
 		} else{
 			$(".bd_search_area").hide();
 		}
-
-		$(".bd_btn_detail").on("click", function(e){
-			$(this).toggleClass("on");
-			if($(this).hasClass("on")){
-				$(".bd_search_detail").show();
-			} else{
-				$(".bd_search_detail").hide();
-			}
-		});
 	});
+
+	$(".bd_btn_detail").on("click", function(e){
+		$(this).toggleClass("on");
+		if($(this).hasClass("on")){
+			$(".bd_search_detail").show();
+		} else{
+			$(".bd_search_detail").hide();
+		}
+	});
+
 	// submit title content search form
 	$('.__xe_simple_search').on('submit', function(event) {
 		event.preventDefault();
