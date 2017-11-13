@@ -129,6 +129,9 @@ class GallerySkin extends CommonSkin
             'board_gallery_skin::set_skin_target_id',
             function ($func, $skinTargetId) {
                 $func($skinTargetId);
+                if (!$skinTargetId) {
+                    return;
+                }
 
                 $request = app('request');
                 $instanceConfig = InstanceConfig::instance();
