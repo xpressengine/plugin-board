@@ -127,9 +127,18 @@ class CommonSkin extends GenericBoardSkin
          * CommonSkin extends by other Skins. Extended Skin can make just 'index.blade.php'
          * and other blade files will use to CommonSkin's blade files.
          */
-        if ($this->view != 'index') {
+//        if ($this->view != 'index') {
+//            static::$path = self::$path;
+//        }
+        /**
+         * If view file is not exists to extended skin component then change view path to CommonSkin's path.
+         * CommonSkin extends by other Skins. Extended Skin can make own blade files.
+         * If not make blade file then use to CommonSkin's blade files.
+         */
+        if (View::exists(sprintf('%s/views/%s', static::$path, $this->view)) == false) {
             static::$path = self::$path;
         }
+
         $contentView = parent::render();
 
         /**
