@@ -394,7 +394,7 @@ class BoardModule extends AbstractModule
                         $semanticUrl,
                         xe_trans(
                             'board::newCommentRegisteredBy',
-                            ['displayName' => $comment->author->getDisplayName()]
+                            ['displayName' => $comment->getAuthor()->getDisplayName()]
                         ),
                         $comment->pure_content
                     ),
