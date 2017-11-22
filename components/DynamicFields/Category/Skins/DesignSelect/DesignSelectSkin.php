@@ -77,8 +77,12 @@ class DesignSelectSkin extends DefaultSkin
      */
     public function create(array $args)
     {
+        if ($this->config->get('category_id') == null && $this->config->get('categoryId') != null) {
+            $this->config->set('category_id', $this->config->get('categoryId'));
+        }
+
         $selectItems = [];
-        $categoryItems = Category::find($this->config->get('categoryId'))->items;
+        $categoryItems = Category::find($this->config->get('category_id'))->items;
         foreach ($categoryItems as $categoryItem) {
             $selectItems[] = [
                 'value' => $categoryItem->id,
@@ -99,8 +103,12 @@ class DesignSelectSkin extends DefaultSkin
      */
     public function edit(array $args)
     {
+        if ($this->config->get('category_id') == null && $this->config->get('categoryId') != null) {
+            $this->config->set('category_id', $this->config->get('categoryId'));
+        }
+
         $selectItems = [];
-        $categoryItems = Category::find($this->config->get('categoryId'))->items;
+        $categoryItems = Category::find($this->config->get('category_id'))->items;
         foreach ($categoryItems as $categoryItem) {
             $selectItems[] = [
                 'value' => $categoryItem->id,
@@ -133,8 +141,12 @@ class DesignSelectSkin extends DefaultSkin
      */
     public function search(array $args)
     {
+        if ($this->config->get('category_id') == null && $this->config->get('categoryId') != null) {
+            $this->config->set('category_id', $this->config->get('categoryId'));
+        }
+
         $selectItems = [];
-        $categoryItems = Category::find($this->config->get('categoryId'))->items;
+        $categoryItems = Category::find($this->config->get('category_id'))->items;
         foreach ($categoryItems as $categoryItem) {
             $selectItems[] = [
                 'value' => $categoryItem->id,
