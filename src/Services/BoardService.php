@@ -18,6 +18,7 @@ use Event;
 use XeEditor;
 use XeCaptcha;
 use Xpressengine\Category\Models\Category;
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Editor\PurifierModules\EditorTool;
 use Xpressengine\Http\Request;
@@ -156,7 +157,8 @@ class BoardService
     {
         $items = [];
         if ($config->get('category') === true) {
-            $categoryItems = Category::find($config->get('categoryId'))->items;
+            $categoryItems = CategoryItem::where('category_id', $config->get('categoryId'))
+                ->orderBy('ordering')->get();
             foreach ($categoryItems as $categoryItem) {
                 $items[] = [
                     'value' => $categoryItem->id,
