@@ -1,4 +1,5 @@
 <a href="#"
+   title="공유하기"
    class="bd_ico xe-share"
    data-toggle="xe-page-toggle-menu"
    data-url="{{route('toggleMenuPage')}}"
