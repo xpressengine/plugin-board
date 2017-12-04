@@ -48,7 +48,7 @@ class PrintItem extends AbstractToggleMenu
      */
     public function getType()
     {
-        return static::MENUTYPE_LINK;
+        return static::MENUTYPE_RAW;
     }
 
     /**
@@ -62,7 +62,7 @@ class PrintItem extends AbstractToggleMenu
 
         $url = app('xe.board.url')->get('print', ['id' => $this->identifier], $doc->instance_id);
 
-        return $url;
+        return '<a href="'.$url.'" target="_blank">'.$this->getText().'</a>';
     }
 
     /**
