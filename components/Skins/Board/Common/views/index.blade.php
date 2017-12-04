@@ -98,7 +98,7 @@
         <div class="xe-row">
             <div class="xe-col-sm-6">
                 <div class="xe-row __xe_delete">
-                    <div class="xe-col-sm-3">a
+                    <div class="xe-col-sm-3">
                         <label class="xe-control-label">{{ xe_trans('xe::delete') }}</label>
                     </div>
                     <div class="xe-col-sm-9">

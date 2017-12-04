@@ -148,12 +148,12 @@ return [
         'en' => 'Move to Trash',
     ],
     'postsMoveToTrash' => [
-        'ko' => '게시글을 휴지통으로 이동합니다.',
-        'en' => 'Posts will moved to trash.',
+        'ko' => '선택한 게시글을 휴지통으로 이동합니다.',
+        'en' => 'Selected posts will moved to trash.',
     ],
     'postsDelete' => [
-        'ko' => '게시글을 삭제합니다.',
-        'en' => 'Delete the posts.',
+        'ko' => '선택한 게시글을 삭제합니다.',
+        'en' => 'Selected posts will delete.',
     ],
     'assentCount' => [
         'ko' => '추천수',
