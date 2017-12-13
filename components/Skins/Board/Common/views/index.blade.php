@@ -290,11 +290,11 @@
                                 <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
                             <div class="more_info xe-visible-xs">
+                                @if ($item->hasAuthor())
                                 <a href="#" class="mb_author"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
                                    data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                            @if ($item->hasAuthor())
                                 @else
                                     <a class="mb_author">{!! $item->writer !!}</a>
                                 @endif
