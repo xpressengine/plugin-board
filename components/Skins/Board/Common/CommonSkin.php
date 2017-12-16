@@ -108,8 +108,11 @@ class CommonSkin extends GenericBoardSkin
         $this->setSkinConfig();
         $this->setDynamicFieldSkins();
         $this->setPaginationPresenter();
-        $this->setBoardList();
         $this->setTerms();
+
+        if ($this->isManager()) {
+            $this->setBoardList();
+        }
 
         // 스킨 view(blade)파일이나 js 에서 사용할 다국어 정의
         XeFrontend::translation([
