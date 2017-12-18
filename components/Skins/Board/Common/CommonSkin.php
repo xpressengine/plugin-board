@@ -215,17 +215,32 @@ class CommonSkin extends GenericBoardSkin
 
         $configHandler = app('xe.board.config');
         $boards = $configHandler->gets();
-        $boardList = [];
+        $boardIds = [];
+
         /** @var ConfigEntity $config */
         foreach ($boards as $config) {
             // 현재의 게시판은 리스트에서 제외
             if ($instanceId === $config->get('boardId')) {
                 continue;
             }
+            $boardIds[] = $config->get('boardId');
+        }
 
-            $title = $config->get('boardId');
-            $menuItem = MenuItem::find($config->get('boardId'));
-            if ($menuItem) {
+        $menuItems = MenuItem::whereIn('id', $boardIds)->get();
+        $menuItemMap = [];
+        foreach ($menuItems as $menuItem) {
+            $menuItemMap[$menuItem->id] = $menuItem;
+        }
+
+        $boardList = [];
+        foreach ($boards as $config) {
+            if ($instanceId === $config->get('boardId')) {
+                continue;
+            }
+
+            $title = '';
+            if (isset($menuItemMap[$config->get('boardId')])) {
+                $menuItem = $menuItemMap[$config->get('boardId')];
                 $title = xe_trans($menuItem->title);
             }
 
@@ -239,7 +254,7 @@ class CommonSkin extends GenericBoardSkin
 
             $boardList[] = [
                 'value' => $config->get('boardId'),
-                'text' => $title,
+                'text' => '_custom_::' . $title,
             ];
         }
         $this->data['boardList'] = $boardList;

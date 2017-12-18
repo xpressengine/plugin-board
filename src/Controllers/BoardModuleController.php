@@ -216,6 +216,7 @@ class BoardModuleController extends Controller
 
         return XePresenter::make('show', [
             'item' => $item,
+            'currentItem' => $item,
             'notices' => $notices,
             'paginate' => $paginate,
             'categories' => $categories,
