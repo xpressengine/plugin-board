@@ -26,6 +26,7 @@ use Xpressengine\Captcha\CaptchaManager;
 use Xpressengine\Captcha\Exceptions\ConfigurationNotExistsException;
 use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
+use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundConfigHttpException;
@@ -402,15 +403,21 @@ class BoardSettingsController extends Controller
         $instances = [];
         $instanceIds = [];
         $urls = [];
-
         $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
         foreach ($instanceRoutes as $route) {
             $instanceIds[] = $route->instance_id;
             $urls[$route->instance_id] = $route->url;
+
             $instances[] = [
                 'id' => $route->instance_id,
                 'name' => $route->url,
             ];
+        }
+
+        $titles = [];
+        $menus = MenuItem::whereIn('id', $instanceIds)->get();
+        foreach ($menus as $menu) {
+            $titles[$menu->id] = xe_trans($menu->title);
         }
 
         $wheres = [
@@ -443,7 +450,7 @@ class BoardSettingsController extends Controller
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
-        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls'));
+        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles'));
     }
 
     /**
@@ -467,6 +474,12 @@ class BoardSettingsController extends Controller
                 'id' => $aliasRoute->instance_id,
                 'name' => $aliasRoute->url,
             ];
+        }
+
+        $titles = [];
+        $menus = MenuItem::whereIn('id', $instanceIds)->get();
+        foreach ($menus as $menu) {
+            $titles[$menu->id] = xe_trans($menu->title);
         }
 
         $wheres = [
@@ -496,7 +509,7 @@ class BoardSettingsController extends Controller
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
-        return $this->presenter->make('docs.approve', compact('documents', 'instances', 'urls'));
+        return $this->presenter->make('docs.approve', compact('documents', 'instances', 'urls', 'titles'));
     }
 
     /**
@@ -521,6 +534,12 @@ class BoardSettingsController extends Controller
                 'id' => $route->instance_id,
                 'name' => $route->url,
             ];
+        }
+
+        $titles = [];
+        $menus = MenuItem::whereIn('id', $instanceIds)->get();
+        foreach ($menus as $menu) {
+            $titles[$menu->id] = xe_trans($menu->title);
         }
 
         $wheres = [
@@ -550,7 +569,7 @@ class BoardSettingsController extends Controller
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
-        return $this->presenter->make('docs.trash', compact('documents', 'instances', 'urls'));
+        return $this->presenter->make('docs.trash', compact('documents', 'instances', 'urls', 'titles'));
     }
 
     /**
