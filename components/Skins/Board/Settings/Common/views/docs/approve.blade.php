@@ -6,7 +6,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">{{ xe_trans('board::articlesApprove') }}</h3>
+                        <h3 class="panel-title">{{ xe_trans('board::articlesApprove') }}</h3> (total : {{$documents->count()}})
                     </div>
                 </div>
 
