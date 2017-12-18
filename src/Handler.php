@@ -553,7 +553,7 @@ class Handler
      * @param ConfigEntity $config  board config entity
      * @return Builder
      */
-    public function makeWhere(Builder $query, Request $request, ConfigEntity $config = null)
+    public function makeWhere(Builder $query, Request $request, ConfigEntity $config)
     {
         if ($request->get('title_pure_content') != null && $request->get('title_pure_content') !== '') {
             $query = $query->whereNested(function ($query) use ($request) {
