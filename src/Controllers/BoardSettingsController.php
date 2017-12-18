@@ -420,37 +420,18 @@ class BoardSettingsController extends Controller
             $titles[$menu->id] = xe_trans($menu->title);
         }
 
-        $wheres = [
-            'status' => Board::STATUS_PUBLIC,
-            'instanceIds' => $instanceIds,
-        ];
-
-        // keyword 검색 처리
-        if ($request->get('searchKeyword') != '') {
-            $searchTarget = $request->get('searchTarget');
-            $searchKeyword = $request->get('searchKeyword');
-            if ($searchTarget == 'title_content') {
-                $wheres[$searchTarget] = $searchKeyword;
-            } else {
-                $wheres[$searchTarget] = $searchKeyword;
-            }
-        }
-
-        // 상세 검색 처리
-        foreach ($request->all() as $key => $value) {
-            if ($value != '') {
-                $wheres[$key] = $value;
-            }
-        }
-
-        // 정렬 처리
-        $orders = ['created_at' => 'desc'];
-
         $query = Board::whereIn('instance_id', $instanceIds)->where('status', Board::STATUS_PUBLIC);
+        $query = $this->makeWhere($query, $request);
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
-        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles'));
+        $searchTargetWord = $request->get('search_target');
+        if ($request->get('search_target') == 'pure_content') {
+            $searchTargetWord = 'content';
+        } elseif ($request->get('search_target') == 'title_pure_content') {
+            $searchTargetWord = 'titleAndContent';
+        }
+        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord'));
     }
 
     /**
@@ -460,7 +441,7 @@ class BoardSettingsController extends Controller
      * @param RouteRepository $routeRepository route repository
      * @return \Xpressengine\Presenter\RendererInterface
      */
-    public function docsApprove(Request $request, RouteRepository $routeRepository)
+    public function docsApprove(Request $request, RouteRepository $routeRepository, Handler $handler)
     {
         $instances = [];
         $instanceIds = [];
@@ -482,34 +463,18 @@ class BoardSettingsController extends Controller
             $titles[$menu->id] = xe_trans($menu->title);
         }
 
-        $wheres = [
-            'approved' => Board::APPROVED_REJECTED,
-            'instanceIds' => $instanceIds,
-        ];
-
-        // keyword 검색 처리
-        if ($request->get('searchKeyword') != '') {
-            $searchTarget = $request->get('searchTarget');
-            $searchKeyword = $request->get('searchKeyword');
-            if ($searchTarget == 'title_content') {
-                $wheres[$searchTarget] = $searchKeyword;
-            } else {
-                $wheres[$searchTarget] = $searchKeyword;
-            }
-        }
-
-        // 상세 검색 처리
-        foreach ($request->all() as $key => $value) {
-            if ($value != '') {
-                $wheres[$key] = $value;
-            }
-        }
-
         $query = Board::whereIn('instance_id', $instanceIds)->where('approved', Board::APPROVED_REJECTED);
+        $query = $this->makeWhere($query, $request);
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
-        return $this->presenter->make('docs.approve', compact('documents', 'instances', 'urls', 'titles'));
+        $searchTargetWord = $request->get('search_target');
+        if ($request->get('search_target') == 'pure_content') {
+            $searchTargetWord = 'content';
+        } elseif ($request->get('search_target') == 'title_pure_content') {
+            $searchTargetWord = 'titleAndContent';
+        }
+        return $this->presenter->make('docs.approve', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord'));
     }
 
     /**
@@ -542,34 +507,18 @@ class BoardSettingsController extends Controller
             $titles[$menu->id] = xe_trans($menu->title);
         }
 
-        $wheres = [
-            'status' => Board::STATUS_TRASH,
-            'instanceIds' => $instanceIds,
-        ];
-
-        // keyword 검색 처리
-        if ($request->get('searchKeyword') != '') {
-            $searchTarget = $request->get('searchTarget');
-            $searchKeyword = $request->get('searchKeyword');
-            if ($searchTarget == 'title_content') {
-                $wheres[$searchTarget] = $searchKeyword;
-            } else {
-                $wheres[$searchTarget] = $searchKeyword;
-            }
-        }
-
-        // 상세 검색 처리
-        foreach ($request->all() as $key => $value) {
-            if ($value != '') {
-                $wheres[$key] = $value;
-            }
-        }
-
         $query = Board::whereIn('instance_id', $instanceIds)->where('status', Board::STATUS_TRASH);
+        $query = $this->makeWhere($query, $request);
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
 
-        return $this->presenter->make('docs.trash', compact('documents', 'instances', 'urls', 'titles'));
+        $searchTargetWord = $request->get('search_target');
+        if ($request->get('search_target') == 'pure_content') {
+            $searchTargetWord = 'content';
+        } elseif ($request->get('search_target') == 'title_pure_content') {
+            $searchTargetWord = 'titleAndContent';
+        }
+        return $this->presenter->make('docs.trash', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord'));
     }
 
     /**
@@ -718,5 +667,26 @@ class BoardSettingsController extends Controller
         Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
 
         return $this->presenter->makeApi([]);
+    }
+
+    protected function makeWhere($query, $request)
+    {
+
+        if ($request->get('search_target') == 'title') {
+            $query = $query->where('title', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
+        }
+        if ($request->get('search_target') == 'pure_content') {
+            $query = $query->where('pure_content', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
+        }
+        if ($request->get('search_target') == 'title_pure_content') {
+            $query = $query->whereNested(function ($query) use ($request) {
+                $query->where('title', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))))
+                    ->orWhere('pure_content', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
+            });
+        }
+        if ($request->get('search_target') == 'writer') {
+            $query = $query->where('writer', 'like', sprintf('%%%s%%', $request->get('search_keyword')));
+        }
+        return $query;
     }
 }

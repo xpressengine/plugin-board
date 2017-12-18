@@ -21,18 +21,18 @@
                         <div class="input-group search-group">
                             <form>
                                 <div class="input-group-btn __xe_btn_search_target">
-                                    <input type="hidden" name="searchTarget" value="{{ Request::get('searchTarget') }}">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Request::has('searchTarget') && Request::get('searchTarget') != '' ? xe_trans('board::' . Request::get('searchTarget')) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
+                                    <input type="hidden" name="search_target" value="{{ Request::get('search_target') }}">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Request::has('search_target') && Request::get('search_target') != '' ? xe_trans('board::' . $searchTargetWord) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li @if(Request::get('searchTarget') == '') class="active" @endif><a href="#" value="">{{xe_trans('xe::select')}}</a></li>
-                                        <li @if(Request::get('searchTarget') == 'titleAndcontent') class="active" @endif><a href="#" value="titleAndcontent">{{xe_trans('board::titleAndContent')}}</a></li>
-                                        <li @if(Request::get('searchTarget') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
-                                        <li @if(Request::get('searchTarget') == 'content') class="active" @endif><a href="#" value="content">{{xe_trans('board::content')}}</a></li>
-                                        <li @if(Request::get('searchTarget') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
+                                        <li @if(Request::get('search_target') == '') class="active" @endif><a href="#" value="">{{xe_trans('board::select')}}</a></li>
+                                        <li @if(Request::get('search_target') == 'title_pure_content') class="active" @endif><a href="#" value="title_pure_content">{{xe_trans('board::titleAndContent')}}</a></li>
+                                        <li @if(Request::get('search_target') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
+                                        <li @if(Request::get('search_target') == 'pure_content') class="active" @endif><a href="#" value="pure_content">{{xe_trans('board::content')}}</a></li>
+                                        <li @if(Request::get('search_target') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
                                     </ul>
                                 </div>
                                 <div class="search-input-group">
-                                    <input type="text" name="searchKeyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Request::get('searchKeyword')}}">
+                                    <input type="text" name="search_keyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Request::get('search_keyword')}}">
                                     <button class="btn-link">
                                         <i class="xi-search"></i><span class="sr-only">{{xe_trans('xe::search')}}</span>
                                     </button>
@@ -124,7 +124,7 @@
         $('.__xe_btn_search_target .dropdown-menu a').click(function (e) {
             e.preventDefault();
 
-            $('[name="searchTarget"]').val($(this).attr('value'));
+            $('[name="search_target"]').val($(this).attr('value'));
             $('.__xe_btn_search_target .__xe_text').text($(this).text());
 
             $(this).closest('.dropdown-menu').find('li').removeClass('active');
