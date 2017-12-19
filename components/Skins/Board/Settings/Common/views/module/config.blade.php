@@ -12,6 +12,7 @@
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h3 class="panel-title">{{xe_trans('board::boardDetailConfigures')}}</h3>
+                            <small><a href="{{$urlHandler->managerUrl('global.config')}}" target="_blank">{{xe_trans('xe::moveToParentSettingPage')}}</a></small>
                         </div>
                     </div>
                     <form method="post" id="board_manage_form" action="{!! $urlHandler->managerUrl('config.update', ['boardId' => $boardId]) !!}">

@@ -12,6 +12,7 @@
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h3 class="panel-title">{{xe_trans('xe::permission')}}</h3>
+                            <small><a href="{{$urlHandler->managerUrl('global.permission')}}" target="_blank">{{xe_trans('xe::moveToParentSettingPage')}}</a></small>
                         </div>
                     </div>
                     <form method="post" id="board_manage_form" action="{!! $urlHandler->managerUrl('permission.update', ['boardId' => $boardId]) !!}">

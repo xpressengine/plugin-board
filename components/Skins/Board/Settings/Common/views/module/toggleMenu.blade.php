@@ -12,6 +12,7 @@
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h3 class="panel-title">{{xe_trans('xe::toggleMenu')}}</h3>
+                            <small><a href="{{$urlHandler->managerUrl('global.toggleMenu')}}" target="_blank">{{xe_trans('xe::moveToParentSettingPage')}}</a></small>
                         </div>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse in">
