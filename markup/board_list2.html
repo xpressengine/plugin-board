@@ -240,7 +240,7 @@
                             <span class="category">디자인</span>
                         </div>
                         <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
-                        <a href="#" class="title">디자이너라면 꼭 알아야 할 12가지 법률 디자이너라면 꼭 알아야 할</a>
+                        <a href="#" class="title">[@일반] 디자이너라면 꼭 알아야 할 12가지 법률 디자이너라면 꼭 알아야 할</a>
                         <a href="#" class="reply_num xe-hidden-xs" title="Replies">9</a>
                         <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
                         <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
@@ -271,13 +271,57 @@
                 </li>
                 <li>
                     <div class="thumb_area">
-                        <img src="../assets/img/board_default_img.png" alt="default">
+                        <img src="http://via.placeholder.com/450x150" alt="default">
                     </div>
                     <div class="cont_area">
                         <!-- <div class="board_category">
                             <span class="category">디자인</span>
                         </div> -->
-                        <a href="#" class="title">디자이너라면 꼭 알아야 할 12가지 법률</a>
+                        <!-- 
+                            @FIXME 가로로 긴 이미지일 때
+                            - 가로 최대 폭 크기로 비율을 유지하고 출력
+                            - .thumb_area가 지정된 썸네일 크기로 크기를 유지해야 함
+                            - 세로 중앙 정렬
+                        -->
+                        <a href="#" class="title">[@가로로 긴 이미지] 디자이너라면 꼭 알아야 할 12가지 법률</a>
+                        <div class="more_info">
+                            <label class="xe-label">
+                                <input type="checkbox">
+                                <span class="xe-input-helper"></span>
+                                <span class="xe-label-text xe-sr-only">선택</span>
+                            </label>
+                            <span class="autohr_area">
+                                <a href="#" class="mb_autohr">XpressEngine3.0.0</a>
+                                <div class="ly_popup">
+                                    <ul>
+                                    <li><a href="#">신고</a></li>
+                                    <li><a href="#">스패머관리</a></li>
+                                    <li><a href="#">휴지통</a></li>
+                                    <li><a href="#">등등</a></li>
+                                    </ul>
+                                </div>
+                            </span>
+                            <span class="mb_time"><i class="xi-time"></i> 2017-01-01 12:34:56</span>
+                            <span class="mb_read_num"><i class="xi-eye"></i> 787,878</span>
+                            <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 90,000</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="thumb_area">
+                        <a href="#"><img src="http://via.placeholder.com/100x450" alt="default"></a>
+                    </div>
+                    <div class="cont_area">
+                        <div class="board_category">
+                            <span class="category">디자인</span>
+                        </div>
+                        <!--
+                            @FIXME 이미지의 원본 비율이 유지되어야 함
+                            - 가로, 혹은 세로가 긴 이미지는 지정된 썸네일 사이즈 이내에서 최대 폭/길이로 표시하되
+                            - 비율은 유지되어야 하며
+                            - 중앙에 정렬해야 함
+                        -->
+                        <a href="#" class="title"><span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>[@세로로 긴 이미지] 디자이너라면 꼭 알아야 할 12가지</a>
                         <div class="more_info">
                             <label class="xe-label">
                                 <input type="checkbox">
@@ -303,13 +347,18 @@
                 </li>
                 <li>
                     <div class="thumb_area">
-                        <a href="#"><img src="../assets/img/board_default_img.png" alt="default"></a>
+                        <a href="#"><img src="http://via.placeholder.com/50x50" alt="default"></a>
                     </div>
                     <div class="cont_area">
                         <div class="board_category">
                             <span class="category">디자인</span>
                         </div>
-                        <a href="#" class="title"><span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>디자이너라면 꼭 알아야 할 12가지</a>
+                        <!--
+                            @FIXME 지정된 사이즈보다 작은 경우
+                            - .thumb_area가 영역 크기를 유지하고
+                            - 영역 내 이미지 중앙 정렬
+                        -->
+                        <a href="#" class="title">[@작은 이미지] 디자이너라면 꼭 알아야 할 12가지 법률</a>
                         <div class="more_info">
                             <label class="xe-label">
                                 <input type="checkbox">
@@ -334,46 +383,21 @@
                     </div>
                 </li>
                 <li>
+                    <!--
+                        @FIXME 썸네일이 없을 때
+                        - 기본 이미지(../assets/img/board_default_img.png)를 보여줘야 함
+                        - `img` 태그가 아닌 background(image + bg color)으로 지정
+                            - 썸네일의 사이즈(dimension) 및 비율이 변경될 수 있으므로
+                        - `.thumb_area > a`가 영역 크기 만큼 차지해야 함(링크를 누를 수 있어야 함)
+                    -->
                     <div class="thumb_area">
-                        <a href="#"><img src="../assets/img/board_default_img.png" alt="default"></a>
+                        <a href="#"></a>
                     </div>
                     <div class="cont_area">
                         <div class="board_category">
                             <span class="category">디자인</span>
                         </div>
-                        <a href="#" class="title">디자이너라면 꼭 알아야 할 12가지 법률</a>
-                        <div class="more_info">
-                            <label class="xe-label">
-                                <input type="checkbox">
-                                <span class="xe-input-helper"></span>
-                                <span class="xe-label-text xe-sr-only">선택</span>
-                            </label>
-                            <span class="autohr_area">
-                                <a href="#" class="mb_autohr">XE</a>
-                                <div class="ly_popup">
-                                    <ul>
-                                    <li><a href="#">신고</a></li>
-                                    <li><a href="#">스패머관리</a></li>
-                                    <li><a href="#">휴지통</a></li>
-                                    <li><a href="#">등등</a></li>
-                                    </ul>
-                                </div>
-                            </span>
-                            <span class="mb_time"><i class="xi-time"></i> 15시간 전</span>
-                            <span class="mb_read_num"><i class="xi-eye"></i> 78</span>
-                            <a href="#" class="mb_reply_num"><i class="xi-comment"></i> 9</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="thumb_area">
-                        <a href="#"><img src="../assets/img/board_default_img.png" alt="default"></a>
-                    </div>
-                    <div class="cont_area">
-                        <div class="board_category">
-                            <span class="category">디자인</span>
-                        </div>
-                        <a href="#" class="title">디자이너라면 꼭 알아야 할 12가지 법률</a>
+                        <a href="#" class="title">[@썸네일 없음] 디자이너라면 꼭 알아야 할 12가지 법률</a>
                         <div class="more_info">
                             <label class="xe-label">
                                 <input type="checkbox">
