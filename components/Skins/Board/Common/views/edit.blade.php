@@ -1,6 +1,8 @@
 {{ XeFrontend::rule('board', $rules) }}
 
+@if($config->get('useTag') === true)
 {{ XeFrontend::js('plugins/board/assets/js/build/BoardTags.js')->appendTo('body')->load() }}
+@endif
 
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('update', app('request')->query->all()) }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$item->instance_id}}" data-url-preview="{{ $urlHandler->get('preview') }}">
