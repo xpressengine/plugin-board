@@ -13,7 +13,6 @@
  */
 namespace Xpressengine\Plugins\Board;
 
-use Category;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -170,10 +169,10 @@ class InstanceManager
 
         $this->conn->beginTransaction();
 
-        $params['documentGroup'] = $documentConfig->get('group');
-        $params['commentGroup'] = 'comments_' . $documentConfig->get('instanceId');
+        $config->set('documentGroup', $documentConfig->get('group'));
+        $config->set('commentGroup', 'comments_' . $documentConfig->get('instanceId'));
+        $config = $this->configHandler->modify($config);
 
-        $config = $this->configHandler->put($params);
         $this->document->getInstanceManager()->put($documentConfig);
         $this->conn->commit();
 

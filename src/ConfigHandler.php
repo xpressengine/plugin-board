@@ -186,7 +186,7 @@ class ConfigHandler
     }
 
     /**
-     * add config
+     * put config
      *
      * @param array $params parameters
      * @return ConfigEntity
@@ -195,6 +195,17 @@ class ConfigHandler
     public function put(array $params)
     {
         return $this->configManager->put($this->name($params['boardId']), $params);
+    }
+
+    /**
+     * modify config
+     *
+     * @param ConfigEntity $config
+     * @return ConfigEntity
+     */
+    public function modify(ConfigEntity $config)
+    {
+        return $this->configManager->modify($config);
     }
 
     /**
