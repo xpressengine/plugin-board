@@ -47,6 +47,10 @@ class GallerySkin extends CommonSkin
             if (isset($this->data['paginate'])) {
                 static::attachThumbnail($this->data['paginate']);
             }
+
+            if (isset($this->data['notices'])) {
+                static::attachThumbnail($this->data['notices']);
+            }
         }
 
         return parent::render();
