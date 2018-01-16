@@ -301,6 +301,19 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
+     * visible with notice
+     *
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeVisibleWithNotice(Builder $query)
+    {
+        $query->whereIn('status', [static::STATUS_PUBLIC, static::STATUS_NOTICE])
+            ->whereIn('display', [static::DISPLAY_VISIBLE, static::DISPLAY_SECRET])
+            ->where('published', static::PUBLISHED_PUBLISHED);
+    }
+
+    /**
      * Returns title
      *
      * @return string

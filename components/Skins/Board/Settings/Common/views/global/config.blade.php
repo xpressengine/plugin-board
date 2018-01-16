@@ -142,6 +142,17 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
+                                                        <label>{{xe_trans('xe::noticeInList')}} </label>
+                                                    </div>
+                                                    <select id="" name="noticeInList" class="form-control">
+                                                        <option value="false" {!! $config->get('noticeInList') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                        <option value="true" {!! $config->get('noticeInList') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="row">

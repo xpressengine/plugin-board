@@ -371,6 +371,10 @@ return [
         'ko' => '정렬 방식',
         'en' => 'Order type',
     ],
+    'noticeInList' => [
+        'ko' => '공지글 목록 표시',
+        'en' => 'Notice in List',
+    ],
     'useCreateCaptcha' => [
         'ko' => '글 작성할 때 CAPTCHA 사용',
         'en' => 'Article create CAPTCHA activate',

@@ -107,7 +107,13 @@ class BoardService
     {
         /** @var Board $model */
         $model = Board::division($config->get('boardId'));
-        $query = $model->where('instance_id', $config->get('boardId'))->visible();
+        $query = $model->where('instance_id', $config->get('boardId'));
+
+        if ($config->get('noticeInList') === true) {
+            $query->visibleWithNotice();
+        } else {
+            $query->visible();
+        }
 
         if ($config->get('category') === true) {
             $query->leftJoin(

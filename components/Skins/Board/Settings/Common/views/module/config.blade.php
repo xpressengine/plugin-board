@@ -189,7 +189,7 @@
                                                     <label>{{xe_trans('xe::orderType')}} </label>
                                                     <div class="checkbox pull-right">
                                                         <label>
-                                                            <input type="checkbox" class="inheritCheck" data-target="orderType" @if($config->getPure('anonymity') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                            <input type="checkbox" class="inheritCheck" data-target="orderType" @if($config->getPure('orderType') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
                                                         </label>
                                                     </div>
                                                 </div>
@@ -198,6 +198,23 @@
                                                     @foreach ($handler->getOrders() as $value)
                                                         <option value="{{$value['value']}}" {!! $config->get('orderType') == $value['value'] ? 'selected="selected"' : '' !!} >{{xe_trans($value['text'])}}</option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('xe::noticeInList')}}</label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="noticeInList" @if($config->getPure('noticeInList') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="noticeInList" class="form-control" @if($config->getPure('noticeInList') === null) disabled="disabled" @endif>
+                                                    <option value="false" {!! $config->get('noticeInList') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    <option value="true" {!! $config->get('noticeInList') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
                                                 </select>
                                             </div>
                                         </div>
