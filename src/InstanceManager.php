@@ -165,6 +165,7 @@ class InstanceManager
         $documentConfig = $configHandler->get($params['boardId']);
         foreach ($params as $key => $value) {
             $documentConfig->set($key, $value);
+            $config->set($key, $value);
         }
 
         $this->conn->beginTransaction();
