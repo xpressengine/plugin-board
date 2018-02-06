@@ -1,10 +1,10 @@
 {{ XeFrontend::css('plugins/DummyPath/assets/css/skin.css')->load() }}
 
-{{ XeFrontend::js('plugins/board/assets/js/build/board.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
 
 {{ XeFrontend::rule('board', $rules) }}
 
-{{ XeFrontend::js('plugins/board/assets/js/build/BoardTags.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 
 <div class="board">
     <div class="board_write">

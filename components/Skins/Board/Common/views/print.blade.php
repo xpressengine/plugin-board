@@ -1,10 +1,3 @@
-{{ XeFrontend::js('/assets/vendor/jqueryui/jquery.event.drag-2.2.js')->appendTo('head')->load() }}
-{{ XeFrontend::js('/assets/vendor/slickgrid/slick.core.js')->appendTo('head')->load() }}
-{{ XeFrontend::js('/assets/vendor/slickgrid/slick.formatters.js')->appendTo('head')->load() }}
-{{ XeFrontend::js('/assets/vendor/slickgrid/slick.grid.js')->appendTo('head')->load() }}
-{{ XeFrontend::js('/assets/vendor/slickgrid/slick.dataview.js')->appendTo('head')->load() }}
-{{ XeFrontend::css('/assets/vendor/slickgrid/slick.grid.css')->load() }}
-
     <div class="board_read">
         @foreach ($skinConfig['formColumns'] as $columnName)
             @if($columnName === 'title')
@@ -55,6 +48,7 @@
     </div>
 
     <style>
+        // @FIXME
         .xe-toggle-menu {
             min-width: 140px;
             padding: 8px 0;

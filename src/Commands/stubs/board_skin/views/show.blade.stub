@@ -1,6 +1,6 @@
 {{ XeFrontend::css('plugins/DummyPath/assets/css/skin.css')->load() }}
 
-{{ XeFrontend::js('plugins/board/assets/js/build/board.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
 
 {{ XeFrontend::js('/assets/core/common/js/toggleMenu.js')->appendTo('head')->load() }}
 

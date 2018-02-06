@@ -1,7 +1,7 @@
 {{ XeFrontend::rule('board', $rules) }}
 
 @if($config->get('useTag') === true)
-{{ XeFrontend::js('plugins/board/assets/js/build/BoardTags.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 @endif
 
 <div class="board_write">
