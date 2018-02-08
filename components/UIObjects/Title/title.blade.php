@@ -1,6 +1,6 @@
 @if ($scriptInit === true)
     <script type="text/javascript">
-        $(function($) {
+        jQuery(function($) {
             $(document).on('change', '.__xe_titleWithSlug [name="title"]', function() {
                 var $target = $(this);
                 // 글 수정일 경우 자동으로 슬러그를 수정하지 않는다.

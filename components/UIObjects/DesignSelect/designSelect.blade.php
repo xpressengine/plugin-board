@@ -1,6 +1,6 @@
 @if($scriptInit === true)
     <script>
-        $(function($) {
+        jQuery(function($) {
             $('.__xe-dropdown-form .xe-dropdown-menu a').on('click touchstart', function(event) {
                 event.preventDefault();
                 var $target = $(event.target),

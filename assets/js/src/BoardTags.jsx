@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {WithContext} from 'react-tag-input';
+import $ from 'jquery'
 
 var $container = $('#xeBoardTagWrap');
 var BoardTags = React.createClass({
