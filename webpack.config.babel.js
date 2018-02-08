@@ -1,7 +1,8 @@
-var path = require('path')
-var webpack = require('webpack')
+import path from 'path'
+import webpack from 'webpack'
+import { resolveAlias } from '../../webpack.config.babel'
 
-module.exports = {
+export default {
   entry: {
     'assets/js/BoardTags': './assets/js/src/BoardTags.jsx',
     'assets/js/board': './assets/js/src/board.js'
@@ -15,6 +16,14 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
+    }),
+    new webpack.DllReferencePlugin({
+      context: path.resolve(__dirname, './'),
+      manifest: require('../../resources/assets/vendor-manifest.json')
+    }),
+    new webpack.DllReferencePlugin({
+      context: path.resolve(__dirname, './'),
+      manifest: require('../../resources/assets/common-manifest.json')
     })
   ],
   module: {
@@ -24,17 +33,16 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react'],
           cacheDirectory: true
         }
       }
     ]
   },
   resolve: {
+    'alias': resolveAlias,
     extensions: ['.js', '.jsx']
   },
   externals: {
-    window: 'window',
-    moment: 'moment'
+    window: 'window'
   }
 }
