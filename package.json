@@ -3,7 +3,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/webpack/bin/webpack.js -p",
-    "watch": "./node_modules/webpack/bin/webpack.js --watch"
+    "watch": "./node_modules/webpack/bin/webpack.js --watch",
+    "eslint": "./node_modules/eslint/bin/eslint.js ./assets/js/src",
+    "eslint-fix": "./node_modules/eslint/bin/eslint.js --fix ./assets/js/src"
   },
   "dependencies": {
     "jquery": "^3.3.1",
@@ -17,11 +19,29 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "clean-webpack-plugin": "^0.1.14",
+    "eslint": "^4.17.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "path": "^0.12.7",
     "webpack": "^3.10.0"
-  }
+  },
+  "eslintConfig": {
+    "extends": "standard",
+    "env": {
+      "browser": true,
+      "node": true,
+      "jquery": true
+    },
+    "globals": {}
+  },
+  "eslintIgnore": [
+    "./board.js",
+    "./BoardTags.js",
+    "tests/"
+  ]
 }
