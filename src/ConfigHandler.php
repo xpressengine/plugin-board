@@ -79,6 +79,7 @@ class ConfigHandler
         'urlType' => 'slug',
         'deleteToTrash' => false,
         'newCommentNotice' => true,
+        'secretPost' => true,
     ];
 
     /**

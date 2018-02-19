@@ -101,11 +101,13 @@
                 </label>
                 @endif
 
+                @if($config->get('secretPost') === true)
                 <label class="xe-label">
                     <input type="checkbox" name="display" value="{{\Xpressengine\Document\Models\Document::DISPLAY_SECRET}}">
                     <span class="xe-input-helper"></span>
                     <span class="xe-label-text">{{xe_trans('board::secretPost')}}</span>
                 </label>
+                @endif
 
                 @if($isManager === true)
                 <label class="xe-label">
