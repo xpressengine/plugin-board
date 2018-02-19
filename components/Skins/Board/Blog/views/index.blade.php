@@ -259,7 +259,7 @@
                         @endif
                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
-                                @if ($item->hasAuthor())
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                     <a href="#" class="mb_autohr"
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"
@@ -317,7 +317,7 @@
                         @endif
                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
-                                @if ($item->hasAuthor())
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                     <a href="#" class="mb_autohr"
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"

@@ -290,7 +290,7 @@
                                 <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
                             <div class="more_info xe-visible-xs">
-                                @if ($item->hasAuthor())
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                 <a href="#" class="mb_author"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
@@ -305,7 +305,7 @@
                         </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor())
+                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
                             <a href="#"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -375,7 +375,7 @@
                             <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
                         <div class="more_info xe-visible-xs">
-                            @if ($item->hasAuthor())
+                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                 <a href="#" class="mb_author"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
@@ -390,7 +390,7 @@
                     </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor())
+                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
                             <a href="#"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
