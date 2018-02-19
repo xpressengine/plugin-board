@@ -274,7 +274,7 @@
                                         <a class="mb_autohr">{!! $item->writer !!}</a>
                                     @endif
                                 </span>
-                            <span class="mb_time"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
+                            <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
                             <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
 
                         </div>
@@ -329,7 +329,7 @@
                                     <a class="mb_autohr">{!! $item->writer !!}</a>
                                 @endif
                             </span>
-                            <span class="mb_time"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
+                            <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
                             <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                         </div>
                     </div>
