@@ -370,6 +370,11 @@ class BoardModuleController extends Controller
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
         }
 
+        // 비밀글 등록 설정 확인
+        if ($request->get('display') == Board::DISPLAY_SECRET && $this->config->get('secretPost') !== true) {
+            throw new HaveNoWritePermissionHttpException(['name' => xe_trans('board::secretPost')]);
+        }
+
         $item = $service->store($request, Auth::user(), $this->config, $identifyManager);
 
         return XePresenter::redirect()
@@ -504,6 +509,11 @@ class BoardModuleController extends Controller
         // 공지 등록 권한 확인
         if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager() === false) {
             throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
+        }
+
+        // 비밀글 등록 설정 확인
+        if ($request->get('display') == Board::DISPLAY_SECRET && $this->config->get('secretPost') !== true) {
+            throw new HaveNoWritePermissionHttpException(['name' => xe_trans('board::secretPost')]);
         }
 
         $item = $service->update($item, $request, Auth::user(), $this->config, $identifyManager);

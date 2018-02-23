@@ -259,7 +259,7 @@
                         @endif
                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
-                                @if ($item->hasAuthor())
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                     <a href="#" class="mb_autohr"
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"
@@ -268,7 +268,7 @@
                                     <a class="mb_autohr">{!! $item->writer !!}</a>
                                 @endif
                             </span>
-                        <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</span></span>
+                        <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</span></span>
                         <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                         <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
                     </div>
@@ -317,7 +317,7 @@
                         @endif
                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                             <span class="autohr_area">
-                                @if ($item->hasAuthor())
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                     <a href="#" class="mb_autohr"
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"
@@ -326,7 +326,7 @@
                                     <a class="mb_autohr">{!! $item->writer !!}</a>
                                 @endif
                             </span>
-                            <span class="mb_time"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</span></span>
+                            <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</span></span>
                             <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                         <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
                     </div>

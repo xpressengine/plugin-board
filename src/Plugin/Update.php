@@ -98,6 +98,11 @@ class Update
             return false;
         }
 
+        // ver 0.9.25
+        if (static::hasSecretPostConfig() === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -199,6 +204,11 @@ class Update
         // ver 0.9.24
         if (static::hasColumnsConfig() === false) {
             static::updateColumnsConfig();
+        }
+
+        // ver 0.9.25
+        if (static::hasSecretPostConfig() === false) {
+            static::updateSecretPostConfig();
         }
     }
 
@@ -351,5 +361,22 @@ class Update
                 }
             }
         }
+    }
+
+    protected static function hasSecretPostConfig()
+    {
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
+        if ($config->get('secretPost') === null) {
+            return false;
+        }
+        return true;
+    }
+
+    protected static function updateSecretPostConfig()
+    {
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
+
+        $config->set('secretPost', true);
+        XeConfig::modify($config);
     }
 }

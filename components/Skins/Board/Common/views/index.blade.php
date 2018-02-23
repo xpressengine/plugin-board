@@ -290,7 +290,7 @@
                                 <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
                             <div class="more_info xe-visible-xs">
-                                @if ($item->hasAuthor())
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                 <a href="#" class="mb_author"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
@@ -298,14 +298,14 @@
                                 @else
                                     <a class="mb_author">{!! $item->writer !!}</a>
                                 @endif
-                                <span class="mb_time"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
+                                <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
                                 <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                                 <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
                             </div>
                         </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor())
+                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
                             <a href="#"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -317,8 +317,7 @@
                 @elseif ($columnName == 'read_count')
                     <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
                 @elseif (in_array($columnName, ['created_at', 'updated_at', 'deleted_at']))
-
-                    <td class="time xe-hidden-xs column-{{$columnName}}" @if($item->{$columnName}->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->{$columnName} }}" @endif >{{ $item->{$columnName}->toDateString() }}</td>
+                    <td class="time xe-hidden-xs column-{{$columnName}}" title="{{ $item->{$columnName} }}" @if($item->{$columnName}->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->{$columnName} }}" @endif >{{ $item->{$columnName}->toDateString() }}</td>
                 @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                     <td class="xe-hidden-xs column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>
                 @else
@@ -376,7 +375,7 @@
                             <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
                         <div class="more_info xe-visible-xs">
-                            @if ($item->hasAuthor())
+                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                 <a href="#" class="mb_author"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
@@ -384,14 +383,14 @@
                             @else
                                 <a class="mb_author">{!! $item->writer !!}</a>
                             @endif
-                            <span class="mb_time"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
+                            <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
                             <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                             <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
                         </div>
                     </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor())
+                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
                             <a href="#"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -403,7 +402,7 @@
                 @elseif ($columnName == 'read_count')
                     <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
                 @elseif (in_array($columnName, ['created_at', 'updated_at', 'deleted_at']))
-                    <td class="time xe-hidden-xs column-{{$columnName}}" @if($item->{$columnName}->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->{$columnName} }}" @endif >{{ $item->{$columnName}->toDateString() }}</td>
+                    <td class="time xe-hidden-xs column-{{$columnName}}" title="{{ $item->{$columnName} }}" @if($item->{$columnName}->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->{$columnName} }}" @endif >{{ $item->{$columnName}->toDateString() }}</td>
                 @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
                     <td class="xe-hidden-xs column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>
                 @else

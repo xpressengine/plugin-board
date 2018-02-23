@@ -322,6 +322,12 @@ class BoardService
             $item->status = Board::STATUS_PUBLIC;
         }
 
+        if ($request->get('display') == Board::DISPLAY_SECRET) {
+            $item->display = Board::DISPLAY_SECRET;
+        } else {
+            $item->display = Board::DISPLAY_VISIBLE;
+        }
+
         $inputs = $request->all();
 
         /** @var \Xpressengine\Editor\AbstractEditor $editor */
