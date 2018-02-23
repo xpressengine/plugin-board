@@ -86,32 +86,6 @@
         </div>
     </div>
 
-    <style>
-        // @FIXME
-        .xe-toggle-menu {
-            min-width: 140px;
-            padding: 8px 0;
-            border: 1px solid #bebebe;
-            border-radius: 4px;
-            background-color: #fff;
-            list-style: none;
-        }
-        .xe-toggle-menu li {
-            height: 30px;
-        }
-        .xe-toggle-menu li > a {
-            overflow: hidden;
-            display: block;
-            height: 100%;
-            padding: 0 16px;
-            font-size: 14px;
-            line-height: 30px;
-            color: #2c2e37;
-        }
-        .xe-toggle-menu li > a:hover {
-            background-color: #f4f4f4;
-        }
-    </style>
     <!-- 댓글 -->
     @if ($config->get('comment') === true && $item->boardData->allow_comment === 1)
     <div class="__xe_comment board_comment">
