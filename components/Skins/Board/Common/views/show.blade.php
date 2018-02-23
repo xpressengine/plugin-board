@@ -12,12 +12,16 @@
                     <div class="more_info">
                         <!-- [D] 클릭시 클래스 on 적용 -->
                         @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
-                               data-toggle="xe-page-toggle-menu"
-                               data-url="{{ route('toggleMenuPage') }}"
-                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{{ $item->writer }}</a>
+                            <span class="xe-dropdown">
+                                <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
+                                   data-toggle="xe-page-toggle-menu"
+                                   data-url="{{ route('toggleMenuPage') }}"
+                                   data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{{ $item->writer }}</a>
+                           </span>
                         @else
-                            <a class="mb_autohr">{{ $item->writer }}</a>
+                            <span>
+                                <a class="mb_autohr">{{ $item->writer }}</a>
+                            </span>
                         @endif
 
                         <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span data-xe-timeago="{{$item->created_at}}">{{$item->created_at}}</span></span>
