@@ -12,12 +12,16 @@
                     <div class="more_info">
                         <!-- [D] 클릭시 클래스 on 적용 -->
                         @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
-                               data-toggle="xe-page-toggle-menu"
-                               data-url="{{ route('toggleMenuPage') }}"
-                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{{ $item->writer }}</a>
+                            <span class="xe-dropdown">
+                                <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
+                                   data-toggle="xe-page-toggle-menu"
+                                   data-url="{{ route('toggleMenuPage') }}"
+                                   data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{{ $item->writer }}</a>
+                           </span>
                         @else
-                            <a class="mb_autohr">{{ $item->writer }}</a>
+                            <span>
+                                <a class="mb_autohr">{{ $item->writer }}</a>
+                            </span>
                         @endif
 
                         <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span data-xe-timeago="{{$item->created_at}}">{{$item->created_at}}</span></span>
@@ -86,32 +90,6 @@
         </div>
     </div>
 
-    <style>
-        // @FIXME
-        .xe-toggle-menu {
-            min-width: 140px;
-            padding: 8px 0;
-            border: 1px solid #bebebe;
-            border-radius: 4px;
-            background-color: #fff;
-            list-style: none;
-        }
-        .xe-toggle-menu li {
-            height: 30px;
-        }
-        .xe-toggle-menu li > a {
-            overflow: hidden;
-            display: block;
-            height: 100%;
-            padding: 0 16px;
-            font-size: 14px;
-            line-height: 30px;
-            color: #2c2e37;
-        }
-        .xe-toggle-menu li > a:hover {
-            background-color: #f4f4f4;
-        }
-    </style>
     <!-- 댓글 -->
     @if ($config->get('comment') === true && $item->boardData->allow_comment === 1)
     <div class="__xe_comment board_comment">

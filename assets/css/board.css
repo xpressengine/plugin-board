@@ -1072,7 +1072,8 @@
   color: #696e7a;
 }
 .bd_function .bd_like:hover,
-.bd_function .bd_like.on {
+.bd_function .bd_like.on,
+.bd_function .bd_like.voted {
   color: #fe6462;
 }
 .bd_function .bd_ico:first-child {
@@ -1108,16 +1109,14 @@
   display: block;
 }
 .bd_function .bd_like_more ul {
-  display: inline-block;
-  overflow: hidden;
   list-style: none;
 }
-.bd_function .bd_like_more li {
+.bd_function .bd_like_more > ul > li {
   position: relative;
   float: left;
   margin: 0 4px 8px 0;
 }
-.bd_function .bd_like_more li.on:before {
+.bd_function .bd_like_more > ul > li.on:before {
   position: absolute;
   top: 0;
   left: 1px;
