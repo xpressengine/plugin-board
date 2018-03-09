@@ -27,12 +27,14 @@ window.AssentVirtualGrid = (function () {
       startId = 0
       limit = 10
 
-      XeInfinite.init({
-        wrapper: '.xe-list-group',
-        template: self.getTemplate(),
-        loadRowCount: 3,
-        rowHeight: 80,
-        onGetRows: self.onGetRows
+      DynamicLoadManager.jsLoad('/assets/core/xe-ui-component/js/xe-infinite.js', function () {
+        XeInfinite.init({
+          wrapper: '.xe-list-group',
+          template: self.getTemplate(),
+          loadRowCount: 3,
+          rowHeight: 80,
+          onGetRows: self.onGetRows
+        })
       })
 
       return self
