@@ -20,6 +20,7 @@ use XeCaptcha;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
+use Xpressengine\Document\Models\Document;
 use Xpressengine\Editor\PurifierModules\EditorTool;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\ConfigHandler;
@@ -145,7 +146,13 @@ class BoardService
         Event::fire('xe.plugin.board.articles', [$query]);
 
         if ($id !== null) {
-            $request->query->set('page', $this->handler->pageResolver($query, $config, $id));
+            $item = Board::division($config->get('boardId'))->find($id);
+
+            if ($item->status === Document::STATUS_NOTICE) {
+                $request->query->set('page', 1);
+            } else {
+                $request->query->set('page', $this->handler->pageResolver($query, $config, $id));
+            }
         }
 
         $paginate = $query->paginate($config->get('perPage'))->appends($request->except('page'));
