@@ -352,10 +352,7 @@ $(function () {
     event.preventDefault()
     var $this = $(this)
     var form = $this.closest('form')
-
-    if (!form.data('valid-result')) {
-      form.trigger('submit')
-    }
+    form.trigger('submit')
   }).on('click', '.__xe_btn_preview', function (event) {
     event.preventDefault()
 
