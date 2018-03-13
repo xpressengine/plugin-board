@@ -73,7 +73,7 @@ window.AssentVirtualGrid = (function () {
   }
 })()
 
-$(function ($) {
+$(function () {
   $('.__xe-bd-favorite').on('click', function (event) {
     event.preventDefault()
     var $target = $(event.target),
@@ -347,15 +347,12 @@ $(function ($) {
   })
 })
 
-$(function ($) {
+$(function () {
   $('.__board_form').on('click', '.__xe_btn_submit', function (event) {
     event.preventDefault()
     var $this = $(this)
     var form = $this.closest('form')
-
-    if (!form.data('valid-result')) {
-      form.trigger('submit')
-    }
+    form.trigger('submit')
   }).on('click', '.__xe_btn_preview', function (event) {
     event.preventDefault()
 
