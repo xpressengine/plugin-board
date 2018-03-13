@@ -1043,6 +1043,33 @@
   font-style: normal;
   font-size: 14px;
 }
+.read_footer .tns{
+  position: relative;
+  margin: 15px 0;
+  text-align: right;
+}
+.read_footer .tags{
+  display: inline-block;
+  overflow: hidden;
+  background: none;
+  color: #fff;
+}
+.read_footer .tags a{
+  display: inline-block;
+  position: relative;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  border-radius: 3px;
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  background-color: #9c9c9c;
+}
+.read_footer .tags a:hover{
+  text-decoration: none;
+}
 .bd_function {
   padding-bottom: 11px;
 }
