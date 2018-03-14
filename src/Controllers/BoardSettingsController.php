@@ -136,12 +136,8 @@ class BoardSettingsController extends Controller
      */
     public function updateGlobalConfig(Request $request)
     {
-        if ($request->get('useCaptcha') === 'true') {
-            $driver = config('captcha.driver');
-            $captcha = config("captcha.apis.$driver.siteKey");
-            if (!$captcha) {
-                throw new ConfigurationNotExistsException();
-            }
+        if ($request->get('useCaptcha') === 'true' && !app('xe.captcha')->available()) {
+            throw new ConfigurationNotExistsException();
         }
 
         $config = $this->configHandler->getDefault();
@@ -227,12 +223,8 @@ class BoardSettingsController extends Controller
      */
     public function updateConfig(Request $request, $boardId)
     {
-        if ($request->get('useCaptcha') === 'true') {
-            $driver = config('captcha.driver');
-            $captcha = config("captcha.apis.$driver.siteKey");
-            if (!$captcha) {
-                throw new ConfigurationNotExistsException();
-            }
+        if ($request->get('useCaptcha') === 'true' && !app('xe.captcha')->available()) {
+            throw new ConfigurationNotExistsException();
         }
 
         $config = $this->configHandler->get($boardId);
