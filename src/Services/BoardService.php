@@ -25,6 +25,7 @@ use Xpressengine\Editor\PurifierModules\EditorTool;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
+use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
@@ -32,6 +33,7 @@ use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 use Xpressengine\Support\PurifierModules\Html5;
+use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
 
 /**
@@ -235,9 +237,18 @@ class BoardService
         if ($item->display == Board::DISPLAY_SECRET) {
             if ($force === true) {
                 $visible = true;
+            } elseif ($user instanceof Guest && $item->isGuest()) {
+                $identifyManager = app('xe.board.identify');
+
+                if ($identifyManager->identified($item) === true) {
+                    $visible = true;
+                } else {
+                    throw new GuestWrittenSecretDocumentException;
+                }
             } elseif ($user->getId() == $item->getAuthor()->getId()) {
                 $visible = true;
             }
+
             if ($visible === false) {
                 throw new SecretDocumentHttpException;
             }

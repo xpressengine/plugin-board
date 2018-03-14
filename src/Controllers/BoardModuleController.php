@@ -32,6 +32,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
+use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
@@ -189,7 +190,15 @@ class BoardModuleController extends Controller
         $id
     ) {
         $user = Auth::user();
-        $item = $service->getItem($id, $user, $this->config, $this->isManager());
+
+        try {
+            $item = $service->getItem($id, $user, $this->config, $this->isManager());
+        } catch (GuestWrittenSecretDocumentException $e) {
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
+                'id' => $id,
+                'referrer' => app('url')->current(),
+            ]));
+        }
 
         $identifyManager = app('xe.board.identify');
         if ($service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
