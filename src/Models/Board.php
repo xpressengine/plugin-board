@@ -132,6 +132,20 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
+     * get writer name
+     *
+     * @return string
+     */
+    public function getDisplayWriterName()
+    {
+        if ($this->isGuest()) {
+            return $this->getAttribute('writer');
+        } else {
+            return $this->user->getDisplayName();
+        }
+    }
+
+    /**
      * get comments
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

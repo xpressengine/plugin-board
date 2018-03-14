@@ -496,7 +496,7 @@ class BoardModule extends AbstractModule
                     'contents' => sprintf(
                         '<span>%s : %s</span> <a href="%s" target="_blank">%s</a><br/><br/><br/>%s',
                         xe_trans('xe::writer'),
-                        $board->user->getDisplayName(),
+                        $board->getDisplayWriterName(),
                         $url,
                         $semanticUrl,
                         $board->pure_content
