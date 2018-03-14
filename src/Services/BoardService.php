@@ -270,7 +270,7 @@ class BoardService
     public function checkCaptcha(ConfigEntity $config)
     {
         if ($config->get('useCaptcha', false) === true) {
-            if (XeCaptcha::verify() !== true) {
+            if (app('xe.captcha')->verify() !== true) {
                 throw new CaptchaNotVerifiedException;
             }
         }
