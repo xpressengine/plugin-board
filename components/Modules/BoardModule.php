@@ -431,7 +431,13 @@ class BoardModule extends AbstractModule
                         continue;
                     }
 
-                    if ($toMail == $comment->user->email) {
+                    if ($comment->email != null && $comment->email != '') {
+                        $writerMail = $comment->email;
+                    } else {
+                        $writerMail = $comment->user->email;
+                    }
+
+                    if ($toMail == $writerMail) {
                         continue;
                     }
 
