@@ -213,6 +213,40 @@ class BoardService
     }
 
     /**
+     * get search option array
+     *
+     * @param Request $request request
+     * @return array
+     */
+    public function getSearchOptions(Request $request)
+    {
+        $searchType = ['title_pure_content' => 'board::titleAndContent',
+                    'title_content' => 'board::title',
+                    'writer' => 'board::writer',
+                    'category_item_id' => 'xe::category',
+                    'start_created_at' => 'board::startDate',
+                    'end_created_at' => 'board::endDate'];
+
+        $searchOption = [];
+
+        foreach ($searchType as $type => $name) {
+            $value = $request->get($type);
+
+            if ($value != null) {
+                if ($type == 'category_item_id') {
+                    $category = CategoryItem::where('id', $value)->get()->first();
+
+                    $searchOption[xe_trans($name)] = xe_trans($category->word);
+                } else {
+                    $searchOption[xe_trans($name)] = $value;
+                }
+            }
+        }
+
+        return $searchOption;
+    }
+
+    /**
      * get article
      *
      * @param string        $id     document id

@@ -216,6 +216,27 @@
 
 </div>
 
+<!-- /검색 정보 출력 -->
+@if ($searchOptions != null)
+    <div class="xe-row">
+        <div class="xe-col-md-8">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3> {{ xe_trans('board::searchResult', ['count' => $paginate->total()]) }}</h3>
+                </div>
+
+                <div class="panel-body">
+                    <ul>
+                        @foreach ($searchOptions as $name => $key)
+                            <li>{{$name}} : {{$key}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
     <!--[D] 한 줄에 노출될 컬럼 수 설정
             3컬럼(기본) : g_col3
             2컬럼 : g_col2

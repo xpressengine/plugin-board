@@ -215,6 +215,27 @@
 
 </div>
 
+<!-- /검색 정보 출력 -->
+@if ($searchOptions != null)
+    <div class="xe-row">
+        <div class="xe-col-md-8">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3> {{ xe_trans('board::searchResult', ['count' => $paginate->total()]) }}</h3>
+                </div>
+
+                <div class="panel-body">
+                    <ul>
+                        @foreach ($searchOptions as $name => $key)
+                            <li>{{$name}} : {{$key}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 <div class="board_list">
     <table>
         <!-- [D] 모바일뷰에서 숨겨할 요소 클래스 xe-hidden-xs 추가 -->

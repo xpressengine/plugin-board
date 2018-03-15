@@ -156,6 +156,7 @@ class BoardModuleController extends Controller
         $fieldTypes = $service->getFieldTypes($this->config);
         $categories = $service->getCategoryItems($this->config);
         $orders = $this->handler->getOrders();
+        $searchOptions = $service->getSearchOptions($request);
 
         $dynamicFieldsById = [];
         foreach($fieldTypes as $fieldType) {
@@ -169,6 +170,7 @@ class BoardModuleController extends Controller
             'fieldTypes' => $fieldTypes,
             'orders' => $orders,
             'dynamicFieldsById' => $dynamicFieldsById,
+            'searchOptions' => $searchOptions,
         ]);
     }
 
@@ -217,6 +219,7 @@ class BoardModuleController extends Controller
         $paginate = $service->getItems($request, $this->config, $id);
         $fieldTypes = $service->getFieldTypes($this->config);
         $categories = $service->getCategoryItems($this->config);
+        $searchOptions = $service->getSearchOptions($request);
 
         $dynamicFieldsById = [];
         foreach($fieldTypes as $fieldType) {
@@ -231,6 +234,7 @@ class BoardModuleController extends Controller
             'categories' => $categories,
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
+            'searchOptions' => $searchOptions,
         ]);
     }
 

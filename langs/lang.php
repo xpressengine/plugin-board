@@ -441,4 +441,8 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '인쇄',
         'en' => 'Print',
     ],
+    'searchResult' => [
+        'ko' => '검색 결과 :count건',
+        'en' => 'Search result :count counts',
+    ],
 ];
