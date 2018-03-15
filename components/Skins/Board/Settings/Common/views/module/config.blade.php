@@ -205,7 +205,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
-                                                    <label>{{xe_trans('xe::noticeInList')}}</label>
+                                                    <label>{{xe_trans('board::noticeInList')}}</label>
                                                     <div class="checkbox pull-right">
                                                         <label>
                                                             <input type="checkbox" class="inheritCheck" data-target="noticeInList" @if($config->getPure('noticeInList') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
