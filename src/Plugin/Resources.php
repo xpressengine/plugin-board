@@ -18,9 +18,11 @@ use Xpressengine\Config\ConfigManager;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\Exceptions\AlreadyUseCategoryHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\InstanceManager;
+use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
 use Xpressengine\Plugins\Board\Services\BoardService;
@@ -282,6 +284,41 @@ class Resources
                     $boardConfig->set('formColumns', $configHandler->getSortFormColumns($boardConfig));
                     XeConfig::modify($boardConfig);
                 }
+            }
+        );
+    }
+
+    public static function interceptDeleteCategory()
+    {
+        intercept(
+            'XeCategory@deleteItem', 'board::categoryDelete',
+            function ($deleteCategory, $item, $force) {
+                $isUsingCategory = false;
+
+                $delItemUseDocument = BoardCategory::where('item_id', $item->id)->get();
+
+                if (count($delItemUseDocument)) {
+                    $isUsingCategory = true;
+                }
+
+                if ($isUsingCategory == false && $force == true) {
+                    foreach ($item->descendants as $desc) {
+                        $descItemUseDocument = BoardCategory::where('item_id', $desc->id)->get();
+
+                        if (count($descItemUseDocument)) {
+                            $isUsingCategory = true;
+                            break;
+                        }
+                    }
+                }
+
+                if ($isUsingCategory) {
+                    throw new AlreadyUseCategoryHttpException;
+                }
+
+                $result = $deleteCategory($item, $force);
+
+                return $result;
             }
         );
     }

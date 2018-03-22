@@ -40,6 +40,7 @@ class Plugin extends AbstractPlugin
         Resources::registerCommands();
         Resources::setDefaultSkin();
         Resources::interceptDynamicField();
+        Resources::interceptDeleteCategory();
     }
 
     /**

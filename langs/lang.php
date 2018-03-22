@@ -445,4 +445,8 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '검색 결과 :count건',
         'en' => 'Search result :count counts',
     ],
+    'alreadyUseCategory' => [
+        'ko' => '사용중인 카테고리입니다.',
+        'en' => 'This category is using.'
+    ]
 ];
