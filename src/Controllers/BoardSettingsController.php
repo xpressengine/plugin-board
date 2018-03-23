@@ -423,7 +423,21 @@ class BoardSettingsController extends Controller
         } elseif ($request->get('search_target') == 'title_pure_content') {
             $searchTargetWord = 'titleAndContent';
         }
-        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord'));
+
+        $approveName = [
+            Board::APPROVED_REJECTED => 'xe::rejected',
+            Board::APPROVED_WAITING => 'board::waiting',
+            Board::APPROVED_APPROVED => 'board::approved'
+        ];
+
+        $displayName = [
+            Board::DISPLAY_HIDDEN => 'board::hidden',
+            Board::DISPLAY_SECRET => 'board::secret',
+            Board::DISPLAY_VISIBLE => 'board::visible'
+        ];
+
+        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles',
+            'searchTargetWord', 'approveName', 'displayName'));
     }
 
     /**
