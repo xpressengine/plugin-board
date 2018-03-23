@@ -421,4 +421,40 @@ class Board extends Document implements CommentUsable, SeoUsable
 
         return parent::toArray();
     }
+
+    /**
+     * get display status name
+     *
+     * @param int $displayCode
+     *
+     * @return string
+     */
+    public function getDisplayStatusName($displayCode)
+    {
+        $displayName = [
+            self::DISPLAY_HIDDEN => 'board::displayStatusHidden',
+            self::DISPLAY_SECRET => 'board::displayStatusSecret',
+            self::DISPLAY_VISIBLE => 'board::displayStatusVisible'
+        ];
+
+        return $displayName[$displayCode];
+    }
+
+    /**
+     * get approve status name
+     *
+     * @param int $approveCode
+     *
+     * @return string
+     */
+    public function getApproveStatusName($approveCode)
+    {
+        $approveName = [
+            self::APPROVED_REJECTED => 'board::approveStatusRejected',
+            self::APPROVED_WAITING => 'board::approveStatusWaiting',
+            self::APPROVED_APPROVED => 'board::approveStatusApproved'
+        ];
+
+        return $approveName[$approveCode];
+    }
 }
