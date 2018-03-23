@@ -448,25 +448,5 @@ You may receive an error occurs in the associated function if not in a state cap
     'alreadyUseCategory' => [
         'ko' => '사용중인 카테고리입니다.',
         'en' => 'This category is using.'
-    ],
-    'approved' => [
-        'ko' => '승인',
-        'en' => 'approved'
-    ],
-    'waiting' => [
-        'ko' => '대기',
-        'en' => 'waiting'
-    ],
-    'hidden' => [
-        'ko' => '숨김',
-        'en' => 'hidden'
-    ],
-    'secret' => [
-        'ko' => '비밀',
-        'en' => 'secret'
-    ],
-    'visible' => [
-        'ko' => '표시',
-        'en' => 'visible'
     ]
 ];
