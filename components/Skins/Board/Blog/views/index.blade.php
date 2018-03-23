@@ -278,7 +278,11 @@
                             <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
                         </label>
                         @endif
-                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+
+                        @if (Auth::check() === true)
+                            <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                        @endif
+
                             <span class="autohr_area">
                                 @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                     <a href="#" class="mb_autohr"
@@ -336,7 +340,11 @@
                             <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
                         </label>
                         @endif
-                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+
+                        @if (Auth::check() === true)
+                            <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                        @endif
+
                             <span class="autohr_area">
                                 @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                     <a href="#" class="mb_autohr"
