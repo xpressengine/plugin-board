@@ -262,7 +262,7 @@ class BoardSettingsController extends Controller
     {
         $boardId = $request->get('boardId');
         $input = [
-            'name' => $boardId . '-' . BoardModule::getId(),
+            'name' => MenuItem::where('id', $boardId)->get()->first()->title
         ];
         $category = $categoryHandler->create($input);
 
