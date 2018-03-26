@@ -1,7 +1,3 @@
-import moment from 'moment'
-import window from 'window'
-import $ from 'jquery'
-
 window.AssentVirtualGrid = (function () {
   var self
   var startId, limit

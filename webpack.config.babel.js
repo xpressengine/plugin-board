@@ -1,7 +1,6 @@
 import path from 'path'
 import webpack from 'webpack'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
-import { resolveAlias } from '../../webpack.config.babel'
 
 export default {
   entry: {
@@ -24,19 +23,6 @@ export default {
         ]
       }
     ]),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    }),
-    new webpack.DllReferencePlugin({
-      context: path.resolve(__dirname, './'),
-      manifest: require('../../resources/assets/vendor-manifest.json')
-    }),
-    new webpack.DllReferencePlugin({
-      context: path.resolve(__dirname, './'),
-      manifest: require('../../resources/assets/common-manifest.json')
-    })
   ],
   module: {
     loaders: [
@@ -51,7 +37,6 @@ export default {
     ]
   },
   resolve: {
-    'alias': resolveAlias,
     extensions: ['.js', '.jsx']
   },
   externals: {
