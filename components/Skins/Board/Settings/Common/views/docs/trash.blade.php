@@ -68,8 +68,8 @@
                                     <td>{{ $document->assent_count }}/{{ $document->read_count }}</td>
                                     <td><a href="#">{{ $document->created_at }}</a></td>
                                     <td><a href="#">{{ $document->ipaddress }}</a></td>
-                                    <td><span class="label label-green">{{ $document->display }}</span></td>
-                                    <td><span class="label label-grey">{{ $document->approved }}</span></td>
+                                    <td><span class="label label-green">{{ xe_trans($document->getDisplayStatusName($document->display)) }}</span></td>
+                                    <td><span class="label label-grey">{{ xe_trans($document->getApproveStatusName($document->approved)) }}</span></td>
                                 </tr>
                             @endforeach
                             </tbody>
