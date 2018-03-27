@@ -4,7 +4,7 @@
 
 {{ XeFrontend::rule('board', $rules) }}
 
-{!! XeFrontend::css('assets/core/member/auth.css')->load() !!}
+{!! XeFrontend::css('assets/core/user/auth.css')->load() !!}
 <div>
     <h1>{{ xe_trans('xe::identification') }}</h1>
     <form action="{{ $urlHandler->get('guest.certify', ['id' => $item->id]) }}" method="post" data-rule="board">

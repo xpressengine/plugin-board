@@ -1,7 +1,7 @@
 {{ XeFrontend::rule('board', $rules) }}
 
-{!! XeFrontend::css('assets/core/member/auth.css')->load() !!}
-<div class="member">
+{!! XeFrontend::css('assets/core/user/auth.css')->load() !!}
+<div class="user">
     <h1>{{ xe_trans('xe::identification') }}</h1>
     <form action="{{ $urlHandler->get('guest.certify', ['id' => $item->id]) }}" method="post" data-rule="board">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
