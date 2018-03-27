@@ -450,7 +450,7 @@ You may receive an error occurs in the associated function if not in a state cap
         'en' => 'This category is using.'
     ],
     'approveStatusRejected' => [
-        'ko' => '거절',
+        'ko' => '반려',
         'en' => 'rejected'
     ],
     'approveStatusWaiting' => [
