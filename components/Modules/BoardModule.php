@@ -271,17 +271,7 @@ class BoardModule extends AbstractModule
             function ($func, array $inputs, $user = null) {
                 $comment = $func($inputs, $user);
 
-                $board = BoardModel::find($comment->target->target_id);
-
-                if ($board == null) {
-                    return $comment;
-                }
-                if ($board->type != static::getId()) {
-                    return $comment;
-                }
-
-                $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
-                $board->save();
+                self::setBoardCommentCount($comment->target->target_id);
 
                 return $comment;
             }
@@ -293,17 +283,7 @@ class BoardModule extends AbstractModule
             function ($func, Comment $comment) {
                 $result = $func($comment);
 
-                if ($board = BoardModel::find($comment->target->target_id)) {
-                    if ($board == null) {
-                        return $result;
-                    }
-                    if ($board->type != static::getId()) {
-                        return $result;
-                    }
-
-                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
-                    $board->save();
-                }
+                self::setBoardCommentCount($comment->target->target_id);
 
                 return $result;
             }
@@ -315,17 +295,7 @@ class BoardModule extends AbstractModule
             function ($func, Comment $comment) {
                 $result = $func($comment);
 
-                if ($board = BoardModel::find($comment->target->target_id)) {
-                    if ($board == null) {
-                        return $result;
-                    }
-                    if ($board->type != static::getId()) {
-                        return $result;
-                    }
-
-                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
-                    $board->save();
-                }
+                self::setBoardCommentCount($comment->target->target_id);
 
                 return $result;
             }
@@ -337,21 +307,56 @@ class BoardModule extends AbstractModule
             function ($func, Comment $comment) {
                 $result = $func($comment);
 
-                if ($board = BoardModel::find($comment->target->target_id)) {
-                    if ($board == null) {
-                        return $result;
-                    }
-                    if ($board->type != static::getId()) {
-                        return $result;
-                    }
-
-                    $board->comment_count = CommentTarget::where('target_id', $board->id)->count();
-                    $board->save();
-                }
+                self::setBoardCommentCount($comment->target->target_id);
 
                 return $result;
             }
         );
+
+        intercept(
+            sprintf('%s@approve', CommentHandler::class),
+            static::class.'-comment-approve',
+            function ($func, Comment $comment) {
+                $result = $func($comment);
+
+                self::setBoardCommentCount($comment->target->target_id);
+
+                return $result;
+            }
+        );
+
+        intercept(
+            sprintf('%s@reject', CommentHandler::class),
+            static::class.'-comment-reject',
+            function ($func, Comment $comment) {
+                $result = $func($comment);
+
+                self::setBoardCommentCount($comment->target->target_id);
+
+                return $result;
+            }
+        );
+    }
+
+    protected static function setBoardCommentCount($boardId)
+    {
+        if ($board = BoardModel::find($boardId)) {
+            if ($board == null) {
+                return;
+            }
+            if ($board->type != static::getId()) {
+                return;
+            }
+
+            $commentCount = $board->comments()
+                ->where('approved', Comment::APPROVED_APPROVED)
+                ->where('status', '<>', Comment::STATUS_TRASH)
+                ->where('display', '<>', Comment::DISPLAY_HIDDEN)
+                ->count();
+
+            $board->comment_count = $commentCount;
+            $board->save();
+        }
     }
 
     /**

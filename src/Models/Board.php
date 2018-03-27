@@ -148,11 +148,11 @@ class Board extends Document implements CommentUsable, SeoUsable
     /**
      * get comments
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|\Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'target_id');
+        return $this->belongsToMany(Comment::class, 'comment_target', 'target_id', 'doc_id');
     }
 
     /**
