@@ -288,6 +288,16 @@ class BoardService
             }
         }
 
+        if ($item->approved != Board::APPROVED_APPROVED) {
+            if ($force === true) {
+                $visible = true;
+            } else {
+                if ($user->getId() == $item->user_id) {
+                    $visible = true;
+                }
+            }
+        }
+
         if ($visible !== true) {
             throw new AccessDeniedHttpException;
         }

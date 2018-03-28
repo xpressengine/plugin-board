@@ -246,6 +246,18 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
+                                                        <label>{{xe_trans('board::useApprove')}} </label>
+                                                    </div>
+                                                    <select id="" name="useApprove" class="form-control">
+                                                        <option value="true" {!! $config->get('useApprove') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('useApprove') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>

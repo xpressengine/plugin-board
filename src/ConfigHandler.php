@@ -80,6 +80,7 @@ class ConfigHandler
         'deleteToTrash' => false,
         'newCommentNotice' => true,
         'secretPost' => true,
+        'useApprove' => false,
     ];
 
     /**

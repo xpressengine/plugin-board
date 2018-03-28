@@ -103,6 +103,11 @@ class Update
             return false;
         }
 
+        // ver 0.9.26
+        if (static::hasUseApproveConfig() === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -209,6 +214,11 @@ class Update
         // ver 0.9.25
         if (static::hasSecretPostConfig() === false) {
             static::updateSecretPostConfig();
+        }
+
+        // ver 0.9.26
+        if (static::hasUseApproveConfig() === false) {
+            static::updateUseApproveConfig();
         }
     }
 
@@ -377,6 +387,23 @@ class Update
         $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
 
         $config->set('secretPost', true);
+        XeConfig::modify($config);
+    }
+
+    protected static function hasUseApproveConfig()
+    {
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
+        if ($config->get('useApprove') === null) {
+            return false;
+        }
+        return true;
+    }
+
+    protected static function updateUseApproveConfig()
+    {
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
+
+        $config->set('useApprove', false);
         XeConfig::modify($config);
     }
 }

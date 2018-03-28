@@ -346,6 +346,23 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::useApprove')}}</label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="useApprove" @if($config->getPure('useApprove') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="useApprove" class="form-control" @if($config->getPure('useApprove') === null) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('useApprove') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('useApprove') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                 </div>

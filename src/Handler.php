@@ -167,6 +167,10 @@ class Handler
 
         $board = Board::find($doc->id);
 
+        if ($config->get('useApprove') === true) {
+            $this->approveSetWait($board);
+        }
+
         $this->saveSlug($board, $args);
         $this->saveCategory($board, $args);
         $this->setFiles($board, $args);
@@ -566,6 +570,18 @@ class Handler
     public function approveSetReject(Board $board)
     {
         $board->setReject();
+        $board->save();
+    }
+
+    /**
+     * set wait status
+     *
+     * @param Board $board board model
+     * @return void
+     */
+    public function approveSetWait(Board $board)
+    {
+        $board->setApproveWait();
         $board->save();
     }
 

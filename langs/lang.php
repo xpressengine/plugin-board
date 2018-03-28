@@ -481,4 +481,8 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '게시승인',
         'en' => 'Approve'
     ],
+    'useApprove' => [
+        'ko' => '승인 후 게시 사용',
+        'en' => 'Use approve',
+    ],
 ];
