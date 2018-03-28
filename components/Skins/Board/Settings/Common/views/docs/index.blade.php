@@ -17,6 +17,7 @@
                             <button type="button" class="btn btn-default __xe_button" data-mode="trash">{{xe_trans('xe::trash')}}</button>
                             <button type="button" class="btn btn-default __xe_button" data-mode="destroy">{{xe_trans('xe::delete')}}</button>
                             <button type="button" class="btn btn-default __xe_button" data-mode="move">{{xe_trans('xe::move')}}</button>
+                            <button type="button" class="btn btn-default __xe_button" data-mode="reject">{{xe_trans('board::approveSetReject')}}</button>
                         </div>
                     </div>
                     <div class="pull-right">

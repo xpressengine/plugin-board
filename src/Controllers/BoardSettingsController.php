@@ -35,6 +35,7 @@ use Xpressengine\Plugins\Board\InstanceManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
+use Xpressengine\Plugins\Comment\Exceptions\InvalidArgumentException;
 use Xpressengine\Routing\InstanceRouteHandler;
 use Xpressengine\Routing\RouteRepository;
 use Xpressengine\User\Models\Guest;
@@ -528,8 +529,20 @@ class BoardSettingsController extends Controller
 
         $items = Board::find($documentIds);
 
+        switch ($approved) {
+            case 'approved':
+                $method = 'approveSetApprove';
+                break;
+            case 'rejected':
+                $method = 'approveSetReject';
+                break;
+            default:
+                throw new InvalidArgumentException;
+                break;
+        }
+
         foreach ($items as $item) {
-            $this->handler->put($item, ['approve' => $approved]);
+            $this->handler->$method($item);
         }
 
         return $this->presenter->makeApi([]);

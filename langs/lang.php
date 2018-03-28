@@ -472,5 +472,13 @@ You may receive an error occurs in the associated function if not in a state cap
     'displayStatusVisible' => [
         'ko' => '표시',
         'en' => 'visible'
-    ]
+    ],
+    'approveSetReject' => [
+        'ko' => '게시반려',
+        'en' => 'Reject'
+    ],
+    'approveSetApprove' => [
+        'ko' => '게시승인',
+        'en' => 'Approve'
+    ],
 ];

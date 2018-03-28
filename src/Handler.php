@@ -546,6 +546,30 @@ class Handler
     }
 
     /**
+     * set approve status
+     *
+     * @param Board $board board model
+     * @return void
+     */
+    public function approveSetApprove(Board $board)
+    {
+        $board->setApprove();
+        $board->save();
+    }
+
+    /**
+     * set reject status
+     *
+     * @param Board $board board model
+     * @return void
+     */
+    public function approveSetReject(Board $board)
+    {
+        $board->setReject();
+        $board->save();
+    }
+
+    /**
      * 인터셥센을 이용해 서드파티가 처리할 수 있도록 메소드 사용
      *
      * @param Builder      $query   board model query builder
