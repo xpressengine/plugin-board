@@ -473,16 +473,56 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '표시',
         'en' => 'visible'
     ],
-    'approveSetReject' => [
-        'ko' => '게시반려',
-        'en' => 'Reject'
-    ],
-    'approveSetApprove' => [
-        'ko' => '게시승인',
-        'en' => 'Approve'
-    ],
     'useApprove' => [
         'ko' => '승인 후 게시 사용',
         'en' => 'Use approve',
+    ],
+    'manage' => [
+        'stateFilter' => [
+            'all' => [
+                'ko' => '전체',
+                'en' => 'All',
+            ],
+            'public' => [
+                'ko' => '공개',
+                'en' => 'Public'
+            ],
+            'secret' => [
+                'ko' => '비밀',
+                'en' => 'Secret'
+            ],
+            'approve' => [
+                'ko' => '승인완료',
+                'en' => 'Approved'
+            ],
+            'waiting' => [
+                'ko' => '승인대기',
+                'en' => 'Waiting',
+            ],
+            'reject' => [
+                'ko' => '승인반려',
+                'en' => 'Rejected',
+            ],
+        ],
+        'approveSetReject' => [
+            'ko' => '승인반려',
+            'en' => 'Reject'
+        ],
+        'approveSetApprove' => [
+            'ko' => '게시승인',
+            'en' => 'Approve'
+        ],
+        'state' => [
+            'ko' => '상태',
+            'en' => 'State',
+        ],
+    ],
+    'totalArticleCount' => [
+        'ko' => '전체 게시물 수',
+        'en' => 'Number of total articles'
+    ],
+    'searchArticleCount' => [
+        'ko' => '검색된 게시물 수',
+        'en' => 'Number of searched articles'
     ],
 ];

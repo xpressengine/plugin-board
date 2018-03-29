@@ -393,6 +393,8 @@ class BoardSettingsController extends Controller
      */
     public function docsIndex(Request $request, RouteRepository $routeRepository)
     {
+        $request->flash();
+
         $instances = [];
         $instanceIds = [];
         $urls = [];
@@ -413,7 +415,10 @@ class BoardSettingsController extends Controller
             $titles[$menu->id] = xe_trans($menu->title);
         }
 
-        $query = Board::whereIn('instance_id', $instanceIds)->where('status', Board::STATUS_PUBLIC);
+        $query = Board::whereIn('instance_id', $instanceIds)->where('status', '<>',  Board::STATUS_TRASH);
+
+        $totalCount = count($query->get());
+
         $query = $this->makeWhere($query, $request);
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
@@ -424,50 +429,50 @@ class BoardSettingsController extends Controller
         } elseif ($request->get('search_target') == 'title_pure_content') {
             $searchTargetWord = 'titleAndContent';
         }
-        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord'));
+
+        $stateMessage = xe_trans('board::manage.state');
+        if ($state = $request->get('search_state')) {
+            $stateMessage = self::getStateMessage($state);
+        }
+
+        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord', 'stateMessage', 'totalCount'));
     }
 
-    /**
-     * document manager
-     *
-     * @param Request         $request         request
-     * @param RouteRepository $routeRepository route repository
-     * @return \Xpressengine\Presenter\RendererInterface
-     */
-    public function docsApprove(Request $request, RouteRepository $routeRepository, Handler $handler)
+    protected function getStateMessage($state)
     {
-        $instances = [];
-        $instanceIds = [];
-        $urls = [];
+        list($searchField, $searchValue) = explode('|', $state);
 
-        $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
-        foreach ($instanceRoutes as $aliasRoute) {
-            $instanceIds[] = $aliasRoute->instance_id;
-            $urls[$aliasRoute->instance_id] = $aliasRoute->url;
-            $instances[] = [
-                'id' => $aliasRoute->instance_id,
-                'name' => $aliasRoute->url,
-            ];
+        $stateMessage = 'board::manage.stateFilter.';
+
+        if ($searchField == 'display') {
+            switch ($searchValue) {
+                case Board::DISPLAY_VISIBLE:
+                    $stateMessage .= 'public';
+                    break;
+
+                case Board::DISPLAY_SECRET:
+                    $stateMessage .= 'secret';
+                    break;
+            }
+        } elseif ($searchField == 'approved') {
+            switch ($searchValue) {
+                case Board::APPROVED_APPROVED:
+                    $stateMessage .= 'approve';
+                    break;
+
+                case Board::APPROVED_WAITING:
+                    $stateMessage .= 'waiting';
+                    break;
+
+                case Board::APPROVED_REJECTED:
+                    $stateMessage .= 'reject';
+                    break;
+            }
         }
 
-        $titles = [];
-        $menus = MenuItem::whereIn('id', $instanceIds)->get();
-        foreach ($menus as $menu) {
-            $titles[$menu->id] = xe_trans($menu->title);
-        }
+        $stateMessage = xe_trans($stateMessage);
 
-        $query = Board::whereIn('instance_id', $instanceIds)->where('approved', Board::APPROVED_REJECTED);
-        $query = $this->makeWhere($query, $request);
-        $query->orderBy('created_at', 'desc');
-        $documents = $query->paginate(15)->appends($request->except('page'));
-
-        $searchTargetWord = $request->get('search_target');
-        if ($request->get('search_target') == 'pure_content') {
-            $searchTargetWord = 'content';
-        } elseif ($request->get('search_target') == 'title_pure_content') {
-            $searchTargetWord = 'titleAndContent';
-        }
-        return $this->presenter->make('docs.approve', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord'));
+        return $stateMessage;
     }
 
     /**
@@ -676,7 +681,7 @@ class BoardSettingsController extends Controller
 
     protected function makeWhere($query, $request)
     {
-
+        //검색어 검색
         if ($request->get('search_target') == 'title') {
             $query = $query->where('title', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
         }
@@ -692,6 +697,14 @@ class BoardSettingsController extends Controller
         if ($request->get('search_target') == 'writer') {
             $query = $query->where('writer', 'like', sprintf('%%%s%%', $request->get('search_keyword')));
         }
+
+        //필터 검색
+        if ($state = $request->get('search_state')) {
+            list($searchField, $searchValue) = explode('|', $state);
+
+            $query->where($searchField, $searchValue);
+        }
+
         return $query;
     }
 }

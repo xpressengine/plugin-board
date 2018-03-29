@@ -1,12 +1,15 @@
 {{ XeFrontend::js('plugins/board/assets/js/managerSkin.js')->load() }}
-
+<?php
+use Xpressengine\Plugins\Board\Models\Board;
+?>
 <div class="row">
     <div class="col-sm-12">
         <div class="panel-group">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">{{ xe_trans('board::articlesManage') }}</h3> (total : {{$documents->count()}})
+                        <h3 class="panel-title">{{ xe_trans('board::articlesManage') }}</h3>
+                            ( {{xe_trans('board::searchArticleCount') }} : {{$documents->total()}} / {{xe_trans('board::totalArticleCount')}}  : {{$totalCount}} )
                     </div>
                 </div>
 
@@ -15,14 +18,29 @@
                     <div class="pull-left">
                         <div class="btn-group __xe_function_buttons" role="group" aria-label="...">
                             <button type="button" class="btn btn-default __xe_button" data-mode="trash">{{xe_trans('xe::trash')}}</button>
-                            <button type="button" class="btn btn-default __xe_button" data-mode="destroy">{{xe_trans('xe::delete')}}</button>
                             <button type="button" class="btn btn-default __xe_button" data-mode="move">{{xe_trans('xe::move')}}</button>
-                            <button type="button" class="btn btn-default __xe_button" data-mode="reject">{{xe_trans('board::approveSetReject')}}</button>
+                            <button type="button" class="btn btn-default __xe_button" data-mode="approve">{{xe_trans('board::manage.approveSetApprove')}}</button>
+                            <button type="button" class="btn btn-default __xe_button" data-mode="reject">{{xe_trans('board::manage.approveSetReject')}}</button>
                         </div>
                     </div>
                     <div class="pull-right">
                         <div class="input-group search-group">
                             <form>
+                                <div id="__xe_btn_options" class="input-group-btn btn-fillter" role="group">
+                                    <input type="hidden" name="search_state" value="{{ Request::old('search_state') }}">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="__xe_text"> {{ $stateMessage }} </span> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li class="active"><a href="#" value="">{{ xe_trans('board::manage.stateFilter.all') }}</a></li>
+                                        <li><a href="#" value="display|{{ Board::DISPLAY_VISIBLE }}">{{ xe_trans('board::manage.stateFilter.public') }}</a></li>
+                                        <li><a href="#" value="display|{{ Board::DISPLAY_SECRET }}">{{ xe_trans('board::manage.stateFilter.secret') }}</a></li>
+                                        <li><a href="#" value="approved|{{ Board::APPROVED_APPROVED }}">{{ xe_trans('board::manage.stateFilter.approve') }}</a></li>
+                                        <li><a href="#" value="approved|{{ Board::APPROVED_WAITING }}">{{ xe_trans('board::manage.stateFilter.waiting') }}</a></li>
+                                        <li><a href="#" value="approved|{{ Board::APPROVED_REJECTED }}">{{ xe_trans('board::manage.stateFilter.reject') }}</a></li>
+                                    </ul>
+                                </div>
+
                                 <div class="input-group-btn __xe_btn_search_target">
                                     <input type="hidden" name="search_target" value="{{ Request::get('search_target') }}">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Request::has('search_target') && Request::get('search_target') != '' ? xe_trans('board::' . $searchTargetWord) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
@@ -236,10 +254,6 @@
             $f.attr('action', '{!! $urlHandler->managerUrl('approve', Request::all()) !!}');
             send($f);
         },
-        destroy: function ($f) {
-            $f.attr('action', '{!! $urlHandler->managerUrl('destroy', Request::all()) !!}');
-            send($f);
-        },
         trash: function ($f) {
             $f.attr('action', '{!! $urlHandler->managerUrl('trash', Request::all()) !!}');
             send($f);
@@ -273,4 +287,21 @@
             }
         });
     }
+
+    $('#__xe_btn_options li > a').click(function (e, flag) {
+        e.preventDefault();
+
+        $('#__xe_btn_options input').val($(this).attr('value'));
+
+        $('#__xe_btn_options li').removeClass('active');
+        $(this).closest('li').addClass('active');
+
+        if (flag !== true) {
+            $(this).closest('form').submit();
+        }
+    }).each(function () {
+        if ($(this).attr('value') == $('#__xe_btn_options input').val()) {
+            $(this).triggerHandler('click', [true]);
+        }
+    });
 </script>

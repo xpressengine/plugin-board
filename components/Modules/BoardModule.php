@@ -145,11 +145,6 @@ class BoardModule extends AbstractModule
                 'uses' => 'BoardSettingsController@docsTrash',
                 'settings_menu' => 'contents.board.boardtrash'
             ]);
-            Route::get('docs/approve', [
-                'as' => 'settings.board.board.docs.approve',
-                'uses' => 'BoardSettingsController@docsApprove',
-                'settings_menu' => 'contents.board.boardapprove'
-            ]);
             Route::post('approve', ['as' => 'settings.board.board.approve', 'uses' => 'BoardSettingsController@approve']);
             Route::post('copy', ['as' => 'settings.board.board.copy', 'uses' => 'BoardSettingsController@copy']);
             Route::post('destroy', ['as' => 'settings.board.board.destroy', 'uses' => 'BoardSettingsController@destroy']);
@@ -239,12 +234,6 @@ class BoardModule extends AbstractModule
                 'display' => true,
                 'description' => '',
                 'ordering' => 2001
-            ],
-            'contents.board.boardapprove' => [
-                'title' => 'board::articlesApprove',
-                'display' => true,
-                'description' => '',
-                'ordering' => 2002
             ],
             'contents.board.boardtrash' => [
                 'title' => 'board::trashManage',
