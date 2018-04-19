@@ -1,4 +1,4 @@
-window.AssentVirtualGrid = (function () {
+window.AssentVirtualGrid = (function (XE, $) {
   var self
   var startId, limit
 
@@ -23,8 +23,8 @@ window.AssentVirtualGrid = (function () {
       startId = 0
       limit = 10
 
-      DynamicLoadManager.jsLoad('/assets/core/xe-ui-component/js/xe-infinite.js', function () {
-        XeInfinite.init({
+      XE.DynamicLoadManager.jsLoad('/assets/core/xe-ui-component/js/xe-infinite.js', function () {
+        window.XeInfinite.init({
           wrapper: '.xe-list-group',
           template: self.getTemplate(),
           loadRowCount: 3,
@@ -36,7 +36,7 @@ window.AssentVirtualGrid = (function () {
       return self
     },
     onGetRows: function () {
-      XeInfinite.setPrevent(true)
+      window.XeInfinite.setPrevent(true)
 
       var data = {
         limit: limit
@@ -53,29 +53,30 @@ window.AssentVirtualGrid = (function () {
         data: data,
         success: function (data) {
           if (data.nextStartId === 0) {
-            XeInfinite.setPrevent(true)
+            window.XeInfinite.setPrevent(true)
           } else {
-            XeInfinite.setPrevent(false)
+            window.XeInfinite.setPrevent(false)
           }
 
           startId = data.nextStartId
 
           for (var k = 0, max = data.list.length; k < max; k += 1) {
-            XeInfinite.addItems(data.list[k])
+            window.XeInfinite.addItems(data.list[k])
           }
         }
       })
     }
   }
-})()
+})(window.XE, window.jQuery)
 
-$(function () {
+window.jQuery(function ($) {
   $('.__xe-bd-favorite').on('click', function (event) {
     event.preventDefault()
-    var $target = $(event.target),
-      $anchor = $target.closest('a'),
-      id = $anchor.data('id'),
-      url = $anchor.data('url')
+    var $target = $(event.target)
+    var $anchor = $target.closest('a')
+    var id = $anchor.data('id')
+    var url = $anchor.data('url')
+
     window.XE.ajax({
       url: url,
       type: 'post',
@@ -91,41 +92,39 @@ $(function () {
   })
 
   $('.__xe-forms .__xe-dropdown-form input').on('change', function (event) {
-    var $target = $(event.target),
-      $frm = $('.__xe_search')
+    var $target = $(event.target)
+    var $frm = $('.__xe_search')
 
     $frm.find('[name="' + $target.attr('name') + '"]').val($target.val())
     $frm.submit()
   })
 
   $('.__xe-period .__xe-dropdown-form input').on('change', function (event) {
-    var $target = $(event.target),
-      $frm = $('.__xe_search'),
-      period = $target.val()
-
-    var startDate = '',
-      endDate = moment().format('YYYY-MM-DD'),
-      $startDate = $(event.target).closest('.__xe-period').find('[name="start_created_at"]'),
-      $endDate = $(event.target).closest('.__xe-period').find('[name="end_created_at"]')
+    var $target = $(event.target)
+    var period = $target.val()
+    var startDate = ''
+    var endDate = window.XE.moment().format('YYYY-MM-DD')
+    var $startDate = $(event.target).closest('.__xe-period').find('[name="start_created_at"]')
+    var $endDate = $(event.target).closest('.__xe-period').find('[name="end_created_at"]')
 
     switch (period) {
       case '1week' :
-        startDate = moment().add(-1, 'weeks').format('YYYY-MM-DD')
+        startDate = window.XE.moment().add(-1, 'weeks').format('YYYY-MM-DD')
         break
       case '2week' :
-        startDate = moment().add(-2, 'weeks').format('YYYY-MM-DD')
+        startDate = window.XE.moment().add(-2, 'weeks').format('YYYY-MM-DD')
         break
       case '1month' :
-        startDate = moment().add(-1, 'months').format('YYYY-MM-DD')
+        startDate = window.XE.moment().add(-1, 'months').format('YYYY-MM-DD')
         break
       case '3month' :
-        startDate = moment().add(-3, 'months').format('YYYY-MM-DD')
+        startDate = window.XE.moment().add(-3, 'months').format('YYYY-MM-DD')
         break
       case '6month' :
-        startDate = moment().add(-6, 'months').format('YYYY-MM-DD')
+        startDate = window.XE.moment().add(-6, 'months').format('YYYY-MM-DD')
         break
       case '1year' :
-        startDate = moment().add(-1, 'years').format('YYYY-MM-DD')
+        startDate = window.XE.moment().add(-1, 'years').format('YYYY-MM-DD')
         break
     }
 
@@ -133,7 +132,7 @@ $(function () {
     $endDate.val(endDate)
   })
 
-  $('.__xe-bd-mobile-sorting').on('click', function () {
+  $('.__xe-bd-mobile-sorting').on('click', function (event) {
     event.preventDefault()
     var $container = $('.__xe-forms')
     if ($container.hasClass('xe-hidden-xs')) {
@@ -305,7 +304,8 @@ $(function () {
       var ratio = mh / h
       $o.css('height', mh)
       $o.css('width', w * ratio)
-      var w = w * ratio, h = h * ratio
+      w = w * ratio
+      h = h * ratio
     }
   }
 
@@ -343,7 +343,7 @@ $(function () {
   })
 })
 
-$(function () {
+window.jQuery(function ($) {
   $('.__board_form').on('click', '.__xe_btn_submit', function (event) {
     event.preventDefault()
     var $this = $(this)
@@ -353,7 +353,6 @@ $(function () {
     event.preventDefault()
 
     var form = $(this).parents('form')
-
     var currentUrl = form.attr('action')
     var currentTarget = form.attr('target')
     form.attr('action', form.data('url-preview'))
@@ -381,7 +380,7 @@ $(function () {
 })
 
 // manage
-$(function ($) {
+window.jQuery(function ($) {
   // copy documents
   $('.__xe_copy .__xe_btn_submit').on('click', function (event) {
     event.preventDefault()
@@ -389,8 +388,8 @@ $(function ($) {
       return
     }
 
-    var ids = getCheckedIds(),
-      instanceId = $('.__xe_copy').find('[name="copyTo"]').val()
+    var ids = getCheckedIds()
+    var instanceId = $('.__xe_copy').find('[name="copyTo"]').val()
 
     if (instanceId == '') {
       window.XE.toast('warning', window.XE.Lang.trans('board::selectBoard'))
@@ -415,8 +414,8 @@ $(function ($) {
 
     event.preventDefault()
 
-    var ids = getCheckedIds(),
-      instanceId = $('.__xe_move').find('[name="moveTo"]').val()
+    var ids = getCheckedIds()
+    var instanceId = $('.__xe_move').find('[name="moveTo"]').val()
 
     if (instanceId == '') {
       window.XE.toast('warning', window.XE.Lang.trans('board::selectBoard'))
