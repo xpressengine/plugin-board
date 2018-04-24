@@ -19,6 +19,9 @@ use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
+use Xpressengine\Media\Models\Image;
+use Xpressengine\Media\Models\Media;
+use Xpressengine\Media\Repositories\ImageRepository;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistFavoriteHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundFavoriteHttpException;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -175,6 +178,7 @@ class Handler
         $this->saveCategory($board, $args);
         $this->setFiles($board, $args);
         $this->setTags($board, $args);
+        $this->saveCover($board, $args);
         $this->saveData($board, $args);
 
         $model->getConnection()->commit();
@@ -268,6 +272,65 @@ class Handler
         }
     }
 
+    protected function saveCover(Board $board, array $args)
+    {
+        $fileIds = [];
+        if (empty($args['_coverId']) === false) {
+            // save cover id
+            // board gallery thumbs
+            $this->saveThumb($board, $args['_coverId']);
+        }
+        return $fileIds;
+    }
+
+    public function getThumb($boardId)
+    {
+        $thumb = BoardGalleryThumb::find($boardId);
+        return $thumb;
+    }
+
+    protected function saveThumb(Board $board, $fileId)
+    {
+        /** @var \Xpressengine\Media\MediaManager $mediaManager */
+        $mediaManager = \App::make('xe.media');
+
+        // find file by document id
+        $file = \XeStorage::find($fileId);
+
+        // check file
+        if ($file == false) {
+            // cover image 를 찾을 수 없음
+        }
+
+        // get file
+        /**
+         * set thumbnail size
+         */
+        $dimension = 'L';
+
+        $media = \XeMedia::getHandler(Media::TYPE_IMAGE)->getThumbnail(
+            $mediaManager->make($file),
+            BoardModule::THUMBNAIL_TYPE,
+            $dimension
+        );
+        $fileId = $file->id;
+        $thumbnailPath = $media->url();
+        $externalPath = '';
+
+        $model = BoardGalleryThumb::find($board->id);
+        if ($model === null) {
+            $model = new BoardGalleryThumb;
+        }
+
+        $model->fill([
+            'target_id' => $board->id,
+            'board_thumbnail_file_id' => $fileId,
+            'board_thumbnail_external_path' => $externalPath,
+            'board_thumbnail_path' => $thumbnailPath,
+        ]);
+        $model->save();
+    }
+
     /**
      * set files
      *
@@ -358,11 +421,8 @@ class Handler
         $this->setFiles($board, $args);
         $this->setTags($board, $args);
         $this->unsetTags($board, $args);
+        $this->saveCover($board, $args);
         $this->saveData($board, $args);
-        $thumbnail = BoardGalleryThumb::find($board->id);
-        if ($thumbnail !== null) {
-            $thumbnail->delete();
-        }
 
         $board->getConnection()->commit();
 

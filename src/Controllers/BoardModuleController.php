@@ -226,8 +226,11 @@ class BoardModuleController extends Controller
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
+        $thumb = $this->handler->getThumb($item->id);
+
         return XePresenter::make('show', [
             'item' => $item,
+            'thumb' => $thumb,
             'currentItem' => $item,
             'notices' => $notices,
             'paginate' => $paginate,
@@ -267,8 +270,11 @@ class BoardModuleController extends Controller
 
         XePresenter::htmlRenderPopup();
 
+        $thumb = $this->handler->getThumb($item->id);
+
         return XePresenter::make('print', [
             'item' => $item,
+            'thumb' => $thumb,
             'categories' => $categories,
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
@@ -463,8 +469,11 @@ class BoardModuleController extends Controller
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
+        $thumb = $this->handler->getThumb($item->id);
+
         return XePresenter::make('edit', [
             'item' => $item,
+            'thumb' => $thumb,
             'categories' => $categories,
             'rules' => $rules,
             'parent' => null,

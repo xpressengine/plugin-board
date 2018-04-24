@@ -348,6 +348,7 @@ class BoardService
         // set file, tag
         $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
         $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
+        $inputs['_coverId'] = array_get($inputs, $editor->getCoverInputName(), []);
 
         return $this->handler->add($inputs, $user, $config);
     }
@@ -399,7 +400,7 @@ class BoardService
         // set file, tag
         $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
         $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
-
+        $inputs['_coverId'] = array_get($inputs, $editor->getCoverInputName(), []);
         $item = $this->handler->put($item, $inputs, $config);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경
