@@ -130,10 +130,8 @@
 .board .bd_btn {
   display: inline-block;
   min-width: 120px;
-  height: 38px;
   border-radius: 2px;
   font-size: 14px;
-  line-height: 38px;
   color: #fff;
   text-align: center;
 }
@@ -1322,7 +1320,6 @@
   border: 1px solid #f4f4f4;
   background-color: #f4f4f4;
   font-size: 15px;
-  line-height: 34px;
 }
 .write_footer .write_form_btn > button:first-child {
   margin-left: 0;

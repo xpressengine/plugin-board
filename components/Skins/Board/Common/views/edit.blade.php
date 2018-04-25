@@ -111,8 +111,8 @@
             </div>
             <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
                 {{--<a href="#" class="bd_btn btn_temp_save">임시저장</a>--}}
-                <button type="button" href="#" class="bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
-                <button type="submit" href="#" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
+                <button type="button" href="#" class="xe-btn xe-btn-normal bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
+                <button type="submit" href="#" class="xe-btn xe-btn-primary bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
             </div>
         </div>
     </form>
