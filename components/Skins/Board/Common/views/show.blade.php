@@ -31,7 +31,7 @@
             @elseif($columnName === 'content')
                 <div class="read_body">
                     {{-- @DEPRECATED .xe_content --}}
-                    <div class="xe-content xe_content">
+                    <div class="xe_content xe-content xe-content-{{ $item->instance_id }}">
                         {!! compile($item->instance_id, $item->content, $item->format === Xpressengine\Plugins\Board\Models\Board::FORMAT_HTML) !!}
                     </div>
                 </div>
