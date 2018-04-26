@@ -93,6 +93,11 @@ class BoardService
             $query->where('board_favorites.user_id', $userId);
         }
 
+        // eager loading favorite list
+        $query->with(['favorite' => function ($favoriteQuery) {
+            $favoriteQuery->where('user_id', Auth::user()->getId());
+        }, 'slug', 'data', 'thumb']);
+
         Event::fire('xe.plugin.board.notice', [$query]);
 
         return $query->get();
@@ -143,7 +148,7 @@ class BoardService
         // eager loading favorite list
         $query->with(['favorite' => function ($favoriteQuery) {
             $favoriteQuery->where('user_id', Auth::user()->getId());
-        }, 'slug', 'data']);
+        }, 'slug', 'data', 'thumb']);
 
         Event::fire('xe.plugin.board.articles', [$query]);
 
@@ -158,7 +163,6 @@ class BoardService
         }
 
         $paginate = $query->paginate($config->get('perPage'))->appends($request->except('page'));
-
         return $paginate;
     }
 

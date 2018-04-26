@@ -31,7 +31,10 @@ class BoardGalleryThumb extends DynamicModel
 
     public $timestamps = false;
 
+    public $incrementing = false;
+
     protected $primaryKey = 'target_id';
 
     protected $fillable = ['target_id', 'board_thumbnail_file_id', 'board_thumbnail_external_path', 'board_thumbnail_path'];
+
 }
