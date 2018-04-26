@@ -37,6 +37,7 @@
                     <div class="write_form_editor">
                         {!! editor($config->get('boardId'), [
                           'content' => Request::old('content'),
+                          'cover' => true,
                         ]) !!}
                     </div>
                 </div>

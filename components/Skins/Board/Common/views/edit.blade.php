@@ -36,7 +36,8 @@
                     <div class="write_form_editor">
                         {!! editor($config->get('boardId'), [
                           'content' => Request::old('content', $item->content),
-                        ], $item->id) !!}
+                          'cover' => true,
+                        ], $item->id, $thumb->board_thumbnail_file_id) !!}
                     </div>
                 </div>
 

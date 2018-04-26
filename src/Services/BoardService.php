@@ -93,6 +93,11 @@ class BoardService
             $query->where('board_favorites.user_id', $userId);
         }
 
+        // eager loading favorite list
+        $query->with(['favorite' => function ($favoriteQuery) {
+            $favoriteQuery->where('user_id', Auth::user()->getId());
+        }, 'slug', 'data', 'thumb']);
+
         Event::fire('xe.plugin.board.notice', [$query]);
 
         return $query->get();
@@ -143,7 +148,7 @@ class BoardService
         // eager loading favorite list
         $query->with(['favorite' => function ($favoriteQuery) {
             $favoriteQuery->where('user_id', Auth::user()->getId());
-        }, 'slug', 'data']);
+        }, 'slug', 'data', 'thumb']);
 
         Event::fire('xe.plugin.board.articles', [$query]);
 
@@ -158,7 +163,6 @@ class BoardService
         }
 
         $paginate = $query->paginate($config->get('perPage'))->appends($request->except('page'));
-
         return $paginate;
     }
 
@@ -348,6 +352,7 @@ class BoardService
         // set file, tag
         $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
         $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
+        $inputs['_coverId'] = array_get($inputs, $editor->getCoverInputName(), []);
 
         return $this->handler->add($inputs, $user, $config);
     }
@@ -399,7 +404,7 @@ class BoardService
         // set file, tag
         $inputs['_files'] = array_get($inputs, $editor->getFileInputName(), []);
         $inputs['_hashTags'] = array_get($inputs, $editor->getTagInputName(), []);
-
+        $inputs['_coverId'] = array_get($inputs, $editor->getCoverInputName(), []);
         $item = $this->handler->put($item, $inputs, $config);
 
         // 비회원 비밀번호를 변경 한 경우 세션 변경

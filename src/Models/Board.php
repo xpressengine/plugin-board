@@ -212,6 +212,17 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
+     * get thumbnail
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function thumb()
+    {
+        return $this->belongsTo(BoardGalleryThumb::class, 'id', 'target_id');
+    }
+
+
+    /**
      * get slug
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

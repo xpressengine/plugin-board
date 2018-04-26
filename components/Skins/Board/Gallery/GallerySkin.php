@@ -191,7 +191,7 @@ class GallerySkin extends CommonSkin
         $mediaManager = App::make('xe.media');
 
         // board gallery thumbnails 에 항목이 없는 경우
-        if ($item->board_thumbnail_file_id === null && $item->board_thumbnail_path === null) {
+        if ($item->thumb == null) {
             // find file by document id
             $files = XeStorage::fetchByFileable($item->id);
             $fileId = '';
@@ -247,6 +247,10 @@ class GallerySkin extends CommonSkin
                 'board_thumbnail_path' => $thumbnailPath,
             ]);
             $model->save();
+        } else {
+            $item->board_thumbnail_file_id = $item->thumb->board_thumbnail_file_id;
+            $item->board_thumbnail_external_path = $item->thumb->board_thumbnail_external_path;
+            $item->board_thumbnail_path = $item->thumb->board_thumbnail_path;
         }
 
         // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
