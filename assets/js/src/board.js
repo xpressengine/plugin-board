@@ -344,14 +344,8 @@ window.jQuery(function ($) {
 })
 
 window.jQuery(function ($) {
-  $('.__board_form').on('click', '.__xe_btn_submit', function (event) {
-    event.preventDefault()
-    var $this = $(this)
-    var form = $this.closest('form')
-    form.trigger('submit')
-  }).on('click', '.__xe_btn_preview', function (event) {
-    event.preventDefault()
-
+  // 미리보기
+  $('.__board_form').on('click', '.__xe_btn_preview', function (event) {
     var form = $(this).parents('form')
     var currentUrl = form.attr('action')
     var currentTarget = form.attr('target')
@@ -361,21 +355,6 @@ window.jQuery(function ($) {
 
     form.attr('action', currentUrl)
     form.attr('target', currentTarget === undefined ? '' : currentTarget)
-  }).on('click', '.__xe_temp_btn_save', function (event) {
-    // var form = $('#board_form');
-    // var temporary = $('textarea', form).temporary({
-    //    key: 'document|' + form.data('instance_id'),
-    //    btnLoad: $('.__xe_temp_btn_load', form),
-    //    btnSave: $('.__xe_temp_btn_save', form),
-    //    container: $('.__xe_temp_container', form),
-    //    withForm: true,
-    //    callback: function (data) {
-    //        console.log(data);
-    //        if (xe3CkEditors['xeContentEditor']) {
-    //            xe3CkEditors['xeContentEditor'].setData($('textarea', this.dom).val());
-    //        }
-    //    }
-    // });
   })
 })
 
