@@ -57,7 +57,7 @@
                 var id = $container.find('[name="title"]').data('id'),
                         slug = $container.find('.__xe_slug_edit input').val();
 
-                $.ajax({
+                XE.ajax({
                     url: '{{ app('xe.board.url')->get('hasSlug') }}',
                     data: {id: id, slug: slug},
                     type: 'get',

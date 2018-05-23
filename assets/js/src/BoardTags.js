@@ -21,19 +21,31 @@ window.jQuery(function ($) {
 
     methods: {
       initItems () {
-        $container.data('tags').forEach(val => {
-          this.tags.push({text: val})
-        })
+        const tags = $container.data('tags')
+        // console.debug('initItems', $container.data('tags'))
+        if (tags) {
+          $container.data('tags').forEach(val => {
+            this.tags.push({text: val})
+          })
+        }
 
         const url = window.xeBaseURL + $container.data('url')
         this.searchItem = XE.Utils.debounce((keyword) => {
-          window.XE.Request.get(url, {string: keyword}, (res) => {
-            const searchItems = []
-            res.map(item => {
-              this.autocompleteItems.push({ text: item.word })
-            })
-            return searchItems
-          }, 'json')
+          window.XE.ajax({
+            url: url,
+            data: {
+              string: keyword
+            },
+            type: 'get',
+            dataType: 'json',
+            success: (res) => {
+              const searchItems = []
+              res.map(item => {
+                this.autocompleteItems.push({ text: item.word })
+              })
+              return searchItems
+            }
+          })
         }, 500)
       },
       searchItems () {

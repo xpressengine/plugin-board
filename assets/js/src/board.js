@@ -375,7 +375,7 @@ window.jQuery(function ($) {
       return
     }
 
-    $.ajax({
+    window.XE.ajax({
       type: 'post',
       dataType: 'json',
       data: {id: ids, instance_id: instanceId},
@@ -401,7 +401,7 @@ window.jQuery(function ($) {
       return
     }
 
-    $.ajax({
+    window.XE.ajax({
       type: 'post',
       dataType: 'json',
       data: {id: ids, instance_id: instanceId},
@@ -419,7 +419,7 @@ window.jQuery(function ($) {
     }
 
     var ids = getCheckedIds()
-    $.ajax({
+    window.XE.ajax({
       type: 'post',
       dataType: 'json',
       data: {id: ids},
@@ -437,7 +437,7 @@ window.jQuery(function ($) {
     }
 
     var ids = getCheckedIds()
-    $.ajax({
+    window.XE.ajax({
       type: 'post',
       dataType: 'json',
       data: {id: ids},

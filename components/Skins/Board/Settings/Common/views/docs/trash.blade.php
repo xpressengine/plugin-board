@@ -197,7 +197,7 @@
             params = params + '&instance_id=' + instanceId;
 
             var _this = this;
-            $.ajax({
+            XE.ajax({
                 type: 'post',
                 dataType: 'json',
                 data: params,
@@ -261,7 +261,7 @@
         var url = $f.attr('action'),
                 params = $f.serialize();
 
-        $.ajax({
+        XE.ajax({
             type: 'post',
             dataType: 'json',
             data: params,

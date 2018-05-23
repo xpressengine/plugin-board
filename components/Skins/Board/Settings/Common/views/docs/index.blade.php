@@ -217,7 +217,7 @@ use Xpressengine\Plugins\Board\Models\Board;
             params = params + '&instance_id=' + instanceId;
 
             var _this = this;
-            $.ajax({
+            XE.ajax({
                 type: 'post',
                 dataType: 'json',
                 data: params,
@@ -277,7 +277,7 @@ use Xpressengine\Plugins\Board\Models\Board;
         var url = $f.attr('action'),
                 params = $f.serialize();
 
-        $.ajax({
+        XE.ajax({
             type: 'post',
             dataType: 'json',
             data: params,
