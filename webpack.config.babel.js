@@ -4,7 +4,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 export default {
   entry: {
-    'assets/js/BoardTags': './assets/js/src/BoardTags.jsx',
+    'assets/js/BoardTags': './assets/js/src/BoardTags.js',
     'assets/js/board': './assets/js/src/board.js'
   },
   output: {
@@ -19,15 +19,16 @@ export default {
         to: path.resolve(__dirname, 'assets/js'),
         ignore: [
           '**/*.jsx',
+          '**/*.vue',
           'board.js'
         ]
       }
-    ]),
+    ])
   ],
   module: {
     loaders: [
       {
-        test: /(\.js|\.jsx)$/,
+        test: /(\.js)$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
@@ -37,7 +38,10 @@ export default {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    }
   },
   externals: {
     window: 'window'
