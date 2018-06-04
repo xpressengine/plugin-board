@@ -37,7 +37,7 @@
                         {!! editor($config->get('boardId'), [
                           'content' => Request::old('content', $item->content),
                           'cover' => true,
-                        ], $item->id, $thumb->board_thumbnail_file_id) !!}
+                        ], $item->id, $thumb ? $thumb->board_thumbnail_file_id : null ) !!}
                     </div>
                 </div>
 
