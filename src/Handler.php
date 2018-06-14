@@ -136,6 +136,7 @@ class Handler
      * @param UserInterface $user   user
      * @param ConfigEntity  $config board config entity
      * @return Board
+     * @throws \Exception
      */
     public function add(array $args, UserInterface $user, ConfigEntity $config)
     {
@@ -373,7 +374,7 @@ class Handler
     protected function setTags(Board $board, array $args)
     {
         if (empty($args['_hashTags']) === false) {
-            $this->tag->set($board->getKey(), $args['_hashTags']);
+            $this->tag->set($board->getKey(), $args['_hashTags'], $board['instance_id']);
         }
     }
 
@@ -386,11 +387,11 @@ class Handler
      */
     protected function unsetTags(Board $board, array $args)
     {
-        $tags = Tag::getByTaggable($board->id);
+        $tags = \XeTag::fetchByTaggable($board->id);
         /** @var Tag $tag */
         foreach ($tags as $tag) {
             if (in_array($tag->word, $args['_hashTags']) === false) {
-                $tag->delete();
+                \XeTag::detach($board->id, $tags);
             }
         }
     }
@@ -402,6 +403,7 @@ class Handler
      * @param array        $args   arguments
      * @param ConfigEntity $config board config entity
      * @return mixed
+     * @throws \Exception
      */
     public function put(Board $board, array $args, ConfigEntity $config)
     {
@@ -420,7 +422,6 @@ class Handler
         $this->saveCategory($board, $args);
         $this->setFiles($board, $args);
         $this->setTags($board, $args);
-        $this->unsetTags($board, $args);
         $this->saveCover($board, $args);
         $this->saveData($board, $args);
 
@@ -456,28 +457,30 @@ class Handler
                 if ($item->boardCategory !== null) {
                     $item->boardCategory->delete();
                 }
+
                 $files = File::whereIn('id', $item->getFileIds())->get();
                 foreach ($files as $file) {
                     $this->storage->unBind($item->id, $file, true);
                 }
-                $tags = Tag::getByTaggable($item->id);
-                foreach ($tags as $tag) {
-                    $tag->delete();
-                }
+
+                $tags = \XeTag::fetchByTaggable($item->id);
+                \XeTag::detach($item->id, $tags);
+
                 $this->documentHandler->remove($item);
             }
         } else {
             if ($board->slug !== null) {
                 $board->slug->delete();
             }
+
             $files = File::whereIn('id', $board->getFileIds())->get();
             foreach ($files as $file) {
                 $this->storage->unBind($board->id, $file, true);
             }
-            $tags = Tag::getByTaggable($board->id);
-            foreach ($tags as $tag) {
-                $tag->delete();
-            }
+
+            $tags = \XeTag::fetchByTaggable($board->id);
+            \XeTag::detach($board->id, $tags);
+
             $this->documentHandler->remove($board);
         }
 
@@ -576,6 +579,17 @@ class Handler
         $slug->instance_id = $dstInstanceId;
         $slug->save();
 
+        //tag 관련 처리
+        $tags = \XeTag::fetchByTaggable($board->id);
+        $tagArgs = [];
+        foreach ($tags as $tag) {
+            $tagArgs[] = $tag['word'];
+        }
+
+        if (empty($tagArgs) === false) {
+            $this->tag->set($board->getKey(), $tagArgs, $board->instance_id);
+        }
+
         // 댓글 인스턴스 변경 처리
         $this->commentHandler->moveByTarget($board);
 
@@ -599,9 +613,20 @@ class Handler
         $args['instance_id'] = $config->get('boardId');
         $args['slug'] = $board->boardSlug->slug;
         $args['category_item_id'] = '';
+
         $boardCategory = $board->boardCategory;
         if ($boardCategory != null) {
             $args['category_item_id'] = $boardCategory->item_id;
+        }
+
+        //hashTag 복사
+        $hashTags = $board->tags;
+        if ($hashTags != null) {
+            $tags = [];
+            foreach ($hashTags as $tag) {
+                $tags[] = $tag['word'];
+            }
+            $args['_hashTags'] = $tags;
         }
 
         $this->add($args, $user, $config);
