@@ -151,6 +151,9 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+//        $configHandler = app('xe.board.config');
+//        dd($boards = $configHandler->gets());
+
         $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
         $paginate = $service->getItems($request, $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);

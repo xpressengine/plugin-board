@@ -138,7 +138,7 @@ class ArticleListWidget extends AbstractWidget
         /** @var \Xpressengine\Config\ConfigEntity $config */
         foreach ($boards as $config) {
             $boardName = $config->get('boardName');
-            if ($boardName === null || $boardName === '') {
+            if ($boardName === null || $boardName === '' || xe_trans($boardName) == null) {
                 $menuItem = MenuItem::find($config->get('boardId'));
                 $boardName = $menuItem->title;
             }
