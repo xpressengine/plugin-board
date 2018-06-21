@@ -277,6 +277,8 @@ class GallerySkin extends CommonSkin
             $path= $matches[1][0];
         }
 
+        $fullUrl = $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'];
+        $path = str_replace($fullUrl, '', $path);
         return $path;
     }
 }
