@@ -9,7 +9,7 @@
 
 <div class="form-group">
     <label>리스트 수</label>
-    <input type="number" name="take" class="form-control" value="{{array_get($args, 'take')}}" />
+    <input type="number" name="take" class="form-control" value="{{array_get($args, 'take', 5)}}" />
 </div>
 
 <div class="form-group">
