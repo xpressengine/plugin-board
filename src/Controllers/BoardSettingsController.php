@@ -237,12 +237,12 @@ class BoardSettingsController extends Controller
         // 상위 설정 따름 처리로 disable 된 항목 제거
         foreach ($config->getPureAll() as $key => $value) {
             // 기본 설정이 아닌 항목 예외 처리
-            if(in_array($key, [
+            if (in_array($key, [
                     'listColumns','formColumns','sortListColumns','sortFormColumns'
                 ]) == true) {
                 continue;
             }
-            if ($config->getParent()->get($key) != null && isset($inputs[$key]) === false) {
+            if ($config->getParent()->get($key) !== null && isset($inputs[$key]) === false) {
                 unset($config[$key]);
             }
         }
