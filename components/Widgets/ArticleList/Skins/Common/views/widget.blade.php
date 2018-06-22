@@ -1,6 +1,12 @@
 {{ XeFrontend::css('plugins/board/assets/css/widget.list.css')->load() }}
 <div class="list-widget">
-    <h3 class="article-table-title">{{xe_trans($menuItem->title)}}</h3>
+    <h3 class="article-table-title">
+        @if ($boardConfig->get('boardName') == null || $boardConfig->get('boardName') == '' || xe_trans($boardConfig->get('boardName')) == null)
+            {{ xe_trans($menuItem->title) }}
+        @else
+            {{ xe_trans($boardConfig->get('boardName')) }}
+        @endif
+    </h3>
     <a href="{{instance_route('index', [], $menuItem->id)}}" class="article-table-more xe-hidden-sm xe-hidden-x">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
     <a href="#"></a>
     <div class="table-wrap">
