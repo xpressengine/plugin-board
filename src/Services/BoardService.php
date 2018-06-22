@@ -229,7 +229,8 @@ class BoardService
                     'writer' => 'board::writer',
                     'category_item_id' => 'xe::category',
                     'start_created_at' => 'board::startDate',
-                    'end_created_at' => 'board::endDate'];
+                    'end_created_at' => 'board::endDate',
+                    'searchTag' => 'xe::tag'];
 
         $searchOption = [];
 

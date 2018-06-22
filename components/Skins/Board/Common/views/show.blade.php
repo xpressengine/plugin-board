@@ -50,6 +50,14 @@
             @endif
         @endforeach
         <div class="read_footer">
+            @if ($config->get('useTag') == true)
+                <div class="boardTag">
+                    @foreach ($item->tags->toArray() as $tag)
+                        <a href="{{ $urlHandler->get('index', ['searchTag' => $tag['word']], $item->instanceId) }}"><span class="xe-badge xe-black">#{{ $tag['word'] }}</span></a>
+                    @endforeach
+                </div>
+            @endif
+
             @if (count($item->files) > 0)
             <div class="bd_file_list">
                 <!-- [D] 클릭시 클래스 on 적용 -->
