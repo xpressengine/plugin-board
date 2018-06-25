@@ -303,6 +303,12 @@ class BoardService
             }
         }
 
+        if ($item->status == Board::STATUS_TRASH) {
+            if ($force === true) {
+                $visible = true;
+            }
+        }
+
         if ($visible !== true) {
             throw new AccessDeniedHttpException;
         }
