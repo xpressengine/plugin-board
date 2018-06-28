@@ -33,6 +33,7 @@ use Xpressengine\Plugins\Board\Models\Board;
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li class="active"><a href="#" value="">{{ xe_trans('board::manage.stateFilter.all') }}</a></li>
+                                        <li><a href="#" value="status|{{ Board::STATUS_NOTICE }}">{{ xe_trans('board::manage.stateFilter.notice') }}</a></li>
                                         <li><a href="#" value="display|{{ Board::DISPLAY_VISIBLE }}">{{ xe_trans('board::manage.stateFilter.public') }}</a></li>
                                         <li><a href="#" value="display|{{ Board::DISPLAY_SECRET }}">{{ xe_trans('board::manage.stateFilter.secret') }}</a></li>
                                         <li><a href="#" value="approved|{{ Board::APPROVED_APPROVED }}">{{ xe_trans('board::manage.stateFilter.approve') }}</a></li>

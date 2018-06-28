@@ -468,6 +468,12 @@ class BoardSettingsController extends Controller
                     $stateMessage .= 'reject';
                     break;
             }
+        } elseif ($searchField == 'status') {
+            switch ($searchValue) {
+                case Board::STATUS_NOTICE:
+                    $stateMessage .= 'notice';
+                    break;
+            }
         }
 
         $stateMessage = xe_trans($stateMessage);
