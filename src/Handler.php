@@ -710,6 +710,23 @@ class Handler
             $query = $query->where('created_at', '<=', $request->get('end_created_at') . ' 23:59:59');
         }
 
+        if ($searchTagName = $request->get('searchTag')) {
+            $targetTags = \XeTag::similar($searchTagName, 15, $config->get('boardId'));
+
+            $tagUsingBoardItemIds = [];
+            foreach ($targetTags as $targetTag) {
+                $tagUsingBoardItems = \XeTag::fetchByTag($targetTag['id']);
+
+                foreach ($tagUsingBoardItems as $tagUsingBoardItem) {
+                    $tagUsingBoardItemIds[] = $tagUsingBoardItem->taggable_id;
+                }
+            }
+
+            $tagUsingBoardItemIds = array_unique($tagUsingBoardItemIds);
+
+            $query = $query->whereIn('id', $tagUsingBoardItemIds);
+        }
+
         $query->getProxyManager()->wheres($query->getQuery(), $request->all());
 
         return $query;

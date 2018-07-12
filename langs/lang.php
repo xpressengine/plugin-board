@@ -483,6 +483,10 @@ You may receive an error occurs in the associated function if not in a state cap
                 'ko' => '전체',
                 'en' => 'All',
             ],
+            'notice' => [
+                'ko' => '공지',
+                'en' => 'Notice',
+            ],
             'public' => [
                 'ko' => '공개',
                 'en' => 'Public'

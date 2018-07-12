@@ -136,6 +136,9 @@ class GallerySkin extends CommonSkin
                 if (!$skinTargetId) {
                     return;
                 }
+                if ($skinTargetId != BoardModule::getId()) {
+                    return;
+                }
 
                 $request = app('request');
                 $instanceConfig = InstanceConfig::instance();

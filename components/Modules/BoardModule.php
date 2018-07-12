@@ -435,17 +435,12 @@ class BoardModule extends AbstractModule
                         continue;
                     }
 
-                    Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
-                        $fromEmail = app('config')->get('mail.from.address');
-                        $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
-
+                    send_notice_email($toMail, $data['title'], $data['contents'], function ($notifiable) use ($board) {
                         $menuItem = app('xe.menu')->getItem($board->instance_id);
                         $subject = sprintf('Comment:[%s] %s', xe_trans($menuItem->title), $board->title);
-
-                        $m->from($fromEmail, $applicationName);
-                        $m->to($toMail);
-                        $m->subject($subject);
+                        return $subject;
                     });
+
                 }
 
 
@@ -507,8 +502,8 @@ class BoardModule extends AbstractModule
                     if (!$toMail) {
                         continue;
                     }
-                    Mail::send('emails.notice', $data, function ($m) use ($toMail, $board) {
-                        $fromEmail = app('config')->get('mail.from.address');
+
+                    send_notice_email($toMail, $data['title'], $data['contents'], function ($notifiable) use ($board) {
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
                         $menuItem = app('xe.menu')->getItem($board->instance_id);
@@ -518,10 +513,7 @@ class BoardModule extends AbstractModule
                             xe_trans($menuItem->title),
                             xe_trans('board::newPostsRegistered')
                         );
-
-                        $m->from($fromEmail, $applicationName);
-                        $m->to($toMail, 'Board manager');
-                        $m->subject($subject);
+                        return $subject;
                     });
 
                 }

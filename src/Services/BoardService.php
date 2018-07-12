@@ -229,7 +229,8 @@ class BoardService
                     'writer' => 'board::writer',
                     'category_item_id' => 'xe::category',
                     'start_created_at' => 'board::startDate',
-                    'end_created_at' => 'board::endDate'];
+                    'end_created_at' => 'board::endDate',
+                    'searchTag' => 'xe::tag'];
 
         $searchOption = [];
 
@@ -299,6 +300,12 @@ class BoardService
                 if ($user->getId() == $item->user_id) {
                     $visible = true;
                 }
+            }
+        }
+
+        if ($item->status == Board::STATUS_TRASH) {
+            if ($force === true) {
+                $visible = true;
             }
         }
 

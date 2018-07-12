@@ -1871,3 +1871,7 @@ div.ReactTags__suggestions li:hover span,
 div.ReactTags__suggestions li.active span {
   color: #fff;
 }
+
+.boardTag {
+  padding-bottom: 20px;
+}
