@@ -74,6 +74,10 @@ return [
         'ko' => '작성자',
         'en' => 'Writer',
     ],
+    'writerId' => [
+        'ko' => '작성자 ID',
+        'en' => 'Writer ID'
+    ],
     'createdAt' => [
         'ko' => '작성',
         'en' => 'Created At',

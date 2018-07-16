@@ -687,6 +687,14 @@ class BoardSettingsController extends Controller
 
     protected function makeWhere($query, $request)
     {
+        //기간 검색
+        if ($startDate = $request->get('start_date')) {
+            $query = $query->where('created_at', '>=', $startDate);
+        }
+        if ($endDate = $request->get('end_date')) {
+            $query = $query->where('created_at', '<=', $endDate);
+        }
+
         //검색어 검색
         if ($request->get('search_target') == 'title') {
             $query = $query->where('title', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
@@ -700,8 +708,21 @@ class BoardSettingsController extends Controller
                     ->orWhere('pure_content', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
             });
         }
+
         if ($request->get('search_target') == 'writer') {
             $query = $query->where('writer', 'like', sprintf('%%%s%%', $request->get('search_keyword')));
+        }
+
+        //작성자 ID 검색
+        if ($request->get('search_target') == 'writerId') {
+            $writers = \XeUser::where('email', 'like', '%' . $request->get('search_keyword') . '%')->selectRaw('id')->get();
+
+            $writerIds = [];
+            foreach ($writers as $writer) {
+                $writerIds[] = $writer['id'];
+            }
+
+            $query = $query->whereIn('user_id', $writerIds);
         }
 
         //필터 검색

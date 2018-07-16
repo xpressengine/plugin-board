@@ -26,38 +26,51 @@ use Xpressengine\Plugins\Board\Models\Board;
                     <div class="pull-right">
                         <div class="input-group search-group">
                             <form>
-                                <div id="__xe_btn_options" class="input-group-btn btn-fillter" role="group">
-                                    <input type="hidden" name="search_state" value="{{ Request::old('search_state') }}">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="__xe_text"> {{ $stateMessage }} </span> <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li class="active"><a href="#" value="">{{ xe_trans('board::manage.stateFilter.all') }}</a></li>
-                                        <li><a href="#" value="status|{{ Board::STATUS_NOTICE }}">{{ xe_trans('board::manage.stateFilter.notice') }}</a></li>
-                                        <li><a href="#" value="display|{{ Board::DISPLAY_VISIBLE }}">{{ xe_trans('board::manage.stateFilter.public') }}</a></li>
-                                        <li><a href="#" value="display|{{ Board::DISPLAY_SECRET }}">{{ xe_trans('board::manage.stateFilter.secret') }}</a></li>
-                                        <li><a href="#" value="approved|{{ Board::APPROVED_APPROVED }}">{{ xe_trans('board::manage.stateFilter.approve') }}</a></li>
-                                        <li><a href="#" value="approved|{{ Board::APPROVED_WAITING }}">{{ xe_trans('board::manage.stateFilter.waiting') }}</a></li>
-                                        <li><a href="#" value="approved|{{ Board::APPROVED_REJECTED }}">{{ xe_trans('board::manage.stateFilter.reject') }}</a></li>
-                                    </ul>
+                                <div class="search-btn-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="xi-calendar-check"></i></button>
+                                    </div>
+                                    <div class="search-input-group">
+                                        <input type="text" name="start_date" class="form-control" placeholder="{{xe_trans('xe::enterStartDate')}}" value={{ Request::get('start_date') }} >
+                                        <input type="text" name="end_date" class="form-control" placeholder="{{xe_trans('xe::enterEndDate')}}" value={{ Request::get('end_date') }} >
+                                    </div>
                                 </div>
 
-                                <div class="input-group-btn __xe_btn_search_target">
-                                    <input type="hidden" name="search_target" value="{{ Request::get('search_target') }}">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Request::has('search_target') && Request::get('search_target') != '' ? xe_trans('board::' . $searchTargetWord) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li @if(Request::get('search_target') == '') class="active" @endif><a href="#" value="">{{xe_trans('board::select')}}</a></li>
-                                        <li @if(Request::get('search_target') == 'title_pure_content') class="active" @endif><a href="#" value="title_pure_content">{{xe_trans('board::titleAndContent')}}</a></li>
-                                        <li @if(Request::get('search_target') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
-                                        <li @if(Request::get('search_target') == 'pure_content') class="active" @endif><a href="#" value="pure_content">{{xe_trans('board::content')}}</a></li>
-                                        <li @if(Request::get('search_target') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
-                                    </ul>
-                                </div>
-                                <div class="search-input-group">
-                                    <input type="text" name="search_keyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Request::get('search_keyword')}}">
-                                    <button class="btn-link">
-                                        <i class="xi-search"></i><span class="sr-only">{{xe_trans('xe::search')}}</span>
-                                    </button>
+                                <div>
+                                    <div id="__xe_btn_options" class="input-group-btn btn-fillter" role="group">
+                                        <input type="hidden" name="search_state" value="{{ Request::old('search_state') }}">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="__xe_text"> {{ $stateMessage }} </span> <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li class="active"><a href="#" value="">{{ xe_trans('board::manage.stateFilter.all') }}</a></li>
+                                            <li><a href="#" value="status|{{ Board::STATUS_NOTICE }}">{{ xe_trans('board::manage.stateFilter.notice') }}</a></li>
+                                            <li><a href="#" value="display|{{ Board::DISPLAY_VISIBLE }}">{{ xe_trans('board::manage.stateFilter.public') }}</a></li>
+                                            <li><a href="#" value="display|{{ Board::DISPLAY_SECRET }}">{{ xe_trans('board::manage.stateFilter.secret') }}</a></li>
+                                            <li><a href="#" value="approved|{{ Board::APPROVED_APPROVED }}">{{ xe_trans('board::manage.stateFilter.approve') }}</a></li>
+                                            <li><a href="#" value="approved|{{ Board::APPROVED_WAITING }}">{{ xe_trans('board::manage.stateFilter.waiting') }}</a></li>
+                                            <li><a href="#" value="approved|{{ Board::APPROVED_REJECTED }}">{{ xe_trans('board::manage.stateFilter.reject') }}</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="input-group-btn __xe_btn_search_target">
+                                        <input type="hidden" name="search_target" value="{{ Request::get('search_target') }}">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="__xe_text">{{Request::has('search_target') && Request::get('search_target') != '' ? xe_trans('board::' . $searchTargetWord) : xe_trans('xe::select')}}</span> <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li @if(Request::get('search_target') == '') class="active" @endif><a href="#" value="">{{xe_trans('board::select')}}</a></li>
+                                            <li @if(Request::get('search_target') == 'title_pure_content') class="active" @endif><a href="#" value="title_pure_content">{{xe_trans('board::titleAndContent')}}</a></li>
+                                            <li @if(Request::get('search_target') == 'title') class="active" @endif><a href="#" value="title">{{xe_trans('board::title')}}</a></li>
+                                            <li @if(Request::get('search_target') == 'pure_content') class="active" @endif><a href="#" value="pure_content">{{xe_trans('board::content')}}</a></li>
+                                            <li @if(Request::get('search_target') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
+                                            <li @if(Request::get('search_target') == 'writeId') class="active" @endif><a href="#" value="writerId">{{ xe_trans('board::writerId') }}</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="search-input-group">
+                                        <input type="text" name="search_keyword" class="form-control" aria-label="Text input with dropdown button" placeholder="{{xe_trans('xe::enterKeyword')}}" value="{{Request::get('search_keyword')}}">
+                                        <button class="btn-link">
+                                            <i class="xi-search"></i><span class="sr-only">{{xe_trans('xe::search')}}</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
