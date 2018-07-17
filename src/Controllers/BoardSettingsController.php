@@ -121,6 +121,8 @@ class BoardSettingsController extends Controller
 
         $toggleMenuSection = new ToggleMenuSection(BoardModule::getId());
 
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
+
         return $this->presenter->make('global.config', [
             'config' => $config,
             'perms' => $perms,
