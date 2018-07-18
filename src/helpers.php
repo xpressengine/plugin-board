@@ -53,18 +53,20 @@ if (function_exists('get_board_title') === false) {
 }
 
 if (function_exists('send_notice_email') === false) {
-    function send_notice_email($email, $title, $contents, callable $subjectResolver = null)
+    function send_notice_email($tag, $email, $title, $contents, callable $subjectResolver = null)
     {
-        (new class($email, $title, $contents, $subjectResolver) {
+        (new class($tag, $email, $title, $contents, $subjectResolver) {
             use Notifiable;
 
+            protected $tag;
             protected $email;
             protected $title;
             protected $contents;
             protected $subjectResolver;
 
-            public function __construct($email, $title, $contents, callable $subjectResolver = null)
+            public function __construct($tag, $email, $title, $contents, callable $subjectResolver = null)
             {
+                $this->tag = $tag;
                 $this->email = $email;
                 $this->title = $title;
                 $this->contents = $contents;
@@ -82,7 +84,7 @@ if (function_exists('send_notice_email') === false) {
                     Notice::setSubjectResolver($this->subjectResolver);
                 }
 
-                $this->notify(new Notice($this->email, $this->title, $this->contents));
+                $this->notify(new Notice($this->tag, $this->email, $this->title, $this->contents));
 
                 Notice::setSubjectResolverToNull();
             }

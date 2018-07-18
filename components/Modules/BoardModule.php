@@ -435,7 +435,7 @@ class BoardModule extends AbstractModule
                         continue;
                     }
 
-                    send_notice_email($toMail, $data['title'], $data['contents'], function ($notifiable) use ($board) {
+                    send_notice_email('new_comment', $toMail, $data['title'], $data['contents'], function ($notifiable) use ($board) {
                         $menuItem = app('xe.menu')->getItem($board->instance_id);
                         $subject = sprintf('Comment:[%s] %s', xe_trans($menuItem->title), $board->title);
                         return $subject;
@@ -503,7 +503,7 @@ class BoardModule extends AbstractModule
                         continue;
                     }
 
-                    send_notice_email($toMail, $data['title'], $data['contents'], function ($notifiable) use ($board) {
+                    send_notice_email('new_article', $toMail, $data['title'], $data['contents'], function ($notifiable) use ($board) {
                         $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
                         $menuItem = app('xe.menu')->getItem($board->instance_id);
