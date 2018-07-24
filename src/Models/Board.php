@@ -44,6 +44,15 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Board extends Document implements CommentUsable, SeoUsable
 {
+    protected $casts = [
+        'status' => 'int',
+        'approved' => 'int',
+        'published' => 'int',
+        'display' => 'int',
+        'format' => 'int',
+        'created_at' => 'datetime',
+    ];
+    
     /**
      * get user id
      *
