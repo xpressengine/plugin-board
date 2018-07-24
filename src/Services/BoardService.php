@@ -96,7 +96,7 @@ class BoardService
         // eager loading favorite list
         $query->with(['favorite' => function ($favoriteQuery) {
             $favoriteQuery->where('user_id', Auth::user()->getId());
-        }, 'slug', 'data', 'thumb']);
+        }, 'slug', 'data', 'thumb', 'tags']);
 
         Event::fire('xe.plugin.board.notice', [$query]);
 
