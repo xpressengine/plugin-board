@@ -33,8 +33,6 @@ class BoardCategory extends DynamicModel
 {
     protected $table = 'board_category';
 
-    protected $connection = 'document';
-
     public $timestamps = false;
 
     protected $primaryKey = 'target_id';

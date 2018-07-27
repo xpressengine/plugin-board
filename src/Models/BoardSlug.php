@@ -33,8 +33,6 @@ use Xpressengine\Database\Eloquent\DynamicModel;
  */
 class BoardSlug extends DynamicModel
 {
-    protected $connection = 'document';
-
     static protected $reserved = [];
 
     protected $table = 'board_slug';
