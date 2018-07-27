@@ -20,6 +20,10 @@ window.jQuery(function ($) {
     },
 
     methods: {
+      update (newTags) {
+        this.autocompleteItems = []
+        this.tags = newTags
+      },
       initItems () {
         const tags = $container.data('tags')
         // console.debug('initItems', $container.data('tags'))

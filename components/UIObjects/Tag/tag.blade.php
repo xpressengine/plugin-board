@@ -3,7 +3,7 @@
 @endif
 
 <div id="{{ $id }}" class="{{ $class }}" data-tags="{{ $strTags }}" data-url="{{$url}}">
-    <vue-tags-input v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags" :autocomplete-items="autocompleteItems" placeholder="{{ $placeholder }}"></vue-tags-input>
+    <vue-tags-input v-model="tag" :tags="tags" @tags-changed="update" :autocomplete-items="autocompleteItems" placeholder="{{ $placeholder }}"></vue-tags-input>
 </div>
 
 <style>
