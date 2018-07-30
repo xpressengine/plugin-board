@@ -151,9 +151,6 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-//        $configHandler = app('xe.board.config');
-//        dd($boards = $configHandler->gets());
-
         $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
         $paginate = $service->getItems($request, $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);
@@ -162,7 +159,7 @@ class BoardModuleController extends Controller
         $searchOptions = $service->getSearchOptions($request);
 
         $dynamicFieldsById = [];
-        foreach($fieldTypes as $fieldType) {
+        foreach ($fieldTypes as $fieldType) {
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
@@ -225,7 +222,7 @@ class BoardModuleController extends Controller
         $searchOptions = $service->getSearchOptions($request);
 
         $dynamicFieldsById = [];
-        foreach($fieldTypes as $fieldType) {
+        foreach ($fieldTypes as $fieldType) {
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
@@ -250,8 +247,7 @@ class BoardModuleController extends Controller
         BoardPermissionHandler $boardPermission,
         $menuUrl,
         $id
-    )
-    {
+    ) {
         $user = Auth::user();
         $item = $service->getItem($id, $user, $this->config, $this->isManager());
 
@@ -267,7 +263,7 @@ class BoardModuleController extends Controller
         $categories = $service->getCategoryItems($this->config);
 
         $dynamicFieldsById = [];
-        foreach($fieldTypes as $fieldType) {
+        foreach ($fieldTypes as $fieldType) {
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
@@ -307,7 +303,41 @@ class BoardModuleController extends Controller
             throw new NotFoundDocumentException;
         }
 
+        if ($this->config->get('urlType') !== 'slug') {
+            return redirect(instance_route('show', ['id' => $slug->target_id]));
+        }
+
         return $this->show($service, $request, $boardPermission, $menuUrl, $slug->target_id);
+    }
+
+    /**
+     * show by itemId
+     *
+     * @param BoardService           $service         board service
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $itemId          document id
+     * @return \Xpressengine\Presenter\RendererInterface
+     */
+    public function showByItemId(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $itemId
+    ) {
+        if ($this->config->get('urlType') !== 'documentId') {
+            $slug = BoardSlug::where('target_id', $itemId)->where('instance_id', $this->instanceId)->first();
+
+            if ($slug === null) {
+                throw new NotFoundDocumentException;
+            }
+
+            return redirect(instance_route('slug', ['slug' => $slug->slug]));
+        }
+
+        return $this->show($service, $request, $boardPermission, $menuUrl, $itemId);
     }
 
     /**
@@ -337,7 +367,7 @@ class BoardModuleController extends Controller
         $fieldTypes = $service->getFieldTypes($this->config);
 
         $dynamicFieldsById = [];
-        foreach($fieldTypes as $fieldType) {
+        foreach ($fieldTypes as $fieldType) {
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
@@ -468,7 +498,7 @@ class BoardModuleController extends Controller
         $fieldTypes = $service->getFieldTypes($this->config);
 
         $dynamicFieldsById = [];
-        foreach($fieldTypes as $fieldType) {
+        foreach ($fieldTypes as $fieldType) {
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
