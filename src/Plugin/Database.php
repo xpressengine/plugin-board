@@ -39,24 +39,22 @@ class Database
      */
     public static function create()
     {
-        $schema = Schema::setConnection(XeDB::connection('document')->master());
-        static::createDataTable($schema);
-        static::createFavoriteTable($schema);
-        static::createSlugTable($schema);
-        static::createCategoryTable($schema);
-        static::createGalleryThumbnailTable($schema);
+        static::createDataTable();
+        static::createFavoriteTable();
+        static::createSlugTable();
+        static::createCategoryTable();
+        static::createGalleryThumbnailTable();
     }
 
     /**
      * create data table
      *
-     * @param Builder $schema schema
      * @return void
      */
-    protected static function createDataTable(Builder $schema)
+    protected static function createDataTable()
     {
-        if ($schema->hasTable('board_data') === false) {
-            $schema->create('board_data', function (Blueprint $table) {
+        if (Schema::hasTable('board_data') === false) {
+            Schema::create('board_data', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
                 $table->string('target_id', 36);
@@ -73,13 +71,12 @@ class Database
     /**
      * create favorite table
      *
-     * @param Builder $schema schema
      * @return void
      */
-    protected static function createFavoriteTable(Builder $schema)
+    protected static function createFavoriteTable()
     {
-        if ($schema->hasTable('board_favorites') === false) {
-            $schema->create('board_favorites', function (Blueprint $table) {
+        if (Schema::hasTable('board_favorites') === false) {
+            Schema::create('board_favorites', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
                 $table->bigIncrements('favorite_id');
@@ -94,13 +91,12 @@ class Database
     /**
      * create slug table
      *
-     * @param Builder $schema schema
      * @return void
      */
-    protected static function createSlugTable(Builder $schema)
+    protected static function createSlugTable()
     {
-        if ($schema->hasTable('board_slug') === false) {
-            $schema->create('board_slug', function (Blueprint $table) {
+        if (Schema::hasTable('board_slug') === false) {
+            Schema::create('board_slug', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
                 $table->bigIncrements('id');
@@ -119,13 +115,12 @@ class Database
     /**
      * create category table
      *
-     * @param Builder $schema schema
      * @return void
      */
-    protected static function createCategoryTable(Builder $schema)
+    protected static function createCategoryTable()
     {
-        if ($schema->hasTable('board_category') === false) {
-            $schema->create('board_category', function (Blueprint $table) {
+        if (Schema::hasTable('board_category') === false) {
+            Schema::create('board_category', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
                 $table->string('target_id', 36);
@@ -139,13 +134,12 @@ class Database
     /**
      * create gallery thumbnail table
      *
-     * @param Builder $schema schema
      * @return void
      */
-    protected static function createGalleryThumbnailTable(Builder $schema)
+    protected static function createGalleryThumbnailTable()
     {
-        if ($schema->hasTable('board_gallery_thumbs') === false) {
-            $schema->create('board_gallery_thumbs', function (Blueprint $table) {
+        if (Schema::hasTable('board_gallery_thumbs') === false) {
+            Schema::create('board_gallery_thumbs', function (Blueprint $table) {
                 $table->engine = "InnoDB";
 
                 $table->string('target_id', 36);

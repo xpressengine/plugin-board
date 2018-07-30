@@ -132,8 +132,7 @@ class Update
 
         // ver 0.9.2
         if ($installedVersion !== null && static::hasSlugTableSlugUnique($installedVersion) === false) {
-            $schema = Schema::setConnection(XeDB::connection('document')->master());
-            $schema->table('board_slug', function (Blueprint $table) {
+            Schema::table('board_slug', function (Blueprint $table) {
                 $table->dropIndex(array('slug'));
                 $table->unique(array('slug'));
             });

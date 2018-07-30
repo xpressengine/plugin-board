@@ -191,7 +191,7 @@ class Resources
 
         $app->singleton(InstanceManager::class, function ($app) {
             return new InstanceManager(
-                XeDB::connection('document'),
+                XeDB::connection(),
                 app('xe.document'),
                 app('xe.dynamicField'),
                 app('xe.board.config'),
