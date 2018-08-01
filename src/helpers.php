@@ -84,7 +84,7 @@ if (function_exists('send_notice_email') === false) {
                     Notice::setSubjectResolver($this->subjectResolver);
                 }
 
-                $this->notify(new Notice($this->tag, $this->email, $this->title, $this->contents));
+                $this->notify(new Notice($this->email, $this->title, $this->contents));
 
                 Notice::setSubjectResolverToNull();
             }
