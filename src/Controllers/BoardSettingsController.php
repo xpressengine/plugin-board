@@ -419,10 +419,7 @@ class BoardSettingsController extends Controller
 
         $query = Board::whereIn('instance_id', $instanceIds)->where('status', '<>',  Board::STATUS_TRASH);
 
-        $totalCount = $query->count();
-
-        $request->query->set('start_date', $request->get('start_date', date('Y-m-d', strtotime('-7 days', time()))));
-        $request->query->set('end_date', $request->get('end_date', date('Y-m-d', time())));
+        $totalCount = count($query->get());
 
         $query = $this->makeWhere($query, $request);
         $query->orderBy('created_at', 'desc');
