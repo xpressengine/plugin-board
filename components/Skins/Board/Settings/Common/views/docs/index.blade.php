@@ -97,7 +97,7 @@ use Xpressengine\Plugins\Board\Models\Board;
                             @foreach($documents as $document)
                                 <tr>
                                     <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
-                                    <td><a href="{{ url($urls[$document->instance_id] . '/show/' . $document->id) }}" target="_blank"><strong>[{{ $titles[$document->instance_id] }}]</strong> {{ $document->title }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
+                                    <td><a href="{{ url($urls[$document->instance_id] . '/show/' . $document->id) }}" target="_blank"><strong>[{{ $titles[$document->instance_id] }}]</strong> {{ strip_tags(html_entity_decode($document->title)) }}<i class="xi-new"></i><i class="xi-external-link"></i></a></td>
                                     <td><a href="#">{{ $document->writer }}</a></td>
                                     <td>{{ $document->assent_count }}/{{ $document->read_count }}</td>
                                     <td>{{ $document->created_at }}</td>
