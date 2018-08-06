@@ -202,8 +202,8 @@ class BoardSettingsController extends Controller
     /**
      * edit
      *
-     * @param CaptchaManager         $captcha         Captcha manager
-     * @param string                 $boardId         board instance id
+     * @param CaptchaManager $captcha Captcha manager
+     * @param string         $boardId board instance id
      * @return \Xpressengine\Presenter\RendererInterface
      */
     public function editConfig(CaptchaManager $captcha, $boardId)
@@ -220,8 +220,8 @@ class BoardSettingsController extends Controller
     /**
      * update
      *
-     * @param Request                $request         request
-     * @param string                 $boardId         board instance id
+     * @param Request $request request
+     * @param string  $boardId board instance id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateConfig(Request $request, $boardId)
@@ -232,6 +232,17 @@ class BoardSettingsController extends Controller
 
         $config = $this->configHandler->get($boardId);
         $inputs = $request->except('_token');
+
+        //관리자 메일 상위 설정에 따르지 않고 해당 게시판은 null로 설정 가능하도록 추가
+        if (isset($inputs['managerEmailInherit'])) {
+            unset($inputs['managerEmailInherit']);
+            unset($inputs['managerEmail']);
+        } else {
+            if (isset($inputs['managerEmail']) === false) {
+                $inputs['managerEmail'] = '';
+            }
+        }
+
         foreach ($inputs as $key => $value) {
             $config->set($key, $value);
         }

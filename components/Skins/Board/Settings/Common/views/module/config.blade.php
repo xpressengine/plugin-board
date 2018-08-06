@@ -227,7 +227,7 @@
                                                     <label>{{xe_trans('board::adminEmail')}} <small>{{xe_trans('board::adminEmailDescription')}} </small></label>
                                                     <div class="checkbox pull-right">
                                                         <label>
-                                                            <input type="checkbox" class="inheritCheck" data-target="managerEmail" @if($config->getPure('managerEmail') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                            <input type="checkbox" class="inheritCheck" name="managerEmailInherit" data-target="managerEmail" @if($config->getPure('managerEmail') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
                                                         </label>
                                                     </div>
                                                 </div>
