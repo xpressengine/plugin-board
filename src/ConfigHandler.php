@@ -78,7 +78,7 @@ class ConfigHandler
         'useTag' => true,
         'urlType' => 'slug',
         'deleteToTrash' => false,
-        'newCommentNotice' => true,
+        'newCommentNotice' => false,
         'secretPost' => true,
         'useApprove' => false,
     ];
