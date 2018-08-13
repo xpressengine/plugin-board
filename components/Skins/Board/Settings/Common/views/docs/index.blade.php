@@ -31,8 +31,8 @@ use Xpressengine\Plugins\Board\Models\Board;
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="xi-calendar-check"></i></button>
                                     </div>
                                     <div class="search-input-group">
-                                        <input type="text" name="start_date" class="form-control" placeholder="{{xe_trans('xe::enterStartDate')}}" value={{ Request::get('start_date') }} >
-                                        <input type="text" name="end_date" class="form-control" placeholder="{{xe_trans('xe::enterEndDate')}}" value={{ Request::get('end_date') }} >
+                                        <input type="text" name="start_date" class="form-control" placeholder="{{xe_trans('xe::enterStartDate')}}" value="{{ Request::get('start_date') }}" >
+                                        <input type="text" name="end_date" class="form-control" placeholder="{{xe_trans('xe::enterEndDate')}}" value="{{ Request::get('end_date') }}" >
                                     </div>
                                 </div>
 
