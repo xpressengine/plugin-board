@@ -1,5 +1,8 @@
 {{ XeFrontend::rule('board', $rules) }}
 
+{{ XeFrontend::js('assets/core/common/js/draft.js')->appendTo('head')->load() }}
+{{ XeFrontend::css('assets/core/common/css/draft.css')->appendTo('head')->load() }}
+
 @if($config->get('useTag') === true)
 {{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 @endif
@@ -65,6 +68,8 @@
             @endforeach
         </div>
 
+        <div class="draft_container"></div>
+
         <div class="write_footer">
             <div class="write_form_input">
                 @if ($item->user_type == $item::USER_TYPE_GUEST)
@@ -111,10 +116,47 @@
                 </div>
             </div>
             <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
-                {{--<a href="#" class="bd_btn btn_temp_save">임시저장</a>--}}
+                <span class="xe-btn-group">
+                    <button type="button" class="xe-btn xe-btn-primary bd_btn btn_temp_save __xe_temp_btn_save">{{ xe_trans('xe::draftSave') }}</button>
+                    <button type="button" class="xe-btn xe-btn-primary xe-dropdown-toggle" data-toggle="xe-dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="xe-sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="xe-dropdown-menu">
+                        <li><a href="#" class="__xe_temp_btn_load">{{ xe_trans('xe::draftLoad') }}</a></li>
+                    </ul>
+                </span>
                 <button type="button" href="#" class="xe-btn xe-btn-normal bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
                 <button type="submit" href="#" class="xe-btn xe-btn-primary bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+    $(function () {
+        var form = $('#board_form');
+        var draft = $('#xeContentEditor', form).draft({
+            key: 'document|' + form.data('instance_id'),
+            btnLoad: $('.__xe_temp_btn_load', form),
+            btnSave: $('.__xe_temp_btn_save', form),
+            // container: $('.draft_container', form),
+            withForm: true,
+            apiUrl: {
+                draft: {
+                    add: xeBaseURL + '/draft/store',
+                    update: xeBaseURL + '/draft/update',
+                    delete: xeBaseURL + '/draft/destroy',
+                    list: xeBaseURL + '/draft',
+                },
+                auto: {
+                    set: xeBaseURL + '/draft/setAuto',
+                    unset: xeBaseURL + '/draft/destroyAuto'
+                }
+            },
+            callback: function (data) {
+                XEeditor.getEditor('XEckeditor').editorList['xeContentEditor'].setContents(data.content);
+            }
+        });
+    });
+</script>

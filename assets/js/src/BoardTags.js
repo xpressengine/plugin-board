@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueTagsInput from '@johmun/vue-tags-input'
+import config from 'xe/config'
 
 window.jQuery(function ($) {
   const $container = $('.__xe-board-tag')
@@ -33,7 +34,7 @@ window.jQuery(function ($) {
           })
         }
 
-        const url = window.xeBaseURL + $container.data('url')
+        const url = config.getters['router/origin'] + '/' + $container.data('url')
         this.searchItem = XE.Utils.debounce((keyword) => {
           window.XE.ajax({
             url: url,
