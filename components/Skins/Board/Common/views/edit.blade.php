@@ -117,8 +117,8 @@
             </div>
             <div class="write_form_btn @if (Auth::check() === false) nologin @endif">
                 <span class="xe-btn-group">
-                    <button type="button" class="xe-btn xe-btn-primary bd_btn btn_temp_save __xe_temp_btn_save">{{ xe_trans('xe::draftSave') }}</button>
-                    <button type="button" class="xe-btn xe-btn-primary xe-dropdown-toggle" data-toggle="xe-dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="xe-btn xe-btn-secondary btn_temp_save __xe_temp_btn_save">{{ xe_trans('xe::draftSave') }}</button>
+                    <button type="button" class="xe-btn xe-btn-secondary xe-dropdown-toggle" data-toggle="xe-dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="xe-sr-only">Toggle Dropdown</span>
                     </button>
