@@ -228,6 +228,8 @@ class BoardModuleController extends Controller
 
         $thumb = $this->handler->getThumb($item->id);
 
+        $item->setCanonical($this->urlHandler->getShow($item));
+
         return XePresenter::make('show', [
             'item' => $item,
             'thumb' => $thumb,

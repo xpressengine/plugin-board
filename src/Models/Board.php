@@ -52,6 +52,13 @@ class Board extends Document implements CommentUsable, SeoUsable
         'format' => 'int',
         'created_at' => 'datetime',
     ];
+
+    /**
+     * Canonical url
+     *
+     * @var string
+     */
+    protected $canonical;
     
     /**
      * get user id
@@ -400,7 +407,20 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getUrl()
     {
-        return $this->getSlug();
+        return $this->canonical;
+    }
+
+    /**
+     * Set canonical url
+     *
+     * @param string $url url
+     * @return $this
+     */
+    public function setCanonical($url)
+    {
+        $this->canonical = $url;
+
+        return $this;
     }
 
     /**
