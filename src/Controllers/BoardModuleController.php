@@ -17,6 +17,7 @@ use XeDocument;
 use XePresenter;
 use XeFrontend;
 use XeEditor;
+use XeSEO;
 use XeStorage;
 use XeTag;
 use Auth;
@@ -373,6 +374,8 @@ class BoardModuleController extends Controller
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
+        XeSEO::notExec();
+
         return XePresenter::makeAll('create', [
             'categories' => $categories,
             'rules' => $rules,
@@ -505,6 +508,8 @@ class BoardModuleController extends Controller
         }
 
         $thumb = $this->handler->getThumb($item->id);
+
+        XeSEO::notExec();
 
         return XePresenter::make('edit', [
             'item' => $item,
