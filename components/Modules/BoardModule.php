@@ -400,7 +400,10 @@ class BoardModule extends AbstractModule
                 if ($board->email != null && $board->email != '') {
                     $emails[] = $board->email;
                 } else {
-                    $emails[] = $board->user->email;
+                    $boardWriter = $board->user;
+                    if ($boardWriter != null) {
+                        $emails[] = $boardWriter->email;
+                    }
                 }
 
                 // comment writers
@@ -414,7 +417,10 @@ class BoardModule extends AbstractModule
                     if ($dstComment->email != null && $dstComment->email != '') {
                         $emails[] = $dstComment->email;
                     } else {
-                        $emails[] = $dstComment->user->email;
+                        $commentWriter = $dstComment->user;
+                        if ($commentWriter !== null) {
+                            $emails[] = $commentWriter->email;
+                        }
                     }
                 }
 
