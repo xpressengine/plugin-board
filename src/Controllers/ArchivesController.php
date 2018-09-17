@@ -109,6 +109,7 @@ class ArchivesController extends Controller
         $paginate = $service->getItems($request, $config, $id);
         $fieldTypes = $service->getFieldTypes($config);
         $categories = $service->getCategoryItems($config);
+        $searchOptions = $service->getSearchOptions($request);
 
         return XePresenter::make('show', [
             'item' => $item,
@@ -116,6 +117,7 @@ class ArchivesController extends Controller
             'paginate' => $paginate,
             'categories' => $categories,
             'fieldTypes' => $fieldTypes,
+            'searchOptions' => $searchOptions,
         ]);
     }
 
@@ -132,7 +134,7 @@ class ArchivesController extends Controller
         ConfigHandler $configHandler,
         BoardSlug $slug
     ) {
-        $instanceId = $slug->instanceId;
+        $instanceId = $slug->instance_id;
 
         // 이 slug 가 포함된 페이지 출력
         $config = $configHandler->get($instanceId);
