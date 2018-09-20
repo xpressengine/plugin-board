@@ -37,7 +37,21 @@ use Xpressengine\Plugins\Board\Models\Board;
                                 </div>
 
                                 <div>
-                                    <div id="__xe_btn_options" class="input-group-btn btn-fillter" role="group">
+                                    <div class="input-group-btn btn-filter search_dropdown" role="group">
+                                        <input type="hidden" name="search_board" value="{{ Request::old('search_board') }}">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="__xe_text">{{ $boardSearchMessage }}</span> <span class="caret"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li class="active"><a href="#" value="">{{ xe_trans('board::manage.boardFilter.all') }}</a></li>
+                                            @foreach ($boards as $id => $boardName)
+                                                <li><a href="#" value="{{ $id }}">{{ xe_trans($boardName) }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+
+                                    <div class="input-group-btn btn-filter search_dropdown" role="group">
                                         <input type="hidden" name="search_state" value="{{ Request::old('search_state') }}">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                             <span class="__xe_text"> {{ $stateMessage }} </span> <span class="caret"></span>
@@ -302,19 +316,19 @@ use Xpressengine\Plugins\Board\Models\Board;
         });
     }
 
-    $('#__xe_btn_options li > a').click(function (e, flag) {
+    $('.search_dropdown li > a').click(function (e, flag) {
         e.preventDefault();
 
-        $('#__xe_btn_options input').val($(this).attr('value'));
+        $(this).parents('ul').siblings('input').val($(this).attr('value'));
 
-        $('#__xe_btn_options li').removeClass('active');
+        $('.search_dropdown li').removeClass('active');
         $(this).closest('li').addClass('active');
 
         if (flag !== true) {
             $(this).closest('form').submit();
         }
     }).each(function () {
-        if ($(this).attr('value') == $('#__xe_btn_options input').val()) {
+        if ($(this).attr('value') == $('.search_dropdown input').val()) {
             $(this).triggerHandler('click', [true]);
         }
     });

@@ -428,7 +428,7 @@ class BoardSettingsController extends Controller
             $titles[$menu->id] = xe_trans($menu->title);
         }
 
-        $query = Board::whereIn('instance_id', $instanceIds)->where('status', '<>',  Board::STATUS_TRASH);
+        $query = Board::whereIn('instance_id', $instanceIds)->where('status', '<>', Board::STATUS_TRASH);
 
         $totalCount = $query->count();
 
@@ -448,7 +448,21 @@ class BoardSettingsController extends Controller
             $stateMessage = self::getStateMessage($state);
         }
 
-        return $this->presenter->make('docs.index', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord', 'stateMessage', 'totalCount'));
+        $boards = MenuItem::where('type', 'board@board')->pluck('title', 'id')->toArray();
+
+        $boardSearchMessage = xe_trans('board::manage.targetBoard');
+        if ($boardId = $request->get('search_board', 'board::manage.targetBoard')) {
+            if (array_key_exists($boardId, $boards)) {
+                $boardSearchMessage = xe_trans($boards[$boardId]);
+            } else {
+                $boardSearchMessage = xe_trans($boardId);
+            }
+        }
+
+        return $this->presenter->make(
+            'docs.index',
+            compact('documents','instances', 'urls', 'titles', 'searchTargetWord', 'stateMessage', 'totalCount', 'boards', 'boardSearchMessage')
+        );
     }
 
     protected function getStateMessage($state)
@@ -743,6 +757,11 @@ class BoardSettingsController extends Controller
             list($searchField, $searchValue) = explode('|', $state);
 
             $query->where($searchField, $searchValue);
+        }
+
+        //게시판 검색
+        if ($targetBoard = $request->get('search_board')) {
+            $query->where('instance_id', $targetBoard);
         }
 
         return $query;

@@ -512,6 +512,12 @@ You may receive an error occurs in the associated function if not in a state cap
                 'en' => 'Rejected',
             ],
         ],
+        'boardFilter' => [
+            'all' => [
+                'ko' => '전체',
+                'en' => 'All',
+            ],
+        ],
         'approveSetReject' => [
             'ko' => '승인반려',
             'en' => 'Reject'
@@ -523,6 +529,10 @@ You may receive an error occurs in the associated function if not in a state cap
         'state' => [
             'ko' => '상태',
             'en' => 'State',
+        ],
+        'targetBoard' => [
+            'ko' => '게시판 검색',
+            'en' => 'Target Board',
         ],
     ],
     'totalArticleCount' => [
