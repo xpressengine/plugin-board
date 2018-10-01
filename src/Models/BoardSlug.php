@@ -148,7 +148,7 @@ class BoardSlug extends DynamicModel
         }
 
         while (static::has($slug, $increment) === true) {
-            $slugInfo = static::where('slug', $slug)->first();
+            $slugInfo = static::where('slug', static::makeIncrement($slug, $increment))->first();
             if ($slugInfo->id == $id) {
                 break;
             }
