@@ -716,10 +716,10 @@ class BoardSettingsController extends Controller
     {
         //기간 검색
         if ($startDate = $request->get('start_date')) {
-            $query = $query->where('created_at', '>=', $startDate);
+            $query = $query->where('created_at', '>=', $startDate . ' 00:00:00');
         }
         if ($endDate = $request->get('end_date')) {
-            $query = $query->where('created_at', '<=', $endDate);
+            $query = $query->where('created_at', '<=', $endDate . ' 23:59:59');
         }
 
         //검색어 검색
