@@ -126,8 +126,8 @@
                         <li><a href="#" class="__xe_temp_btn_load">{{ xe_trans('xe::draftLoad') }}</a></li>
                     </ul>
                 </span>
-                <button type="button" href="#" class="xe-btn xe-btn-normal bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
-                <button type="submit" href="#" class="xe-btn xe-btn-primary bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
+                <button type="button" class="xe-btn xe-btn-normal bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
+                <button type="submit" class="xe-btn xe-btn-primary bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
             </div>
         </div>
     </form>
@@ -155,7 +155,11 @@
                 }
             },
             callback: function (data) {
-                XEeditor.getEditor('XEckeditor').editorList['xeContentEditor'].setContents(data.content);
+                window.XE.app('Editor').then(function (appEditor) {
+                    appEditor.getEditor('xeContentEditor').then(function (editor) {
+                        editor.setContents(data.content);
+                    })
+                })
             }
         });
     });
