@@ -343,19 +343,39 @@ window.jQuery(function ($) {
   })
 })
 
+// 미리보기
 window.jQuery(function ($) {
-  // 미리보기
-  $('.__board_form').on('click', '.__xe_btn_preview', function (event) {
-    var form = $(this).parents('form')
-    var currentUrl = form.attr('action')
-    var currentTarget = form.attr('target')
-    form.attr('action', form.data('url-preview'))
-    form.attr('target', '_blank')
-    form.submit()
+  // preventSubmit
+  var formElement = $('.__board_form')
 
-    form.attr('action', currentUrl)
-    form.attr('target', currentTarget === undefined ? '' : currentTarget)
-  })
+  if (formElement.length) {
+    var isPreview = false
+    window.XE.app('Form').then(Form => {
+      Form.get(formElement).$$on('submit', (eventName, element, event, preventSubmit) => {
+        if (isPreview) {
+          preventSubmit()
+          isPreview = false
+          return Promise.resolve({stop: true})
+        }
+        return Promise.resolve()
+      }, { name: 'board.preview', before: 'xe.draft' })
+    })
+
+    formElement.on('click', '.__xe_btn_preview', function (event) {
+      var $form = $(this).parents('form')
+      var currentUrl = $form.attr('action')
+      var currentTarget = $form.attr('target')
+
+      $form.attr('action', $form.data('url-preview'))
+      $form.attr('target', '_blank')
+      isPreview = true
+
+      $form.submit()
+
+      $form.attr('action', currentUrl)
+      $form.attr('target', currentTarget === undefined ? '' : currentTarget)
+    })
+  }
 })
 
 // manage
