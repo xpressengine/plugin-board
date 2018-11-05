@@ -258,7 +258,7 @@ class GallerySkin extends CommonSkin
 
         // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
         if ($item->board_thumbnail_path == '') {
-            $item->board_thumbnail_path = 'http://placehold.it/300x200';
+            $item->board_thumbnail_path = asset('assets/core/common/img/default_image_1200x800.jpg');
         }
     }
 
