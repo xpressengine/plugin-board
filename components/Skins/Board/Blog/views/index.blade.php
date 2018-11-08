@@ -263,8 +263,8 @@
                     @endif
                 </div>
                 <div class="thumb_area">
-                    <a href="#">
-                        <img src="{{ $item->board_thumbnail_path }}" alt="">
+                    <a href="{{$urlHandler->getShow($item, Request::all())}}">
+                        <div class="thumbnail-cover" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </a>
                 </div>
                 <div class="cont_area">
@@ -326,7 +326,7 @@
                 </div>
                 <div class="thumb_area">
                     <a href="{{$urlHandler->getShow($item, Request::all())}}">
-                        <img src="{{ $item->board_thumbnail_path }}" alt="">
+                        <div class="thumbnail-cover" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </a>
                 </div>
                 <div class="cont_area">

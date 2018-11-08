@@ -782,10 +782,6 @@
   margin: 0 auto;
   text-align: center;
 }
-.board_list.gallery .thumb_area img {
-  width: 100%;
-  max-height: 192px;
-}
 .board_list.gallery .cont_area {
   width: 92%;
   margin: 0 auto;
@@ -859,9 +855,8 @@
   top: 0;
   left: 0;
 }
-.board_list.blog .thumb_area img {
+.board_list.blog .thumb_area {
   width: 230px;
-  height: 140px;
 }
 .board_list.blog ~ .board_footer .bd_paginate {
   margin-top: 80px;
@@ -1500,9 +1495,6 @@
   .board_header .bd_btn_area li > a > i {
     /* line-height: 30px; */
   }
-  .board_list.gallery .thumb_area img {
-    max-height: 147px;
-  }
   .board_list table {
     border-color: #ddd;
   }
@@ -1602,7 +1594,7 @@
     margin-bottom: 0;
   }
   .board_list.gallery {
-    padding: 30px 12px 0;
+    padding: 30px 0 0;
     border-top: 1px solid #ddd;
   }
   .board_list.gallery > ul {
@@ -1634,7 +1626,7 @@
     position: static;
     float: left;
   }
-  .board_list.blog .thumb_area img {
+  .board_list.blog .thumb_area {
     width: 100px;
     height: 70px;
   }
@@ -1874,4 +1866,11 @@ div.ReactTags__suggestions li.active span {
 
 .boardTag {
   padding-bottom: 20px;
+}
+
+.board_list .thumbnail-cover {
+  padding-bottom: 56.25%;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-image: url('../../../../../assets/core/common/img/default_image_1200x800.jpg');
 }

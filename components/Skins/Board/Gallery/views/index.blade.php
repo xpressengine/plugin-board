@@ -249,10 +249,8 @@
         @foreach($notices as $item)
             <li>
                 <div class="thumb_area">
-                    <a href="#">
-                        <img src="{{ $item->board_thumbnail_path }}" alt="">
-                        @if($item->isNew($config->get('newTime')))
-                        @endif
+                    <a href="{{$urlHandler->getShow($item, Request::all())}}">
+                        <div class="thumbnail-cover" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </a>
                 </div>
                 <div class="cont_area">
@@ -313,9 +311,7 @@
             <li>
                 <div class="thumb_area">
                     <a href="{{$urlHandler->getShow($item, Request::all())}}">
-                        <img src="{{ $item->board_thumbnail_path }}" alt="">
-                        @if($item->isNew($config->get('newTime')))
-                        @endif
+                        <div class="thumbnail-cover" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </a>
                 </div>
                 <div class="cont_area">
