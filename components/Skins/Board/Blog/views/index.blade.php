@@ -8,7 +8,7 @@
     </div>
     @endif
 
-            <!-- 모바일뷰에서 노출되는 정렬 버튼 -->
+    <!-- 모바일뷰에서 노출되는 정렬 버튼 -->
     <div class="bd_manage_area xe-visible-xs">
         <!-- [D] 클릭시 클래스 on 추가 및 bd_align 영역 노출 -->
         <a href="#" class="btn_mng bd_sorting"><i class="xi-filter"></i> <span class="xe-sr-only">{{xe_trans('xe::order')}}</span></a>
@@ -45,72 +45,72 @@
 
     <!-- 게시글 관리 -->
     @if ($isManager === true)
-    <div class="bd_manage_detail">
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_copy">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::copy') }}</label>
+        <div class="bd_manage_detail">
+            <div class="xe-row">
+                <div class="xe-col-sm-6">
+                    <div class="xe-row __xe_copy">
+                        <div class="xe-col-sm-3">
+                            <label class="xe-control-label">{{ xe_trans('xe::copy') }}</label>
+                        </div>
+                        <div class="xe-col-sm-9">
+                            <div class="xe-form-inline">
+                                {!! uio('uiobject/board@select', [
+                                    'name' => 'copyTo',
+                                    'label' => xe_trans('xe::select'),
+                                    'items' => $boardList,
+                                ]) !!}
+                                <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('copy') }}">{{ xe_trans('xe::copy') }}</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="xe-col-sm-9">
-                        <div class="xe-form-inline">
-                            {!! uio('uiobject/board@select', [
-                                'name' => 'copyTo',
-                                'label' => xe_trans('xe::select'),
-                                'items' => $boardList,
-                            ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('copy') }}">{{ xe_trans('xe::copy') }}</button>
+                </div>
+            </div>
+            <div class="xe-row">
+                <div class="xe-col-sm-6">
+                    <div class="xe-row __xe_move">
+                        <div class="xe-col-sm-3">
+                            <label class="xe-control-label">{{ xe_trans('xe::move') }}</label>
+                        </div>
+                        <div class="xe-col-sm-9">
+                            <div class="xe-form-inline">
+                                {!! uio('uiobject/board@select', [
+                                    'name' => 'moveTo',
+                                    'label' => xe_trans('xe::select'),
+                                    'items' => $boardList,
+                                ]) !!}
+                                <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="xe-row">
+                <div class="xe-col-sm-6">
+                    <div class="xe-row __xe_to_trash">
+                        <div class="xe-col-sm-3">
+                            <label class="xe-control-label">{{ xe_trans('xe::trash') }}</label>
+                        </div>
+                        <div class="xe-col-sm-9">
+                            <a href="#" data-url="{{ $urlHandler->managerUrl('trash') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsMoveToTrash') }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="xe-row">
+                <div class="xe-col-sm-6">
+                    <div class="xe-row __xe_delete">
+                        <div class="xe-col-sm-3">
+                            <label class="xe-control-label">{{ xe_trans('xe::delete') }}</label>
+                        </div>
+                        <div class="xe-col-sm-9">
+                            <a href="#" data-url="{{ $urlHandler->managerUrl('destroy') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsDelete') }}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_move">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::move') }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        <div class="xe-form-inline">
-                            {!! uio('uiobject/board@select', [
-                                'name' => 'moveTo',
-                                'label' => xe_trans('xe::select'),
-                                'items' => $boardList,
-                            ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_to_trash">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::trash') }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        <a href="#" data-url="{{ $urlHandler->managerUrl('trash') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsMoveToTrash') }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_delete">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::delete') }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        <a href="#" data-url="{{ $urlHandler->managerUrl('destroy') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsDelete') }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     @endif
-            <!-- /게시글 관리 -->
+    <!-- /게시글 관리 -->
 
     <!-- 검색영역 -->
     <div class="bd_search_area">
@@ -189,16 +189,16 @@
 
                     <!-- 확장 필드 검색 -->
                     @foreach($fieldTypes as $typeConfig)
-                    @if($typeConfig->get('searchable') === true)
-                    <div class="xe-row">
-                        <div class="xe-col-sm-3">
-                            <label class="xe-control-label">{{ xe_trans($typeConfig->get('label')) }}</label>
-                        </div>
-                        <div class="xe-col-sm-9">
-                            {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Request::all()) !!}
-                        </div>
-                    </div>
-                    @endif
+                        @if($typeConfig->get('searchable') === true)
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">{{ xe_trans($typeConfig->get('label')) }}</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Request::all()) !!}
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                     <!-- /확장 필드 검색 -->
                 </div>
@@ -212,7 +212,6 @@
         </form>
     </div>
     <!-- /검색영역 -->
-
 </div>
 
 <!-- /검색 정보 출력 -->
@@ -272,27 +271,27 @@
                     <p>{!! mb_substr($item->pure_content, 0, 100) !!}</p>
                     <div class="more_info">
                         @if ($isManager === true)
-                        <label class="xe-label">
-                            <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
-                            <span class="xe-input-helper"></span>
-                            <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
-                        </label>
+                            <label class="xe-label">
+                                <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
+                                <span class="xe-input-helper"></span>
+                                <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
+                            </label>
                         @endif
 
                         @if (Auth::check() === true)
                             <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                         @endif
 
-                            <span class="autohr_area">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                    <a href="#" class="mb_autohr"
-                                       data-toggle="xe-page-toggle-menu"
-                                       data-url="{{ route('toggleMenuPage') }}"
-                                       data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                                @else
-                                    <a class="mb_autohr">{!! $item->writer !!}</a>
-                                @endif
-                            </span>
+                        <span class="autohr_area">
+                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                <a href="#" class="mb_autohr"
+                                data-toggle="xe-page-toggle-menu"
+                                data-url="{{ route('toggleMenuPage') }}"
+                                data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
+                            @else
+                                <a class="mb_autohr">{!! $item->writer !!}</a>
+                            @endif
+                        </span>
                         <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</span></span>
                         <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                         <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
@@ -334,29 +333,29 @@
                     <p>{!! mb_substr($item->pure_content, 0, 100) !!}</p>
                     <div class="more_info">
                         @if ($isManager === true)
-                        <label class="xe-label">
-                            <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
-                            <span class="xe-input-helper"></span>
-                            <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
-                        </label>
+                            <label class="xe-label">
+                                <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
+                                <span class="xe-input-helper"></span>
+                                <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
+                            </label>
                         @endif
 
                         @if (Auth::check() === true)
                             <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
                         @endif
 
-                            <span class="autohr_area">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                    <a href="#" class="mb_autohr"
-                                       data-toggle="xe-page-toggle-menu"
-                                       data-url="{{ route('toggleMenuPage') }}"
-                                       data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                                @else
-                                    <a class="mb_autohr">{!! $item->writer !!}</a>
-                                @endif
-                            </span>
-                            <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</span></span>
-                            <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                        <span class="autohr_area">
+                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                <a href="#" class="mb_autohr"
+                                    data-toggle="xe-page-toggle-menu"
+                                    data-url="{{ route('toggleMenuPage') }}"
+                                    data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
+                            @else
+                                <a class="mb_autohr">{!! $item->writer !!}</a>
+                            @endif
+                        </span>
+                        <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</span></span>
+                        <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                         <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
                     </div>
                 </div>
