@@ -153,6 +153,9 @@ class CommonSkin extends GenericBoardSkin
             $view = $contentView;
         } else {
             // wrapped by _frame.blade.php
+            if (View::exists(sprintf('%s/views/_frame', static::$path)) === false) {
+                static::$path = self::$path;
+            }
             $view = View::make(sprintf('%s/views/_frame', static::$path), $this->data);
             $view->content = $contentView;
         }
