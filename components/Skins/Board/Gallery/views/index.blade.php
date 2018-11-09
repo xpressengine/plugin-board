@@ -250,7 +250,7 @@
             <li>
                 <div class="thumb_area">
                     <a href="{{$urlHandler->getShow($item, Request::all())}}">
-                        <div class="thumbnail-cover" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
+                        <div class="thumbnail-cover thumbnail-cover--scale" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </a>
                 </div>
                 <div class="cont_area">
@@ -311,7 +311,7 @@
             <li>
                 <div class="thumb_area">
                     <a href="{{$urlHandler->getShow($item, Request::all())}}">
-                        <div class="thumbnail-cover" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
+                        <div class="thumbnail-cover thumbnail-cover--scale" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </a>
                 </div>
                 <div class="cont_area">

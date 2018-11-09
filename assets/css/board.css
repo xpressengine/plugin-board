@@ -764,7 +764,6 @@
 .board_list.gallery > ul {
   padding: 20px 0 0;
   list-style: none;
-  font-size: 0;
 }
 .board_list.gallery > ul:after {
   display: block;
@@ -798,7 +797,7 @@
   clear: both;
 }
 .gallery.g_col3 > ul > li {
-  width: 33.33%;
+  width: 33%;
 }
 .gallery.g_col3 > ul > li:nth-child(4n) {
   clear: both;
@@ -1868,9 +1867,23 @@ div.ReactTags__suggestions li.active span {
   padding-bottom: 20px;
 }
 
+
+/* thumbnail-cover */
+.board_list .thumb_area {
+  overflow: hidden;
+}
 .board_list .thumbnail-cover {
   padding-bottom: 56.25%;
   background-size: cover;
   background-position: 50% 50%;
   background-image: url('../../../../../assets/core/common/img/default_image_1200x800.jpg');
 }
+.board_list .thumbnail-cover--scale {
+  transition: transform 0.3s ease-out;
+}
+.board_list .thumbnail-cover--scale:hover {
+  transform: scale(1.10);
+}
+/* END thumbnail-cover */
+
+
