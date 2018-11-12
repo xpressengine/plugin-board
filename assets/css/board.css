@@ -1204,6 +1204,14 @@
   width: 100%;
   padding-left: 16px;
 }
+.write_title .__xe_titleWithSlug span a {
+  text-decoration: none;
+  color: #333;
+}
+.write_title .__xe_titleWithSlug span a:hover {
+  text-decoration: underline;
+}
+
 .write_content .xe-form-group.xe-write{
   display: table;
   width: 100%;

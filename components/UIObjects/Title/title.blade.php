@@ -1,5 +1,5 @@
 @if ($scriptInit === true)
-    <script type="text/javascript">
+    <script>
         jQuery(function($) {
             $(document).on('change', '.__xe_titleWithSlug [name="title"]', function() {
                 var $target = $(this);
@@ -52,10 +52,9 @@
                 }
             });
 
-            function hasSlug($container, callback)
-            {
+            function hasSlug($container, callback) {
                 var id = $container.find('[name="title"]').data('id'),
-                        slug = $container.find('.__xe_slug_edit input').val();
+                slug = $container.find('.__xe_slug_edit input').val();
 
                 XE.ajax({
                     url: '{{ app('xe.board.url')->get('hasSlug') }}',
@@ -71,7 +70,6 @@
                 });
             }
         });
-
     </script>
 @endif
 
@@ -81,14 +79,13 @@
     <div class="__xe_slug_edit" style="display:none;">
         <i class="xi-link"></i>
         <span class="edit-slug">{{instance_route('slug', ['slug' => ''])}}/<input type="text" name="{{ $slugDomName }}" value="{{ $slug }}"/></span>
-        <span><a href="#" class="ok">OK</a></span>
-        <span><a href="#" class="cancel">Cancel</a></span>
+        <span><button type="button" class="xe-btn xe-btn-link xe-btn-xs ok">Ok</button></span>
+        <span><button type="button" class="xe-btn xe-btn-link xe-btn-xs cancel">Cancel</button></span>
     </div>
 
     <div class="__xe_slug_show" style="display:none;">
         <i class="xi-link"></i>
         <span class="current-slug">{{instance_route('slug', ['slug' => ''])}}/{{ $slug }}</span>
-        <span><a href="#" class="edit">Edit</a></span>
+        <span><button type="button" class="xe-btn xe-btn-link xe-btn-xs edit">Edit</button></span>
     </div>
 </div>
-
