@@ -61,14 +61,15 @@
 .board select {
   margin: 0;
 }
-.board label {
+/* .board label {
   display: table-cell;
-  width: 100px;
   margin: 0;
   font-weight: normal;
-}
+} */
 .board .xe-label{
   vertical-align: middle;
+  display: inline-block;
+  margin-right: 20px;
 }
 .board textarea {
   resize: vertical;
@@ -1211,6 +1212,12 @@
   display: table-cell;
 }
 
+.write_body,
+.xe-select-label,
+.__xe_section {
+  margin-bottom: 10px;
+}
+
 .temp_save {
   position: absolute;
   right: 0;
@@ -1296,7 +1303,7 @@
 }
 
 .write_footer {
-  padding-top: 16px;
+  /* padding-top: 16px; */
 }
 .write_footer .write_form_btn {
   float: right;
@@ -1341,11 +1348,11 @@
 .write_form_input {
   margin: -6px 0 16px;
 }
-.write_form_option {
+/* .write_form_option {
   float: left;
   height: 15px;
   line-height: 15px;
-}
+} */
 .write_form_input:after,
 .write_form_option:after {
   display: block;
@@ -1722,16 +1729,14 @@
   }
 
   .write_footer {
-    padding-top: 16px;
+    /* padding-top: 16px; */
   }
   .write_footer .write_form_btn {
-    padding-top: 20px;
+    /* padding-top: 20px; */
     float: none;
   }
   .write_footer .write_form_btn > button {
-    float: left;
     min-width: auto;
-    width: 32%;
     margin-left: 2%;
   }
   .write_footer .write_form_btn.nologin > a {

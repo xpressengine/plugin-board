@@ -135,7 +135,7 @@
                     </ul>
                 </span>
                 <button type="button" class="xe-btn xe-btn-normal bd_btn btn_preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
-                <button type="submit" class="bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
+                <button type="submit" class="xe-btn bd_btn btn_submit __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
             </div>
         </div>
     </form>
