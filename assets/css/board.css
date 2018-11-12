@@ -1670,7 +1670,6 @@
   }
 
   .board_write {
-    padding: 0 12px;
   }
   .board_write .cke {
     min-height: 240px;
