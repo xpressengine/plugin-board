@@ -278,7 +278,8 @@ class BoardSettingsController extends Controller
         $input = [
             'name' => MenuItem::where('id', $boardId)->get()->first()->title
         ];
-        $category = $categoryHandler->create($input);
+
+        $category = $categoryHandler->createCate($input);
 
         if ($boardId == '') {
             // global config

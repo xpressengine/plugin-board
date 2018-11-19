@@ -1,7 +1,7 @@
 <?php
 namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList\Skins\Gallery;
 
-use Xpressengine\Media\Models\Image;
+use Xpressengine\Media\Repositories\ImageRepository;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
@@ -82,7 +82,8 @@ class GallerySkin extends GenericSkin
                      */
                     $dimension = 'L';
 
-                    $media = Image::getThumbnail(
+                    $imageRepository = new ImageRepository();
+                    $media = $imageRepository->getThumbnail(
                         $mediaManager->make($file),
                         BoardModule::THUMBNAIL_TYPE,
                         $dimension

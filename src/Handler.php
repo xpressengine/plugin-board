@@ -204,7 +204,7 @@ class Handler
         if (empty($args['use_alarm']) || $args['use_alarm'] !== '1') {
             $useAlarm = 0;
         }
-        $fileCount = FileModel::getByFileable($board->id)->count();
+        $fileCount = count(\XeStorage::fetchByFileable($board->id));
 
         $data = $board->boardData;
         if ($data === null) {

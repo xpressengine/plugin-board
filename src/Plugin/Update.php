@@ -84,11 +84,6 @@ class Update
         }
 
         // ver 0.9.22
-        if ($installedVersion !== null && static::hasCommonSkinConfig($installedVersion) === false) {
-            return false;
-        }
-
-        // ver 0.9.22
         if (static::hasShareToggleMenuConfig() === false) {
             return false;
         }
@@ -180,19 +175,6 @@ class Update
             }
 
             XeConfig::modify($config);
-        }
-
-        // ver 0.9.22
-        if ($installedVersion !== null && static::hasCommonSkinConfig($installedVersion) === false) {
-            $menuItems = \XpressEngine\Menu\Models\MenuItem::where('type', 'board@board')->get();
-
-            foreach ($menuItems as $menuItem) {
-                $config = XeConfig::get('skins.configs.module/board@board:' . $menuItem->id);
-                if ($config != null) {
-                    $config->set('module/board@board/skin/board@default', []);
-                    XeConfig::modify($config);
-                }
-            }
         }
 
         // ver 0.9.22

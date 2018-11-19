@@ -17,6 +17,7 @@ use Input;
 use App;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
+use Xpressengine\Media\Repositories\ImageRepository;
 
 class GallerySkin extends CommonSkin
 {
@@ -218,7 +219,8 @@ class GallerySkin extends CommonSkin
                      */
                     $dimension = 'L';
 
-                    $media = Image::getThumbnail(
+                    $imageRepository = new ImageRepository();
+                    $media = $imageRepository->getThumbnail(
                         $mediaManager->make($file),
                         BoardModule::THUMBNAIL_TYPE,
                         $dimension

@@ -430,7 +430,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getImages()
     {
-        $files = File::getByFileable($this->getKey());
+        $files = \XeStorage::fetchByFileable($this->getKey());
 
         /** @var MediaManager $mediaManager */
         $mediaManager = app('xe.media');
