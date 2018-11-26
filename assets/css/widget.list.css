@@ -79,6 +79,7 @@
 
 .article-table tr td.title {
   width: auto;
+  white-space: normal;
 }
 .article-table tr td.title a {
     text-decoration: none;
@@ -89,6 +90,9 @@
     font-size: 16px;
     font-weight: normal;
     color: #333;
+    height: 1.15em;
+    overflow: hidden;
+    white-space: normal;
 }
 
 .article-table tr td.title a strong + P {
