@@ -2,7 +2,6 @@
     width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
-    table-layout: fixed;
     font-size: 14px;
 }
 
@@ -48,6 +47,8 @@
     padding: 15px;
     background-color: #fff;
     border-bottom: 1px solid #f6f5ec;
+    width: 1em;
+    white-space: nowrap;
     color: #999;
 }
 
@@ -76,6 +77,9 @@
     }
 }
 
+.article-table tr td.title {
+  width: auto;
+}
 .article-table tr td.title a {
     text-decoration: none;
 }
@@ -105,7 +109,7 @@
 }
 
 .article-table.type2 td {
-    padding: 31px 0 30px 19px;
+    padding: 30px 20px;
 }
 
 @media all and (max-width: 974px) {

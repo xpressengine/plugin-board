@@ -7,16 +7,11 @@
             {{ xe_trans($boardConfig->get('boardName')) }}
         @endif
     </h3>
-    <a href="{{instance_route('index', [], $menuItem->id)}}" class="article-table-more xe-hidden-sm xe-hidden-x">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    <a href="{{instance_route('index', [], $menuItem->id)}}" class="article-table-more xe-hidden-sm xe-hidden-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
     <a href="#"></a>
     <div class="table-wrap">
         <table class="article-table type2">
             <caption class="xe-sr-only">{{xe_trans($menuItem->title)}}</caption>
-            <colgroup class="xe-hidden-sm xe-hidden-xs">
-                <col width="130">
-                <col>
-                <col width="96">
-            </colgroup>
             <tbody>
             @foreach ($list as $item)
             <tr>
