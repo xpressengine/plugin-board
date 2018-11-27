@@ -12,11 +12,6 @@
     <div class="table-wrap">
         <table class="article-table type2">
             <caption class="xe-sr-only">{{xe_trans($menuItem->title)}}</caption>
-            <colgroup class="xe-hidden-sm xe-hidden-xs">
-                <col width="130">
-                <col>
-                <col width="96">
-            </colgroup>
             <tbody>
             @foreach ($list as $item)
             <tr>
@@ -28,7 +23,7 @@
                 </td>
                 <td class="title">
                     <a href="{{$urlHandler->getShow($item)}}">
-                        <strong class="xe-ellipsis">{!! $item->title !!}</strong>
+                        <strong>{!! $item->title !!}</strong>
                         <p class="xe-ellipsis xe-hidden-sm xe-hidden-xs">{{$item->pure_content}} </p>
                     </a>
                 </td>
