@@ -19,6 +19,7 @@ use Xpressengine\Permission\Grant;
 use Xpressengine\Permission\PermissionSupport;
 use Xpressengine\Permission\Registered;
 use Xpressengine\Permission\Action;
+use Xpressengine\User\Rating;
 
 /**
  * BoardPermissionHandler
@@ -184,21 +185,21 @@ class BoardPermissionHandler
         foreach ($this->actions as $action) {
             if ($action == self::ACTION_MANAGE) {
                 $perm = [
-                    Grant::RATING_TYPE => 'manager',
+                    Grant::RATING_TYPE => Rating::MANAGER,
                     Grant::GROUP_TYPE => [],
                     Grant::USER_TYPE => [],
                     Grant::EXCEPT_TYPE => []
                 ];
             } elseif ($action == self::ACTION_LIST || $action == self::ACTION_READ) {
                 $perm = [
-                    Grant::RATING_TYPE => 'guest',
+                    Grant::RATING_TYPE => Rating::GUEST,
                     Grant::GROUP_TYPE => [],
                     Grant::USER_TYPE => [],
                     Grant::EXCEPT_TYPE => []
                 ];
             } else {
                 $perm = [
-                    Grant::RATING_TYPE => 'member',
+                    Grant::RATING_TYPE => Rating::USER,
                     Grant::GROUP_TYPE => [],
                     Grant::USER_TYPE => [],
                     Grant::EXCEPT_TYPE => []
