@@ -629,6 +629,16 @@ class Handler
             $args['_hashTags'] = $tags;
         }
 
+        //첨부파일 복사
+        $originFiles = $board->files;
+        if ($originFiles != null) {
+            $files = [];
+            foreach ($originFiles as $originFile) {
+                $files[] = $originFile['id'];
+            }
+            $args['_files'] = $files;
+        }
+
         $this->add($args, $user, $config);
 
         $board->getConnection()->commit();
