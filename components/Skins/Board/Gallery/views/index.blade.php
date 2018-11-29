@@ -220,7 +220,7 @@
 <!-- /검색 정보 출력 -->
 @if ($searchOptions != null)
     <div class="xe-row">
-        <div class="xe-col-md-8">
+        <div class="xe-col-md-12">
             <div class="panel">
                 <div class="panel-heading">
                     <h3> {{ xe_trans('board::searchResult', ['count' => $paginate->total()]) }}</h3>
