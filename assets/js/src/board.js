@@ -351,7 +351,7 @@ window.jQuery(function ($) {
   if (formElement.length) {
     var isPreview = false
     window.XE.app('Form').then(Form => {
-      Form.get(formElement).$$on('submit', (eventName, element, event, preventSubmit) => {
+      Form.get(formElement).$$on('submit', (eventName, { preventSubmit }) => {
         if (isPreview) {
           preventSubmit()
           isPreview = false
@@ -370,7 +370,7 @@ window.jQuery(function ($) {
       $form.attr('target', '_blank')
       isPreview = true
 
-      $form.submit()
+      $form.get(0).submit()
 
       $form.attr('action', currentUrl)
       $form.attr('target', currentTarget === undefined ? '' : currentTarget)
