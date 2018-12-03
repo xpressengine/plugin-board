@@ -292,7 +292,7 @@ class Resources
     {
         intercept(
             'XeCategory@deleteItem', 'board::categoryDelete',
-            function ($deleteCategory, $item, $force) {
+            function ($deleteCategory, $item, $force = true) {
                 $isUsingCategory = false;
 
                 $delItemUseDocument = BoardCategory::where('item_id', $item->id)->get();
