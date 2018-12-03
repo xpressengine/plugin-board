@@ -42,6 +42,10 @@ return [
         'ko' => '익명글 사용',
         'en' => 'Anonymity Use',
     ],
+    'anonymityUseDescription' => [
+        'ko' => '게시판을 익명 게시판으로 사용합니다.',
+        'en' => 'Use the board as an anonymous board.'
+    ],
     'anonymityName' => [
         'ko' => '익명 이름',
         'en' => 'Anonymity Name',

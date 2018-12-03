@@ -109,7 +109,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <div class="clearfix">
-                                                        <label>{{xe_trans('board::anonymityUse')}} </label>
+                                                        <label>{{xe_trans('board::anonymityUse')}} <small>{{ xe_trans('board::anonymityUseDescription') }}</small></label>
                                                     </div>
                                                     <select id="" name="anonymity" class="form-control">
                                                         <option value="true" {!! $config->get('anonymity') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
@@ -121,7 +121,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <div class="clearfix">
-                                                        <label>{{xe_trans('board::anonymityName')}} <small>{{xe_trans('board::anonymityDescription')}} </small></label>
+                                                        <label>{{xe_trans('board::anonymityName')}} <small>{{xe_trans('board::anonymityNameDescription')}} </small></label>
                                                     </div>
                                                     <input type="text" name="anonymityName" class="form-control" value="{{ Request::old('anonymityName', $config->get('anonymityName')) }}" />
                                                 </div>

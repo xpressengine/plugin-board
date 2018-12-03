@@ -153,7 +153,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
-                                                    <label>{{xe_trans('board::anonymityUse')}} </label>
+                                                    <label>{{xe_trans('board::anonymityUse')}} <small>{{ xe_trans('board::anonymityUseDescription') }}</small></label>
                                                     <div class="checkbox pull-right">
                                                         <label>
                                                             <input type="checkbox" class="inheritCheck" data-target="anonymity" @if($config->getPure('anonymity') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
@@ -170,7 +170,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
-                                                    <label>{{xe_trans('board::anonymityName')}} <small>{{xe_trans('board::anonymityDescription')}} </small></label>
+                                                    <label>{{xe_trans('board::anonymityName')}} <small>{{xe_trans('board::anonymityNameDescription')}} </small></label>
                                                     <div class="checkbox pull-right">
                                                         <label>
                                                             <input type="checkbox" class="inheritCheck" data-target="anonymityName" @if($config->getPure('anonymityName') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
