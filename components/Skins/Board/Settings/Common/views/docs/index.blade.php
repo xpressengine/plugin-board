@@ -116,8 +116,30 @@ use Xpressengine\Plugins\Board\Models\Board;
                                     <td>{{ $document->assent_count }}/{{ $document->read_count }}</td>
                                     <td>{{ $document->created_at }}</td>
                                     <td>{{ $document->ipaddress }}</td>
-                                    <td><span class="label label-green">{{ xe_trans($document->getDisplayStatusName($document->display)) }}</span></td>
-                                    <td><span class="label label-grey">{{ xe_trans($document->getApproveStatusName($document->approved)) }}</span></td>
+                                    <td>
+                                        <span class="label
+                                            @if ($document->display == Board::DISPLAY_VISIBLE)
+                                                label-green
+                                            @elseif ($document->display == Board::DISPLAY_SECRET)
+                                                label-blue
+                                            @else
+                                                label-grey
+                                            @endif
+                                        ">
+                                            {{ xe_trans($document->getDisplayStatusName($document->display)) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="label
+                                            @if ($document->approved == Board::APPROVED_APPROVED)
+                                                label-green
+                                            @else
+                                                label-grey
+                                            @endif
+                                        ">
+                                            {{ xe_trans($document->getApproveStatusName($document->approved)) }}
+                                        </span>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
