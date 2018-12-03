@@ -354,7 +354,6 @@ window.jQuery(function ($) {
       Form.get(formElement).$$on('submit', (eventName, { preventSubmit }) => {
         if (isPreview) {
           preventSubmit()
-          isPreview = false
           return Promise.resolve({stop: true})
         }
         return Promise.resolve()
@@ -371,6 +370,7 @@ window.jQuery(function ($) {
       isPreview = true
 
       $form.get(0).submit()
+      isPreview = false
 
       $form.attr('action', currentUrl)
       $form.attr('target', currentTarget === undefined ? '' : currentTarget)
