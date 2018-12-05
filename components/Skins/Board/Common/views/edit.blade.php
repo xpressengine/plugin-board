@@ -156,8 +156,11 @@
             },
             callback: function (data) {
                 window.XE.app('Editor').then(function (appEditor) {
-                    appEditor.getEditor('xeContentEditor').then(function (editor) {
-                        editor.setContents(data.content);
+                    appEditor.getEditor('XEckeditor').then(function (editorDefine) {
+                        var inst = editorDefine.editorList['xeContentEditor']
+                        if (inst) {
+                            inst.setContents(data.content);
+                        }
                     })
                 })
             }
