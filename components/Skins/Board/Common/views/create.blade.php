@@ -150,7 +150,6 @@
             btnSave: $('.__xe_temp_btn_save', form),
             // container: $('.draft_container', form),
             withForm: true,
-            // container: $('.draft_container'),
             apiUrl: {
                 draft: {
                     add: xeBaseURL + '/draft/store',
@@ -165,8 +164,11 @@
             },
             callback: function (data) {
                 window.XE.app('Editor').then(function (appEditor) {
-                    appEditor.getEditor('xeContentEditor').then(function (editor) {
-                        editor.setContents(data.content);
+                    appEditor.getEditor('XEckeditor').then(function (editorDefine) {
+                        var inst = editorDefine.editorList['xeContentEditor']
+                        if (inst) {
+                            inst.setContents(data.content);
+                        }
                     })
                 })
             }
