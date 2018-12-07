@@ -19,7 +19,7 @@ $ php artisan plugin:install board
 - 다음의 페이지에서 다운로드
     * https://store.xpressengine.io/plugins/board
     * https://github.com/xpressengine/plugin-board/releases
-- 프로젝트의 `plugin` 디렉토리 아래 `board` 디렉토리명으로 압축해제
+- 프로젝트의 `plugins` 디렉토리 아래 `board` 디렉토리명으로 압축해제
 - `board` 디렉토리 이동 후 `composer dump` 명령 실행
 
 # Usage
