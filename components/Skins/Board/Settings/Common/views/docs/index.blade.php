@@ -43,7 +43,7 @@ use Xpressengine\Plugins\Board\Models\Board;
                                             <span class="__xe_text">{{ $boardSearchMessage }}</span> <span class="caret"></span>
                                         </button>
 
-                                        <ul class="dropdown-menu" role="menu">
+                                        <ul class="dropdown-menu" role="menu" style="overflow: scroll; height: 280px;">
                                             <li class="active"><a href="#" value="">{{ xe_trans('board::manage.boardFilter.all') }}</a></li>
                                             @foreach ($boards as $id => $boardName)
                                                 <li><a href="#" value="{{ $id }}">{{ xe_trans($boardName) }}</a></li>
