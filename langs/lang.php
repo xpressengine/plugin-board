@@ -547,4 +547,12 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '검색된 게시물 수',
         'en' => 'Number of searched articles'
     ],
+    'like' => [
+        'ko' => '추천',
+        'en' => 'Like'
+    ],
+    'hate' => [
+        'ko' => '비추천',
+        'en' => 'Hate'
+    ],
 ];

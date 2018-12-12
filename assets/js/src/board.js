@@ -214,7 +214,8 @@ window.jQuery(function ($) {
       dataType: 'json'
     }).done(function (json) {
       $target.toggleClass('voted')
-      $('.bd_like_num').text(json.counts.assent)
+      $('.bd_like_num').text(json.counts.assent);
+      $('.bd_hate_num').text(json.counts.dissent);
     })
   })
 

@@ -72,8 +72,15 @@
             <div class="bd_function">
                 <div class="bd_function_l">
                     <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
-                    <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-heart"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
-                    <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">{{$item->assent_count}}</a>
+                    @if ($config->get('assent') == true)
+                        <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-thumbs-up"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
+                        <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">{{$item->assent_count}}</a>
+                    @endif
+
+                    @if ($config->get('dissent') == true)
+                        <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'dissent') === true) voted @endif"><i class="xi-thumbs-down"></i><span class="xe-sr-only">{{ trans('board::hate') }}</span></a>
+                        <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_like_num bd_hate_num" data-id="{{$item->id}}">{{$item->dissent_count}}</a>
+                    @endif
 
                     @if (Auth::check() === true)
                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
