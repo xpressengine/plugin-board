@@ -653,11 +653,12 @@ class BoardModuleController extends Controller
      * 미리보기
      *
      * @param Request                $request         request
+     * @param BoardService           $service         board service
      * @param Validator              $validator       validator
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @return mixed
      */
-    public function preview(Request $request, Validator $validator, BoardPermissionHandler $boardPermission)
+    public function preview(Request $request, BoardService $service, Validator $validator, BoardPermissionHandler $boardPermission)
     {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
@@ -683,8 +684,10 @@ class BoardModuleController extends Controller
             $writer = $this->config->get('anonymityName');
         }
 
-        if ($request->get('categoryItemId', '') !== '') {
-
+        $fieldTypes = $service->getFieldTypes($this->config);
+        $dynamicFieldsById = [];
+        foreach ($fieldTypes as $fieldType) {
+            $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
         $showCategoryItem = null;
@@ -705,6 +708,8 @@ class BoardModuleController extends Controller
             'writer' => $writer,
             'format' => $format,
             'showCategoryItem' => $showCategoryItem,
+            'dynamicFieldsById' => $dynamicFieldsById,
+            'fieldTypes' => $fieldTypes,
         ]);
     }
 
