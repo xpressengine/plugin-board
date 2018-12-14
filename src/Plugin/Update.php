@@ -311,6 +311,11 @@ class Update
         return true;
     }
 
+    /**
+     * check has columns config
+     *
+     * @return bool
+     */
     protected static function hasColumnsConfig()
     {
         $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
@@ -320,6 +325,11 @@ class Update
         return true;
     }
 
+    /**
+     * update columns config
+     *
+     * @return void
+     */
     protected static function updateColumnsConfig()
     {
         $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
@@ -338,15 +348,32 @@ class Update
         // update instance config
         $configs = XeConfig::children($config);
         foreach ($configs as $instanceConfig) {
-            $skinConfig = XeConfig::get(sprintf('skins.configs.module/board@board:%s', $instanceConfig->get('boardId')));
+            $skinConfig = XeConfig::get(
+                sprintf(
+                    'skins.configs.module/board@board:%s',
+                    $instanceConfig->get('boardId')
+                )
+            );
 
             if ($skinConfig != null) {
                 $defaultSkinConfig = $skinConfig->get('module/board@board/skin/board@default');
                 if (isset($defaultSkinConfig['listColumns']) && $instanceConfig->get('listColumns') == null) {
-                    $instanceConfig->set('listColumns', isset($defaultSkinConfig['listColumns']) ? $defaultSkinConfig['listColumns'] : []);
-                    $instanceConfig->set('formColumns', isset($defaultSkinConfig['formColumns']) ? $defaultSkinConfig['formColumns'] : []);
-                    $instanceConfig->set('sortListColumns', isset($defaultSkinConfig['sortListColumns']) ? $defaultSkinConfig['sortListColumns'] : []);
-                    $instanceConfig->set('sortFormColumns', isset($defaultSkinConfig['sortFormColumns']) ? $defaultSkinConfig['sortFormColumns'] : []);
+                    $instanceConfig->set(
+                        'listColumns',
+                        isset($defaultSkinConfig['listColumns']) ? $defaultSkinConfig['listColumns'] : []
+                    );
+                    $instanceConfig->set(
+                        'formColumns',
+                        isset($defaultSkinConfig['formColumns']) ? $defaultSkinConfig['formColumns'] : []
+                    );
+                    $instanceConfig->set(
+                        'sortListColumns',
+                        isset($defaultSkinConfig['sortListColumns']) ? $defaultSkinConfig['sortListColumns'] : []
+                    );
+                    $instanceConfig->set(
+                        'sortFormColumns',
+                        isset($defaultSkinConfig['sortFormColumns']) ? $defaultSkinConfig['sortFormColumns'] : []
+                    );
 
                     XeConfig::modify($instanceConfig);
                 }
@@ -354,6 +381,11 @@ class Update
         }
     }
 
+    /**
+     * check has secret post config
+     *
+     * @return bool
+     */
     protected static function hasSecretPostConfig()
     {
         $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
@@ -363,6 +395,11 @@ class Update
         return true;
     }
 
+    /**
+     * update secret post config
+     *
+     * @return void
+     */
     protected static function updateSecretPostConfig()
     {
         $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
@@ -371,6 +408,11 @@ class Update
         XeConfig::modify($config);
     }
 
+    /**
+     * check has use approve config
+     *
+     * @return bool
+     */
     protected static function hasUseApproveConfig()
     {
         $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
@@ -380,6 +422,11 @@ class Update
         return true;
     }
 
+    /**
+     * update use approvce config
+     *
+     * @return void
+     */
     protected static function updateUseApproveConfig()
     {
         $config = XeConfig::get(ConfigHandler::CONFIG_NAME);

@@ -30,7 +30,6 @@ use Xpressengine\Document\ConfigHandler as DocumentConfigHandler;
  */
 class ConfigHandler
 {
-
     /**
      * config package name
      * 다른 모듈과 충돌을 피하기 위해 설정 이름을 모듈 이름으로 선언
@@ -202,7 +201,7 @@ class ConfigHandler
     /**
      * modify config
      *
-     * @param ConfigEntity $config
+     * @param ConfigEntity $config config entity
      * @return ConfigEntity
      */
     public function modify(ConfigEntity $config)

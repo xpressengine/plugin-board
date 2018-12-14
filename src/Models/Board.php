@@ -344,7 +344,7 @@ class Board extends Document implements CommentUsable, SeoUsable
     /**
      * visible with notice
      *
-     * @param Builder $query
+     * @param Builder $query query
      * @return void
      */
     public function scopeVisibleWithNotice(Builder $query)
@@ -465,7 +465,7 @@ class Board extends Document implements CommentUsable, SeoUsable
     /**
      * get display status name
      *
-     * @param int $displayCode
+     * @param int $displayCode display status code
      *
      * @return string
      */
@@ -483,7 +483,7 @@ class Board extends Document implements CommentUsable, SeoUsable
     /**
      * get approve status name
      *
-     * @param int $approveCode
+     * @param int $approveCode approve status code
      *
      * @return string
      */

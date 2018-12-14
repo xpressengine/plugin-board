@@ -242,6 +242,11 @@ class Resources
         XeTrash::register(RecycleBin::class);
     }
 
+    /**
+     * register commands
+     *
+     * @return void
+     */
     public static function registerCommands()
     {
         $commands = [
@@ -266,6 +271,11 @@ class Resources
         );
     }
 
+    /**
+     * register dynamic field create intercept
+     *
+     * @return void
+     */
     public static function interceptDynamicField()
     {
         intercept(
@@ -288,10 +298,16 @@ class Resources
         );
     }
 
+    /**
+     * register category delete intercept
+     *
+     * @return void
+     */
     public static function interceptDeleteCategory()
     {
         intercept(
-            'XeCategory@deleteItem', 'board::categoryDelete',
+            'XeCategory@deleteItem',
+            'board::categoryDelete',
             function ($deleteCategory, $item, $force = true) {
                 $isUsingCategory = false;
 

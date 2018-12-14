@@ -140,7 +140,7 @@ class BoardModuleController extends Controller
      * @param BoardService           $service         board service
      * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      * @throws AccessDeniedHttpException
      */
     public function index(BoardService $service, Request $request, BoardPermissionHandler $boardPermission)
@@ -205,8 +205,10 @@ class BoardModuleController extends Controller
 
         $identifyManager = app('xe.board.identify');
         if ($service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
-            && Gate::denies(BoardPermissionHandler::ACTION_READ,
-            new Instance($boardPermission->name($this->instanceId)))
+            && Gate::denies(
+                BoardPermissionHandler::ACTION_READ,
+                new Instance($boardPermission->name($this->instanceId))
+            )
         ) {
             throw new AccessDeniedHttpException;
         }
@@ -244,6 +246,17 @@ class BoardModuleController extends Controller
         ]);
     }
 
+    /**
+     * print
+     *
+     * @param BoardService           $service         board service
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission
+     * @param string                 $menuUrl         menu url
+     * @param string                 $id              board id
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function print(
         BoardService $service,
         Request $request,
@@ -256,8 +269,10 @@ class BoardModuleController extends Controller
 
         $identifyManager = app('xe.board.identify');
         if ($service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
-            && Gate::denies(BoardPermissionHandler::ACTION_READ,
-                new Instance($boardPermission->name($this->instanceId)))
+            && Gate::denies(
+                BoardPermissionHandler::ACTION_READ,
+                new Instance($boardPermission->name($this->instanceId))
+            )
         ) {
             throw new AccessDeniedHttpException;
         }
@@ -291,7 +306,7 @@ class BoardModuleController extends Controller
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param string                 $menuUrl         first segment
      * @param string                 $strSlug         document slug
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function slug(
         BoardService $service,
@@ -321,7 +336,7 @@ class BoardModuleController extends Controller
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param string                 $menuUrl         first segment
      * @param string                 $itemId          document id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function showByItemId(
         BoardService $service,
@@ -464,7 +479,7 @@ class BoardModuleController extends Controller
      * @param IdentifyManager $identifyManager identify manager
      * @param string          $menuUrl         first segment
      * @param string          $id              document id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function edit(
         BoardService $service,
@@ -530,7 +545,7 @@ class BoardModuleController extends Controller
      * @param Validator       $validator       validator
      * @param IdentifyManager $identifyManager identify manager
      * @param string          $menuUrl         first segment
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function update(
         BoardService $service,
@@ -658,8 +673,12 @@ class BoardModuleController extends Controller
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @return mixed
      */
-    public function preview(Request $request, BoardService $service, Validator $validator, BoardPermissionHandler $boardPermission)
-    {
+    public function preview(
+        Request $request,
+        BoardService $service,
+        Validator $validator,
+        BoardPermissionHandler $boardPermission
+    ) {
         if (Gate::denies(
             BoardPermissionHandler::ACTION_CREATE,
             new Instance($boardPermission->name($this->instanceId))
@@ -722,7 +741,7 @@ class BoardModuleController extends Controller
      * @param IdentifyManager $identifyManager identify manager
      * @param string          $menuUrl         first segment
      * @param string          $id              document id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function destroy(
         BoardService $service,
@@ -766,6 +785,7 @@ class BoardModuleController extends Controller
      * @param BoardService $service board service
      * @param Request      $request request
      * @return mixed
+     * @throws \Exception
      */
     public function trash(BoardService $service, Request $request)
     {
@@ -795,7 +815,7 @@ class BoardModuleController extends Controller
      *
      * @param string $menuUrl first segment
      * @param string $id      document id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function favorite($menuUrl, $id)
     {
@@ -821,7 +841,7 @@ class BoardModuleController extends Controller
      *
      * @param Request $request request
      * @param string  $id      document id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function showVote(Request $request, $id)
     {
@@ -860,7 +880,7 @@ class BoardModuleController extends Controller
      * @param string  $menuUrl first segment
      * @param string  $option  options
      * @param string  $id      document id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function vote(Request $request, $menuUrl, $option, $id)
     {

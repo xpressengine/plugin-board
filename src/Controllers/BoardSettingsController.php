@@ -111,7 +111,7 @@ class BoardSettingsController extends Controller
      *
      * @param BoardPermissionHandler $boardPermission board permission handler
      * @param CaptchaManager         $captcha         Captcha manager
-     * @return mixed|\Xpressengine\Presenter\RendererInterface
+     * @return mixed|\Xpressengine\Presenter\Presentable
      */
     public function editGlobalConfig(BoardPermissionHandler $boardPermission, CaptchaManager $captcha)
     {
@@ -160,7 +160,7 @@ class BoardSettingsController extends Controller
      * global permission edit
      *
      * @param BoardPermissionHandler $boardPermission board permission handler
-     * @return mixed|\Xpressengine\Presenter\RendererInterface
+     * @return mixed|\Xpressengine\Presenter\Presentable
      */
     public function editGlobalPermission(BoardPermissionHandler $boardPermission)
     {
@@ -174,7 +174,7 @@ class BoardSettingsController extends Controller
     /**
      * global permission update
      *
-     * @param Request $request request
+     * @param Request                $request         request
      * @param BoardPermissionHandler $boardPermission board permission
      * @return mixed
      */
@@ -188,7 +188,7 @@ class BoardSettingsController extends Controller
     /**
      * global board toggle menu
      *
-     * @return mixed|\Xpressengine\Presenter\RendererInterface
+     * @return mixed|\Xpressengine\Presenter\Presentable
      */
     public function editGlobalToggleMenu()
     {
@@ -204,7 +204,7 @@ class BoardSettingsController extends Controller
      *
      * @param CaptchaManager $captcha Captcha manager
      * @param string         $boardId board instance id
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function editConfig(CaptchaManager $captcha, $boardId)
     {
@@ -298,7 +298,14 @@ class BoardSettingsController extends Controller
         );
     }
 
-
+    /**
+     * edit permission
+     *
+     * @param BoardPermissionHandler $boardPermission board permission
+     * @param string                 $boardId         board id
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function editPermission(BoardPermissionHandler $boardPermission, $boardId)
     {
         $config = $this->configHandler->get($boardId);
@@ -312,6 +319,14 @@ class BoardSettingsController extends Controller
         ]);
     }
 
+    /**
+     * update permission
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission
+     * @param string                 $boardId         board id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updatePermission(Request $request, BoardPermissionHandler $boardPermission, $boardId)
     {
         $boardPermission->set($request, $boardId);
@@ -319,6 +334,13 @@ class BoardSettingsController extends Controller
         return redirect()->to($this->urlHandler->managerUrl('permission', ['boardId' => $boardId]));
     }
 
+    /**
+     * edit skin
+     *
+     * @param string $boardId board id
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function editSkin($boardId)
     {
         $config = $this->configHandler->get($boardId);
@@ -332,6 +354,13 @@ class BoardSettingsController extends Controller
         ]);
     }
 
+    /**
+     * edit editor
+     *
+     * @param string $boardId board id
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function editEditor($boardId)
     {
         $config = $this->configHandler->get($boardId);
@@ -345,6 +374,13 @@ class BoardSettingsController extends Controller
         ]);
     }
 
+    /**
+     * edit columns
+     *
+     * @param string $boardId board id
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function editColumns($boardId)
     {
         $config = $this->configHandler->get($boardId);
@@ -360,6 +396,14 @@ class BoardSettingsController extends Controller
         ]);
     }
 
+    /**
+     * update columns
+     *
+     * @param Request $request request
+     * @param string  $boardId board id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateColumns(Request $request, $boardId)
     {
         $config = $this->configHandler->get($boardId);
@@ -373,6 +417,13 @@ class BoardSettingsController extends Controller
         return redirect()->to($this->urlHandler->managerUrl('columns', ['boardId' => $boardId]));
     }
 
+    /**
+     * edit dynamic field
+     *
+     * @param string $boardId board id
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function editDynamicField($boardId)
     {
         $config = $this->configHandler->get($boardId);
@@ -388,6 +439,13 @@ class BoardSettingsController extends Controller
         ]);
     }
 
+    /**
+     * edit toggle menu
+     *
+     * @param string $boardId board id
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function editToggleMenu($boardId)
     {
         $toggleMenuSection = new ToggleMenuSection(BoardModule::getId(), $boardId);
@@ -403,7 +461,7 @@ class BoardSettingsController extends Controller
      *
      * @param Request         $request         request
      * @param RouteRepository $routeRepository route repository
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function docsIndex(Request $request, RouteRepository $routeRepository)
     {
@@ -462,10 +520,26 @@ class BoardSettingsController extends Controller
 
         return $this->presenter->make(
             'docs.index',
-            compact('documents','instances', 'urls', 'titles', 'searchTargetWord', 'stateMessage', 'totalCount', 'boards', 'boardSearchMessage')
+            compact(
+                'documents',
+                'instances',
+                'urls',
+                'titles',
+                'searchTargetWord',
+                'stateMessage',
+                'totalCount',
+                'boards',
+                'boardSearchMessage'
+            )
         );
     }
 
+    /**
+     * get state message
+     * @param string $state state
+     *
+     * @return string
+     */
     protected function getStateMessage($state)
     {
         list($searchField, $searchValue) = explode('|', $state);
@@ -515,7 +589,7 @@ class BoardSettingsController extends Controller
      *
      * @param Request         $request         request
      * @param RouteRepository $routeRepository route repository
-     * @return \Xpressengine\Presenter\RendererInterface
+     * @return \Xpressengine\Presenter\Presentable
      */
     public function docsTrash(Request $request, RouteRepository $routeRepository)
     {
@@ -550,7 +624,16 @@ class BoardSettingsController extends Controller
         } elseif ($request->get('search_target') == 'title_pure_content') {
             $searchTargetWord = 'titleAndContent';
         }
-        return $this->presenter->make('docs.trash', compact('documents', 'instances', 'urls', 'titles', 'searchTargetWord'));
+        return $this->presenter->make(
+            'docs.trash',
+            compact(
+                'documents',
+                'instances',
+                'urls',
+                'titles',
+                'searchTargetWord'
+            )
+        );
     }
 
     /**
@@ -592,6 +675,7 @@ class BoardSettingsController extends Controller
      *
      * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
+     * @throws \Exception
      */
     public function destroy(Request $request)
     {
@@ -614,6 +698,7 @@ class BoardSettingsController extends Controller
      *
      * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
+     * @throws \Exception
      */
     public function trash(Request $request)
     {
@@ -636,6 +721,7 @@ class BoardSettingsController extends Controller
      *
      * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
+     * @throws \Exception
      */
     public function restore(Request $request)
     {
@@ -656,6 +742,7 @@ class BoardSettingsController extends Controller
      *
      * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
+     * @throws \Exception
      */
     public function move(Request $request)
     {
@@ -685,6 +772,7 @@ class BoardSettingsController extends Controller
      *
      * @param Request $request request
      * @return \Illuminate\Http\RedirectResponse|Redirect
+     * @throws \Exception
      */
     public function copy(Request $request)
     {
@@ -713,6 +801,13 @@ class BoardSettingsController extends Controller
         return $this->presenter->makeApi([]);
     }
 
+    /**
+     * make where
+     * @param Board   $query   query
+     * @param Request $request request
+     *
+     * @return mixed
+     */
     protected function makeWhere($query, $request)
     {
         //기간 검색
@@ -725,15 +820,30 @@ class BoardSettingsController extends Controller
 
         //검색어 검색
         if ($request->get('search_target') == 'title') {
-            $query = $query->where('title', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
+            $query = $query->where(
+                'title',
+                'like',
+                sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword'))))
+            );
         }
         if ($request->get('search_target') == 'pure_content') {
-            $query = $query->where('pure_content', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
+            $query = $query->where(
+                'pure_content',
+                'like',
+                sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword'))))
+            );
         }
         if ($request->get('search_target') == 'title_pure_content') {
             $query = $query->whereNested(function ($query) use ($request) {
-                $query->where('title', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))))
-                    ->orWhere('pure_content', 'like', sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword')))));
+                $query->where(
+                    'title',
+                    'like',
+                    sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword'))))
+                )->orWhere(
+                    'pure_content',
+                    'like',
+                    sprintf('%%%s%%', implode('%', explode(' ', $request->get('search_keyword'))))
+                );
             });
         }
 
@@ -743,7 +853,11 @@ class BoardSettingsController extends Controller
 
         //작성자 ID 검색
         if ($request->get('search_target') == 'writerId') {
-            $writers = \XeUser::where('email', 'like', '%' . $request->get('search_keyword') . '%')->selectRaw('id')->get();
+            $writers = \XeUser::where(
+                'email',
+                'like',
+                '%' . $request->get('search_keyword') . '%'
+            )->selectRaw('id')->get();
 
             $writerIds = [];
             foreach ($writers as $writer) {

@@ -16,7 +16,7 @@ namespace Xpressengine\Plugins\Board\Commands;
 use App\Console\Commands\SkinMake;
 
 /**
- * BaordSkinMake
+ * BoardSkinMake
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -65,7 +65,7 @@ class BoardSkinMake extends SkinMake
     /**
      * makeUsable
      *
-     * @param \ArrayAccess|array $attr
+     * @param \ArrayAccess|array $attr attributes
      * @return void
      * @throws \Exception
      */
@@ -94,7 +94,6 @@ class BoardSkinMake extends SkinMake
                 $rename = sprintf('%s/views/%s.blade.php', $path, $fileName);
                 rename($stub, $rename);
             }
-
         }
     }
 

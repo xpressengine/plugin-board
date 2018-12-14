@@ -52,7 +52,6 @@ use Xpressengine\Plugins\Comment\Handler as CommentHandler;
  */
 class Handler
 {
-
     /**
      * @var DocumentHandler
      */
@@ -273,6 +272,13 @@ class Handler
         }
     }
 
+    /**
+     * save cover
+     * @param Board $board board model
+     * @param array $args  arguments
+     *
+     * @return array
+     */
     protected function saveCover(Board $board, array $args)
     {
         $fileIds = [];
@@ -284,12 +290,28 @@ class Handler
         return $fileIds;
     }
 
+    /**
+     * get Thumb
+     *
+     * @param string $boardId boardId
+     *
+     * @return mixed
+     */
     public function getThumb($boardId)
     {
         $thumb = BoardGalleryThumb::find($boardId);
+
         return $thumb;
     }
 
+    /**
+     * save Thumb
+     *
+     * @param Board  $board  board model
+     * @param string $fileId file id
+     *
+     * @return void
+     */
     protected function saveThumb(Board $board, $fileId)
     {
         /** @var \Xpressengine\Media\MediaManager $mediaManager */
@@ -493,6 +515,7 @@ class Handler
      * @param Board        $board  board model
      * @param ConfigEntity $config board config entity
      * @return void
+     * @throws \Exception
      */
     public function trash(Board $board, ConfigEntity $config)
     {
@@ -522,6 +545,7 @@ class Handler
      * @param Board        $board  board model
      * @param ConfigEntity $config board config entity
      * @return void
+     * @throws \Exception
      */
     public function restore(Board $board, ConfigEntity $config)
     {
@@ -552,6 +576,7 @@ class Handler
      * @param ConfigEntity $dstConfig    destination board config entity
      * @param ConfigEntity $originConfig original board config entity
      * @return void
+     * @throws \Exception
      */
     public function move(Board $board, ConfigEntity $dstConfig, ConfigEntity $originConfig)
     {
@@ -603,6 +628,7 @@ class Handler
      * @param UserInterface $user   user
      * @param ConfigEntity  $config board config entity
      * @return void
+     * @throws \Exception
      */
     public function copy(Board $board, UserInterface $user, ConfigEntity $config)
     {

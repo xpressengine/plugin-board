@@ -56,7 +56,6 @@ class BoardSlug extends DynamicModel
         } else {
             self::$reserved[] = $slug;
         }
-
     }
 
     /**

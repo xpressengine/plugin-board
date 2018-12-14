@@ -53,6 +53,17 @@ if (function_exists('get_board_title') === false) {
 }
 
 if (function_exists('send_notice_email') === false) {
+    /**
+     * send notice mail
+     *
+     * @param string        $tag             tag
+     * @param string        $email           email
+     * @param string        $title           title
+     * @param string        $contents        contents
+     * @param callable|null $subjectResolver subject resolver
+     *
+     * @return void
+     */
     function send_notice_email($tag, $email, $title, $contents, callable $subjectResolver = null)
     {
         (new class($tag, $email, $title, $contents, $subjectResolver) {
@@ -64,6 +75,15 @@ if (function_exists('send_notice_email') === false) {
             protected $contents;
             protected $subjectResolver;
 
+            /**
+             *  constructor.
+             *
+             * @param string        $tag             tag
+             * @param string        $email           email
+             * @param string        $title           title
+             * @param string        $contents        contents
+             * @param callable|null $subjectResolver subject resolver
+             */
             public function __construct($tag, $email, $title, $contents, callable $subjectResolver = null)
             {
                 $this->tag = $tag;

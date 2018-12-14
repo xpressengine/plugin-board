@@ -2,12 +2,13 @@
 /**
 * ShareManagerController
 *
+* PHP version 5
+*
 * @category    Board
 * @package     Xpressengine\Plugins\Board
 * @author      XE Developers <developers@xpressengine.com>
 * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
-* @license     LGPL-2.1
-* @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+* @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
 * @link        https://xpressengine.io
 */
 
@@ -20,8 +21,23 @@ use XeConfig;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\Components\UIObjects\Share\ShareUIObject;
 
+/**
+ * ShareSettingsController
+ *
+ * @category    Board
+ * @package     Xpressengine\Plugins\Board
+ * @author      XE Developers <developers@xpressengine.com>
+ * @copyright   2015 Copyright (C) NAVER Corp. <http://www.navercorp.com>
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL-2.1
+ * @link        https://xpressengine.io
+ */
 class ShareSettingsController extends Controller
 {
+    /**
+     * config
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
     public function config()
     {
         $toggleMenuSection = new ToggleMenuSection(ShareUIObject::getId());
