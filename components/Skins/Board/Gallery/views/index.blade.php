@@ -189,6 +189,22 @@
                         </div>
                     </div>
 
+                    {{--태그 검색--}}
+                    @if ($config->get('useTag') == true)
+                        <div class="xe-row">
+                            <div class="xe-col-sm-6">
+                                <div class="xe-row">
+                                    <div class="xe-col-sm-3">
+                                        <label class="xe-control-label">{{ xe_trans('xe::tag') }}</label>
+                                    </div>
+                                    <div class="xe-col-sm-9">
+                                        <input type="text" name="searchTag" class="xe-form-control" title="{{ xe_trans('xe::tag') }}" value="{{ Request::get('searchTag') }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- 확장 필드 검색 -->
                     @foreach($fieldTypes as $typeConfig)
                         @if($typeConfig->get('searchable') === true)
