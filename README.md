@@ -4,15 +4,31 @@
  </p>
 
 # XE3 Board Plugin
-이 어플리케이션은 Xpressengine3(이하 XE3)의 플러그인입니다.
+이 플러그인은 Xpressengine3(이하 XE3)의 플러그인입니다.
 
-이 플러그인은 XE3에서 게시판 기능을 제공합니다.
+이 플러그인을 사용하여, 게시판 기능을 사용할 수 있습니다.
 
-<p align="center"> 
-  <img src="https://raw.githubusercontent.com/xpressengine/plugin-board/develop/samples/board_flat.png">
- </p>
+## What can I do?
 
-![License](http://img.shields.io/badge/license-GNU%20LGPL-brightgreen.svg)
+본 플러그인을 사용하여 커뮤니티를 구축/운영 함에 있어서 기본적인 게시판 기능을 수행할 수 있으며,
+Comment 플러그인과 같이 사용하여 댓글을 작성할 수 있습니다.
+
+그 이외의도 아래의 기능을 지원합니다.
+
+* 카테고리 생성 / 제거 / 게시글 분류
+* 댓글 작성 및 삭제
+* 익명으로 글 작성 
+
+## Installation specification
+* Minimum installation environment
+   XE3, PHP 7.0 or later
+* Recommended installation environment
+   XE3, PHP 7.1 or later
+
+## Caution
+본 플러그인과의 의존성이 있는 Comment 플러그인을 삭제하는 경우 정상적인 플러그인 사용이 되지 않을 수 있습니다.
+
+
 
 # Installation
 ### Console
@@ -23,6 +39,7 @@ $ php artisan plugin:install board
 ### Web install
 - 관리자 > 플러그인 & 업데이트 > 플러그인 목록 내에 새 플러그인 설치 버튼 클릭
 - `board` 검색 후 설치하기
+
 
 
 # Usage
@@ -45,3 +62,4 @@ $ php artisan plugin:install board
 
 ## License
 이 플러그인은 LGPL라이선스 하에 있습니다. <https://opensource.org/licenses/LGPL-2.1>
+![License](http://img.shields.io/badge/license-GNU%20LGPL-brightgreen.svg)
