@@ -7,6 +7,11 @@
 이 플러그인은 Xpressengine3(이하 XE3)의 플러그인입니다.
 
 이 플러그인을 사용하여, 게시판 기능을 사용할 수 있습니다.
+<p align="center"> 
+  <img src="https://raw.githubusercontent.com/xpressengine/plugin-board/develop/board_preview.png">
+ </p>
+
+
 
 ## What can I do?
 
