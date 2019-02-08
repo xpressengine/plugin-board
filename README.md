@@ -1,9 +1,14 @@
-# plugin-board
-이 어플리케이션은 Xpressengine3(이하 XE3)의 플러그인 입니다.
+
+<p align="center"> 
+  <img src="https://raw.githubusercontent.com/xpressengine/plugin-board/master/icon.png">
+ </p>
+
+# XE3 Board Plugin
+이 어플리케이션은 Xpressengine3(이하 XE3)의 플러그인입니다.
 
 이 플러그인은 XE3에서 게시판 기능을 제공합니다.
 
-[![License](http://img.shields.io/badge/license-GNU%20LGPL-brightgreen.svg)]
+![License](http://img.shields.io/badge/license-GNU%20LGPL-brightgreen.svg)
 
 # Installation
 ### Console
@@ -15,12 +20,6 @@ $ php artisan plugin:install board
 - 관리자 > 플러그인 & 업데이트 > 플러그인 목록 내에 새 플러그인 설치 버튼 클릭
 - `board` 검색 후 설치하기
 
-### Ftp upload
-- 다음의 페이지에서 다운로드
-    * https://store.xpressengine.io/plugins/board
-    * https://github.com/xpressengine/plugin-board/releases
-- 프로젝트의 `plugins` 디렉토리 아래 `board` 디렉토리명으로 압축해제
-- `board` 디렉토리 이동 후 `composer dump` 명령 실행
 
 # Usage
 관리자 > 사이트 맵> 사이트 메뉴 편집에서 `아이템 추가` 기능으로 게시판을 추가해서 사용합니다.
