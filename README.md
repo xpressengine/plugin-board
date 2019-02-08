@@ -8,6 +8,10 @@
 
 이 플러그인은 XE3에서 게시판 기능을 제공합니다.
 
+<p align="center"> 
+  <img src="https://raw.githubusercontent.com/xpressengine/plugin-board/develop/samples/board.png">
+ </p>
+
 ![License](http://img.shields.io/badge/license-GNU%20LGPL-brightgreen.svg)
 
 # Installation
