@@ -613,7 +613,8 @@ class BoardSettingsController extends Controller
             $titles[$menu->id] = xe_trans($menu->title);
         }
 
-        $query = Board::whereIn('instance_id', $instanceIds)->where('status', Board::STATUS_TRASH);
+        $query = Board::whereIn('instance_id', $instanceIds)
+            ->whereIn('status', [Board::STATUS_TRASH, Board::STATUS_TRASH_NOTICE]);
         $query = $this->makeWhere($query, $request);
         $query->orderBy('created_at', 'desc');
         $documents = $query->paginate(15)->appends($request->except('page'));
