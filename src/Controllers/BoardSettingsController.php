@@ -789,7 +789,7 @@ class BoardSettingsController extends Controller
 
         foreach ($items as $item) {
             $user = new Guest;
-            if ($item->userId != '') {
+            if ($item->user_id != '') {
                 $user = User::find($item->user_id);
             }
 

@@ -196,11 +196,11 @@ class Handler
     protected function saveData(Board $board, array $args)
     {
         $allowComment = 1;
-        if (empty($args['allow_comment']) || $args['allow_comment'] !== '1') {
+        if (empty($args['allow_comment']) || ($args['allow_comment'] !== '1' && $args['allow_comment'] !== 1)) {
             $allowComment = 0;
         }
         $useAlarm = 1;
-        if (empty($args['use_alarm']) || $args['use_alarm'] !== '1') {
+        if (empty($args['use_alarm']) || ($args['use_alarm'] !== '1' && $args['use_alarm'] !== 1)) {
             $useAlarm = 0;
         }
         $fileCount = count(\XeStorage::fetchByFileable($board->id));
@@ -635,6 +635,11 @@ class Handler
         $board->getConnection()->beginTransaction();
 
         $args = array_merge($board->getDynamicAttributes(), $board->getAttributes());
+
+        $dataArgs = $board->data;
+        unset($dataArgs['target_id']);
+        $args = array_merge($args, $dataArgs->toArray());
+
         $args['id'] = null;
         $args['instance_id'] = $config->get('boardId');
         $args['slug'] = $board->boardSlug->slug;
