@@ -670,7 +670,57 @@ class Handler
             $args['_files'] = $files;
         }
 
-        $this->add($args, $user, $config);
+        $newBoard = $this->add($args, $user, $config);
+
+        //추천, 비추천 내역 복사
+        $votes = $this->voteCounter->newModel()
+            ->where('target_id', $board->id)
+            ->where('counter_name', $this->voteCounter->getName())->get();
+        foreach ($votes as $vote) {
+            $user = app('xe.user')->users()->find($vote->user_id);
+            if ($user == null) {
+                $user = new Guest();
+            }
+
+            $option = $vote->counter_option;
+
+            $this->incrementVoteCount($newBoard, $user, $option);
+        }
+
+        //조회수 내역 복사
+        $reads = $this->readCounter->newModel()
+            ->where('target_id', $board->id)
+            ->where('counter_name', $this->readCounter->getName())->get();
+        foreach ($reads as $read) {
+            $user = app('xe.user')->users()->find($read->user_id);
+            if ($user == null) {
+                $user = new Guest();
+            }
+
+            $this->incrementReadCount($newBoard, $user);
+        }
+
+        //댓글 복사
+        $model = $this->commentHandler->createModel();
+        $comments = $model->newQuery()->whereHas('target', function ($query) use ($board) {
+            $query->where('target_id', $board->getUid());
+        })->get();
+        $targetInstanceId = $this->commentHandler->getInstanceId($config->get('boardId'));
+        foreach ($comments as $comment) {
+            $user = app('xe.user')->users()->find($comment->user_id);
+            if ($user == null) {
+                $user = new Guest();
+            }
+
+            $args = $comment->getAttributes();
+            $args['id'] = null;
+            $args['instance_id'] = $targetInstanceId;
+            $args['target_id'] = $newBoard->id;
+            $args['target_type'] = Board::class;
+            $args['target_author_id'] = $comment->user_id;
+
+            $this->commentHandler->create($args, $user);
+        }
 
         $board->getConnection()->commit();
     }
