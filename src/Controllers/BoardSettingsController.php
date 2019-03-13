@@ -746,6 +746,9 @@ class BoardSettingsController extends Controller
      */
     public function move(Request $request)
     {
+        $currentInstanceId = $request->get('current_instance_id');
+        $currentUrl = $this->urlHandler->get('index', [], $currentInstanceId);
+
         $documentIds = $request->get('id');
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
@@ -764,7 +767,7 @@ class BoardSettingsController extends Controller
 
         Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
 
-        return $this->presenter->makeApi([]);
+        return $this->presenter->makeApi(['currentUrl' => $currentUrl]);
     }
 
     /**
