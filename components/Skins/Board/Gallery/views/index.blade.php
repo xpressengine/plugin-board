@@ -270,26 +270,28 @@
                     </a>
                 </div>
                 <div class="cont_area">
-                    <div class="board_category">
-                        <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
-                        @if ($config->get('category') == true && $item->boardCategory !== null)
-                            <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
+                    @if (in_array('title', $skinConfig['listColumns']) == true)
+                        <div class="board_category">
+                            <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
+                            @if ($config->get('category') == true && $item->boardCategory !== null)
+                                <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
+                            @endif
+                        </div>
+                        @if ($item->display == $item::DISPLAY_SECRET)
+                            <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
-                    </div>
-                    @if ($item->display == $item::DISPLAY_SECRET)
-                        <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
-                    @endif
-                    <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
-                        {!! $item->title !!}
-                    </a>
-                    @if($item->comment_count > 0)
-                        <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
-                    @endif
-                    @if ($item->data->fileCount > 0)
-                        <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
-                    @endif
-                    @if($item->isNew($config->get('newTime')))
-                        <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                        <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
+                            {!! $item->title !!}
+                        </a>
+                        @if($item->comment_count > 0)
+                            <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
+                        @endif
+                        @if ($item->data->fileCount > 0)
+                            <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
+                        @endif
+                        @if($item->isNew($config->get('newTime')))
+                            <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                        @endif
                     @endif
 
                     <div class="more_info">
@@ -301,23 +303,40 @@
                             </label>
                         @endif
 
-                        @if (Auth::check() === true)
-                            <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                        @if (in_array('favorite', $skinConfig['listColumns']) == true)
+                            @if (Auth::check() === true)
+                                <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                            @endif
                         @endif
 
-                        <span class="autohr_area">
-                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                <a href="#" class="mb_autohr"
-                                data-toggle="xe-page-toggle-menu"
-                                data-url="{{ route('toggleMenuPage') }}"
-                                data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                            @else
-                                <a class="mb_autohr">{!! $item->writer !!}</a>
-                            @endif
-                        </span>
-                        <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
-                        <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                        @if (in_array('writer', $skinConfig['listColumns']) == true)
+                            <span class="autohr_area">
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                    <a href="#" class="mb_autohr"
+                                    data-toggle="xe-page-toggle-menu"
+                                    data-url="{{ route('toggleMenuPage') }}"
+                                    data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
+                                @else
+                                    <a class="mb_autohr">{!! $item->writer !!}</a>
+                                @endif
+                            </span>
+                        @endif
 
+                        @if (in_array('created_at', $skinConfig['listColumns']) == true)
+                            <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
+                        @endif
+
+                        @if (in_array('updated_at', $skinConfig['listColumns']) == true)
+                            <span class="mb_time" title="{{ $item->updated_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->updated_at }}">{{$item->updated_at}}</span></span>
+                        @endif
+
+                        @if (in_array('read_num', $skinConfig['listColumns']) == true)
+                            <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                        @endif
+
+                        @if (in_array('assent_count', $skinConfig['listColumns']) == true)
+                            <i class="xi-thumbs-up">{{ $item->assent_count }}</i>
+                        @endif
                     </div>
                 </div>
             </li>
@@ -331,27 +350,30 @@
                     </a>
                 </div>
                 <div class="cont_area">
-                    <div class="board_category">
-                        @if ($config->get('category') == true && $item->boardCategory !== null)
-                            <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
-                        @endif
-                    </div>
+                    @if (in_array('title', $skinConfig['listColumns']) == true)
+                        <div class="board_category">
+                            @if ($config->get('category') == true && $item->boardCategory !== null)
+                                <span class="category">{!! xe_trans($item->boardCategory->categoryItem->word) !!}</span>
+                            @endif
+                        </div>
 
-                    @if ($item->display == $item::DISPLAY_SECRET)
-                        <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                        @if ($item->display == $item::DISPLAY_SECRET)
+                            <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                        @endif
+                        <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
+                            {!! $item->title !!}
+                        </a>
+                        @if($item->comment_count > 0)
+                            <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
+                        @endif
+                        @if ($item->data->fileCount > 0)
+                            <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
+                        @endif
+                        @if($item->isNew($config->get('newTime')))
+                            <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                        @endif
                     @endif
-                    <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
-                        {!! $item->title !!}
-                    </a>
-                    @if($item->comment_count > 0)
-                        <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
-                    @endif
-                    @if ($item->data->fileCount > 0)
-                        <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
-                    @endif
-                    @if($item->isNew($config->get('newTime')))
-                        <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
-                    @endif
+
                     <div class="more_info">
                         @if ($isManager === true)
                             <label class="xe-label">
@@ -361,19 +383,37 @@
                             </label>
                         @endif
 
-                        @if (Auth::check() === true)
-                            <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                        @if (in_array('favorite', $skinConfig['listColumns']) == true)
+                            @if (Auth::check() === true)
+                                <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                            @endif
                         @endif
 
-                        <span class="autohr_area">
-                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                <a href="#" class="mb_autohr" data-toggle="xe-page-toggle-menu" data-url="{{ route('toggleMenuPage') }}" data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                            @else
-                                <a class="mb_autohr">{!! $item->writer !!}</a>
-                            @endif
-                        </span>
-                        <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
-                        <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                        @if (in_array('writer', $skinConfig['listColumns']) == true)
+                            <span class="autohr_area">
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                    <a href="#" class="mb_autohr" data-toggle="xe-page-toggle-menu" data-url="{{ route('toggleMenuPage') }}" data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
+                                @else
+                                    <a class="mb_autohr">{!! $item->writer !!}</a>
+                                @endif
+                            </span>
+                        @endif
+
+                        @if (in_array('created_at', $skinConfig['listColumns']) == true)
+                            <span class="mb_time" title="{{ $item->created_at }}"><i class="xi-time" data-xe-timeago="{{ $item->created_at }}">{{$item->created_at}}</i></span>
+                        @endif
+
+                        @if (in_array('updated_at', $skinConfig['listColumns']) == true)
+                            <span class="mb_time" title="{{ $item->updated_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->updated_at }}">{{$item->updated_at}}</span></span>
+                        @endif
+
+                        @if (in_array('read_num', $skinConfig['listColumns']) == true)
+                            <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                        @endif
+
+                        @if (in_array('assent_count', $skinConfig['listColumns']) == true)
+                            <i class="xi-thumbs-up">{{ $item->assent_count }}</i>
+                        @endif
                     </div>
                 </div>
             </li>
