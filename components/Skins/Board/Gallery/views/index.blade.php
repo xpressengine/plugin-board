@@ -79,7 +79,7 @@
                                     'label' => xe_trans('xe::select'),
                                     'items' => $boardList,
                                 ]) !!}
-                                <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
+                                <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-current_instance_id="{{$instanceId}}" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
                             </div>
                         </div>
                     </div>

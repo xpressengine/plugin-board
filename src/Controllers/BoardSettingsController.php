@@ -746,8 +746,12 @@ class BoardSettingsController extends Controller
      */
     public function move(Request $request)
     {
-        $currentInstanceId = $request->get('current_instance_id');
-        $currentUrl = $this->urlHandler->get('index', [], $currentInstanceId);
+        $currentInstanceId = $request->get('current_instance_id', '');
+        if ($currentInstanceId != '') {
+            $currentUrl = $this->urlHandler->get('index', [], $currentInstanceId);
+        } else {
+            $currentUrl = '/';
+        }
 
         $documentIds = $request->get('id');
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
