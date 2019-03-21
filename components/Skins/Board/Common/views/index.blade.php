@@ -77,7 +77,7 @@
                                 'label' => xe_trans('xe::select'),
                                 'items' => $boardList,
                             ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
+                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-current_instance_id="{{$instanceId}}" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
                         </div>
                     </div>
                 </div>
@@ -314,7 +314,7 @@
                     @if ($config->get('category') == true)
                         <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                     @endif
-                        <td class="title column-{{$columnName}}">
+                        <td class="title column-{{$columnName}} xe-hidden-xs">
                             <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
                             @if ($item->display == $item::DISPLAY_SECRET)
                                 <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
@@ -329,19 +329,6 @@
                             @if($item->isNew($config->get('newTime')))
                                 <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                             @endif
-                            <div class="more_info xe-visible-xs">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                <a href="#" class="mb_author"
-                                   data-toggle="xe-page-toggle-menu"
-                                   data-url="{{ route('toggleMenuPage') }}"
-                                   data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                                @else
-                                    <a class="mb_author">{!! $item->writer !!}</a>
-                                @endif
-                                <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
-                                <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
-                                <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
-                            </div>
                         </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
@@ -364,6 +351,45 @@
                     <td class="xe-hidden-xs column-{{$columnName}}">{!! $item->{$columnName} !!}</td>
                 @endif
             @endforeach
+
+            {{--모바일 사이즈 공지 list--}}
+            <td class="title column-title xe-visible-xs">
+                <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
+                @if ($item->display == $item::DISPLAY_SECRET)
+                    <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                @endif
+                @if (in_array('title', $skinConfig['listColumns']))
+                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                @endif
+                @if($item->comment_count > 0)
+                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
+                @endif
+                @if ($item->data->file_count > 0)
+                    <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
+                @endif
+                @if($item->isNew($config->get('newTime')))
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                @endif
+                <div class="more_info">
+                    @if (in_array('writer', $skinConfig['listColumns']))
+                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                            <a href="#" class="mb_author"
+                               data-toggle="xe-page-toggle-menu"
+                               data-url="{{ route('toggleMenuPage') }}"
+                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
+                        @else
+                            <a class="mb_author">{!! $item->writer !!}</a>
+                        @endif
+                    @endif
+                    @if (in_array('created_at', $skinConfig['listColumns']))
+                        <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
+                    @endif
+                    @if (in_array('read_count', $skinConfig['listColumns']))
+                        <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                    @endif
+                    <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
+                </div>
+            </td>
         </tr>
         @endforeach
         <!-- /NOTICE -->
@@ -402,7 +428,7 @@
                     @if ($config->get('category') == true)
                         <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
                     @endif
-                    <td class="title column-{{$columnName}}">
+                    <td class="title column-{{$columnName}} xe-hidden-xs">
                         @if ($item->display == $item::DISPLAY_SECRET)
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
@@ -416,19 +442,6 @@
                         @if($item->isNew($config->get('newTime')))
                             <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
                         @endif
-                        <div class="more_info xe-visible-xs">
-                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                <a href="#" class="mb_author"
-                                   data-toggle="xe-page-toggle-menu"
-                                   data-url="{{ route('toggleMenuPage') }}"
-                                   data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                            @else
-                                <a class="mb_author">{!! $item->writer !!}</a>
-                            @endif
-                            <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
-                            <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
-                            <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
-                        </div>
                     </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
@@ -451,6 +464,41 @@
                     <td class="xe-hidden-xs column-{{$columnName}}">{!! $item->{$columnName} !!}</td>
                 @endif
             @endforeach
+
+            {{--모바일 사이즈 게시물 list--}}
+            <td class="xe-visible-xs title column-title">
+                @if ($item->display == $item::DISPLAY_SECRET)
+                    <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
+                @endif
+                @if (in_array('title', $skinConfig['listColumns']))
+                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                @endif
+                @if ($item->data->file_count > 0)
+                    <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
+                @endif
+                @if($item->isNew($config->get('newTime')))
+                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
+                @endif
+                <div class="more_info">
+                    @if (in_array('writer', $skinConfig['listColumns']))
+                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                            <a href="#" class="mb_author"
+                               data-toggle="xe-page-toggle-menu"
+                               data-url="{{ route('toggleMenuPage') }}"
+                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
+                        @else
+                            <a class="mb_author">{!! $item->writer !!}</a>
+                        @endif
+                    @endif
+                    @if (in_array('created_at', $skinConfig['listColumns']))
+                        <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
+                    @endif
+                    @if (in_array('read_count', $skinConfig['listColumns']))
+                        <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
+                    @endif
+                    <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
+                </div>
+            </td>
         </tr>
         @endforeach
         <!-- /LIST -->

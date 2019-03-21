@@ -509,18 +509,24 @@ class BoardModule extends AbstractModule
                         continue;
                     }
 
-                    send_notice_email('new_article', $toMail, $data['title'], $data['contents'], function ($notifiable) use ($board) {
-                        $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
+                    send_notice_email(
+                        'new_article',
+                        trim($toMail),
+                        $data['title'],
+                        $data['contents'],
+                        function ($notifiable) use ($board) {
+                            $applicationName = xe_trans(app('xe.site')->getSiteConfig()->get('site_title'));
 
-                        $menuItem = app('xe.menu')->items()->find($board->instance_id);
-                        $subject = sprintf(
-                            '[%s - %s] %s',
-                            $applicationName,
-                            xe_trans($menuItem->title),
-                            xe_trans('board::newPostsRegistered')
-                        );
-                        return $subject;
-                    });
+                            $menuItem = app('xe.menu')->items()->find($board->instance_id);
+                            $subject = sprintf(
+                                '[%s - %s] %s',
+                                $applicationName,
+                                xe_trans($menuItem->title),
+                                xe_trans('board::newPostsRegistered')
+                            );
+                            return $subject;
+                        }
+                    );
 
                 }
 

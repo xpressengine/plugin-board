@@ -416,6 +416,7 @@ window.jQuery(function ($) {
 
     var ids = getCheckedIds()
     var instanceId = $('.__xe_move').find('[name="moveTo"]').val()
+    var currentInstanceId = $(event.target).data('current_instance_id')
 
     if (instanceId == '') {
       window.XE.toast('warning', window.XE.Lang.trans('board::selectBoard'))
@@ -425,10 +426,10 @@ window.jQuery(function ($) {
     window.XE.ajax({
       type: 'post',
       dataType: 'json',
-      data: {id: ids, instance_id: instanceId},
+      data: {id: ids, instance_id: instanceId, current_instance_id: currentInstanceId},
       url: $(event.target).data('url'),
       success: function (response) {
-        document.location.reload()
+        document.location.href= response.currentUrl;
       }
     })
   })

@@ -325,7 +325,11 @@ class Board extends Document implements CommentUsable, SeoUsable
     {
         $query->where('status', static::STATUS_PUBLIC)
             ->whereIn('display', [static::DISPLAY_VISIBLE, static::DISPLAY_SECRET])
-            ->where('published', static::PUBLISHED_PUBLISHED);
+            ->where('published', static::PUBLISHED_PUBLISHED)
+            ->where(function($query){
+                $query->where('approved',static::APPROVED_APPROVED)
+                    ->orWhere('user_id',auth()->id());
+            });
     }
 
     /**
