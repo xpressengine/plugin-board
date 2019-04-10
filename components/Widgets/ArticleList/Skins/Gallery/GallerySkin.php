@@ -150,6 +150,7 @@ class GallerySkin extends GenericSkin
     public function renderSetting(array $args = [])
     {
         return $view = View::make(sprintf('%s/views/setting', static::$path), [
+            'args'=>$args
         ]);
     }
 }
