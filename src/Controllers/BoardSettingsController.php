@@ -747,6 +747,13 @@ class BoardSettingsController extends Controller
      */
     public function move(Request $request)
     {
+        $currentInstanceId = $request->get('current_instance_id', '');
+        if ($currentInstanceId != '') {
+            $currentUrl = $this->urlHandler->get('index', [], $currentInstanceId);
+        } else {
+            $currentUrl = '/';
+        }
+
         $documentIds = $request->get('id');
         $documentIds = is_array($documentIds) ? $documentIds : [$documentIds];
 
@@ -765,7 +772,7 @@ class BoardSettingsController extends Controller
 
         Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
 
-        return $this->presenter->makeApi([]);
+        return $this->presenter->makeApi(['currentUrl' => $currentUrl]);
     }
 
     /**
@@ -790,7 +797,7 @@ class BoardSettingsController extends Controller
 
         foreach ($items as $item) {
             $user = new Guest;
-            if ($item->userId != '') {
+            if ($item->user_id != '') {
                 $user = User::find($item->user_id);
             }
 
