@@ -16,6 +16,8 @@ namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList;
 
 use Carbon\Carbon;
 use View;
+use Xpressengine\Category\Models\Category;
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -58,9 +60,31 @@ class ArticleListWidget extends AbstractWidget
 
 //        다중 선택으로 변환. 현재 셀렉트박스 muliple설정은 배열인경우 item값으로 넘어오므로 설정
 
-        $boardIds = (is_array($widgetConfig['board_id'])) ?
+        $categorySelected = (is_array($widgetConfig['board_id'])) ?
             $widgetConfig['board_id']['item'] :
             (array)$widgetConfig['board_id'];
+
+//        게시판 쿼리와 카테고리 쿼리를 각각 할 수 있도록 분리
+
+        $boardIds = array_filter($categorySelected, function ($item) {
+            return mb_substr($item, 0, 9) != 'category.';
+        });
+
+        $categoryIds = array_filter($categorySelected, function ($item) {
+            return mb_substr($item, 0, 9) == 'category.';
+        });
+
+
+//        상위카테고리는 하위카테고리를 포함해야함
+
+        $categoryIds = array_map(function($item){
+            return CategoryItem::find(mb_substr($item,9))->getDescendantTree(true)->getNodes()->pluck('id');
+        },$categoryIds);
+
+        $categoryIds = array_flatten($categoryIds);
+
+
+
 
 //        기존의 버젼과 대응해야하고 더보기 링크의 기본값을 위해서 대표 게시판 아이디를 선택
         $menuItem = MenuItem::find(($boardIds) ?
@@ -71,15 +95,13 @@ class ArticleListWidget extends AbstractWidget
         $boardConfig = $configHandler->get($menuItem->id);
 
 
-//        아래 설정은 스킨에서 선택적으로 넣을 수 있음
         $take = $widgetConfig['take'] ?? null;
         $recent_date = (int)$widgetConfig['recent_date'] ?? 0;
         $orderType = $widgetConfig['order_type'] ?? '';
 
-        $title = $widgetConfig['title'] !== '' ? $widgetConfig['title'] : '게시판';
-        $more = $widgetConfig['more'] ?
-            instance_route('index', [], $widgetConfig['more']) :
-            instance_route('index', [], $menuItem->id);
+//        아래 설정은 위젯에서 제공함
+        $title = $widgetConfig['@attributes']['title'];
+        $more = array_has($widgetConfig, 'more');
 
         /**
          * config 할수 있는것
@@ -89,11 +111,26 @@ class ArticleListWidget extends AbstractWidget
          */
         $model = new Board();
         /** @var \Xpressengine\Database\DynamicQuery $query */
-        if (count($boardIds)) {
+
+//        게시판, 카테고리 아이디 유무에 따라 각 쿼리를 분리
+        if (count($boardIds) && count($categoryIds)) {
+            $query = $model->where(function ($query) use ($boardIds, $categoryIds) {
+                $query->whereIn('instance_id', $boardIds)
+                    ->orWhereHas('boardCategory', function ($query) use ($categoryIds) {
+                        $query->whereIn('item_id', $categoryIds);
+                    });
+            });
+        } elseif (count($boardIds)) {
             $query = $model->whereIn('instance_id', $boardIds);
+        } elseif (count($categoryIds)) {
+            $query = $model->whereHas('boardCategory', function ($query) use ($categoryIds) {
+                $query->whereIn('item_id', $categoryIds);
+            });
         } else {
             $query = $model->where('type', BoardModule::getId());
         }
+
+
         $query = $query->leftJoin(
             'board_gallery_thumbs',
             sprintf('%s.%s', $query->getQuery()->from, 'id'),
@@ -177,12 +214,37 @@ class ArticleListWidget extends AbstractWidget
                 $menuItem = MenuItem::find($config->get('boardId'));
                 $boardName = $menuItem->title;
             }
+            $categories = [];
+
+            if ($config->get('category')) {
+                $nodes = Category::find($config->get('categoryId'))->getTree()->getTreeNodes();
+
+                $categories = $nodes->map(function ($item) {
+                    return $this->getCategoryList($item);
+                })->toArray();
+            }
 
             $boardList[] = [
                 'value' => $config->get('boardId'),
                 'text' => $boardName,
+                'categories' => $categories
             ];
         }
         return $boardList;
+    }
+
+    private function getCategoryList(CategoryItem $categoryItem)
+    {
+        $result = [
+            'id' => $categoryItem->id,
+            'name' => xe_trans($categoryItem->word),
+            'children' => []
+        ];
+
+        $categoryItem->getChildren()->each(function (CategoryItem $categoryItem) use (&$result) {
+            $result['children'][] = $this->getCategoryList($categoryItem);
+        });
+
+        return $result;
     }
 }

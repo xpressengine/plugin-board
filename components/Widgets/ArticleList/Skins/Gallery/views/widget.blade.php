@@ -1,7 +1,9 @@
 {{ XeFrontend::css('plugins/board/assets/css/widget.gallery.css')->load() }}
 <div class="gallery-widget">
     <h3 class="article-table-title">{{$title}}</h3>
-    <a href="{{$more}}" class="link-more-board xe-hidden-sm xe-hidden-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @if($more)
+    <a href="{{instance_route('index', [], $menuItem->id)}}" class="link-more-board xe-hidden-sm xe-hidden-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @endif
     <div class="article-thumnail clearfix">
         <ul>
             @foreach ($list as $item)
@@ -26,5 +28,7 @@
 
         </ul>
     </div>
-    <a href="{{$more}}" class="link-more-board xe-visible-sm xe-visible-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @if($more)
+    <a href="{{instance_route('index', [], $menuItem->id)}}" class="link-more-board xe-visible-sm xe-visible-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @endif
 </div>

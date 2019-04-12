@@ -3,7 +3,9 @@
     <h3 class="article-table-title">
         {{$title}}
     </h3>
-    <a href="{{$more}}" class="article-table-more xe-hidden-sm xe-hidden-x">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @if($more)
+    <a href="{{instance_route('index', [], $menuItem->id)}}" class="article-table-more xe-hidden-sm xe-hidden-x">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @endif
     <a href="#"></a>
     <div class="table-wrap">
         <table class="article-table type2">
@@ -30,6 +32,8 @@
             @endforeach
             </tbody>
         </table>
-        <a href="{{$more}}" class="link-more-board xe-visible-sm xe-visible-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+        @if($more)
+        <a href="{{instance_route('index', [], $menuItem->id)}}" class="link-more-board xe-visible-sm xe-visible-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+        @endif
     </div>
 </div>
