@@ -81,11 +81,13 @@ class ShareUIObject extends AbstractUIObject
 
         $item = $args['item'];
         $url = $args['url'];
+        $className = (isset($args['className'])) ? $args['className'] : '';
 
 
         return View::make('board::components/UIObjects/Share/share', [
             'url' => $url,
             'item' => $item,
+            'className' => $className
         ])->render();
     }
 

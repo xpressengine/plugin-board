@@ -1,7 +1,9 @@
 {{ XeFrontend::css('plugins/board/assets/css/widget.gallery.css')->load() }}
 <div class="gallery-widget">
-    <h3 class="article-table-title">{{xe_trans($menuItem->title)}}</h3>
+    <h3 class="article-table-title">{{$title}}</h3>
+    @if($more)
     <a href="{{instance_route('index', [], $menuItem->id)}}" class="link-more-board xe-hidden-sm xe-hidden-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @endif
     <div class="article-thumnail clearfix">
         <ul>
             @foreach ($list as $item)
@@ -13,7 +15,7 @@
                     <div class="xe-title-area">
                         <div class="xe-title-category">
                             <span class="xe-sr-only">{{xe_trans('category')}}</span>
-                            @if ($boardConfig->get('category') == true && $item->boardCategory !== null)
+                            @if ($item->boardConfig->get('category') == true && $item->boardCategory !== null)
                                 {{xe_trans($item->boardCategory->categoryItem->word)}}
                             @endif
                         </div>
@@ -26,5 +28,7 @@
 
         </ul>
     </div>
+    @if($more)
     <a href="{{instance_route('index', [], $menuItem->id)}}" class="link-more-board xe-visible-sm xe-visible-xs">{{xe_trans('more')}}<i class="xi-angle-right"></i></a>
+    @endif
 </div>
