@@ -1,6 +1,6 @@
 <a href="#"
    title="공유하기"
-   class="bd_ico xe-share"
+   class="bd_ico xe-share @if(isset($className)) {{ $className }} @endif"
    data-toggle="xe-page-toggle-menu"
    data-url="{{route('toggleMenuPage')}}"
    data-data='{!! json_encode(['id'=>$item->id, 'type'=>'uiobject/board@share', 'instanceId'=>$item->instance_id, 'url'=>$url]) !!}'
