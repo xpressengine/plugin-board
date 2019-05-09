@@ -328,7 +328,7 @@ class Board extends Document implements CommentUsable, SeoUsable
             ->where('published', static::PUBLISHED_PUBLISHED)
             ->where(function($query){
                 $query->where('approved',static::APPROVED_APPROVED)
-                    ->orWhere('user_id',auth()->id());
+                    ->orWhere($this->getTable().'.user_id',auth()->id());
             });
     }
 
