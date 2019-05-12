@@ -440,7 +440,7 @@ class BoardModuleController extends Controller
 
         $request->replace($inputs);
 
-        // 유표성 체크
+        // 유효성 체크
         $this->validate($request, $validator->getCreateRule(Auth::user(), $this->config));
 
         // 공지 등록 권한 확인
@@ -580,7 +580,7 @@ class BoardModuleController extends Controller
         $inputs = $request->all();
         $originInputs = $request->originAll();
         $inputs['title'] = htmlspecialchars($originInputs['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        
+
         if ($this->isManager()) {
             $inputs['content'] = $originInputs['content'];
         } else {
