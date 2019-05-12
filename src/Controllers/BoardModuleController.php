@@ -431,7 +431,13 @@ class BoardModuleController extends Controller
         $inputs = $request->all();
         $originInputs = $request->originAll();
         $inputs['title'] = htmlspecialchars($originInputs['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = $purifier->purify($originInputs['content']);
+        
+        if ($this->isManager()) {
+            $inputs['content'] = $originInputs['content'];
+        } else {
+            $inputs['content'] = $purifier->purify($originInputs['content']);
+        }
+
         $request->replace($inputs);
 
         // 유표성 체크
@@ -574,7 +580,13 @@ class BoardModuleController extends Controller
         $inputs = $request->all();
         $originInputs = $request->originAll();
         $inputs['title'] = htmlspecialchars($originInputs['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $inputs['content'] = $purifier->purify($originInputs['content']);
+        
+        if ($this->isManager()) {
+            $inputs['content'] = $originInputs['content'];
+        } else {
+            $inputs['content'] = $purifier->purify($originInputs['content']);
+        }
+
         $request->replace($inputs);
 
         $this->validate($request, $validator->getEditRule(Auth::user(), $this->config));
