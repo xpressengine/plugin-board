@@ -14,6 +14,9 @@
 namespace Xpressengine\Plugins\Board\Models;
 
 use Xpressengine\Database\Eloquent\DynamicModel;
+use Xpressengine\Media\Models\Image;
+use Xpressengine\Media\Models\Media;
+use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 
 /**
  * BoardGalleryThumb
@@ -39,4 +42,26 @@ class BoardGalleryThumb extends DynamicModel
         'board_thumbnail_external_path',
         'board_thumbnail_path'
     ];
+
+    /**
+     * thumbnail의 실제 url을 반환
+     *
+     * @param string $value board_thumbnail_path attribute
+     *
+     * @return string
+     */
+    public function getBoardThumbnailPathAttribute($value)
+    {
+        if ($value !== '') {
+            $media = \XeMedia::getHandler(Media::TYPE_IMAGE)->getThumbnail(
+                Image::find($this->board_thumbnail_file_id),
+                BoardModule::THUMBNAIL_TYPE,
+                'L'
+            );
+
+            $value = $media->url();
+        }
+
+        return $value;
+    }
 }

@@ -164,6 +164,8 @@ class ArticleListWidget extends AbstractWidget
         $list = $query->get();
         $list = $list->map(function ($item) use ($configHandler) {
             $item->boardConfig = $configHandler->get($item->instance_id);
+            $item->thumb;
+
             return $item;
         });
 
