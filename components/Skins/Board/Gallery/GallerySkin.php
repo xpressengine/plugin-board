@@ -239,19 +239,6 @@ class GallerySkin extends CommonSkin
             $item->board_thumbnail_file_id = $fileId;
             $item->board_thumbnail_external_path = $externalPath;
             $item->board_thumbnail_path = $thumbnailPath;
-
-            $model = BoardGalleryThumb::find($item->id);
-            if ($model === null) {
-                $model = new BoardGalleryThumb;
-            }
-
-            $model->fill([
-                'target_id' => $item->id,
-                'board_thumbnail_file_id' => $fileId,
-                'board_thumbnail_external_path' => $externalPath,
-                'board_thumbnail_path' => $thumbnailPath,
-            ]);
-            $model->save();
         } else {
             $item->board_thumbnail_file_id = $item->thumb->board_thumbnail_file_id;
             $item->board_thumbnail_external_path = $item->thumb->board_thumbnail_external_path;

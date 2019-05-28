@@ -102,15 +102,6 @@ class GallerySkin extends GenericSkin
             $item->board_thumbnail_file_id = $fileId;
             $item->board_thumbnail_external_path = $externalPath;
             $item->board_thumbnail_path = $thumbnailPath;
-
-            $model = new BoardGalleryThumb;
-            $model->fill([
-                             'target_id' => $item->id,
-                             'board_thumbnail_file_id' => $fileId,
-                             'board_thumbnail_external_path' => $externalPath,
-                             'board_thumbnail_path' => $thumbnailPath,
-                         ]);
-            $model->save();
         }
 
         // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
