@@ -18,6 +18,7 @@ use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Media;
+use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Plugins\Comment\Models\Comment;
 use Xpressengine\Routing\InstanceRoute;
@@ -434,18 +435,26 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function getImages()
     {
-        $files = \XeStorage::fetchByFileable($this->getKey());
-
-        /** @var MediaManager $mediaManager */
-        $mediaManager = app('xe.media');
-        $imageHandler = $mediaManager->getHandler(Media::TYPE_IMAGE);
+        $thumb = app(Handler::class)->getThumb($this->getKey());
 
         $images = [];
-        foreach ($files as $file) {
+        if ($thumb && $thumb->board_thumbnail_file_id == '') {
+            $path = $thumb->board_thumbnail_external_path ?
+                $thumb->board_thumbnail_external_path :
+                $thumb->board_thumbnail_path;
+            if ($path) {
+                $images[] = $path;
+            }
+        } elseif ($thumb) {
+            $file = \XeStorage::find($thumb->board_thumbnail_file_id);
+            /** @var MediaManager $mediaManager */
+            $mediaManager = app('xe.media');
+            $imageHandler = $mediaManager->getHandler(Media::TYPE_IMAGE);
             if ($mediaManager->getFileType($file) === Media::TYPE_IMAGE) {
                 $images[] = $imageHandler->make($file);
             }
         }
+
         return $images;
     }
 
