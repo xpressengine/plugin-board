@@ -58,14 +58,12 @@ class ArticleListWidget extends AbstractWidget
             $widgetConfig['board_id']['item'] = [];
         }
 
-//        다중 선택으로 변환. 현재 셀렉트박스 muliple설정은 배열인경우 item값으로 넘어오므로 설정
-
+        //다중 선택으로 변환. 현재 셀렉트박스 muliple설정은 배열인경우 item값으로 넘어오므로 설정
         $categorySelected = (is_array($widgetConfig['board_id'])) ?
             $widgetConfig['board_id']['item'] :
             (array)$widgetConfig['board_id'];
 
-//        게시판 쿼리와 카테고리 쿼리를 각각 할 수 있도록 분리
-
+        //게시판 쿼리와 카테고리 쿼리를 각각 할 수 있도록 분리
         $boardIds = array_filter($categorySelected, function ($item) {
             return mb_substr($item, 0, 9) != 'category.';
         });
@@ -74,32 +72,26 @@ class ArticleListWidget extends AbstractWidget
             return mb_substr($item, 0, 9) == 'category.';
         });
 
-
-//        상위카테고리는 하위카테고리를 포함해야함
-
-        $categoryIds = array_map(function($item){
-            return CategoryItem::find(mb_substr($item,9))->getDescendantTree(true)->getNodes()->pluck('id');
-        },$categoryIds);
+        //상위카테고리는 하위카테고리를 포함해야함
+        $categoryIds = array_map(function ($item) {
+            return CategoryItem::find(mb_substr($item, 9))->getDescendantTree(true)->getNodes()->pluck('id');
+        }, $categoryIds);
 
         $categoryIds = array_flatten($categoryIds);
 
-
-
-
-//        기존의 버젼과 대응해야하고 더보기 링크의 기본값을 위해서 대표 게시판 아이디를 선택
+        //기존의 버젼과 대응해야하고 더보기 링크의 기본값을 위해서 대표 게시판 아이디를 선택
         $menuItem = MenuItem::find(($boardIds) ?
             array_first($boardIds) :
             Board::where('type', BoardModule::getId())->first()->instance_id);
 
-//        현재 사용하지않지만 기존버젼 대응을위해 살림
+        //현재 사용하지않지만 기존버젼 대응을위해 살림
         $boardConfig = $configHandler->get($menuItem->id);
-
 
         $take = $widgetConfig['take'] ?? null;
         $recent_date = (int)$widgetConfig['recent_date'] ?? 0;
         $orderType = $widgetConfig['order_type'] ?? '';
 
-//        아래 설정은 위젯에서 제공함
+        //아래 설정은 위젯에서 제공함
         $title = $widgetConfig['@attributes']['title'];
         $more = array_has($widgetConfig, 'more');
 
@@ -112,7 +104,7 @@ class ArticleListWidget extends AbstractWidget
         $model = new Board();
         /** @var \Xpressengine\Database\DynamicQuery $query */
 
-//        게시판, 카테고리 아이디 유무에 따라 각 쿼리를 분리
+        //게시판, 카테고리 아이디 유무에 따라 각 쿼리를 분리
         if (count($boardIds) && count($categoryIds)) {
             $query = $model->where(function ($query) use ($boardIds, $categoryIds) {
                 $query->whereIn('instance_id', $boardIds)
@@ -130,14 +122,18 @@ class ArticleListWidget extends AbstractWidget
             $query = $model->where('type', BoardModule::getId());
         }
 
-
         $query = $query->leftJoin(
             'board_gallery_thumbs',
             sprintf('%s.%s', $query->getQuery()->from, 'id'),
             '=',
             sprintf('%s.%s', 'board_gallery_thumbs', 'target_id')
         );
-        $query = $query->visible();
+
+        if (isset($widgetConfig['noticeInList']) === true && $widgetConfig['noticeInList'] == 'on') {
+            $query = $query->visibleWithNotice();
+        } else {
+            $query = $query->visible();
+        }
 
         //$recent_date
         if ($recent_date !== 0) {

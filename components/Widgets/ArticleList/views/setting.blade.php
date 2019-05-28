@@ -25,6 +25,17 @@
     </div>
 </div>
 
+<div class="form=-group">
+    <label>공지 게시물 출력 여부</label>
+    <div class="xe-btn-toggle">
+        <label>
+            <span class="sr-only">toggle</span>
+                <input name="noticeInList" type="checkbox" @if(array_get($args, 'noticeInList')) checked="checked" @endif />
+            <span class="toggle"></span>
+        </label>
+    </div>
+</div>
+
 <p>글 설정</p>
 <hr>
 
