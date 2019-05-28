@@ -282,11 +282,21 @@ class Handler
     protected function saveCover(Board $board, array $args)
     {
         $fileIds = [];
-        if (empty($args['_coverId']) === false) {
-            // save cover id
-            // board gallery thumbs
-            $this->saveThumb($board, $args['_coverId']);
+
+        if (isset($args['_coverId']) == false || $args['_coverId'] == null) {
+            if ($board->thumb != null) {
+                $board->thumb()->delete();
+            }
+        } else {
+            if ($thumbnail = $board->thumb) {
+                if ($thumbnail->board_thumbnail_file_id !== $args['_coverId']) {
+                    $this->saveThumb($board, $args['_coverId']);
+                }
+            } else {
+                $this->saveThumb($board, $args['_coverId']);
+            }
         }
+
         return $fileIds;
     }
 
@@ -485,6 +495,8 @@ class Handler
                     $this->storage->unBind($item->id, $file, true);
                 }
 
+                $item->thumb()->delete();
+
                 $tags = \XeTag::fetchByTaggable($item->id);
                 \XeTag::detach($item->id, $tags);
 
@@ -499,6 +511,8 @@ class Handler
             foreach ($files as $file) {
                 $this->storage->unBind($board->id, $file, true);
             }
+
+            $board->thumb()->delete();
 
             $tags = \XeTag::fetchByTaggable($board->id);
             \XeTag::detach($board->id, $tags);
