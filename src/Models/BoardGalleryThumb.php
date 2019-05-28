@@ -52,9 +52,14 @@ class BoardGalleryThumb extends DynamicModel
      */
     public function getBoardThumbnailPathAttribute($value)
     {
+        $thumbnailImage =  Image::find($this->board_thumbnail_file_id);
+        if ($thumbnailImage == null) {
+            return '';
+        }
+
         if ($value !== '') {
             $media = \XeMedia::getHandler(Media::TYPE_IMAGE)->getThumbnail(
-                Image::find($this->board_thumbnail_file_id),
+                $thumbnailImage,
                 BoardModule::THUMBNAIL_TYPE,
                 'L'
             );
