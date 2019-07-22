@@ -263,8 +263,8 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <select id="" name="useCaptcha" class="form-control" @if($config->getPure('useCaptcha') === null) disabled="disabled" @endif>
-                                                    <option value="true" {!! $config->get('useCaptcha') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                <select id="" name="useCaptcha" class="form-control" @if($config->getPure('useCaptcha') === null || $captcha->available() !== true) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('useCaptcha') == true ? 'selected="selected"' : '' !!} @if ($captcha->available() !== true) disabled @endif>{{xe_trans('xe::use')}}</option>
                                                     <option value="false" {!! $config->get('useCaptcha') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                 </select>
 

@@ -184,7 +184,7 @@
                                                         <label>{{xe_trans('board::useCreateCaptcha')}} </label>
                                                     </div>
                                                     <select id="" name="useCaptcha" class="form-control">
-                                                        <option value="true" {!! $config->get('useCaptcha') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="true" {!! $config->get('useCaptcha') == true ? 'selected="selected"' : '' !!} @if ($captcha->available() !== true) disabled @endif>{{xe_trans('xe::use')}}</option>
                                                         <option value="false" {!! $config->get('useCaptcha') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
 
