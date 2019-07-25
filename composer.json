@@ -2,7 +2,7 @@
   "name": "xpressengine-plugin/board",
   "description": "XpressEngine's plugin for bundle (XE)",
   "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
-  "version": "1.0.3",
+  "version": "1.0.4",
   "support": {
     "email": "developers@xpressengine.com"
   },
@@ -14,7 +14,7 @@
       "role": "Developer"
     }
   ],
-  "license": "LGPL-2.1-or-later",
+  "license": "LGPL-3.0-or-later",
   "type": "xpressengine-plugin",
   "extra": {
     "xpressengine": {
