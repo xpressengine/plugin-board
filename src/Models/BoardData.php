@@ -2,14 +2,14 @@
 /**
  * BoardData
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
+ * @copyright   2019 Copyright XEHub Corp. <https://www.xehub.io>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
+ * @link        https://xpressengine.io
  */
 namespace Xpressengine\Plugins\Board\Models;
 
@@ -29,9 +29,9 @@ use Xpressengine\Http\Request;
  * @category    Board
  * @package     Xpressengine\Plugins\Board
  * @author      XE Team (developers) <developers@xpressengine.com>
- * @copyright   2015 Copyright (C) NAVER <http://www.navercorp.com>
+ * @copyright   2019 Copyright XEHub Corp. <https://www.xehub.io>
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
- * @link        http://www.xpressengine.com
+ * @link        https://xpressengine.io
  */
 class BoardData extends DynamicModel
 {
