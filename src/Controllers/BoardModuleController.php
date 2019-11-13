@@ -152,6 +152,8 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        \XeFrontend::title($this->getSiteTitle());
+
         $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
         $paginate = $service->getItems($request, $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);
@@ -1030,5 +1032,23 @@ class BoardModuleController extends Controller
             BoardPermissionHandler::ACTION_MANAGE,
             new Instance($boardPermission->name($this->instanceId))
         ) ? true : false;
+    }
+
+    /**
+     * get site title
+     *
+     * @return string
+     */
+    private function getSiteTitle()
+    {
+        $siteTitle = \XeFrontend::output('title');
+
+        $instanceConfig = InstanceConfig::instance();
+        $menuItem = $instanceConfig->getMenuItem();
+
+        $title = xe_trans($menuItem['title']) . ' - ' . xe_trans($siteTitle);
+        $title = strip_tags(html_entity_decode($title));
+
+        return $title;
     }
 }
