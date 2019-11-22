@@ -84,7 +84,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function isNew($hour)
     {
-        return strtotime($this->getAttribute(static::CREATED_AT)) + ($hour * 86400) > time();
+        return strtotime($this->getAttribute(static::CREATED_AT)) + ($hour * 3600) > time();
     }
 
     /**
