@@ -1076,21 +1076,36 @@ class Handler
                     if ($i != 0) {
                         for ($j=0; $j<$i; $j++) {
                             $op = '=';
-                            $clone->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
+                            $tableName= '1';
+                            if ($clone->getQuery()->getConnection()->getSchemaBuilder()->hasColumn($clone->getQuery()->from, $orders[$j]['column'])) {
+                                $clone->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
+                            } else {
+                                $params = [
+                                   $orders[$j]['column'] => [$doc->{$orders[$j]['column']}, $op]
+                                ];
+                                $clone->getProxyManager()->wheres($clone->getQuery(), $params);
+                            }
                         }
                     }
 
-                    $op = '>=';
-                    if ($orders[$i]['direction'] == 'asc') {
-                        $op = '<=';
-                    }
-                    $clone->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
+                        $op = '>=';
+                        if ($orders[$i]['direction'] == 'asc') {
+                            $op = '<=';
+                        }
+
+                        if ($clone->getQuery()->getConnection()->getSchemaBuilder()->hasColumn($clone->getQuery()->from, $orders[$i]['column'])) {
+                            $clone->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
+                        } else {
+                            $params = [
+                                $orders[$i]['column'] => [$doc->{$orders[$i]['column']}, $op]
+                            ];
+                            $clone->getProxyManager()->wheres($clone->getQuery(), $params);
+                        }
                 });
             }
         });
 
         $count = $clone->count();
-
         $page = (int)($count / $config->get('perPage'));
         if ($count % $config->get('perPage') != 0) {
             ++$page;
