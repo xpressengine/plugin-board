@@ -804,7 +804,7 @@ class Handler
         }
 
         if ($request->get('category_item_id') != null && $request->get('category_item_id') !== '') {
-            $query = $query->where('item_id', $request->get('category_item_id'));
+            $query = $query->where('board_category.item_id', $request->get('category_item_id'));
         }
 
         if ($request->get('start_created_at') != null && $request->get('start_created_at') !== '') {
