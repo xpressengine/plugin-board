@@ -383,7 +383,74 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
+
+                                    <div class="row">
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::topCommonContent')}} <small>{{xe_trans("board::contentHtmlAvailable")}}</small></label>
+                                                </div>
+                                                {!! uio('langTextArea', ['placeholder'=>'', 'langKey'=>Request::old('topCommonContent', $config->get('topCommonContent')), 'name'=>'topCommonContent']) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::bottomCommonContent')}} <small>{{xe_trans("board::contentHtmlAvailable")}}</small></label>
+                                                </div>
+                                                {!! uio('langTextArea', ['placeholder'=>'', 'langKey'=>Request::old('bottomCommonContent', $config->get('bottomCommonContent')), 'name'=>'bottomCommonContent']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::topCommonContentOnlyList')}} <small>{{xe_trans('board::commonContentUseOnlyList')}} </small></label>
+                                                </div>
+                                                <select id="" name="topCommonContentOnlyList" class="form-control" >
+                                                    <option value="true" {!! $config->get('topCommonContentOnlyList') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('topCommonContentOnlyList') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::bottomCommonContentOnlyList')}} <small>{{xe_trans('board::commonContentUseOnlyList')}} </small></label>
+                                                </div>
+                                                <select id="" name="bottomCommonContentOnlyList" class="form-control" >
+                                                    <option value="true" {!! $config->get('bottomCommonContentOnlyList') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('bottomCommonContentOnlyList') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::topViewContent')}} <small>{{xe_trans('board::contentHtmlAvailable')}}</small></label>
+                                                </div>
+                                                {!! uio('langTextArea', ['placeholder'=>'', 'langKey'=>Request::old('topViewContent', $config->get('topViewContent')), 'name'=>'topViewContent']) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::bottomViewContent')}} <small>{{xe_trans('board::contentHtmlAvailable')}}</small></label>
+                                                </div>
+                                                {!! uio('langTextArea', ['placeholder'=>'', 'langKey'=>Request::old('bottomViewContent', $config->get('bottomViewContent')), 'name'=>'bottomViewContent']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

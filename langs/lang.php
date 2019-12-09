@@ -563,4 +563,36 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '관리권한이 없는 회원은 자신이 쓴 글만 보이도록 하는 기능입니다. 단 상담기능 사용시 비회원 글쓰기는 자동으로 금지됩니다.',
         'en' => 'Members who do not have administrative rights can see only their own posts. However, non-member writing is automatically prohibited when using the consultation function.',
     ],
+    'contentHtmlAvailable' => [
+        'ko' => '페이지에 표시되는 내용(HTML 사용 가능)',
+        'en' => 'Content Displayed on the page (HTML available)',
+    ],
+    'topCommonContent' => [
+        'ko' => '상단 공통 내용',
+        'en' => 'Common content at the top',
+    ],
+    'bottomCommonContent' => [
+        'ko' => '하단 공통 내용',
+        'en' => 'Common content at the bottom',
+    ],
+    'commonContentUseOnlyList' => [
+        'ko' => '목록을 보여줄 때만 공통 내용이 표시 됩니다.',
+        'en' => 'The common content is displayed only when showing the list.',
+    ],
+    'topCommonContentOnlyList' => [
+        'ko' => '상단 공통 내용 목록에만 사용',
+        'en' => 'Common content at the top',
+    ],
+    'bottomCommonContentOnlyList' => [
+        'ko' => '상단 공통 내용 목록에만 사용',
+        'en' => 'Common content at the top',
+    ],
+    'topViewContent' => [
+        'ko' => '상단 글보기 내용',
+        'en' => 'Article-View content at the top',
+    ],
+    'bottomViewContent' => [
+        'ko' => '하단 글보기 내용',
+        'en' => 'Article-View content at the bottom',
+    ],
 ];
