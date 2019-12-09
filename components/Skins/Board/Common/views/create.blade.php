@@ -143,7 +143,22 @@
 
 <script>
     $(function () {
-        var form = $('#board_form');
+        var form = $('.__board_form');
+        var submitting = false
+        form.on('submit', function (e) {
+            if (submitting) {
+                return false
+            }
+
+            if (!submitting) {
+                form.find('[type=submit]').prop('disabled', true)
+                submitting = true
+                setTimeout(function () {
+                    form.find('[type=submit]').prop('disabled', false)
+                }, 5000);
+            }
+        })
+
         var draft = $('#xeContentEditor', form).draft({
             key: 'document|' + form.data('instance_id'),
             btnLoad: $('.__xe_temp_btn_load', form),
