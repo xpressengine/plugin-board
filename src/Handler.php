@@ -1076,7 +1076,6 @@ class Handler
                     if ($i != 0) {
                         for ($j=0; $j<$i; $j++) {
                             $op = '=';
-                            $tableName= '1';
                             if ($clone->getQuery()->getConnection()->getSchemaBuilder()->hasColumn($clone->getQuery()->from, $orders[$j]['column'])) {
                                 $clone->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
                             } else {
