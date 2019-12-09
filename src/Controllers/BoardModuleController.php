@@ -215,6 +215,13 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        // if use consultation option Guest cannot create article
+        if ($this->config->get('useConsultation') === true
+            && $service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
         // 글 조회수 증가
         if ($item->display == Board::DISPLAY_VISIBLE) {
             $this->handler->incrementReadCount($item, Auth::user());
@@ -279,6 +286,13 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        // if use consultation option Guest cannot create article
+        if ($this->config->get('useConsultation') === true
+            && $service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+        
         $fieldTypes = $service->getFieldTypes($this->config);
         $categories = $service->getCategoryItems($this->config);
 
@@ -382,6 +396,11 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
+        // if use consultation option Guest cannot create article
+        if ($this->config->get('useConsultation') === true && Auth::check() === false) {
+            throw new AccessDeniedHttpException;
+        }
+
         $categories = $service->getCategoryItems($this->config);
         $rules = $validator->getCreateRule(Auth::user(), $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);
@@ -423,6 +442,11 @@ class BoardModuleController extends Controller
             BoardPermissionHandler::ACTION_CREATE,
             new Instance($boardPermission->name($this->instanceId))
         )) {
+            throw new AccessDeniedHttpException;
+        }
+
+        // if use consultation option Guest cannot create article
+        if ($this->config->get('useConsultation') === true && Auth::check() === false) {
             throw new AccessDeniedHttpException;
         }
 

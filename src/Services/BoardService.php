@@ -35,6 +35,8 @@ use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 use Xpressengine\Support\PurifierModules\Html5;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
+use Gate;
+use Xpressengine\Permission\Instance;
 
 /**
  * BoardService
@@ -140,6 +142,17 @@ class BoardService
                 sprintf('%s.%s', 'board_favorites', 'target_id')
             );
             $query->where('board_favorites.user_id', Auth::user()->getId());
+        }
+
+        if ($config->get('useConsultation') === true) {
+            $boardPermission = app('xe.board.permission');
+            $isManager = Gate::allows(
+                $boardPermission::ACTION_MANAGE,
+                new Instance($boardPermission->name($config->get('boardId')))
+            ) ? true : false;
+            if ($isManager == false) {
+                $query->where('user_id', Auth::user()->getId());
+            }
         }
 
         $this->handler->makeWhere($query, $request, $config);
