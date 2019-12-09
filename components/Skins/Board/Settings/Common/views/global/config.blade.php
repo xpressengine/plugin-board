@@ -218,6 +218,7 @@
                                                     <select id="" name="urlType" class="form-control">
                                                         <option value="documentId" {!! $config->get('urlType') == 'documentId' ? 'selected="selected"' : '' !!} >{{xe_trans('board::documentId')}}</option>
                                                         <option value="slug" {!! $config->get('urlType') == 'slug' ? 'selected="selected"' : '' !!} >{{xe_trans('board::slug')}}</option>
+                                                        <option value="serialNumber" {!! $config->get('urlType') == 'serialNumber' ? 'selected="selected"' : '' !!} >{{xe_trans('board::serialNumber')}}</option>
                                                     </select>
                                                 </div>
                                             </div>

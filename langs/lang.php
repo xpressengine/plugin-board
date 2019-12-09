@@ -421,6 +421,10 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => 'Slug(슬러그)',
         'en' => 'slug',
     ],
+    'serialNumber' => [
+        'ko' => '일련 번호',
+        'en' => 'Serial Number',
+    ],
     'useDeleteToTrash' => [
         'ko' => '게시물 삭제를 휴지통으로 이동',
         'en' => 'Move article removal to trash',

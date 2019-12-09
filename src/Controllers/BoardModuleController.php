@@ -292,7 +292,7 @@ class BoardModuleController extends Controller
         ) {
             throw new AccessDeniedHttpException;
         }
-        
+
         $fieldTypes = $service->getFieldTypes($this->config);
         $categories = $service->getCategoryItems($this->config);
 
@@ -338,6 +338,36 @@ class BoardModuleController extends Controller
         }
 
         if ($this->config->get('urlType') !== 'slug') {
+            return redirect(instance_route('show', ['id' => $slug->target_id]));
+        }
+
+        return $this->show($service, $request, $boardPermission, $menuUrl, $slug->target_id);
+    }
+
+    /**
+     * show by serial number
+     *
+     * @param BoardService           $service         board service
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $serialNumber    document serial number
+     * @return \Xpressengine\Presenter\Presentable
+     */
+    public function num(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $serialNumber
+    ) {
+        $slug = BoardSlug::where('id', $serialNumber)->where('instance_id', $this->instanceId)->first();
+
+        if ($slug === null) {
+            throw new NotFoundDocumentException;
+        }
+
+        if ($this->config->get('urlType') !== 'serialNumber') {
             return redirect(instance_route('show', ['id' => $slug->target_id]));
         }
 

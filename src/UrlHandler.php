@@ -101,6 +101,12 @@ class UrlHandler
             if ($slug != null) {
                 return $this->getSlug($slug->slug, $params, $slug->instance_id);
             }
+        } else if ($config !== null && $config->get('urlType') == 'serialNumber') {
+            $slug = $board->slug;
+            if ($slug != null) {
+                return $this->getSerialNumber($slug->id, $params, $slug->instance_id);
+            }
+
         }
 
         $id = $board->id;
@@ -125,6 +131,25 @@ class UrlHandler
         unset($params['page']);
 
         return $this->get('slug', $params, $instanceId);
+    }
+
+    /**
+     * get slug url
+     *
+     * @param string $serialNumber serial number
+     * @param array  $params       parameters
+     * @param string $instanceId   board instance id
+     * @return string
+     */
+    public function getSerialNumber($serialNumber, array $params, $instanceId)
+    {
+        unset($params['id']);
+        $params['serialNumber'] = $serialNumber;
+
+        // 페이지 정보는 넘기지 않음
+        unset($params['page']);
+
+        return $this->get('num', $params, $instanceId);
     }
 
     /**
