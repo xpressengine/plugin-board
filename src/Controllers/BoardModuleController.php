@@ -398,7 +398,13 @@ class BoardModuleController extends Controller
                 throw new NotFoundDocumentException;
             }
 
-            return redirect(instance_route('slug', ['slug' => $slug->slug]));
+            if ($this->config->get('urlType') == 'slug') {
+                return redirect(instance_route('slug', ['slug' => $slug->slug]));
+            } else {
+                return redirect(instance_route('num', ['serialNumber' => $slug->id]));
+            }
+
+
         }
 
         return $this->show($service, $request, $boardPermission, $menuUrl, $itemId);
