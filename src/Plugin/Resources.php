@@ -13,15 +13,18 @@
  */
 namespace Xpressengine\Plugins\Board\Plugin;
 
+use Illuminate\Support\Facades\Gate;
 use Xpressengine\Document\DocumentHandler;
 use Xpressengine\Config\ConfigManager;
 use Xpressengine\DynamicField\DynamicFieldHandler;
+use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyUseCategoryHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\InstanceManager;
+use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
@@ -51,6 +54,9 @@ use XeDynamicField;
 use XeDocument;
 use XeSkin;
 use Illuminate\Console\Application as Artisan;
+use Xpressengine\Plugins\Comment\Events\CommentCreateEvent;
+use Xpressengine\Plugins\Comment\Events\CommentRetrievedEvent;
+use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 
 /**
  * Resources
@@ -337,5 +343,61 @@ class Resources
                 return $result;
             }
         );
+    }
+
+    /**
+     * listen comment retrieved event
+     *
+     * @return void
+     */
+    public static function listenCommentRetrievedEvent()
+    {
+        \Event::listen(CommentRetrievedEvent::class, function ($event) {
+            $request = $event->request;
+
+            if (Board::class !== $request->get('target_type')) {
+                return;
+            }
+
+            /** @var BoardService $boardService */
+            $boardService = app('xe.board.service');
+            $identifyManager = app('xe.board.identify');
+            $boardPermission = app('xe.board.permission');
+
+            $item = Board::find($request->get('target_id'));
+            $isManager = Gate::allows(
+                BoardPermissionHandler::ACTION_MANAGE,
+                new Instance($boardPermission->name($item->getInstanceId()))
+            );
+
+            if ($boardService->hasItemPerm($item, auth()->user(), $identifyManager, $isManager) === false &&
+                Gate::denies(
+                    BoardPermissionHandler::ACTION_READ,
+                    new Instance($boardPermission->name($item->getInstanceId()))
+                )) {
+                throw new AccessDeniedHttpException;
+            }
+        });
+    }
+
+    /**
+     * listen comment create event
+     *
+     * @return void
+     */
+    public static function listenCommentCreateEvent()
+    {
+        \Event::listen(CommentCreateEvent::class, function ($event) {
+            $request = $event->request;
+
+            if (Board::class !== $request->get('target_type')) {
+                return;
+            }
+
+            $item = Board::find($request->get('target_id'));
+            if (!$item->allow_comment) {
+                abort(500, xe_trans('comment::notAllowedComment'));
+            }
+        });
     }
 }

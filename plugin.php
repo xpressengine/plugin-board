@@ -15,11 +15,9 @@
 namespace Xpressengine\Plugins\Board;
 
 use Xpressengine\Plugin\AbstractPlugin;
-use Xpressengine\Plugins\Board\Components\Skins\Board\Common\CommonSkin;
 use Xpressengine\Plugins\Board\Plugin\Database;
 use Xpressengine\Plugins\Board\Plugin\Resources;
 use Xpressengine\Plugins\Board\Plugin\Update;
-use Xpressengine\Plugins\Comment\Models\Comment;
 
 /**
  * Plugin
@@ -44,7 +42,8 @@ class Plugin extends AbstractPlugin
         Resources::interceptDynamicField();
         Resources::interceptDeleteCategory();
 
-        Comment::observe(CommentObserver::class);
+        Resources::listenCommentRetrievedEvent();
+        Resources::listenCommentCreateEvent();
     }
 
     /**
