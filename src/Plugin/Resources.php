@@ -395,7 +395,7 @@ class Resources
             }
 
             $item = Board::find($request->get('target_id'));
-            if (!$item->allow_comment) {
+            if ($item && !$item->boardData->allow_comment) {
                 abort(500, xe_trans('comment::notAllowedComment'));
             }
         });
