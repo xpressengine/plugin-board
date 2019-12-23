@@ -588,8 +588,8 @@ You may receive an error occurs in the associated function if not in a state cap
         'en' => 'Common content at the top',
     ],
     'bottomCommonContentOnlyList' => [
-        'ko' => '상단 공통 내용 목록에만 사용',
-        'en' => 'Common content at the top',
+        'ko' => '하단 공통 내용 목록에만 사용',
+        'en' => 'Common content at the bottom',
     ],
     'topViewContent' => [
         'ko' => '상단 글보기 내용',
