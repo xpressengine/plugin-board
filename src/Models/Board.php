@@ -450,7 +450,7 @@ class Board extends Document implements CommentUsable, SeoUsable
             /** @var MediaManager $mediaManager */
             $mediaManager = app('xe.media');
             $imageHandler = $mediaManager->getHandler(Media::TYPE_IMAGE);
-            if ($mediaManager->getFileType($file) === Media::TYPE_IMAGE) {
+            if ($file !== null && $mediaManager->getFileType($file) === Media::TYPE_IMAGE) {
                 $images[] = $imageHandler->make($file);
             }
         }
