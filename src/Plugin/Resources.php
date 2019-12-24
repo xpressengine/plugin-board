@@ -54,8 +54,6 @@ use XeDynamicField;
 use XeDocument;
 use XeSkin;
 use Illuminate\Console\Application as Artisan;
-use Xpressengine\Plugins\Comment\Events\CommentCreateEvent;
-use Xpressengine\Plugins\Comment\Events\CommentRetrievedEvent;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 
 /**
@@ -352,9 +350,7 @@ class Resources
      */
     public static function listenCommentRetrievedEvent()
     {
-        \Event::listen(CommentRetrievedEvent::class, function ($event) {
-            $request = $event->request;
-
+        \Event::listen('xe.plugin.comment.retrieved', function ($request) {
             if (Board::class !== $request->get('target_type')) {
                 return;
             }
@@ -387,9 +383,7 @@ class Resources
      */
     public static function listenCommentCreateEvent()
     {
-        \Event::listen(CommentCreateEvent::class, function ($event) {
-            $request = $event->request;
-
+        \Event::listen('xe.plugin.comment.create', function ($request) {
             if (Board::class !== $request->get('target_type')) {
                 return;
             }
