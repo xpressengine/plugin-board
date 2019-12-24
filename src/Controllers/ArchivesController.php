@@ -23,12 +23,14 @@ use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Handler;
+use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Routing\InstanceConfig;
+use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
 
 /**
  * ArchivesController
@@ -65,11 +67,13 @@ class ArchivesController extends Controller
          * @var ConfigHandler $configHandler
          * @var UrlHandler $urlHandler
          * @var BoardPermissionHandler $permission
+         * @var IdentifyManager $identifyManager
          */
         $handler = app('xe.board.handler');
         $configHandler = app('xe.board.config');
         $urlHandler = app('xe.board.url');
         $permission = app('xe.board.permission');
+        $identifyManager = app('xe.board.identify');
 
         $config = $configHandler->get($instanceId);
 
@@ -84,7 +88,7 @@ class ArchivesController extends Controller
                 new Instance($permission->name($instanceId))
             )) {
                 $isManager = true;
-            };
+            }
         }
 
         // set Skin
@@ -95,10 +99,16 @@ class ArchivesController extends Controller
         XePresenter::share('isManager', $isManager);
         XePresenter::share('instanceId', $instanceId);
         XePresenter::share('config', $config);
-        
+
         $this->setCurrentPage($request, $configHandler, $slug);
 
         $item = $service->getItem($id, Auth::user(), $config, $isManager);
+
+        if ($config->get('useConsultation') === true
+            && $service->hasItemPerm($item, Auth::user(), $identifyManager, $isManager) === false
+        ) {
+            throw new AccessDeniedHttpException;
+        }
 
         // 글 조회수 증가
         if ($item->display == Board::DISPLAY_VISIBLE) {
