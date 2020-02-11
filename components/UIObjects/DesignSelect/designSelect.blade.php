@@ -25,8 +25,9 @@
     <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-valid-name="{{ xe_trans($label) }}" />
     <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">{{ $value != $default ? xe_trans($text) : xe_trans($label) }}</button>
     <ul class="xe-dropdown-menu" data-name="{{ $name }}">
-        <li @if($value == (string)$default) class="on" @endif><a href="#">{{ xe_trans($label) }}</a></li>
-
-        {!! DesignSelectUIObject::renderList($items, $value) !!}
+        <li @if($value == (string)$default) class="on" @endif>
+            <a href="#">{{ xe_trans($label) }}</a>
+            {!! DesignSelectUIObject::renderList($items, $value) !!}
+        </li>
     </ul>
 </div>
