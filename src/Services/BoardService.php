@@ -203,6 +203,62 @@ class BoardService
     }
 
     /**
+     * get category item tree
+     *
+     * @param ConfigEntity $config board config entity
+     * @return array
+     */
+    public function getCategoryItemsTree(ConfigEntity $config)
+    {
+        $items = [];
+        if ($config->get('category') === true) {
+            $categoryItems = CategoryItem::where('category_id', $config->get('categoryId'))
+                ->where('parent_id', null)
+                ->orderBy('ordering')->get();
+
+            foreach ($categoryItems as $categoryItem) {
+                $categoryItemData = [
+                    'value' => $categoryItem->id,
+                    'text' => xe_trans($categoryItem->word),
+                    'children' => $this->getCategoryItemChildrenData($categoryItem)
+                ];
+
+                $items[] = $categoryItemData;
+            }
+
+        }
+
+        return $items;
+    }
+
+    /**
+     * get category item data
+     *
+     * @param CategoryItem $categoryItem target category
+     *
+     * @return array
+     */
+    private function getCategoryItemChildrenData(CategoryItem $categoryItem)
+    {
+        $children = $categoryItem->getChildren();
+
+        if ($children->isEmpty() === true) {
+            return [];
+        }
+
+        $childrenData = [];
+        foreach ($children as $child) {
+            $childrenData[] = [
+                'value' => $child->id,
+                'text' => xe_trans($child->word),
+                'children' => $this->getCategoryItemChildrenData($child)
+            ];
+        }
+
+        return $childrenData;
+    }
+
+    /**
      * get category item
      *
      * @param ConfigEntity $config board config entity
