@@ -1,3 +1,7 @@
+@php
+    use Xpressengine\Plugins\Board\Components\UIObjects\DesignSelect\DesignSelectUIObject;
+@endphp
+
 @if($scriptInit === true)
     <script>
         jQuery(function($) {
@@ -17,14 +21,12 @@
         });
     </script>
 @endif
-
 <div class="xe-dropdown __xe-dropdown-form">
     <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-valid-name="{{ xe_trans($label) }}" />
     <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">{{ $value != $default ? xe_trans($text) : xe_trans($label) }}</button>
     <ul class="xe-dropdown-menu" data-name="{{ $name }}">
         <li @if($value == (string)$default) class="on" @endif><a href="#">{{ xe_trans($label) }}</a></li>
-        @foreach ($items as $item)
-            <li @if($value == (string)$item['value']) class="on" @endif><a href="#" data-value="{{$item['value']}}">{{xe_trans($item['text'])}}</a></li>
-        @endforeach
+
+        {!! DesignSelectUIObject::renderList($items, $value) !!}
     </ul>
 </div>
