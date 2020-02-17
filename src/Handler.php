@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board;
 
+use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Counter\Counter;
 use Xpressengine\Database\Eloquent\Builder;
@@ -803,8 +804,13 @@ class Handler
             $query = $query->where('writer', $request->get('writer'));
         }
 
-        if ($request->get('category_item_id') != null && $request->get('category_item_id') !== '') {
-            $query = $query->where('board_category.item_id', $request->get('category_item_id'));
+        if ($request->get('category_item_id') !== null && $request->get('category_item_id') !== '') {
+            $categoryItem = CategoryItem::find($request->get('category_item_id'));
+            if ($categoryItem !== null) {
+                $targetCategoryItemIds = $categoryItem->descendants(false)->get()->pluck('id');
+
+                $query = $query->whereIn('board_category.item_id', $targetCategoryItemIds);
+            }
         }
 
         if ($request->get('start_created_at') != null && $request->get('start_created_at') !== '') {
