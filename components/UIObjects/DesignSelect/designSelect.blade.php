@@ -5,7 +5,7 @@
 @if($scriptInit === true)
     <script>
         jQuery(function($) {
-            $('.__xe-dropdown-form .xe-dropdown-menu a').on('click touchstart', function(event) {
+            $('.__xe-dropdown-form .xe-dropdown-menu a').on('click', function(event) {
                 event.preventDefault();
                 var $target = $(event.target),
                     $container = $target.closest('.__xe-dropdown-form'),
