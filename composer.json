@@ -61,6 +61,17 @@
           "description": "게시물 리스트 보여주는 위젯"
         },
 
+        "widget/board@list/skin/board@basicList": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicListSkin",
+          "name": "Basic 목록 스킨",
+          "description": "Basic 목록 스킨"
+        },
+        "widget/board@list/skin/board@basicCard": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicCardSkin",
+          "name": "Basic 카드(갤러리) 스킨",
+          "description": "Basic 카드(갤러리) 스킨"
+        },
+
         "widget/board@list/skin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Common\\CommonSkin",
           "name": "기본 게시물 위젯 스킨",

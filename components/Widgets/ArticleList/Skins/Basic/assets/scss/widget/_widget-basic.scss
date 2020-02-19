@@ -1,0 +1,235 @@
+// funnyweb 메인 게시물 리스트형, 카드형
+.section-widget-funnyweb-main-board {
+  padding: 20px 0;
+
+  &.section-widget-funnyweb-main-board--list {
+    // 리스트
+    .list {
+      > li {
+        padding: 11px 0;
+        border-bottom: 1px solid #dfe1e6;
+
+        &:last-child {
+          border-bottom: 0 none;
+        }
+      }
+
+      .item-image-box {
+        display: none;
+      }
+
+      .item-link {
+        display: block;
+        text-decoration: none;
+        color: rgba(0,0,0,0.87);
+      }
+
+      .item__title {
+        display: block;
+        padding-bottom: 2px;
+        font-size: 15px;
+        line-height: 24px;
+        font-weight: 400;
+        letter-spacing: -0.3px;
+        color: #000;
+      }
+
+      .item__date {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+        line-height: 24px;
+        letter-spacing: -0.2px;
+        color: rgba(124,124,124,0.8);
+      }
+    }
+  }
+
+  &.section-widget-funnyweb-main-board--card {
+    .title {
+      border-bottom: 0 none;
+    }
+
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -14px;
+
+      > li {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 14px;
+        margin-bottom: 30px;
+      }
+
+      .item-image-box {
+        position: relative;
+        overflow: hidden;
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      .item-image {
+        display: block;
+        padding-top: 55%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+        background-image: url('/assets/core/common/img/default_image_1200x800.jpg');
+
+        &.item-image--scale-animation {
+          transition: transform 0.25s ease-out;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+
+      .item-link {
+        display: block;
+        text-decoration: none;
+        color: rgba(0,0,0,0.87);
+      }
+
+      .item__title {
+        display: block;
+        letter-spacing: -0.3px;
+        color: #000;
+        @include ellipsis (48px, 16px, 400, 24px, 2);
+      }
+
+      .item__date {
+        display: none;
+        // display: inline-block;
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+        line-height: 24px;
+        letter-spacing: -0.2px;
+        color: rgba(124,124,124,0.8);
+      }
+    }
+  }
+}
+
+.widget-funnyweb-main-board {
+  // 타이틀
+  .title-box {
+    position: relative;
+  }
+
+  .title {
+    margin: 0;
+    padding: 0 0 21px;
+    border-bottom: 2px solid #000;
+    font-family: 'S-CoreDream', sans-serif;
+    font-size: 25px;
+    line-height: 29px;
+    font-weight: 600;
+    letter-spacing: -0.14px;
+    color: #181818;
+  }
+
+  .more-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    padding: 6px 8px;
+    border-radius: 32px;
+    text-decoration: none;
+    background-color: #ffd467;
+
+    i {
+      font-size: 20px;
+      vertical-align: top;
+      color: #000;
+    }
+  }
+
+  // 리스트 공통
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+}
+
+@include pc {
+  .section-widget-funnyweb-main-board {
+    padding: 40px 0;
+
+    &.section-widget-funnyweb-main-board--list {
+      .list {
+        .item-link {
+          position: relative;
+          padding-right: 85px;
+        }
+
+        .item__title {
+          display: block;
+          padding-right: 16px;
+          font-size: 16px;
+          line-height: 28px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .item__date {
+          position: absolute;
+          top: 2px;
+          right: 0;
+          font-size: 15px;
+          line-height: 24px;
+          letter-spacing: -0.2px;
+        }
+      }
+    }
+
+    &.section-widget-funnyweb-main-board--card {
+      .list {
+        &.list--item-two {
+          > li {
+            flex: 0 0 50%;
+            max-width: 50%;
+          }
+        }
+
+        &.list--item-three {
+          > li {
+            flex: 0 0 33.3333%;
+            max-width: 33.3333%;
+          }
+        }
+
+        &.list--item-four {
+          > li {
+            flex: 0 0 25%;
+            max-width: 25%;
+          }
+        }
+
+        &.list--item-five {
+          > li {
+            flex: 0 0 20%;
+            max-width: 20%;
+          }
+        }
+      }
+    }
+  }
+
+  .widget-funnyweb-main-board {
+
+  }
+}
