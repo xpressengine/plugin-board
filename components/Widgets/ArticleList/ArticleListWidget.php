@@ -74,7 +74,12 @@ class ArticleListWidget extends AbstractWidget
 
         //상위카테고리는 하위카테고리를 포함해야함
         $categoryIds = array_map(function ($item) {
-            return CategoryItem::find(mb_substr($item, 9))->getDescendantTree(true)->getNodes()->pluck('id');
+            $item = CategoryItem::find(mb_substr($item, 9));
+            if ($item === null) {
+                return [];
+            }
+
+            return $item->getDescendantTree(true)->getNodes()->pluck('id');
         }, $categoryIds);
 
         $categoryIds = array_flatten($categoryIds);
