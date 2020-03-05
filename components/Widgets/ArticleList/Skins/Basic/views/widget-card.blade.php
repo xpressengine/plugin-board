@@ -32,7 +32,7 @@
                         <a href="{{ $urlHandler->getShow($item) }}" class="item-link">
                             <div class="item-image-box">
                                 <!-- [D] 카드형 이미지 -->
-                                <div class="item-image item-image--scale-animation" @if($item->thumb != null && $item->thumb->board_thumbnail_path) style="background-image: url('{{ $item->thumb->board_thumbnail_path }}');" @endif></div>
+                                <div class="item-image item-image--scale-animation" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}');" @endif></div>
                             </div>
                         </a>
                         <a href="{{ $urlHandler->getShow($item) }}" class="item-link">

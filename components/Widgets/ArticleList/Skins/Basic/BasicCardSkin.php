@@ -3,8 +3,9 @@ namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList\Skins\Basic;
 
 use Xpressengine\Skin\GenericSkin;
 use View;
+use Xpressengine\Plugins\Board\Components\Widgets\ArticleList\Skins\Gallery\GallerySkin;
 
-class BasicCardSkin extends GenericSkin
+class BasicCardSkin extends GallerySkin
 {
     /**
      * @var string
