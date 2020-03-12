@@ -134,10 +134,19 @@ class ArticleListWidget extends AbstractWidget
             sprintf('%s.%s', 'board_gallery_thumbs', 'target_id')
         );
 
-        if (isset($widgetConfig['noticeInList']) === true && $widgetConfig['noticeInList'] == 'on') {
-            $query = $query->visibleWithNotice();
-        } else {
-            $query = $query->visible();
+        switch (array_get($widgetConfig, 'noticeInList', array_get($widgetConfig, 'notice_type', 'withOutNotice'))) {
+            case 'onlyNotice':
+                $query->notice();
+                break;
+
+            case 'on':
+            case 'withNotice':
+                $query->visibleWithNotice();
+                break;
+
+            default:
+                $query->visible();
+                break;
         }
 
         //$recent_date
