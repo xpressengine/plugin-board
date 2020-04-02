@@ -2,7 +2,7 @@
   "name": "xpressengine-plugin/board",
   "description": "XpressEngine's plugin for bundle (XE)",
   "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
-  "version": "1.0.7",
+  "version": "1.0.8",
   "support": {
     "email": "developers@xpressengine.com"
   },
@@ -10,7 +10,7 @@
     {
       "name": "XE Developers",
       "email": "developers@xpressengine.com",
-      "homepage": "http://xpressengine.io",
+      "homepage": "https://www.xpressengine.com",
       "role": "Developer"
     }
   ],
