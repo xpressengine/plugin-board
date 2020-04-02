@@ -2,7 +2,7 @@
   "name": "xpressengine-plugin/board",
   "description": "XpressEngine's plugin for bundle (XE)",
   "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
-  "version": "1.0.7",
+  "version": "1.0.8",
   "support": {
     "email": "developers@xpressengine.com"
   },
@@ -10,7 +10,7 @@
     {
       "name": "XE Developers",
       "email": "developers@xpressengine.com",
-      "homepage": "http://xpressengine.io",
+      "homepage": "https://www.xpressengine.com",
       "role": "Developer"
     }
   ],
@@ -29,6 +29,7 @@
             "/plugins/board/assets/img/screenshots/menuType1.png"
           ]
         },
+
         "module/board@board/skin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Common\\CommonSkin",
           "name": "게시판 기본 스킨",
@@ -53,27 +54,48 @@
             "/plugins/board/assets/img/screenshots/blog_skin.png"
           ]
         },
+
+        "widget/board@list": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
+          "name": "게시물 리스트 위젯",
+          "description": "게시물 리스트 보여주는 위젯"
+        },
+
+        "widget/board@list/skin/board@basicList": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicListSkin",
+          "name": "Basic 목록 스킨",
+          "description": "Basic 목록 스킨"
+        },
+        "widget/board@list/skin/board@basicCard": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicCardSkin",
+          "name": "Basic 카드(갤러리) 스킨",
+          "description": "Basic 카드(갤러리) 스킨"
+        },
+
+        "widget/board@list/skin/board@default": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Common\\CommonSkin",
+          "name": "기본 게시물 위젯 스킨",
+          "description": "게시물 리스트 위젯용 기본 스킨"
+        },
+        "widget/board@list/skin/board@gallery": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Gallery\\GallerySkin",
+          "name": "갤러리형 게시물 위젯 스킨",
+          "description": "갤러리형 게시물 리스트 위젯용 스킨"
+        },
+
         "module/board@board/settingsSkin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Settings\\Common\\CommonSettingsSkin",
           "name": "게시판 관리자 기본 스킨",
           "description": "게시판 관리자 기본스킨",
           "screenshot" : []
         },
+
         "fieldType/xpressengine@Category/fieldSkin/xpressengine@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\DynamicFields\\Category\\Skins\\DesignSelect\\DesignSelectSkin",
           "name": "Category Design select",
           "description": ""
         },
-        "module/board@board/toggleMenu/xpressengine@trashItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\TrashItem",
-          "name": "휴지통",
-          "description": "선택한 문서를 휴지통으로 보냅니다."
-        },
-        "module/board@board/toggleMenu/xpressengine@printItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\PrintItem",
-          "name": "인쇄",
-          "description": "선택한 문서를 인쇄합니다."
-        },
+
         "uiobject/board@select": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\DesignSelect\\DesignSelectUIObject",
           "name": "Design select",
@@ -114,20 +136,16 @@
           "name": "Copy url share toggle menu",
           "description": ""
         },
-        "widget/board@list": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
-          "name": "게시물 리스트 위젯",
-          "description": "게시물 리스트 보여주는 위젯"
+
+        "module/board@board/toggleMenu/xpressengine@trashItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\TrashItem",
+          "name": "휴지통",
+          "description": "선택한 문서를 휴지통으로 보냅니다."
         },
-        "widget/board@list/skin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Common\\CommonSkin",
-          "name": "기본 게시물 위젯 스킨",
-          "description": "게시물 리스트 위젯용 기본 스킨"
-        },
-        "widget/board@list/skin/board@gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Gallery\\GallerySkin",
-          "name": "갤러리형 게시물 위젯 스킨",
-          "description": "갤러리형 게시물 리스트 위젯용 스킨"
+        "module/board@board/toggleMenu/xpressengine@printItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\PrintItem",
+          "name": "인쇄",
+          "description": "선택한 문서를 인쇄합니다."
         }
       },
       "screenshots" : [

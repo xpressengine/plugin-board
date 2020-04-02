@@ -74,7 +74,12 @@ class ArticleListWidget extends AbstractWidget
 
         //상위카테고리는 하위카테고리를 포함해야함
         $categoryIds = array_map(function ($item) {
-            return CategoryItem::find(mb_substr($item, 9))->getDescendantTree(true)->getNodes()->pluck('id');
+            $item = CategoryItem::find(mb_substr($item, 9));
+            if ($item === null) {
+                return [];
+            }
+
+            return $item->getDescendantTree(true)->getNodes()->pluck('id');
         }, $categoryIds);
 
         $categoryIds = array_flatten($categoryIds);
@@ -129,10 +134,19 @@ class ArticleListWidget extends AbstractWidget
             sprintf('%s.%s', 'board_gallery_thumbs', 'target_id')
         );
 
-        if (isset($widgetConfig['noticeInList']) === true && $widgetConfig['noticeInList'] == 'on') {
-            $query = $query->visibleWithNotice();
-        } else {
-            $query = $query->visible();
+        switch (array_get($widgetConfig, 'noticeInList', array_get($widgetConfig, 'notice_type', 'withOutNotice'))) {
+            case 'onlyNotice':
+                $query->notice();
+                break;
+
+            case 'on':
+            case 'withNotice':
+                $query->visibleWithNotice();
+                break;
+
+            default:
+                $query->visible();
+                break;
         }
 
         //$recent_date

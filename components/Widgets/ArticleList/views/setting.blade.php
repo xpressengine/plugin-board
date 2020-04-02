@@ -1,6 +1,3 @@
-
-
-
 <div class="form-group">
     <label>정렬</label>
     <select name="order_type" class="form-control">
@@ -9,6 +6,7 @@
         <option value="assent_count" @if(array_get($args, 'order_type') == 'assent_count') selected="selected" @endif >{{xe_trans('board::assentOrder')}}</option>
     </select>
 </div>
+
 <div class="form-group">
     <label>최근 몇일</label>
     <input type="number" name="recent_date" class="form-control" value="{{array_get($args, 'recent_date')}}" />
@@ -25,20 +23,17 @@
     </div>
 </div>
 
-<div class="form=-group">
-    <label>공지 게시물 출력 여부</label>
-    <div class="xe-btn-toggle">
-        <label>
-            <span class="sr-only">toggle</span>
-                <input name="noticeInList" type="checkbox" @if(array_get($args, 'noticeInList')) checked="checked" @endif />
-            <span class="toggle"></span>
-        </label>
-    </div>
+<div class="form-group">
+    <label>공지 게시물 출력 타입</label>
+    <select name="notice_type" class="form-control">
+        <option value="onlyNotice" @if (array_get($args, 'notice_type') === 'onlyNotice') selected @endif>공지 게시물만 출력</option>
+        <option value="withNotice" @if (in_array(array_get($args, 'noticeInList', array_get($args, 'notice_type', 'withOutNotice')), ['on', 'withNotice']) === true) selected @endif>공지 게시물을 포함해서 출력</option>
+        <option value="withOutNotice" @if (in_array(array_get($args, 'noticeInList', array_get($args, 'notice_type', 'withOutNotice')), ['', 'withOutNotice']) === true) selected @endif>일반 게시물만 출력</option>
+    </select>
 </div>
 
 <p>글 설정</p>
 <hr>
-
 
 <div class="form-group">
     <label>카테고리 선택</label>
@@ -51,10 +46,12 @@
         @endforeach
     </select>
 </div>
+
 <div class="form-group">
     <label>글 수</label>
     <input type="number" name="take" class="form-control" value="{{array_get($args, 'take', 5)}}" />
 </div>
+
 <script>
     $(function(){
         $('[name="@title"]').prev().html('타이틀');

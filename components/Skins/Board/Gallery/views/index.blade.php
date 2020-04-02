@@ -39,7 +39,7 @@
         {!! uio('uiobject/board@select', [
         'name' => 'order_type',
         'label' => xe_trans('xe::order'),
-        'value' => Request::get('order_type'),
+        'value' => Request::get('order_type', $config->get('orderType')),
         'items' => $handler->getOrders(),
         ]) !!}
     </div>
@@ -123,7 +123,7 @@
             </div>
         </form>
         <form method="get" class="__xe_search" action="{{ $urlHandler->get('index') }}">
-            <input type="hidden" name="order_type" value="{{ Request::get('order_type') }}" />
+            <input type="hidden" name="order_type" value="{{ Request::get('order_type', $config->get('orderType')) }}" />
             <div class="bd_search_detail">
                 <div class="bd_search_detail_option">
                     <div class="xe-row">

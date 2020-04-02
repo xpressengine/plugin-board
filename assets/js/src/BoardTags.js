@@ -17,7 +17,9 @@ window.jQuery(function ($) {
         tag: '',
         tags: [],
         autocompleteItems: [],
-        searchItem: null
+        searchItem: null,
+        addOnKey: [13, 44],
+        separators: [',' ]
       }
     },
 

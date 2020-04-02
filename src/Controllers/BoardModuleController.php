@@ -157,7 +157,7 @@ class BoardModuleController extends Controller
         $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
         $paginate = $service->getItems($request, $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);
-        $categories = $service->getCategoryItems($this->config);
+        $categories = $service->getCategoryItemsTree($this->config);
         $orders = $this->handler->getOrders();
         $searchOptions = $service->getSearchOptions($request);
 
@@ -230,7 +230,7 @@ class BoardModuleController extends Controller
         $notices = $service->getNoticeItems($request, $this->config, Auth::user()->getId());
         $paginate = $service->getItems($request, $this->config, $id);
         $fieldTypes = $service->getFieldTypes($this->config);
-        $categories = $service->getCategoryItems($this->config);
+        $categories = $service->getCategoryItemsTree($this->config);
         $searchOptions = $service->getSearchOptions($request);
 
         $dynamicFieldsById = [];
@@ -294,7 +294,7 @@ class BoardModuleController extends Controller
         }
 
         $fieldTypes = $service->getFieldTypes($this->config);
-        $categories = $service->getCategoryItems($this->config);
+        $categories = $service->getCategoryItemsTree($this->config);
 
         $dynamicFieldsById = [];
         foreach ($fieldTypes as $fieldType) {
@@ -437,7 +437,7 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $categories = $service->getCategoryItems($this->config);
+        $categories = $service->getCategoryItemsTree($this->config);
         $rules = $validator->getCreateRule(Auth::user(), $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);
 
@@ -493,7 +493,7 @@ class BoardModuleController extends Controller
         $inputs = $request->all();
         $originInputs = $request->originAll();
         $inputs['title'] = htmlspecialchars($originInputs['title'], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        
+
         if ($this->isManager()) {
             $inputs['content'] = $originInputs['content'];
         } else {
@@ -579,7 +579,7 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        $categories = $service->getCategoryItems($this->config);
+        $categories = $service->getCategoryItemsTree($this->config);
 
         $rules = $validator->getEditRule(Auth::user(), $this->config);
 

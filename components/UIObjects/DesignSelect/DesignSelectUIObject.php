@@ -82,10 +82,12 @@ class DesignSelectUIObject extends AbstractUIObject
             $args['value'] = '';
             $args['text'] = '';
         } else {
-            foreach ($args['items'] as $item) {
-                if ($item['value'] == $args['value']) {
-                    $args['text'] = $item['text'];
-                }
+            $selectedItem = self::getSelectedItem($args['items'], $args['value']);
+            if ($selectedItem) {
+                $args['text'] = $selectedItem['text'];
+            } else {
+                $args['value'] = '';
+                $args['text'] = '';
             }
         }
 
@@ -97,5 +99,58 @@ class DesignSelectUIObject extends AbstractUIObject
         }
 
         return View::make('board::components/UIObjects/DesignSelect/designSelect', $args)->render();
+    }
+
+    private static function getSelectedItem ($items, $selectedValue)
+    {
+        foreach($items as $item) {
+            if ($item['value'] == $selectedValue) {
+                return [
+                    'value' => $item['value'],
+                    'text' => $item['text']
+                ];
+            }
+
+            if (self::hasChildren($item)) {
+                $selectedItem = self::getSelectedItem(self::getChildren($item), $selectedValue);
+                if ($selectedItem) {
+                    return $selectedItem;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $item
+     * @return boolean
+     */
+    public static function hasChildren ($item)
+    {
+        return array_has($item, 'children');
+    }
+
+    /**
+     * @param array $item
+     * @return array
+     */
+    public static function getChildren ($item)
+    {
+        if (array_has($item, 'children')) {
+            return array_get($item, 'children');
+        }
+
+        return [];
+    }
+
+    public static function renderList ($items, $value = null)
+    {
+        $args = [
+            'items' => $items,
+            'selectedItemValue' => $value
+        ];
+
+        return View::make('board::components/UIObjects/DesignSelect/designSelectItem', $args)->render();
     }
 }
