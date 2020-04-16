@@ -30,6 +30,14 @@
           ]
         },
 
+        "module/board@board/skin/board@basic": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Basic\\BasicSkin",
+          "name": "게시판 Basic 스킨",
+          "description": "게시판 Basic 스킨.",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/basic_skin.png"
+          ]
+        },
         "module/board@board/skin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Common\\CommonSkin",
           "name": "게시판 기본 스킨",
