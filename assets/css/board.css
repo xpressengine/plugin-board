@@ -1452,8 +1452,8 @@
     margin-left: -9px;
   }
   .board_header .board-sorting-area {
-    position: absolute;
-    top: 60px;
+    position: initial;
+    /* top: 60px; */
     width: 100%;
     z-index: 20;
   }
@@ -1470,6 +1470,7 @@
     min-width: auto;
     margin-right: 0;
     border: none;
+    padding-bottom: 8px;
   }
   /*.board_header .bd_align .bd_select {
     height: 50px;
@@ -1567,7 +1568,7 @@
     background: none;
   }
   .board .bd_dimmed {
-    display: none;
+    display: none !important;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -1576,7 +1577,7 @@
     background-color: #000;
     z-index: 15;
     opacity: .3;
-    filter: alpha(opacity=30);;
+    filter: alpha(opacity=30);
   }
   .board_list.v2 {
     border-top: 1px solid #ddd;
@@ -1897,5 +1898,3 @@ div.ReactTags__suggestions li.active span {
   transform: scale(1.10);
 }
 /* END thumbnail-cover */
-
-
