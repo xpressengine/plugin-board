@@ -29,7 +29,6 @@
             "/plugins/board/assets/img/screenshots/menuType1.png"
           ]
         },
-
         "module/board@board/skin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Common\\CommonSkin",
           "name": "게시판 기본 스킨",
@@ -54,13 +53,26 @@
             "/plugins/board/assets/img/screenshots/blog_skin.png"
           ]
         },
-
+        "module/board@board/skin/board@new_default": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewCommon\\NewCommonSkin",
+          "name": "게시판 신규 기본 스킨",
+          "description": "게시판 신규 기본 스킨."
+        },
+        "module/board@board/skin/board@new_gallery": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewGallery\\NewGallerySkin",
+          "name": "게시판 신규 갤러리 스킨",
+          "description": "게시판 신규 갤러리 스킨."
+        },
+        "module/board@board/skin/board@new_blog": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewBlog\\NewBlogSkin",
+          "name": "게시판 신규 블로그 스킨",
+          "description": "게시판 신규 블로그 스킨."
+        },
         "widget/board@list": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
           "name": "게시물 리스트 위젯",
           "description": "게시물 리스트 보여주는 위젯"
         },
-
         "widget/board@list/skin/board@basicList": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicListSkin",
           "name": "Basic 목록 스킨",
@@ -71,7 +83,6 @@
           "name": "Basic 카드(갤러리) 스킨",
           "description": "Basic 카드(갤러리) 스킨"
         },
-
         "widget/board@list/skin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Common\\CommonSkin",
           "name": "기본 게시물 위젯 스킨",
@@ -82,20 +93,17 @@
           "name": "갤러리형 게시물 위젯 스킨",
           "description": "갤러리형 게시물 리스트 위젯용 스킨"
         },
-
         "module/board@board/settingsSkin/board@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Settings\\Common\\CommonSettingsSkin",
           "name": "게시판 관리자 기본 스킨",
           "description": "게시판 관리자 기본스킨",
           "screenshot" : []
         },
-
         "fieldType/xpressengine@Category/fieldSkin/xpressengine@default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\DynamicFields\\Category\\Skins\\DesignSelect\\DesignSelectSkin",
           "name": "Category Design select",
           "description": ""
         },
-
         "uiobject/board@select": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\DesignSelect\\DesignSelectUIObject",
           "name": "Design select",
@@ -136,7 +144,6 @@
           "name": "Copy url share toggle menu",
           "description": ""
         },
-
         "module/board@board/toggleMenu/xpressengine@trashItem": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\TrashItem",
           "name": "휴지통",
