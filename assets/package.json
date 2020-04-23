@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "gulp",
+    "lint": "gulp lint",
+    "fix-style": "gulp lint:fix-style",
+    "watch": "gulp watch",
+    "build": "NODE_ENV=production gulp build"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "ie >= 10"
+  ],
+  "devDependencies": {
+    "@babel/preset-env": "^7.7.7",
+    "@babel/register": "^7.7.7",
+    "babel-plugin-transform-builtin-extend": "^1.1.2",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-if": "^3.0.0",
+    "gulp-load-plugins": "^2.0.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-stylelint": "^11.0.0",
+    "gulp-util": "^3.0.8",
+    "gulp-posthtml": "^3.0.4",
+    "posthtml": "^0.11.6",
+    "posthtml-extend": "^0.3.0",
+    "posthtml-include": "^1.2.0",
+    "stylelint": "^12.0.1",
+    "stylelint-config-recommended-scss": "^4.1.0",
+    "stylelint-config-standard": "^19.0.0",
+    "stylelint-scss": "^3.13.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1"
+  }
+}
