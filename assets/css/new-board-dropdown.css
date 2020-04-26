@@ -1,0 +1,28 @@
+.xe-list-board-header--dropdown {
+  margin-right: 7px;
+  display: inline-block;
+}
+
+.xe-list-board-header--dropdown .xe-list-board-header--dropdown__button .xe-list-board--header-category__button-text {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  color: #767676;
+  font-size: 14px;
+}
+
+.xe-list-board-header--dropdown .xe-list-board-header--dropdown-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+
+.xe-list-board-header--dropdown .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item a {
+  color: #141414;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=new-board-dropdown.css.map */

@@ -20,39 +20,15 @@
                 </div>
             </div>
             <div class="xe-list-board-header--right-box">
-                <div class="xe-list-board-header--category xe-list-board-header--dropdown">
-                    <button type="button" class="xe-list-board-header--category__button xe-list-board-header--dropdown__button" data-toggle="xe-list-board--header--category__button-dropdown">
-                        <span class="xe-list-board--header-category__button-text">전체 카테고리</span>
-                        <i class="xi-angle-down-thin"></i>
-                    </button>
-                    <ul class="xe-list-board-header--category-menu xe-list-board-header--dropdown-menu">
-                        <li class="xe-list-board-header--dropdown-menu-item on">
-                            <a href="#">전체 카테고리</a>
-                        </li>
-                        <li class="xe-list-board-header--dropdown-menu-item">
-                            <a href="#">공지사항</a>
-                        </li>
-                        <li class="xe-list-board-header--dropdown-menu-item">
-                            <a href="#">릴리즈 노트</a>
-                        </li>
-                    </ul>
+                <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
+                    <!-- dropdown 전체 카테고리 -->
+                    <include src="layout/_dropdown.html"></include>
+                    <!-- //dropdown 전체 카테고리 -->
                 </div>
-                <div class="xe-list-board-header--sort xe-list-board-header--dropdown">
-                    <button type="button" class="xe-list-board-header--category__button xe-list-board-header--dropdown__button" data-toggle="xu-dropdown">
-                        <span class="xu-button__text">최신순</span>
-                        <i class="xi-angle-down-thin"></i>
-                    </button>
-                    <ul class="xe-list-board-header--sort-menu xe-list-board-header--dropdown-menu">
-                        <li class="xe-list-board-header--dropdown-menu-item on">
-                            <a href="#">최신순</a>
-                        </li>
-                        <li class="xe-list-board-header--dropdown-menu-item">
-                            <a href="#">추천순</a>
-                        </li>
-                        <li class="xe-list-board-header--dropdown-menu-item">
-                            <a href="#">최근 수정순</a>
-                        </li>
-                    </ul>
+                <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
+                    <!-- dropdown 최신순 -->
+                    <include src="layout/_dropdown.html"></include>
+                    <!-- //dropdown 최신순 -->
                 </div>
             </div>
         </div>

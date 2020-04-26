@@ -152,22 +152,22 @@
                 <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">글쓰기</a>
             </div>
         </div>
-        <div class="xe-list-board--pg">
-            <span class="xe-list-board__btn_pg xe-list-board__btn_prev"><i class="xi-angle-left"></i></span>
-            <span class="xe-list-board__pg-number xe-list-board__pg-number--active">1</span>
-            <span class="xe-list-board__pg-number"><a href="#">2</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">3</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">4</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">5</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">6</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">7</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">8</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">9</a></span>
-            <span class="xe-list-board__pg-number"><a href="#">10</a></span>
-            <span class="xe-list-board__btn_pg xe-list-board__btn_next"><i class="xi-angle-right"></i></span>
+        <div class="xe-list-board--pagination">
+            <span class="xe-list-board__btn_pagination xe-list-board__btn_prev"><i class="xi-angle-left"></i></span>
+            <span class="xe-list-board__pagination-number xe-list-board__pagination-number--active">1</span>
+            <span class="xe-list-board__pagination-number"><a href="#">2</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">3</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">4</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">5</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">6</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">7</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">8</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">9</a></span>
+            <span class="xe-list-board__pagination-number"><a href="#">10</a></span>
+            <span class="xe-list-board__btn_pagination xe-list-board__btn_next"><i class="xi-angle-right"></i></span>
         </div>
     </div>
     <div class="xe-list-board-footer__text">
         하단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다.
-    </div>
+    </div>`
 </section>
