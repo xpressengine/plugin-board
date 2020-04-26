@@ -18,7 +18,7 @@
 
         <!-- ICON -->
 
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
         <!-- CSS -->
         <link href="http://xe3-shop.xehub.co.kr/assets/core/common/css/xe-common.css?1586412506" type="text/css" rel="stylesheet" media="all">
         <link href="http://xe3-shop.xehub.co.kr/assets/core/xe-ui-component/xe-ui-component.css?1586599441" type="text/css" rel="stylesheet" media="all">
@@ -74,7 +74,10 @@
         <!-- CUSTOM TAGS -->
         <div id="wrap" class="xe-theme xe-theme--mjae wrap-layout">
             <p class="skip"><a href="#content">메뉴 건너뛰기</a></p>
-            <section class="xe-list-board container">
+            <main class="container-layout  main-container-layout container">
+                <div id="content" class="content-layout  main-content-layout ">
+                    <section class="xe-list-board container">
+                        
     <div class="xe-list-board-header">
         <div class="xe-list-board-header__title-content">
             <div class="xe-list-board-header__title-box">
@@ -85,6 +88,7 @@
                 <a href="#"><img src="../../assets/img/pencil.svg"></a>
             </div>
         </div>
+        <div class="xe-list-board-header__text">상단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다. </div>
         <div class="xe-list-board-header__contents">
             <div class="xe-list-board-header--left-box">
                 <div class="xe-list-board--header__search">
@@ -131,10 +135,7 @@
                 </div>
             </div>
         </div>
-    </div></section>
-            <main id="container" class="xe-theme__content-container xe-theme__content-container--main container-layout xeofficial-container">
-                <div id="widgetbox-widgetpage-0e7c2db5">
-                    <div class="widgetbox-content container">
+    </div>
                         
 
         <div class="xe-list-board-body">
@@ -163,12 +164,16 @@
             </ul>
         </div>
     
-                    </div>
-                </div>
-            </main>
-
-            <!-- footer -->
-                <div class="xe-list-board-footer">
+                            <div class="xe-list-board-footer">
+        <div class="xe-list-board--button-box">
+            <div class="xe-list-board--btn-left-box">
+                <a href="#" class="xe-list-board__btn">관리</a>
+            </div>
+            <div class="xe-list-board--btn-right-box">
+                <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">내가 쓴 글</a>
+                <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">글쓰기</a>
+            </div>
+        </div>
         <div class="xe-list-board--pg">
             <span class="xe-list-board__btn_pg xe-list-board__btn_prev"><i class="xi-angle-left"></i></span>
             <span class="xe-list-board__pg-number xe-list-board__pg-number--active">1</span>
@@ -184,9 +189,14 @@
             <span class="xe-list-board__btn_pg xe-list-board__btn_next"><i class="xi-angle-right"></i></span>
         </div>
     </div>
+    <div class="xe-list-board-footer__text">
+        하단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다. 
+    </div>
 
-        </div>
-        
+                    </section>
+                </div>
+            </main>
+            
         <!-- JS at body.append -->
         <script src="http://xe3-shop.xehub.co.kr/plugins/xehub_custom_develop/assets/lib/bootstrap/bootstrap.bundle.min.js?1586757809"></script>
         <script src="http://xe3-shop.xehub.co.kr/plugins/xehub_custom_develop/views/Themes/Shop/assets/js/script.js?1586588018"></script>
@@ -199,5 +209,5 @@
                 $('#widgetbox-' + id).find('.widgetbox-content').html(html);
             }
         </script>
-    </body>
+    </div></body>
 </html>

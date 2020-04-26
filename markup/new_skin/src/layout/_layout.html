@@ -18,7 +18,7 @@
 
         <!-- ICON -->
 
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
         <!-- CSS -->
         <link href="http://xe3-shop.xehub.co.kr/assets/core/common/css/xe-common.css?1586412506" type="text/css" rel="stylesheet" media="all">
         <link href="http://xe3-shop.xehub.co.kr/assets/core/xe-ui-component/xe-ui-component.css?1586599441" type="text/css" rel="stylesheet" media="all">
@@ -74,19 +74,16 @@
         <!-- CUSTOM TAGS -->
         <div id="wrap" class="xe-theme xe-theme--mjae wrap-layout">
             <p class="skip"><a href="#content">메뉴 건너뛰기</a></p>
-            <include src="layout/_header.html"></include>
-            <main id="container" class="xe-theme__content-container xe-theme__content-container--main container-layout xeofficial-container">
-                <div id="widgetbox-widgetpage-0e7c2db5">
-                    <div class="widgetbox-content container">
+            <main class="container-layout  main-container-layout container">
+                <div id="content" class="content-layout  main-content-layout ">
+                    <section class="xe-list-board container">
+                        <include src="layout/_header.html"></include>
                         <block name="page-content">@page-content</block>
-                    </div>
+                        <include src="layout/_footer.html"></include>
+                    </section>
                 </div>
             </main>
-
-            <!-- footer -->
-            <include src="layout/_footer.html"></include>
-        </div>
-        
+            
         <!-- JS at body.append -->
         <script src="http://xe3-shop.xehub.co.kr/plugins/xehub_custom_develop/assets/lib/bootstrap/bootstrap.bundle.min.js?1586757809"></script>
         <script src="http://xe3-shop.xehub.co.kr/plugins/xehub_custom_develop/views/Themes/Shop/assets/js/script.js?1586588018"></script>

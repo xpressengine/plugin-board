@@ -127,7 +127,7 @@ class NewCommonSkin extends GenericBoardSkin
      * @return \Illuminate\Contracts\Support\Renderable|string
      */
     public function render()
-    {
+    {        
         $this->setSkinConfig();
         $this->setDynamicFieldSkins();
         $this->setPaginationPresenter();

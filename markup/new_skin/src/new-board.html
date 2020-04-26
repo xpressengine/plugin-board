@@ -2,12 +2,8 @@
     <block name="page-title" type="prepend">기본 - </block>
     <block name="page-content">
         <div class="xe-list-board-body">
-            <ul class="xe-list-board-list">
+            <ul class="xe-list-board-list--item xe-list-board-list">
                 <li class="xe-list-board-list--header">
-                    <div class="xe-list-board-list__check-box">
-                        <input type="checkbox" title="전부체크" class="xe-list-board-list__check"/>
-                        <span class="blind">전부체크</span>
-                    </div>
                     <div class="xe-list-board-list__favorite"><i class="xi-star-o"></i></div>
                     <div class="xe-list-board-list__category">카테고리</div>
                     <div class="xe-list-board-list__subject">제목</div>
@@ -18,58 +14,36 @@
                     <div class="xe-list-board-list__dissent-count">비추천수</div>
                     <div class="xe-list-board-list__view">조회수</div>
                 </li>
-
                 <li class="xe-list-board-list--item">
-                    <div class="xe-list-board-list__check-box">
-                        <input type="checkbox" title="선택" class="xe-list-board-list__check"/>
-                        <span class="blind">선택</span>
-                    </div>
-                    <div class="xe-list-board-list__favorite"><i class="xi-star"></i></div>
-                    <div class="xe-list-board-list__category">
-                        <span class="xe-list-board-list__category--notice">공지사항</span>
-                        <span class="xe-list-board-list__category--notice-box">공지</span>
-                    </div>
+                    <!-- PC -->
+                    <div class="xe-list-board-list__favorite xe-hidden-mobile"><i class="xi-star"></i></div>
+                    <div class="xe-list-board-list__category">카테고리</div>
                     <div class="xe-list-board-list__subject">
-                        <p class="xe-list-board-list__subject-title"><a href="#"><i class="xi-lock"><span class="blind">비밀글</span></i> 우리는 미술 학교에 다니지 않고도 깨끗하고 간단한 UI를 디자인하는 규칙에 대해 이야기 하고 있습니다.</a></p>
-                        <span class="xe-list-board-list__subject-comment">99</span>
-                        <span class="xe-list-board-list__subject-title"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
-                        <p class="xe-list-board-list__subject-new"><span class="blind">새글</span></p>
-                    </div>
-                    <div class="xe-list-board-list__user-info">
                         <a href="#">
-                            <div class="xe-list-board-list__user-image"><span class="blind">유저 이미지</span></div>
-                            <p class="xe-list-board-list__nickname">이구역의꽃게는나</p>
+                            <span class="xe-list-board-list__notice--box-form">공지</span>
+                            <span class="xe-list-board-list__secret"><i class="xi-lock"><span class="blind">비밀글</span></i></span>
+                            우리는 미술 학교에 다니지 않고도 깨끗하고 간단한 UI를 디자인하는 규칙에 대해 이야기 하고 있습니다.
+                            <span class="xe-list-board-list__subject-comment xe-hidden-mobile">99</span>
+                            <span class="xe-list-board-list__subject-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
+                            <span class="xe-list-board-list__subject-new"><span class="blind">새글</span></span>
                         </a>
                     </div>
-                    <div class="xe-list-board-list__created_date">2020.04.22.</div>
-                    <div class="xe-list-board-list__updated_date">2020.04.23.</div>
-                    <div class="xe-list-board-list__assent-count">25</div>
-                    <div class="xe-list-board-list__dissent-count">1</div>
-                    <div class="xe-list-board-list__view">235</div>
-                </li>
-                <li>
-                    <div class="xe-list-board-list__check-box">
-                        <input type="checkbox" title="선택" class="xe-list-board-list__check"/>
-                        <span class="blind">선택</span>
-                    </div>
-                    <div class="xe-list-board-list__favorite"><i class="xi-star"></i></div>
-                    <div class="xe-list-board-list__category">category</div>
-                    <div class="xe-list-board-list__subject">
-                        <p class="xe-list-board-list__subject-secret-icon"><i class="xi-lock"></i><span class="blind">비밀글</span></p>
-                        <p class="xe-list-board-list__subject-title">우리는 미술 학교에 다니지 않고도 깨끗하고 간단한 UI를 디자인하는 규칙에 대해 이야기 하고 있습니다.</p>
-                        <p class="xe-list-board-list__subject-comment">99</p>
-                        <p class="xe-list-board-list__subject-title"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></p>
-                        <p class="xe-list-board-list__subject-new"><span class="blind">새글</span></p>
-                    </div>
-                    <div class="xe-list-board-list__user-info">
-                        <div class="xe-list-board-list__user-image"><span class="blind">유저 이미지</span></div>
-                        <p class="xe-list-board-list__nickname">이구역의꽃게는나</p>
-                    </div>
-                    <div class="xe-list-board-list__created_date">2020.04.22.</div>
-                    <div class="xe-list-board-list__updated_date">2020.04.23.</div>
-                    <div class="xe-list-board-list__assent-count">25</div>
-                    <div class="xe-list-board-list__dissent-count">1</div>
-                    <div class="xe-list-board-list__view">235</div>
+                        <div class="xe-list-board-list__writter">
+                            <a href="#">
+                                <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
+                                <span class="xe-list-board-list__nickname">이태원클라스</span>
+                            </a>
+                        </div>
+                        <div class="xe-list-board-list__created_date"><span class="blind">작성일</span> 2020. 04. 22.</div>
+                        <div class="xe-list-board-list__updated_date"><span class="blind">수정일</span>2020. 04. 23.</div>
+                        <div class="xe-list-board-list__assent-count xe-hidden-mobile"><span class="blind">추천</span> 25</div>
+                        <div class="xe-list-board-list__dissent-count xe-hidden-mobile"><span class="blind">비추천</span> 1</div>
+                        <div class="xe-list-board-list__view"><span class="xe-hidden-pc">조회</span> 235</div>
+                        <div class="xe-list-board-list__comment xe-hidden-pc"><span>댓글</span> 5</div>
+                        <div class="xe-list-board-list__vote-count xe-hidden-pc">
+                            <div class="xe-list-board-list__assent-count"><span class="blind">추천</span><i class="xi-thumbs-up"></i> 25</div>
+                            <div class="xe-list-board-list__dissent-count"><span class="blind">비추천</span><i class="xi-thumbs-down"></i> 1</div>
+                        </div>
                 </li>
             </ul>
         </div>

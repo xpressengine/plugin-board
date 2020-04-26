@@ -1,518 +1,173 @@
-{{ XeFrontend::js('assets/core/xe-ui-component/js/xe-page.js')->appendTo('body')->load() }}
-<div class="board_header">
-    @if ($isManager === true)
-    <div class="bd_manage_area">
-        <!-- [D] 클릭시 클래스 on 추가 및 bd_manage_detail 영역 노출 -->
-        <button type="button" class="xe-btn xe-btn-primary-outline bd_manage __xe-bd-manage">{{ xe_trans('xe::manage') }}</button>
-    </div>
-    @endif
+{{ XeFrontend::css('plugins/board/assets/css/new-board.css')->load() }}
 
-                <!-- 모바일뷰에서 노출되는 정렬 버튼 -->
-    <div class="bd_manage_area xe-visible-xs">
-        <!-- [D] 클릭시 클래스 on 추가 및 bd_align 영역 노출 -->
-        <a href="#" class="btn_mng bd_sorting __xe-bd-mobile-sorting"><i class="xi-filter"></i> <span class="xe-sr-only">{{xe_trans('xe::order')}}</span></a>
-    </div>
-    <!-- /모바일뷰에서 노출되는 정렬 버튼 -->
-
-    <div class="bd_btn_area">
-        <ul>
-            <!-- [D] 클릭시 클래스 on 및 추가 bd_search_area 영역 활성화 -->
-            <li><a href="#" class="bd_search __xe-bd-search"><span class="xe-sr-only">{{ xe_trans('xe::search') }}</span><i class="xi-search"></i></a></li>
-            <li><a href="{{ $urlHandler->get('create') }}"><span class="xe-sr-only">{{ xe_trans('board::newPost') }}</span><i class="xi-pen-o"></i></a></li>
-            @if ($isManager === true)
-            <li><a href="{{ $urlHandler->managerUrl('config', ['boardId'=>$instanceId]) }}" target="_blank"><span class="xe-sr-only">{{ xe_trans('xe::manage') }}</span><i class="xi-cog"></i></a></li>
-            @endif
-        </ul>
-    </div>
-    <div class="xe-form-inline xe-hidden-xs board-sorting-area __xe-forms">
-        @if($config->get('category') == true)
-        {!! uio('uiobject/board@select', [
-            'name' => 'category_item_id',
-            'label' => xe_trans('xe::category'),
-            'value' => Request::get('category_item_id'),
-            'items' => $categories,
-        ]) !!}
-        @endif
-
-        {!! uio('uiobject/board@select', [
-            'name' => 'order_type',
-            'label' => xe_trans('xe::order'),
-            'value' => Request::get('order_type', $config->get('orderType')),
-            'items' => $handler->getOrders(),
-        ]) !!}
-    </div>
-
-    <!-- 게시글 관리 -->
-    @if ($isManager === true)
-    <div class="bd_manage_detail">
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_copy">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::copy') }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        <div class="xe-form-inline">
-                            {!! uio('uiobject/board@select', [
-                                'name' => 'copyTo',
-                                'label' => xe_trans('xe::select'),
-                                'items' => $boardList,
-                            ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-url="{{ $urlHandler->managerUrl('copy') }}">{{ xe_trans('xe::copy') }}</button>
-                        </div>
-                    </div>
-                </div>
+<section class="xe-list-board container">
+    <div class="xe-list-board-header">
+        <div class="xe-list-board-header__title-content">
+            <div class="xe-list-board-header__title-box">
+                <h2 class="xe-list-board-header__title">New Theme</h2>
+                <span class="xe-list-board-header__post-count">(62)</span>
+            </div>
+            <div class="xe-list-board-header__write-button">
+                <a href="#"><img src="../../assets/img/pencil.svg"></a>
             </div>
         </div>
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_move">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::move') }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        <div class="xe-form-inline">
-                            {!! uio('uiobject/board@select', [
-                                'name' => 'moveTo',
-                                'label' => xe_trans('xe::select'),
-                                'items' => $boardList,
-                            ]) !!}
-                            <button type="button" class="xe-btn xe-btn-primary-outline __xe_btn_submit" data-current_instance_id="{{$instanceId}}" data-url="{{ $urlHandler->managerUrl('move') }}">{{ xe_trans('xe::move') }}</button>
-                        </div>
-                    </div>
+        <div class="xe-list-board-header__text">상단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를
+            통해 사용할 수 있습니다. </div>
+        <div class="xe-list-board-header__contents">
+            <div class="xe-list-board-header--left-box">
+                <div class="xe-list-board--header__search">
+                    <input type="text" name="search" class="xe-list-board--header__search__control">
+                    <span class="xe-list-board--header__search__icon">
+                        <i class="xi-search"></i>
+                    </span>
                 </div>
             </div>
-        </div>
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_to_trash">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::trash') }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        <a href="#" data-url="{{ $urlHandler->managerUrl('trash') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsMoveToTrash') }}</a>
-                    </div>
+            <div class="xe-list-board-header--right-box">
+                <div class="xe-list-board-header--category xe-list-board-header--dropdown">
+                    <button type="button"
+                        class="xe-list-board-header--category__button xe-list-board-header--dropdown__button"
+                        data-toggle="xe-list-board--header--category__button-dropdown">
+                        <span class="xe-list-board--header-category__button-text">전체 카테고리</span>
+                        <i class="xi-angle-down-thin"></i>
+                    </button>
+                    <ul class="xe-list-board-header--category-menu xe-list-board-header--dropdown-menu">
+                        <li class="xe-list-board-header--dropdown-menu-item on">
+                            <a href="#">전체 카테고리</a>
+                        </li>
+                        <li class="xe-list-board-header--dropdown-menu-item">
+                            <a href="#">공지사항</a>
+                        </li>
+                        <li class="xe-list-board-header--dropdown-menu-item">
+                            <a href="#">릴리즈 노트</a>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-        <div class="xe-row">
-            <div class="xe-col-sm-6">
-                <div class="xe-row __xe_delete">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans('xe::delete') }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        <a href="#" data-url="{{ $urlHandler->managerUrl('destroy') }}" class="xe-btn-link __xe_btn_submit">{{ xe_trans('board::postsDelete') }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-    <!-- /게시글 관리 -->
-
-    <!-- 검색영역 -->
-    <div class="bd_search_area">
-        <form method="get" class="__xe_simple_search" action="{{ $urlHandler->get('index') }}">
-        <div class="bd_search_box">
-            <input type="text" name="title_pure_content" class="bd_search_input" title="{{ xe_trans('board::boardSearch') }}" placeholder="{{ xe_trans('xe::enterKeyword') }}" value="{{ Request::get('title_pure_content') }}">
-            <!-- [D] 클릭시 클래스 on 및 추가 bd_search_detail 영역 활성화 -->
-            <a href="#" class="bd_btn_detail" title="{{ xe_trans('board::boardDetailSearch') }}">{{ xe_trans('board::detailSearch') }}</a>
-        </div>
-        </form>
-        <form method="get" class="__xe_search" action="{{ $urlHandler->get('index') }}">
-            <input type="hidden" name="order_type" value="{{ Request::get('order_type', $config->get('orderType')) }}" />
-        <div class="bd_search_detail">
-            <div class="bd_search_detail_option">
-                <div class="xe-row">
-                    @if($config->get('category') == true)
-                    <div class="xe-col-sm-6">
-                        <div class="xe-row">
-                            <div class="xe-col-sm-3">
-                                <label class="xe-control-label">{{ xe_trans('xe::category') }}</label>
-                            </div>
-                            <div class="xe-col-sm-9">
-                                    {!! uio('uiobject/board@select', [
-                                        'name' => 'category_item_id',
-                                        'label' => xe_trans('xe::category'),
-                                        'value' => Request::get('category_item_id'),
-                                        'items' => $categories,
-                                    ]) !!}
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-                    <div class="xe-col-sm-6">
-                        <div class="xe-row">
-                            <div class="xe-col-sm-3">
-                                <label class="xe-control-label">{{ xe_trans('board::titleAndContent') }}</label>
-                            </div>
-                            <div class="xe-col-sm-9">
-                                <input type="text" name="title_pure_content" class="xe-form-control" title="{{ xe_trans('board::titleAndContent') }}" value="{{ Request::get('title_pure_content') }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="xe-row">
-                    <div class="xe-col-sm-6">
-                        <div class="xe-row">
-                            <div class="xe-col-sm-3">
-                                <label class="xe-control-label">{{ xe_trans('xe::writer') }}</label>
-                            </div>
-                            <div class="xe-col-sm-9">
-                                <input type="text" name="writer" class="xe-form-control" title="{{ xe_trans('xe::writer') }}" value="{{ Request::get('writer') }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="xe-col-sm-6">
-                        <div class="xe-row __xe-period">
-                            <div class="xe-col-sm-3">
-                                <label class="xe-control-label">{{xe_trans('board::period')}}</label>
-                            </div>
-                            <div class="xe-col-sm-9">
-                                <div class="xe-form-group">
-                                    {!! uio('uiobject/board@select', [
-                                        'name' => 'period',
-                                        'label' => xe_trans('xe::select'),
-                                        'value' => Request::get('period'),
-                                        'items' => $terms,
-                                    ]) !!}
-                                </div>
-                                <div class="xe-form-inline">
-                                    <input type="text" name="start_created_at" class="xe-form-control" title="{{xe_trans('board::startDate')}}" value="{{Request::get('start_created_at')}}"> - <input type="text" name="end_created_at" class="xe-form-control" title="{{xe_trans('board::endDate')}}" value="{{Request::get('end_created_at')}}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{--태그 검색--}}
-                @if ($config->get('useTag') == true)
-                <div class="xe-row">
-                    <div class="xe-col-sm-6">
-                        <div class="xe-row">
-                            <div class="xe-col-sm-3">
-                                <label class="xe-control-label">{{ xe_trans('xe::tag') }}</label>
-                            </div>
-                            <div class="xe-col-sm-9">
-                                <input type="text" name="searchTag" class="xe-form-control" title="{{ xe_trans('xe::tag') }}" value="{{ Request::get('searchTag') }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-
-                <!-- 확장 필드 검색 -->
-                @foreach($fieldTypes as $typeConfig)
-                    @if($typeConfig->get('searchable') === true)
-                <div class="xe-row">
-                    <div class="xe-col-sm-3">
-                        <label class="xe-control-label">{{ xe_trans($typeConfig->get('label')) }}</label>
-                    </div>
-                    <div class="xe-col-sm-9">
-                        {!! XeDynamicField::get($config->get('documentGroup'), $typeConfig->get('id'))->getSkin()->search(Request::all()) !!}
-                    </div>
-                </div>
-                    @endif
-                @endforeach
-                <!-- /확장 필드 검색 -->
-            </div>
-            <div class="bd_search_footer">
-                <div class="xe-pull-right">
-                    <button type="submit" class="xe-btn xe-btn-primary-outline bd_btn_search">{{ xe_trans('xe::search') }}</button>
-                    <button type="button" class="xe-btn xe-btn-secondary bd_btn_cancel">{{ xe_trans('xe::cancel') }}</button>
-                </div>
-            </div>
-        </div>
-        </form>
-    </div>
-    <!-- /검색영역 -->
-
-</div>
-
-<!-- /검색 정보 출력 -->
-@if ($searchOptions != null)
-    <div class="xe-row">
-        <div class="xe-col-md-12">
-            <div class="panel">
-                <div class="panel-heading">
-                    <h3> {{ xe_trans('board::searchResult', ['count' => $paginate->total()]) }}</h3>
-                </div>
-
-                <div class="panel-body">
-                    <ul>
-                        @foreach ($searchOptions as $name => $key)
-                            <li>{{$name}} : {{$key}}</li>
-                        @endforeach
+                <div class="xe-list-board-header--sort xe-list-board-header--dropdown">
+                    <button type="button"
+                        class="xe-list-board-header--category__button xe-list-board-header--dropdown__button"
+                        data-toggle="xu-dropdown">
+                        <span class="xu-button__text">최신순</span>
+                        <i class="xi-angle-down-thin"></i>
+                    </button>
+                    <ul class="xe-list-board-header--sort-menu xe-list-board-header--dropdown-menu">
+                        <li class="xe-list-board-header--dropdown-menu-item on">
+                            <a href="#">최신순</a>
+                        </li>
+                        <li class="xe-list-board-header--dropdown-menu-item">
+                            <a href="#">추천순</a>
+                        </li>
+                        <li class="xe-list-board-header--dropdown-menu-item">
+                            <a href="#">최근 수정순</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-@endif
 
-<div class="board_list">
-    <table>
-        <!-- [D] 모바일뷰에서 숨겨할 요소 클래스 xe-hidden-xs 추가 -->
-        <thead class="xe-hidden-xs">
-        <!-- LIST HEADER -->
-        <tr>
-            @if ($isManager === true)
-            <th scope="col">
-                <label class="xe-label">
-                    <input type="checkbox" title="{{ xe_trans('xe::checkAll') }}" class="bd_btn_manage_check_all">
-                    <span class="xe-input-helper"></span>
-                    <span class="xe-label-text xe-sr-only">{{ xe_trans('xe::checkAll') }}</span>
-                </label>
-            </th>
-            @endif
+    <div class="xe-list-board-body">
+        <ul class="xe-list-board-list--item xe-list-board-list">
+            <li class="xe-list-board-list--header">
+                <div class="xe-list-board-list__favorite"><i class="xi-star-o"></i></div>
+                <div class="xe-list-board-list__category">카테고리</div>
+                <div class="xe-list-board-list__subject">제목</div>
+                <div class="xe-list-board-list__writter">작성자</div>
+                <div class="xe-list-board-list__created_date">작성일</div>
+                <div class="xe-list-board-list__updated_date">수정일</div>
+                <div class="xe-list-board-list__assent-count">추천수</div>
+                <div class="xe-list-board-list__dissent-count">비추천수</div>
+                <div class="xe-list-board-list__view">조회수</div>
+                @foreach ($skinConfig['listColumns'] as $columnName)
+                    @if (in_array($columnName, ['favorite', 'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count']) === true)
+                        @continue
+                    @endif
+                    <div class="xe-list-board-list__dynamic-field">{{ xe_trans($dynamicFieldsById[$columnName]->get('label')) }}</div>
+                @endforeach
+            </li>
+            @foreach ($paginate as $item)
+                <li class="xe-list-board-list--item">
+                    <div class="xe-list-board-list__favorite xe-hidden-mobile"><i class="xi-star"></i></div>
+                    <div class="xe-list-board-list__category">카테고리</div>
+                    <div class="xe-list-board-list__subject">
+                        <a href="#">
+                            <span class="xe-list-board-list__notice--box-form">공지</span>
+                            <span class="xe-list-board-list__secret"><i class="xi-lock"><span
+                                        class="blind">비밀글</span></i></span>
+                            {{ $item->title }}
+                            <span class="xe-list-board-list__subject-comment xe-hidden-mobile">{{ $item->comment_comment }}</span>
+                            <span class="xe-list-board-list__subject-file"><i class="xi-paperclip"></i><span
+                                    class="blind">첨부파일</span></span>
+                            
+                            <span class="xe-list-board-list__subject-new"><span class="blind">새글</span></span>
+                        </a>
+                    </div>
+                    <div class="xe-list-board-list__writter">
+                        <a href="#">
+                            <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저
+                                    이미지</span></span>
+                            <span class="xe-list-board-list__nickname">{{ $item->writer}}</span>
+                        </a>
+                    </div>
+                    <div class="xe-list-board-list__created_date" @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif><span class="blind">작성일</span>{{ $item->created_at->toDateString() }}</div>
+                    <div class="xe-list-board-list__updated_date" @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->updated_at }}" @endif><span class="blind">수정일</span>{{ $item->updated_at->toDateString() }}</div>
+                    <div class="xe-list-board-list__assent-count xe-hidden-mobile"><span class="blind">추천</span> {{ $item->assent_count }}</div>
+                    <div class="xe-list-board-list__dissent-count xe-hidden-mobile"><span class="blind">비추천</span> {{ $item->dissent_count }}</div>
 
-            @foreach ($skinConfig['listColumns'] as $columnName)
-                @if ($columnName == 'favorite')
-                    @if (Auth::check() === true)
-                        @if(Request::has('favorite'))
-                            <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', Request::except(['favorite', 'page']))}}"><i class="xi-star-o on"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
-                        @else
-                            <th scope="col" class="favorite"><span><a href="{{$urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1]))}}"><i class="xi-star-o"></i><span class="xe-sr-only">{{ xe_trans('board::favorite') }}</span></a></span></th>
+                    <div class="xe-list-board-list__view"><span class="xe-hidden-pc">조회</span> {{ number_format($item->read_count) }} </div>
+                    <div class="xe-list-board-list__comment xe-hidden-pc"><span>댓글</span> {{ number_format($item->comment_count) }}</div>
+                    @foreach ($skinConfig['listColumns'] as $columnName)
+                        @if (in_array($columnName, ['favorite', 'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count']) === true)
+                            @continue
                         @endif
-                    @endif
-                @elseif ($columnName == 'title')
-                    @if ($config->get('category') == true)
-                        <th scope="col" class="column-th-category"><span>{{ xe_trans('board::category') }}</span></th>
-                    @endif
-                    <th scope="col" class="title column-th-{{$columnName}}"><span>{{ xe_trans('board::title') }}</span></th>
-                @else
-                    @if (isset($dynamicFieldsById[$columnName]))
-                        <th scope="col" class="column-th-{{$columnName}}"><span>{{ xe_trans($dynamicFieldsById[$columnName]->get('label')) }}</span></th>
-                    @else
-                        <th scope="col" class="column-th-{{$columnName}}"><span>{{ xe_trans('board::'.$columnName) }}</span></th>
-                    @endif
-                @endif
+
+                        @php
+                            $fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName);
+                        @endphp
+                        
+                        <div class="xe-list-board-list__dynamic-field"><span class="xe-hidden-pc xe-list-board-list__dynamic-field-title">{{ xe_trans($dynamicFieldsById[$columnName]->get('label')) }}</span> {!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</div>
+                    @endforeach
+
+                    <div class="xe-list-board-list__vote-count xe-hidden-pc">
+                        @if (in_array('assent_count', $skinConfig['listColumns']) === true)
+                            <div class="xe-list-board-list__assent-count"><span class="blind">추천</span><i
+                                    class="xi-thumbs-up"></i> {{ $item->assent_count }}</div>
+                        @endif
+                        @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
+                            <div class="xe-list-board-list__dissent-count"><span class="blind">비추천</span><i
+                                    class="xi-thumbs-down"></i> {{ $item->dissent_count }}</div>
+                        @endif
+                    </div>
+                </li>
             @endforeach
-        </tr>
-        <!-- /LIST HEADER -->
-        </thead>
-        <tbody>
-        <!-- NOTICE -->
-        @foreach($notices as $item)
-        <tr class="notice">
-            @if ($isManager === true)
-            <td class="check">
-                <label class="xe-label">
-                    <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
-                    <span class="xe-input-helper"></span>
-                    <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
-                </label>
-            </td>
-            @endif
-            @foreach ($skinConfig['listColumns'] as $columnName)
-                @if ($columnName == 'favorite')
-                    @if (Auth::check() === true)
-                        <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
-                    @endif
-                @elseif ($columnName == 'title')
-                    @if ($config->get('category') == true)
-                        <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
-                    @endif
-                        <td class="title column-{{$columnName}} xe-hidden-xs">
-                            <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
-                            @if ($item->display == $item::DISPLAY_SECRET)
-                                <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
-                            @endif
-                            <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                            @if($item->comment_count > 0)
-                                <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
-                            @endif
-                            @if ($item->data->file_count > 0)
-                                <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
-                            @endif
-                            @if($item->isNew($config->get('newTime')))
-                                <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
-                            @endif
-                        </td>
-                @elseif ($columnName == 'writer')
-                    <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <a href="#"
-                               data-toggle="xe-page-toggle-menu"
-                               data-url="{{ route('toggleMenuPage') }}"
-                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                        @else
-                            <a>{!! $item->writer !!}</a>
-                        @endif
-                    </td>
-                @elseif ($columnName == 'read_count')
-                    <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
-                @elseif (in_array($columnName, ['created_at', 'updated_at', 'deleted_at']))
-                    <td class="time xe-hidden-xs column-{{$columnName}}" title="{{ $item->{$columnName} }}" @if($item->{$columnName}->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->{$columnName} }}" @endif >{{ $item->{$columnName}->toDateString() }}</td>
-                @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
-                    <td class="xe-hidden-xs column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>
-                @else
-                    <td class="xe-hidden-xs column-{{$columnName}}">{!! $item->{$columnName} !!}</td>
-                @endif
-            @endforeach
+        </ul>
+    </div>
 
-            {{--모바일 사이즈 공지 list--}}
-            <td class="title column-title xe-visible-xs">
-                <span class="xe-badge xe-primary">{{ xe_trans('xe::notice') }}</span>
-                @if ($item->display == $item::DISPLAY_SECRET)
-                    <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
-                @endif
-                @if (in_array('title', $skinConfig['listColumns']))
-                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                @endif
-                @if($item->comment_count > 0)
-                    <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
-                @endif
-                @if ($item->data->file_count > 0)
-                    <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
-                @endif
-                @if($item->isNew($config->get('newTime')))
-                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
-                @endif
-                <div class="more_info">
-                    @if (in_array('writer', $skinConfig['listColumns']))
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <a href="#" class="mb_author"
-                               data-toggle="xe-page-toggle-menu"
-                               data-url="{{ route('toggleMenuPage') }}"
-                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                        @else
-                            <a class="mb_author">{!! $item->writer !!}</a>
-                        @endif
-                    @endif
-                    @if (in_array('created_at', $skinConfig['listColumns']))
-                        <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
-                    @endif
-                    @if (in_array('read_count', $skinConfig['listColumns']))
-                        <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
-                    @endif
-                    <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
-                </div>
-            </td>
-        </tr>
-        @endforeach
-        <!-- /NOTICE -->
-
-        @if (count($paginate) == 0)
-                <!-- NO ARTICLE -->
-        <tr class="no_article">
-            <!-- [D] 컬럼수에 따라 colspan 적용 -->
-            <td colspan="{{ count($skinConfig['listColumns']) + 2 }}">
-                <img src="{{ asset('plugins/board/assets/img/img_pen.jpg') }}" alt="">
-                <p>{{ xe_trans('xe::noPost') }}</p>
-            </td>
-        </tr>
-        <!-- / NO ARTICLE -->
-        @endif
-
-        <!-- LIST -->
-        @foreach($paginate as $item)
-        <tr>
-            @if ($isManager === true)
-            <td class="check">
-                <label class="xe-label">
-                    <input type="checkbox" title="{{xe_trans('xe::select')}}" class="bd_manage_check" value="{{ $item->id }}">
-                    <span class="xe-input-helper"></span>
-                    <span class="xe-label-text xe-sr-only">{{xe_trans('xe::select')}}</span>
-                </label>
-            </td>
-            @endif
-
-            @foreach ($skinConfig['listColumns'] as $columnName)
-                @if ($columnName == 'favorite')
-                    @if (Auth::check() === true)
-                        <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
-                    @endif
-                @elseif ($columnName == 'title')
-                    @if ($config->get('category') == true)
-                        <td class="category xe-hidden-xs column-category">{!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}</td>
-                    @endif
-                    <td class="title column-{{$columnName}} xe-hidden-xs">
-                        @if ($item->display == $item::DISPLAY_SECRET)
-                            <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
-                        @endif
-                        <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                        @if($item->comment_count > 0)
-                            <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
-                        @endif
-                        @if ($item->data->file_count > 0)
-                            <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
-                        @endif
-                        @if($item->isNew($config->get('newTime')))
-                            <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
-                        @endif
-                    </td>
-                @elseif ($columnName == 'writer')
-                    <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <a href="#"
-                               data-toggle="xe-page-toggle-menu"
-                               data-url="{{ route('toggleMenuPage') }}"
-                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                        @else
-                            <a>{!! $item->writer !!}</a>
-                        @endif
-                    </td>
-                @elseif ($columnName == 'read_count')
-                    <td class="read_num xe-hidden-xs">{{ $item->{$columnName} }}</td>
-                @elseif (in_array($columnName, ['created_at', 'updated_at', 'deleted_at']))
-                    <td class="time xe-hidden-xs column-{{$columnName}}" title="{{ $item->{$columnName} }}" @if($item->{$columnName}->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->{$columnName} }}" @endif >{{ $item->{$columnName}->toDateString() }}</td>
-                @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null)
-                    <td class="xe-hidden-xs column-{{$columnName}}">{!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}</td>
-                @else
-                    <td class="xe-hidden-xs column-{{$columnName}}">{!! $item->{$columnName} !!}</td>
-                @endif
-            @endforeach
-
-            {{--모바일 사이즈 게시물 list--}}
-            <td class="xe-visible-xs title column-title">
-                @if ($item->display == $item::DISPLAY_SECRET)
-                    <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
-                @endif
-                @if (in_array('title', $skinConfig['listColumns']))
-                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
-                @endif
-                @if ($item->data->file_count > 0)
-                    <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>
-                @endif
-                @if($item->isNew($config->get('newTime')))
-                    <span class="bd_ico_new"><i class="xi-new"></i><span class="xe-sr-only">new</span></span>
-                @endif
-                <div class="more_info">
-                    @if (in_array('writer', $skinConfig['listColumns']))
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <a href="#" class="mb_author"
-                               data-toggle="xe-page-toggle-menu"
-                               data-url="{{ route('toggleMenuPage') }}"
-                               data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
-                        @else
-                            <a class="mb_author">{!! $item->writer !!}</a>
-                        @endif
-                    @endif
-                    @if (in_array('created_at', $skinConfig['listColumns']))
-                        <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif >{{ $item->created_at->toDateString() }}</span></span>
-                    @endif
-                    @if (in_array('read_count', $skinConfig['listColumns']))
-                        <span class="mb_readnum"><i class="xi-eye"></i> {{ $item->read_count }}</span>
-                    @endif
-                    <a href="#" class="mb_reply_num"><i class="xi-comment"></i> {{ $item->comment_count }}</a>
-                </div>
-            </td>
-        </tr>
-        @endforeach
-        <!-- /LIST -->
-        </tbody>
-    </table>
-</div>
-
-<div class="board_footer">
-    <!-- PAGINATAION PC-->
-    {!! $paginate->render('board::components.Skins.Board.Common.views.default-pagination') !!}
-    <!-- /PAGINATION PC-->
-
-    <!-- PAGINATAION Mobile -->
-    {!! $paginate->render('board::components.Skins.Board.Common.views.simple-pagination') !!}
-    <!-- /PAGINATION Mobile -->
-</div>
-<div class="bd_dimmed"></div>
+    <div class="xe-list-board-footer">
+        <div class="xe-list-board--button-box">
+            <div class="xe-list-board--btn-left-box">
+                <a href="#" class="xe-list-board__btn">관리</a>
+            </div>
+            <div class="xe-list-board--btn-right-box">
+                <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">내가 쓴 글</a>
+                <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">글쓰기</a>
+            </div>
+        </div>
+        <div class="xe-list-board--pg">
+            <span class="xe-list-board__btn_pg xe-list-board__btn_prev"><i class="xi-angle-left"></i></span>
+            <span class="xe-list-board__pg-number xe-list-board__pg-number--active">1</span>
+            <span class="xe-list-board__pg-number"><a href="#">2</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">3</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">4</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">5</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">6</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">7</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">8</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">9</a></span>
+            <span class="xe-list-board__pg-number"><a href="#">10</a></span>
+            <span class="xe-list-board__btn_pg xe-list-board__btn_next"><i class="xi-angle-right"></i></span>
+        </div>
+    </div>
+    <div class="xe-list-board-footer__text">
+        하단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다.
+    </div>
+</section>
