@@ -39,12 +39,21 @@
 
 /* 모바일에서만 보이게 */
 .xe-hidden-pc {
+  display: inline-block;
+}
+
+.xe-hidden-mobile {
   display: none;
 }
 
 /* PC에서만 보이게 */
-.xe-hidden-mobile {
-  display: none;
+@media (min-width: 768px) {
+  .xe-hidden-mobile {
+    display: inline-block;
+  }
+  .xe-hidden-pc {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=new-board-common.css.map */
