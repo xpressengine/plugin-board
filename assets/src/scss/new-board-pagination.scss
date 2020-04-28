@@ -1,0 +1,94 @@
+.xe-list-board--pagination {
+    /* PC */
+    &.xe-list-board--pagination-pc {
+        display: none;
+
+        .xe-list-board--pagination-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0 -15px;
+            
+            .xe-list-board__pagination-item {
+                text-align: center;
+                
+                .xe-list-board__pagination-item-link {
+                    display: inline-block;
+                    line-height: 40px;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
+            .xe-list-board__btn_pagination {
+                border: 1px solid #e0e0e0;
+                margin: 0 15px;
+
+                .xe-list-board__pagination-item-link {
+                    text-decoration: none;
+                    color: #484848;
+                    font-size: 14px;
+                }
+            }
+
+            .xe-list-board__pagination-number {
+                border-top: 1px solid #e0e0e0;
+                border-right: 1px solid #e0e0e0;
+                border-bottom: 1px solid #e0e0e0;
+
+                &:nth-child(2) {
+                    border-left: 1px solid #e0e0e0;
+                }
+
+                .xe-list-board__pagination-item-link {
+                    text-decoration: none;
+                    color: #484848;
+                    font-size: 14px;
+                }
+
+                &.xe-list-board__pagination-number--active {
+                    border: 1px solid #000 !important;
+                    z-index: 1;
+
+                    .xe-list-board__pagination-item-link {
+                        color: #000;
+                    }
+                }
+            }
+        }
+        
+    }
+
+    /* 모바일 */
+    &.xe-list-board--pagination-mobile {
+        display: block;
+        text-align: center;
+
+        .xe-list-board--pagination-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+
+            .xe-list-board__pagination-item {
+                
+            }
+        }
+    }
+}
+
+
+
+@media (min-width:768px) {
+    .xe-list-board--pagination {
+        &.xe-list-board--pagination-pc {
+            display: block;
+        }
+        &.xe-list-board--pagination-mobile {
+            display: none;
+        }
+    }
+}
