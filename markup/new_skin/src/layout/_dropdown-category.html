@@ -13,6 +13,25 @@
             <li class="xe-list-board-header--dropdown-menu-item">
                 <a href="#">릴리즈 노트</a>
             </li>
+            <ul>
+                <li>
+                    <a href="#">2뎁스-1</a>
+                </li>
+                <li>
+                    <a href="#">2뎁스-2</a>
+                </li>
+                <ul>
+                    <li>
+                        <a href="#">3뎁스-1</a>
+                    </li>
+                    <li>
+                        <a href="#">3뎁스-2</a>
+                    </li>
+                    <li>
+                        <a href="#">3뎁스-3</a>
+                    </li>
+                </ul>
+            </ul>
         </ul>
     </div>
 </div>
@@ -20,11 +39,9 @@
     $(function () {
         $('.xe-list-board-header--dropdown-menu-item').on('click', function (e) {
             e.preventDefault()
-            
             var $this = $(this)
             var $parent = $(this).closest('.xe-list-board-header--dropdown__button')
             var $container = $(this).closest('.xe-list-board-header--dropdown')
-            
             $parent.find('.xe-list-board-header--dropdown-menu-item').removeClass('on')
             $this.addClass('on')
             $container.find('button').text($this.text())
