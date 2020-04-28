@@ -1,4 +1,3 @@
-
 /* 게시판 */
 .xe-list-board-body {
     .xe-list-board-list {
@@ -84,13 +83,6 @@
 
                     .xe-list-board-list__subject-icon {
                         display: inline-block;
-
-                        .xe-list-board-list__subject-new {
-                            background: url('../../assets/img/icon_new.svg') no-repeat;
-                            display: inline-block;
-                            width: 16px;
-                            height: 16px;
-                        }
                     }
                 }
             }

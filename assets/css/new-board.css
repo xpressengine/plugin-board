@@ -91,13 +91,6 @@
   display: inline-block;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon .xe-list-board-list__subject-new {
-  background: url("../../assets/img/icon_new.svg") no-repeat;
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-}
-
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer {
   overflow: hidden;
   text-overflow: ellipsis;

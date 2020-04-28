@@ -208,29 +208,23 @@
                     .xe-list-board-header--dropdown-box {
                         display: inline-block;
 
-                        
-                        .xe-list-board--header-dropdown__button-text {
+                        &:after {
+                            content: '';
+                            display: inline-block;
+                            margin-left: 7px;
+                            margin-right: 7px;
+                            width: 1px;
+                            height: 12px;
+                            background-color: #767676;
+                        }
+                        &:last-child {
                             &:after {
                                 content: '';
-                                display: inline-block;
-                                margin-left: 7px;
-                                margin-right: 7px;
-                                width: 1px;
-                                height: 12px;
-                                background-color: #767676;
+                                display: none;
                             }
-                        }
-
-                        &:last-child {
-                            .xe-list-board--header-dropdown__button-text {
-                                &:after {
-                                    content: '';
-                                    display: none;
-                                }
-                            }
-
                         }
                     }
+
                 }
             }
         }

@@ -1,2 +1,99 @@
+@charset "UTF-8";
+.xe-list-gallery-board-body .xe-list-gallery-board-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__img-box {
+  position: relative;
+  margin-right: 10px;
+  width: 100%;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__img-box .xe-list-board-list-item__notice-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px 15px;
+  background: #2684ff;
+  color: #fff;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__img-box .xe-list-gallery-board-list-item__img {
+  background: url(../img/board_default_img.png) no-repeat 50% 50%;
+  padding-top: 75%;
+  background-size: cover;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__category {
+  display: none;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject .xe-list-gallery-board-list-item__title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  color: #141414;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject .xe-list-board-list__subject-new-icon {
+  margin-left: 5px;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject .xe-list-board-list__subject-new-icon .xe-list-board-list__subject-new {
+  margin-top: 5px;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--detail-info-box .xe-list-gallery-board-list-item__user-info .xe-list-board-list__user-image {
+  display: none;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--detail-info-box .xe-list-gallery-board-list-item__user-info .xe-list-board-list-item___nickname {
+  margin-bottom: 0;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item___detail-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item___detail-info .xe-list-gallery-board-list-item___detail {
+  margin: 0;
+  font-size: 12px;
+  color: #9c9c9c;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item___detail-info .xe-list-gallery-board-list-item___detail:after {
+  content: '·';
+  margin: 0 10px;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item___detail-info .xe-list-gallery-board-list-item___detail:last-child:after {
+  content: '';
+}
+
+@media (min-width: 768px) {
+  .xe-list-gallery-board-body .xe-list-gallery-board-list .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__category {
+    display: block;
+  }
+  .xe-list-gallery-board-body .xe-list-gallery-board-list .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--detail-info-box .xe-list-gallery-board-list-item__user-info .xe-list-board-list__user-image {
+    display: block;
+  }
+}
 
 /*# sourceMappingURL=new-board-blog.css.map */
