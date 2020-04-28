@@ -140,6 +140,12 @@
   }
 }
 
+@media (min-width: 1200px) {
+  .xe-list-board {
+    max-width: 100%;
+  }
+}
+
 /* 게시판 */
 .xe-list-board-body .xe-list-board-list {
   border-top: 1px solid #141414;
@@ -154,6 +160,7 @@
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--header {
   display: none;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item {
@@ -164,6 +171,8 @@
       flex-wrap: wrap;
   position: relative;
   padding: 10px 0;
+  overflow: hidden;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item > div {
@@ -181,6 +190,29 @@
   margin: 0;
 }
 
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__mobile-style {
+  font-size: 12px;
+  color: #9c9c9c;
+}
+
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__category {
+  font-size: 13px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: #767676;
+  margin-bottom: 5px;
+}
+
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__notice--box-form {
+  color: #fff;
+  margin-right: 10px;
+}
+
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__notice--box-form .xe-list-board-list__notice--box-form-bg {
+  background: #2684ff;
+  padding: 0 10px;
+}
+
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__category:after,
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject:after {
   content: '';
@@ -193,7 +225,7 @@
   margin-bottom: 10px;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject a {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link {
   text-decoration: none;
   color: #141414;
   size: 15px;
@@ -202,21 +234,35 @@
   margin-bottom: 15px;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-new {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon {
+  display: inline-block;
+}
+
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon .xe-list-board-list__subject-new {
   background: url("../../assets/img/icon_new.svg") no-repeat;
   display: inline-block;
   width: 16px;
   height: 16px;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writter:after {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer:after {
   content: '';
   margin: 0 10px 0 0;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writter a {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer a {
   color: #141414;
   text-decoration: none;
+}
+
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer a .xe-list-board-list__nickname {
+  color: #141414;
 }
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__vote-count {
@@ -280,11 +326,11 @@
     max-width: 100px;
     text-align: left;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__writter {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__writer {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 100px;
-            flex: 0 0 100px;
-    max-width: 100px;
+        -ms-flex: 0 0 150px;
+            flex: 0 0 150px;
+    max-width: 150px;
     text-align: left;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__created_date {
@@ -336,10 +382,10 @@
     display: flex;
     -ms-flex-wrap: nowrap;
         flex-wrap: nowrap;
-    padding: 10px 0;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item > div {
-    padding-right: 5px;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
     text-align: center;
     -ms-flex-negative: 1;
         flex-shrink: 1;
@@ -348,10 +394,24 @@
             flex-grow: 1;
     -ms-flex-preferred-size: 10%;
         flex-basis: 10%;
+    line-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item > div:after {
     content: '';
     margin: 0;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__mobile-style {
+    font-size: 14px;
+    color: #141414;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item:hover {
+    background: #fafafa;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item.xe-list-board-list--item-notice:hover {
+    background: #f3f9fc;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__favorite {
     -webkit-box-flex: 0;
@@ -365,13 +425,35 @@
             flex: 0 0 100px;
     max-width: 100px;
     text-align: left;
+    font-size: 14px;
+    color: #141414;
+    line-height: 50px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writter {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 100px;
-            flex: 0 0 100px;
-    max-width: 100px;
+        -ms-flex: 0 0 150px;
+            flex: 0 0 150px;
+    max-width: 150px;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer .xe-list-board-list__user-image {
+    width: 28px;
+    height: 28px;
+    background: url(../img/defalut_profile.jpg) no-repeat 0% 50%;
+    border-radius: 50px;
+    float: left;
+    margin-right: 8px;
+    text-decoration: none;
+    color: #767676;
+    background-size: cover;
+    margin: 11px 0;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer .xe-list-board-list__nickname {
+    display: inline-block;
+    margin-left: 5px;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__created_date {
     -webkit-box-flex: 0;
@@ -411,13 +493,46 @@
         flex-basis: 75%;
     min-width: 20%;
     text-align: left;
+    padding-right: 10px;
+    margin: 0;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link {
+    text-decoration: none;
+    color: #141414;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subjec-secret {
+    line-height: 50px;
+    margin-right: 5px;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-text {
+    line-height: 50px;
+    margin-right: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject a {
-    text-decoration: none;
-    color: #141414;
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon {
+    display: inline-block;
+    line-height: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon .xe-list-board-list__subject-new {
+    margin: 17px 0 0 0;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__notice--box-form {
+    color: #fff;
+    line-height: 50px;
+    margin-right: 10px;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__notice--box-form .xe-list-board-list__notice--box-form-bg {
+    background: #2684ff;
+    padding: 0 10px;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__dynamic-field {
     -webkit-box-flex: 0;
