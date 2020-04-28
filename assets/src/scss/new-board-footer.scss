@@ -1,0 +1,42 @@
+/* footer */
+
+.xe-list-board-footer {
+    .xe-list-board--button-box {
+        &:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .xe-list-board__btn {
+            color: #141414;
+            display: inline-block;
+            border: 1px solid #e0e0e0;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            transition: all 0.2s;
+
+            &:hover {
+                background: #f4f5f7;
+            }
+
+            &.xe-list-board__btn-primary {
+                background: #f4f5f7;
+                border: 0;
+
+                &:hover {
+                    background: #ebecf0;
+                }
+            }
+        }
+
+        .xe-list-board--btn-left-box {
+            float: left;
+        }
+
+        .xe-list-board--btn-right-box {
+            float: right;
+        }
+    }
+}
