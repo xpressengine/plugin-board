@@ -35,7 +35,7 @@
                     display: none;
                 }
 
-                .xe-list-gallery-board-list-item__subject {
+                .xe-list-gallery-board-list-item__title {
                     display: flex;
                     
                     .xe-list-gallery-board-list-item__title {
@@ -46,10 +46,10 @@
                         color: #141414;
                         
                     }
-                    .xe-list-board-list__subject-new-icon {
+                    .xe-list-board-list__title-new-icon {
                         margin-left: 5px;
 
-                        .xe-list-board-list__subject-new {
+                        .xe-list-board-list__title-new {
                             margin-top: 5px;
                         }
                     }
@@ -62,7 +62,7 @@
                         display: none;
                     }
 
-                    .xe-list-board-list-item___nickname {
+                    .xe-list-board-list-item___display_name {
                         margin-bottom: 0;
                     }
                 }

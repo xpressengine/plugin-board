@@ -70,13 +70,13 @@
             <li class="xe-list-board-list--header">
                 <div class="xe-list-board-list__favorite"><i class="xi-star-o"></i></div>
                 <div class="xe-list-board-list__category">카테고리</div>
-                <div class="xe-list-board-list__subject">제목</div>
+                <div class="xe-list-board-list__title">제목</div>
                 <div class="xe-list-board-list__writter">작성자</div>
-                <div class="xe-list-board-list__created_date">작성일</div>
-                <div class="xe-list-board-list__updated_date">수정일</div>
-                <div class="xe-list-board-list__assent-count">추천수</div>
-                <div class="xe-list-board-list__dissent-count">비추천수</div>
-                <div class="xe-list-board-list__view">조회수</div>
+                <div class="xe-list-board-list__created_at">작성일</div>
+                <div class="xe-list-board-list__updated_at">수정일</div>
+                <div class="xe-list-board-list__assent_count">추천수</div>
+                <div class="xe-list-board-list__dissent_count">비추천수</div>
+                <div class="xe-list-board-list__read_count">조회수</div>
                 @foreach ($skinConfig['listColumns'] as $columnName)
                     @if (in_array($columnName, ['favorite', 'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count']) === true)
                         @continue
@@ -88,33 +88,33 @@
                 <li class="xe-list-board-list--item">
                     <div class="xe-list-board-list__favorite xe-hidden-mobile"><i class="xi-star"></i></div>
                     <div class="xe-list-board-list__category">카테고리</div>
-                    <div class="xe-list-board-list__subject">
+                    <div class="xe-list-board-list__title">
                         <a href="#">
                             <span class="xe-list-board-list__notice--box-form">공지</span>
                             <span class="xe-list-board-list__secret"><i class="xi-lock"><span
                                         class="blind">비밀글</span></i></span>
                             {{ $item->title }}
-                            <span class="xe-list-board-list__subject-comment xe-hidden-mobile">{{ $item->comment_comment }}</span>
-                            <span class="xe-list-board-list__subject-file"><i class="xi-paperclip"></i><span
+                            <span class="xe-list-board-list__title-comment_count xe-hidden-mobile">{{ $item->comment_comment }}</span>
+                            <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span
                                     class="blind">첨부파일</span></span>
                             
-                            <span class="xe-list-board-list__subject-new"><span class="blind">새글</span></span>
+                            <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>
                         </a>
                     </div>
                     <div class="xe-list-board-list__writter">
                         <a href="#">
                             <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저
                                     이미지</span></span>
-                            <span class="xe-list-board-list__nickname">{{ $item->writer}}</span>
+                            <span class="xe-list-board-list__display_name">{{ $item->writer}}</span>
                         </a>
                     </div>
-                    <div class="xe-list-board-list__created_date" @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif><span class="blind">작성일</span>{{ $item->created_at->toDateString() }}</div>
-                    <div class="xe-list-board-list__updated_date" @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->updated_at }}" @endif><span class="blind">수정일</span>{{ $item->updated_at->toDateString() }}</div>
-                    <div class="xe-list-board-list__assent-count xe-hidden-mobile"><span class="blind">추천</span> {{ $item->assent_count }}</div>
-                    <div class="xe-list-board-list__dissent-count xe-hidden-mobile"><span class="blind">비추천</span> {{ $item->dissent_count }}</div>
+                    <div class="xe-list-board-list__created_at" @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->created_at }}" @endif><span class="blind">작성일</span>{{ $item->created_at->toDateString() }}</div>
+                    <div class="xe-list-board-list__updated_at" @if($item->created_at->getTimestamp() > strtotime('-1 month')) data-xe-timeago="{{ $item->updated_at }}" @endif><span class="blind">수정일</span>{{ $item->updated_at->toDateString() }}</div>
+                    <div class="xe-list-board-list__assent_count xe-hidden-mobile"><span class="blind">추천</span> {{ $item->assent_count }}</div>
+                    <div class="xe-list-board-list__dissent_count xe-hidden-mobile"><span class="blind">비추천</span> {{ $item->dissent_count }}</div>
 
-                    <div class="xe-list-board-list__view"><span class="xe-hidden-pc">조회</span> {{ number_format($item->read_count) }} </div>
-                    <div class="xe-list-board-list__comment xe-hidden-pc"><span>댓글</span> {{ number_format($item->comment_count) }}</div>
+                    <div class="xe-list-board-list__read_count"><span class="xe-hidden-pc">조회</span> {{ number_format($item->read_count) }} </div>
+                    <div class="xe-list-board-list__comment_count xe-hidden-pc"><span>댓글</span> {{ number_format($item->comment_count) }}</div>
                     @foreach ($skinConfig['listColumns'] as $columnName)
                         @if (in_array($columnName, ['favorite', 'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count']) === true)
                             @continue
@@ -129,11 +129,11 @@
 
                     <div class="xe-list-board-list__vote-count xe-hidden-pc">
                         @if (in_array('assent_count', $skinConfig['listColumns']) === true)
-                            <div class="xe-list-board-list__assent-count"><span class="blind">추천</span><i
+                            <div class="xe-list-board-list__assent_count"><span class="blind">추천</span><i
                                     class="xi-thumbs-up"></i> {{ $item->assent_count }}</div>
                         @endif
                         @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
-                            <div class="xe-list-board-list__dissent-count"><span class="blind">비추천</span><i
+                            <div class="xe-list-board-list__dissent_count"><span class="blind">비추천</span><i
                                     class="xi-thumbs-down"></i> {{ $item->dissent_count }}</div>
                         @endif
                     </div>
@@ -169,5 +169,5 @@
     </div>
     <div class="xe-list-board-footer__text">
         하단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다.
-    </div>`
+    </div>
 </section>

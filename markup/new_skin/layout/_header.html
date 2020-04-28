@@ -1,28 +1,26 @@
-
-    <div class="xe-list-board-header">
-        <div class="xe-list-board-header__title-content">
-            <div class="xe-list-board-header__title-box">
-                <h2 class="xe-list-board-header__title">New Theme</h2>
-                <span class="xe-list-board-header__post-count">(62)</span>
-            </div>
-            <div class="xe-list-board-header__write-button">
-                <a href="#"><img src="../../assets/img/pencil.svg"></a>
+<div class="xe-list-board-header">
+    <div class="xe-list-board-header__title-content">
+        <div class="xe-list-board-header__title-box">
+            <h2 class="xe-list-board-header__title">New Theme</h2>
+            <span class="xe-list-board-header__post-count">(62)</span>
+        </div>
+        <div class="xe-list-board-header__write-button">
+            <a href="#"><img src="../../assets/img/pencil.svg"></a>
+        </div>
+    </div>
+    <div class="xe-list-board-header__text">상단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다. </div>
+    <div class="xe-list-board-header__contents">
+        <div class="xe-list-board-header--left-box">
+            <div class="xe-list-board--header__search">
+                <input type="text" name="search" class="xe-list-board--header__search__control">
+                <span class="xe-list-board--header__search__icon">
+                    <i class="xi-search"></i>
+                </span>
             </div>
         </div>
-        <div class="xe-list-board-header__text">상단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다. </div>
-        <div class="xe-list-board-header__contents">
-            <div class="xe-list-board-header--left-box">
-                <div class="xe-list-board--header__search">
-                    <input type="text" name="search" class="xe-list-board--header__search__control">
-                    <span class="xe-list-board--header__search__icon">
-                        <i class="xi-search"></i>
-                    </span>
-                </div>
-            </div>
-            <div class="xe-list-board-header--right-box">
-                <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
-                    <!-- dropdown 전체 카테고리 -->
-                    <div class="xe-list-board-header--dropdown">
+        <div class="xe-list-board-header--right-box">
+            <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
+                <div class="xe-list-board-header--dropdown">
     <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
         <div class="xe-list-board--header-dropdown__button-box">
             <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-category__button" data-toggle="xe-dropdown" aria-expanded="false">전체 카테고리 <i class="xi-angle-down-thin"></i></button>
@@ -40,12 +38,25 @@
         </ul>
     </div>
 </div>
+<script>
+    $(function () {
+        $('.xe-list-board-header--dropdown-menu-item').on('click', function (e) {
+            e.preventDefault()
+            
+            var $this = $(this)
+            var $parent = $(this).closest('.xe-list-board-header--dropdown__button')
+            var $container = $(this).closest('.xe-list-board-header--dropdown')
+            
+            $parent.find('.xe-list-board-header--dropdown-menu-item').removeClass('on')
+            $this.addClass('on')
+            $container.find('button').text($this.text())
+        })
+    })
+</script>
 
-                    <!-- //dropdown 전체 카테고리 -->
-                </div>
-                <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
-                    <!-- dropdown 최신순 -->
-                    <div class="xe-list-board-header--dropdown">
+            </div>
+            <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
+                <div class="xe-list-board-header--dropdown">
     <div class="xe-list-board-header-order__button xe-list-board-header--dropdown__button">
         <div class="xe-list-board--header-dropdown__button-box">
             <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-order__button" data-toggle="xe-dropdown" aria-expanded="false">정렬 <i class="xi-angle-down-thin"></i></button>
@@ -64,8 +75,7 @@
     </div>
 </div>
 
-                    <!-- //dropdown 최신순 -->
-                </div>
             </div>
         </div>
     </div>
+</div>

@@ -62,18 +62,18 @@
             }
 
             .xe-list-board-list__category,
-            .xe-list-board-list__subject {
+            .xe-list-board-list__title {
                 &:after {
                     content: '';
                     margin: 0;
                 }
             }
 
-            .xe-list-board-list__subject {
+            .xe-list-board-list__title {
                 flex-basis: 100%;
                 margin-bottom: 10px;
 
-                .xe-list-board-list__subject-link {
+                .xe-list-board-list__title-link {
                     text-decoration: none;
                     color: #141414;
                     size: 15px;
@@ -81,7 +81,7 @@
                     letter-spacing: -0.4px;
                     margin-bottom: 15px;
 
-                    .xe-list-board-list__subject-icon {
+                    .xe-list-board-list__title-icon {
                         display: inline-block;
                     }
                 }
@@ -100,7 +100,7 @@
                     color: #141414 ;
                     text-decoration: none;
 
-                    .xe-list-board-list__nickname {
+                    .xe-list-board-list__display_name {
                         color: #141414;
 
                     }
@@ -108,7 +108,7 @@
 
             }
 
-            .xe-list-board-list__view {
+            .xe-list-board-list__read_count {
                 // flex-basis: 10%;
 
             }
@@ -182,28 +182,28 @@
                     max-width: 150px;
                     text-align: left;
                 }
-                .xe-list-board-list__created_date {
+                .xe-list-board-list__created_at {
                     flex: 0 0 100px;
                     max-width: 100px;
                 }
-                .xe-list-board-list__updated_date {
+                .xe-list-board-list__updated_at {
                     flex: 0 0 100px;
                     max-width: 100px;
                 }
-                .xe-list-board-list__assent-count {
+                .xe-list-board-list__assent_count {
                     flex: 0 0 80px;
                     max-width: 80px;
                 }
-                .xe-list-board-list__dissent-count {
+                .xe-list-board-list__dissent_count {
                     flex: 0 0 80px;
                     max-width: 80px;
                 }
-                .xe-list-board-list__view {
+                .xe-list-board-list__read_count {
                     flex: 0 0 50px;
                     max-width: 50px;
                 }
 
-                .xe-list-board-list__subject {
+                .xe-list-board-list__title {
                     flex: 1;
                     min-width: 20%;
                     text-align: left;
@@ -285,33 +285,33 @@
                         margin: 11px 0;
                     }
 
-                    .xe-list-board-list__nickname {
+                    .xe-list-board-list__display_name {
                         display: inline-block;
                         margin-left: 5px;
                     }
                 }
-                .xe-list-board-list__created_date {
+                .xe-list-board-list__created_at {
                     flex: 0 0 100px;
                     max-width: 100px;
                 }
-                .xe-list-board-list__updated_date {
+                .xe-list-board-list__updated_at {
                     flex: 0 0 100px;
                     max-width: 100px;
                 }
-                .xe-list-board-list__assent-count {
+                .xe-list-board-list__assent_count {
                     flex: 0 0 80px;
                     max-width: 80px;
                 }
-                .xe-list-board-list__dissent-count {
+                .xe-list-board-list__dissent_count {
                     flex: 0 0 80px;
                     max-width: 80px;
                 }
-                .xe-list-board-list__view {
+                .xe-list-board-list__read_count {
                     flex: 0 0 50px;
                     max-width: 50px;
                 }
                     
-                .xe-list-board-list__subject {
+                .xe-list-board-list__title {
                     flex: 1;
                     flex-basis: 75%;
                     min-width: 20%;
@@ -319,7 +319,7 @@
                     padding-right: 10px;
                     margin: 0;
 
-                    .xe-list-board-list__subject-link {
+                    .xe-list-board-list__title-link {
                         text-decoration: none;
                         color: #141414;
                         display: flex;
@@ -330,7 +330,7 @@
                             margin-right: 5px;
                         }
 
-                        .xe-list-board-list__subject-text {
+                        .xe-list-board-list__title-text {
                             line-height: 50px;
                             margin-right: 5px;
                             overflow: hidden;
@@ -338,12 +338,12 @@
                             white-space: nowrap;
                         }
 
-                        .xe-list-board-list__subject-icon {
+                        .xe-list-board-list__title-icon {
                             display: inline-block;
                             line-height: 50px;
                             display: flex;
 
-                            .xe-list-board-list__subject-new {
+                            .xe-list-board-list__title-new {
                                 margin: 17px 0 0 0;
                             }
                         }

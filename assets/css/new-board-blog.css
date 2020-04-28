@@ -36,13 +36,13 @@
   display: none;
 }
 
-.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject {
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject .xe-list-gallery-board-list-item__title {
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__title .xe-list-gallery-board-list-item__title {
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
@@ -50,11 +50,11 @@
   color: #141414;
 }
 
-.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject .xe-list-board-list__subject-new-icon {
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__title .xe-list-board-list__title-new-icon {
   margin-left: 5px;
 }
 
-.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__subject .xe-list-board-list__subject-new-icon .xe-list-board-list__subject-new {
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__title .xe-list-board-list__title-new-icon .xe-list-board-list__title-new {
   margin-top: 5px;
 }
 
@@ -62,7 +62,7 @@
   display: none;
 }
 
-.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--detail-info-box .xe-list-gallery-board-list-item__user-info .xe-list-board-list-item___nickname {
+.xe-list-gallery-board-body .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--detail-info-box .xe-list-gallery-board-list-item__user-info .xe-list-board-list-item___display_name {
   margin-bottom: 0;
 }
 

@@ -67,18 +67,18 @@
 }
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__category:after,
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject:after {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title:after {
   content: '';
   margin: 0;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title {
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
   margin-bottom: 10px;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link {
   text-decoration: none;
   color: #141414;
   size: 15px;
@@ -87,7 +87,7 @@
   margin-bottom: 15px;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-icon {
   display: inline-block;
 }
 
@@ -107,7 +107,7 @@
   text-decoration: none;
 }
 
-.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer a .xe-list-board-list__nickname {
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer a .xe-list-board-list__display_name {
   color: #141414;
 }
 
@@ -179,37 +179,37 @@
     max-width: 150px;
     text-align: left;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__created_date {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__created_at {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 100px;
             flex: 0 0 100px;
     max-width: 100px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__updated_date {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__updated_at {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 100px;
             flex: 0 0 100px;
     max-width: 100px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__assent-count {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__assent_count {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 80px;
             flex: 0 0 80px;
     max-width: 80px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__dissent-count {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__dissent_count {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 80px;
             flex: 0 0 80px;
     max-width: 80px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__view {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__read_count {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 50px;
             flex: 0 0 50px;
     max-width: 50px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__subject {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__title {
     -webkit-box-flex: 1;
         -ms-flex: 1;
             flex: 1;
@@ -298,41 +298,41 @@
     background-size: cover;
     margin: 11px 0;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer .xe-list-board-list__nickname {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer .xe-list-board-list__display_name {
     display: inline-block;
     margin-left: 5px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__created_date {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__created_at {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 100px;
             flex: 0 0 100px;
     max-width: 100px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__updated_date {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__updated_at {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 100px;
             flex: 0 0 100px;
     max-width: 100px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__assent-count {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__assent_count {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 80px;
             flex: 0 0 80px;
     max-width: 80px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__dissent-count {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__dissent_count {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 80px;
             flex: 0 0 80px;
     max-width: 80px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__view {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__read_count {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 50px;
             flex: 0 0 50px;
     max-width: 50px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title {
     -webkit-box-flex: 1;
         -ms-flex: 1;
             flex: 1;
@@ -343,7 +343,7 @@
     padding-right: 10px;
     margin: 0;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link {
     text-decoration: none;
     color: #141414;
     display: -webkit-box;
@@ -351,33 +351,33 @@
     display: flex;
     margin: 0;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subjec-secret {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__subjec-secret {
     line-height: 50px;
     margin-right: 5px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-text {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-text {
     line-height: 50px;
     margin-right: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-icon {
     display: inline-block;
     line-height: 50px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__subject-link .xe-list-board-list__subject-icon .xe-list-board-list__subject-new {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-icon .xe-list-board-list__title-new {
     margin: 17px 0 0 0;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__notice--box-form {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__notice--box-form {
     color: #fff;
     line-height: 50px;
     margin-right: 10px;
   }
-  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__subject .xe-list-board-list__notice--box-form .xe-list-board-list__notice--box-form-bg {
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__notice--box-form .xe-list-board-list__notice--box-form-bg {
     background: #2684ff;
     padding: 0 10px;
   }
