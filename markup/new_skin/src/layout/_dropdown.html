@@ -1,6 +1,5 @@
 <div class="xe-list-board-header--dropdown">
-    <div class="xe-list-board-header--category__button xe-list-board-header--dropdown__button">
-        <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-valid-name="{{ xe_trans($label) }}"/>
+    <div class="xe-list-board-header-{{ $name }}__button xe-list-board-header--dropdown__button">
         <button  class="xe-list-board--header-category__button-text" type="button" data-toggle="xe-dropdown" aria-expanded="false">전체 카테고리</button>
         <ul class="xe-list-board-header--category-menu xe-list-board-header--dropdown-menu">
             <li class="xe-list-board-header--dropdown-menu-item on">
@@ -15,3 +14,8 @@
         </ul>
     </div>
 </div>
+<style>
+    .open .xe-list-board-header--dropdown-menu {
+        display: block;
+    }
+</style>
