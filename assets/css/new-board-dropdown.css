@@ -3,7 +3,17 @@
   display: inline-block;
 }
 
-.xe-list-board-header--dropdown .xe-list-board-header--dropdown__button .xe-list-board--header-category__button-text {
+.xe-list-board-header--dropdown .xe-list-board-header--dropdown__button .xe-list-board--header-dropdown__button-box:after {
+  content: '';
+  display: inline-block;
+  margin-left: 7px;
+  margin-right: 7px;
+  width: 1px;
+  height: 12px;
+  background-color: #000;
+}
+
+.xe-list-board-header--dropdown .xe-list-board-header--dropdown__button .xe-list-board--header-dropdown__button-box .xe-list-board--header-dropdown__button-text {
   background: transparent;
   border: none;
   margin: 0;
@@ -23,6 +33,10 @@
   color: #141414;
   font-size: 14px;
   text-decoration: none;
+}
+
+.open .xe-list-board-header--dropdown-menu {
+  display: block;
 }
 
 /*# sourceMappingURL=new-board-dropdown.css.map */
