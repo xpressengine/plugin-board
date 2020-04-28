@@ -76,11 +76,7 @@
   clear: both;
 }
 
-.xe-list-board .xe-list-board-header .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box .xe-list-board-header-category__button .xe-list-board-header--dropdown-menu {
-  left: 0;
-}
-
-.xe-list-board .xe-list-board-header .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box .xe-list-board-header-order__button .xe-list-board-header--dropdown-menu {
+.xe-list-board .xe-list-board-header .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:last-child .xe-list-board-header--dropdown__button .xe-list-board-header--dropdown-menu {
   right: 0;
 }
 

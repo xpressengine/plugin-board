@@ -79,16 +79,8 @@
                     clear: both;
                 }
 
-                .xe-list-board-header--dropdown-box {
-
-                    .xe-list-board-header-category__button {
-                        .xe-list-board-header--dropdown-menu {
-                            left: 0;
-
-                        }
-                    }
-
-                    .xe-list-board-header-order__button {
+                .xe-list-board-header--dropdown-box:last-child {
+                    .xe-list-board-header--dropdown__button {
                         .xe-list-board-header--dropdown-menu {
                             right: 0;
                         }
