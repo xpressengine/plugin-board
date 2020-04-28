@@ -37,4 +37,14 @@
   margin: 11px 0;
 }
 
+/* 모바일에서만 보이게 */
+.xe-hidden-pc {
+  display: none;
+}
+
+/* PC에서만 보이게 */
+.xe-hidden-mobile {
+  display: none;
+}
+
 /*# sourceMappingURL=new-board-common.css.map */

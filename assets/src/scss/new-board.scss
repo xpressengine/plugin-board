@@ -32,7 +32,7 @@
                     margin: 0 5px;
                 }
 
-                &:nth-last-child(2):after {
+                &:last-child:after {
                     content: '';
                     margin: 0;
                 }
@@ -178,8 +178,8 @@
                     text-align: left;
                 }
                 .xe-list-board-list__writer {
-                    flex: 0 0 150px;
-                    max-width: 150px;
+                    flex: 0 0 130px;
+                    max-width: 130px;
                     text-align: left;
                 }
                 .xe-list-board-list__created_at {
@@ -265,8 +265,8 @@
                     line-height: 50px;
                 }
                 .xe-list-board-list__writer {
-                    flex: 0 0 150px;
-                    max-width: 150px; 
+                    flex: 0 0 130px;
+                    max-width: 130px; 
                     text-align: left;
                     overflow: hidden;
                     text-overflow: ellipsis;

@@ -23,8 +23,8 @@
     -webkit-box-orient: vertical;
 }
 
-/* 유저 이미지 */
 
+/* 유저 이미지 */
 .xe-list-board-list__user-image {
     width: 28px;
     height: 28px;
@@ -36,4 +36,16 @@
     color: #767676;
     background-size: cover;
     margin: 11px 0;
+}
+
+
+/* 모바일에서만 보이게 */
+.xe-hidden-pc {
+    display: none;
+}
+
+
+/* PC에서만 보이게 */
+.xe-hidden-mobile {
+    display: none;
 }
