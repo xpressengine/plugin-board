@@ -1,18 +1,10 @@
 .xe-list-board-header--dropdown {
-    margin-right: 7px;
     display: inline-block;
+    position: relative;
 
     .xe-list-board-header--dropdown__button {
+
         .xe-list-board--header-dropdown__button-box {
-            &:after {
-                content: '';
-                display: inline-block;
-                margin-left: 7px;
-                margin-right: 7px;
-                width: 1px;
-                height: 12px;
-                background-color: #000;
-            }
 
             .xe-list-board--header-dropdown__button-text {
                 background: transparent;
@@ -27,10 +19,17 @@
     }
 
     .xe-list-board-header--dropdown-menu {
+        z-index: 5;
         list-style-type: none;
         padding: 0;
         margin: 0;
         display: none;
+        border: 1px solid #d4d5dc;
+        border-radius: 3px;
+        background: #fff;
+
+        position: absolute;
+        top: 20px;
 
         .xe-list-board-header--dropdown-menu-item a {
             color: #141414;
