@@ -1,5 +1,6 @@
 @charset "UTF-8";
 .xe-list-board--pagination {
+  margin: 30px 0 40px 0;
   /* PC */
   /* 모바일 */
 }
@@ -95,11 +96,11 @@
           flex: 1;
 }
 
-.xe-list-board--pagination.xe-list-board--pagination-mobile .xe-list-board--pagination-list .xe-list-board__pagination-item.xe-list-board__btn_pagination .xe-list-board__pagination-item-link {
+.xe-list-board--pagination.xe-list-board--pagination-mobile .xe-list-board--pagination-list .xe-list-board__pagination-item .xe-list-board__pagination-item-link {
   text-decoration: none;
   color: #484848;
-  display: inline-block;
   line-height: 40px;
+  display: inline-block;
   width: 40px;
   height: 40px;
 }
