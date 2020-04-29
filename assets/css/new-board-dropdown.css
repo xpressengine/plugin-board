@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .xe-list-board-header--dropdown {
   display: inline-block;
   position: relative;
@@ -32,6 +33,25 @@
 
 .open .xe-list-board-header--dropdown-menu {
   display: block;
+}
+
+.xe-list-board-header--dropdown-sub-menu {
+  margin: 0 0 0 10px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.xe-list-board-header--dropdown-sub-menu .xe-list-board-header--dropdown-sub-menu-list {
+  padding: 5px 0;
+}
+
+.xe-list-board-header--dropdown-sub-menu .xe-list-board-header--dropdown-sub-menu-list:before {
+  content: '└';
+}
+
+.xe-list-board-header--dropdown-sub-menu .xe-list-board-header--dropdown-sub-menu-list .xe-list-board-header--dropdown-sub-menu-list-link {
+  text-decoration: none;
+  color: #141414;
 }
 
 /*# sourceMappingURL=new-board-dropdown.css.map */

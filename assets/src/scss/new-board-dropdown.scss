@@ -41,3 +41,22 @@
 .open .xe-list-board-header--dropdown-menu {
     display: block;
 }
+
+.xe-list-board-header--dropdown-sub-menu {
+    margin: 0 0 0 10px;
+    padding: 0;
+    list-style-type: none;
+
+    .xe-list-board-header--dropdown-sub-menu-list {
+        padding: 5px 0;
+
+        &:before {
+            content: '└';
+        }
+
+        .xe-list-board-header--dropdown-sub-menu-list-link {
+            text-decoration: none;
+            color: #141414;
+        }
+    }
+}
