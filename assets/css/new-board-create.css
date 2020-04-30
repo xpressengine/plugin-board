@@ -1,0 +1,84 @@
+ 
+.board_write .write_header .write_title .xe-form-control {
+  border: none;
+  height: 56px;
+  border-bottom: 1px solid #e0e0e0;
+} 
+.board_write .write_header .write_title .xe-form-control:placehoder {
+  font-size: 17px;
+}
+  
+.board_write .write_header .write_category .xe-btn {
+  border: none;
+  margin-bottom: 20px;
+}
+
+.file-attach-group .file-attach .xe-btn-link {
+  transition: all 0.1s;
+  font-weight: 700;
+}
+
+.file-attach-group .file-attach .xe-btn-link:hover:not([disabled]) {
+  background: #dde9fc !important;
+  border-radius: 3px;
+}
+
+.file-attach-group {
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: none;
+}
+
+.xe-select-label {
+  border-bottom: 1px solid #e0e0e0;
+  height: 55px;
+}
+
+.write_footer .write_form_input input {
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  height: 55px;
+}
+
+.write_form_btn {
+  display: flex;
+}
+
+.write_form_btn .xe-btn-group,
+.write_form_btn > button {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+}
+
+.write_form_btn .xe-btn-group {
+  position: relative;
+}
+.write_form_btn .xe-btn-group button {
+  background: #fff;
+}
+
+.write_form_btn .xe-btn-group .xe-btn.xe-dropdown-toggle {
+  position: absolute;
+  right:0;
+}
+
+.write_footer .write_form_btn > button {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .board_write .write_header {
+    display: flex;
+  }
+  
+  .board_write .write_header .write_title {
+    flex-basis: 50%;
+  }
+  
+  .board_write .write_header .write_category {
+    margin: 0 0 0 15px;
+    flex-basis: 50%;
+    min-width: 0;
+    max-width: none;
+  }  
+}

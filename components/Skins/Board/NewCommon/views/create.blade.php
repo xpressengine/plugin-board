@@ -16,6 +16,14 @@
         @foreach ($skinConfig['formColumns'] as $columnName)
         @if($columnName === 'title')
         <div class="write_header">
+            <div class="write_title">
+                {!! uio('titleWithSlug', [
+                'title' => Request::old('title'),
+                'slug' => Request::old('slug'),
+                'titleClassName' => 'bd_input',
+                'config' => $config
+                ]) !!}
+            </div>
             <div class="write_category">
                 @if($config->get('category') == true)
                 {!! uio('uiobject/board@select', [
@@ -25,14 +33,6 @@
                 'items' => $categories,
                 ]) !!}
                 @endif
-            </div>
-            <div class="write_title">
-                {!! uio('titleWithSlug', [
-                'title' => Request::old('title'),
-                'slug' => Request::old('slug'),
-                'titleClassName' => 'bd_input',
-                'config' => $config
-                ]) !!}
             </div>
         </div>
         @elseif($columnName === 'content')
@@ -89,6 +89,15 @@
 
             <div class="write_form_option">
                 <div class="xe-form-inline">
+
+                    @if($config->get('secretPost') === true)
+                    <label class="xe-label">
+                        <input type="checkbox" name="display" value="{{\Xpressengine\Document\Models\Document::DISPLAY_SECRET}}">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text">{{xe_trans('board::secretPost')}}</span>
+                    </label>
+                    @endif
+
                     @if($config->get('comment') === true)
                     <label class="xe-label">
                         <input type="checkbox" name="allow_comment" value="1" checked="checked">
@@ -96,20 +105,12 @@
                         <span class="xe-label-text">{{xe_trans('board::allowComment')}}</span>
                     </label>
                     @endif
-
+                    
                     @if (Auth::check() === true)
                     <label class="xe-label">
                         <input type="checkbox" name="use_alarm" value="1" @if($config->get('newCommentNotice') == true) checked="checked" @endif >
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">{{xe_trans('board::useAlarm')}}</span>
-                    </label>
-                    @endif
-
-                    @if($config->get('secretPost') === true)
-                    <label class="xe-label">
-                        <input type="checkbox" name="display" value="{{\Xpressengine\Document\Models\Document::DISPLAY_SECRET}}">
-                        <span class="xe-input-helper"></span>
-                        <span class="xe-label-text">{{xe_trans('board::secretPost')}}</span>
                     </label>
                     @endif
 

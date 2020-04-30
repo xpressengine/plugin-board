@@ -149,7 +149,7 @@
             </div>
             <div class="xe-list-board--btn-right-box">
                 <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">내가 쓴 글</a>
-                <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">글쓰기</a>
+                <a href="{{ instance_route('create') }}" class="xe-list-board__btn xe-list-board__btn-primary">글쓰기</a>
             </div>
         </div>
         <div class="xe-list-board--pagination">

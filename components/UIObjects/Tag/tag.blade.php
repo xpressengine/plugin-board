@@ -7,7 +7,16 @@
 </div>
 
 <style>
-.__xe-board-tag .vue-tags-input {
+.__xe-board-tag .vue-tags-input .ti-input {
   max-width: 100%;
+}
+
+.ti-input[data-v-61d92e31] {
+  border: none !important;
+}
+
+.vue-tags-input[data-v-61d92e31] {
+  max-width: none;
+  line-height: 55px;
 }
 </style>
