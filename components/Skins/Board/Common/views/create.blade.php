@@ -35,7 +35,7 @@
                 ]) !!}
             </div>
         </div>
-        @elseif($columnName === 'content')
+        @elseif($columnName === 'content')           
         <div class="write_body">
             <div class="write_form_editor">
                 {!! editor($config->get('boardId'), [

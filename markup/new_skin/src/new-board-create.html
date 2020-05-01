@@ -1,0 +1,74 @@
+<extends src="layout/_layout.html">
+    <block name="page-title" type="prepend">글쓰기 -</block>
+    <block name="page-content">
+        <div class="xe-list-board-body">
+            <div class="xe-list-board-body--header">
+                <form class="row">
+                    <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-8">
+                        <input type="text" placeholder="제목" class="xe-list-board-body--header-title-input">
+                    </div>
+                    <div class="xe-list-board-body--header-item xe-list-board-body--header-select col-md-4">
+                        카테고리 선택
+                    </div>
+                </form>
+            </div>
+            <div class="xe-list-board-body--editor">에디터 영역입니다.</div>
+            <div class="xe-list-board-body--footer">
+                <div class="xe-list-board-body--footer-additional-box">
+                    <div class="xe-list-board-body--footer-attachment">
+                        <h4 class="xe-list-board-body--footer-title">image</h4>
+                        <div class="xe-list-board-body--footer-file-attach">
+                            <p class="xe-list-board-body--footer-file-attachtext">여기에 파일을 끌어 놓거나 미디어 라이브러리 또는 파일 첨부 버튼을 누르세요.</p>
+                            <label class="xe-list-board-body--footer-file-btn">
+                                <i class="xi-icon xi-plus"></i> 파일 첨부<input type="file" class="__xe_file xe-hidden" name="file" multiple="">
+                            </label>
+                            <label class="xe-list-board-body--footer-file-btn">
+                                <i class="xi-icon xi-plus"></i> 미디어 라이브러리<input type="file" class="__xe_file xe-hidden" name="file" multiple="">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="xe-list-board-body--footer-tag">
+                        <h4 class="xe-list-board-body--footer-title">tag</h4>
+                        <input placeholder="태그를 입력한 후 Enter를 누르세요." type="text" class="xe-list-board-body--footer-tag-input">
+                    </div>
+                    <div class="xe-list-board-body--footer-nonmember">
+                        <h4 class="xe-list-board-body--footer-title blind">비회원</h4>
+                        <input placeholder="글쓴이" type="text" class="xe-list-board-body--footer-nonmember-input">
+                        <input placeholder="비밀번호" type="password" class="xe-list-board-body--footer-nonmember-input">
+                        <input placeholder="이메일" type="email" class="xe-list-board-body--footer-nonmember-input">
+                    </div>
+                    <div class="xe-list-board-body--footer-check-box">
+                        <ul class="xe-list-board-body--footer-check-list">
+                            <li class="xe-list-board-body--footer-check-item">
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-secret">
+                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-secret">비밀글</label>
+                            </li>
+                            <li class="xe-list-board-body--footer-check-item">
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-comment">
+                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-comment">댓글 허용</label>
+                            </li>
+                            <li class="xe-list-board-body--footer-check-item">
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-alarm">
+                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-alarm">알림</label>
+                            </li>
+                            <li class="xe-list-board-body--footer-check-item">
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-notice">
+                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-notice">공지 등록</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="xe-list-board-body--footer-button-box">
+                    <div class="xe-list-board-body--footer-btn__transient">
+                        <button class="xe-list-board-body--footer-button xe-list-board-body--footer-button__transient">임시저장</button>
+                        <div class="xe-list-board-body--footer-button__transient-content">
+                            <a href="#">임시저장 로드</a>
+                        </div>
+                    </div>
+                    <button class="xe-list-board-body--footer-button xe-list-board-body--footer-button__preview">미리보기</button>
+                    <button class="xe-list-board-body--footer-button xe-list-board-body--footer-button__register">등록하기</button>
+                </div>
+            </div>
+        </div>
+    </block>
+</extends>
