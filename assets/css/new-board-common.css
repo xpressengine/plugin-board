@@ -37,6 +37,33 @@
   margin: 11px 0;
 }
 
+/* 상세정보 스타일 */
+.xe-list-board-list__mobile-style {
+  font-size: 12px;
+  color: #9c9c9c;
+}
+
+.xe-list-board-list__mobile-style:after {
+  content: '·';
+  margin: 0 5px;
+}
+
+.xe-list-board-list__mobile-style:last-child:after {
+  content: '';
+  margin: 0;
+}
+
+/* 링크 초기화 */
+.xe-list-board-body__link {
+  text-decoration: none;
+  color: #141414;
+}
+
+.xe-list-board-body__link:hover {
+  text-decoration: none;
+  color: #141414;
+}
+
 /* 모바일에서만 보이게 */
 .xe-hidden-pc {
   display: inline-block;
