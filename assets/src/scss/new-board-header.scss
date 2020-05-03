@@ -47,80 +47,79 @@
                 float: right;
             }
         }
+    }
 
+    .xe-list-board-header__contents {
+        .xe-list-board-header--left-box {
+            .xe-list-board--header__search {
+                position: relative;
+                .xe-list-board--header__search__control {
+                    width: 100%;
+                    padding: 10px;
+                }
 
-        .xe-list-board-header__contents {
-            .xe-list-board-header--left-box {
-                .xe-list-board--header__search {
-                    position: relative;
-                    .xe-list-board--header__search__control {
-                        width: 100%;
-                        padding: 10px;
+                .xe-list-board--header__search__icon {
+                    .xi-search {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        font-size: 20px;
+                        color: #525252;
                     }
+                }
+            }
+        }
 
-                    .xe-list-board--header__search__icon {
-                        .xi-search {
-                            position: absolute;
-                            top: 10px;
-                            right: 10px;
-                            font-size: 20px;
-                            color: #525252;
-                        }
+        .xe-list-board-header--right-box {
+            padding: 20px 0;
+
+            &:after {
+                content: '';
+                display: block;
+                clear: both;
+            }
+
+            .xe-list-board-header--dropdown-box:last-child {
+                .xe-list-board-header--dropdown__button {
+                    .xe-list-board-header--dropdown-menu {
+                        right: 0;
                     }
                 }
             }
 
-            .xe-list-board-header--right-box {
-                padding: 20px 0;
-
-                &:after {
-                    content: '';
-                    display: block;
-                    clear: both;
-                }
-
-                .xe-list-board-header--dropdown-box:last-child {
-                    .xe-list-board-header--dropdown__button {
-                        .xe-list-board-header--dropdown-menu {
-                            right: 0;
+            .open .xe-list-board-header--dropdown-menu {
+                padding: 8px 0;
+            
+                .xe-list-board-header--dropdown-menu-item {
+                    width: 100px;
+                    a {
+                        color: #141414;
+                        display: block;
+                        padding: 5px;
+                    }
+                
+                    &.on {
+                        background: #141414;
+                        a {
+                            color: #fff;
                         }
                     }
-                }
-
-                .open .xe-list-board-header--dropdown-menu {
-                    padding: 8px 0;
-                
-                    .xe-list-board-header--dropdown-menu-item {
-                        width: 100px;
+                    &:hover {
+                        background: #d4d5dc;
                         a {
                             color: #141414;
-                            display: block;
-                            padding: 5px;
                         }
-                    
-                        &.on {
-                            background: #141414;
-                            a {
-                                color: #fff;
-                            }
-                        }
-                        &:hover {
-                            background: #d4d5dc;
-                            a {
-                                color: #141414;
-                            }
-                        }
-                
                     }
+            
                 }
+            }
 
-                .xe-list-board-header--category {
-                    float: left;
-                }
+            .xe-list-board-header--category {
+                float: left;
+            }
 
-                .xe-list-board-header--sort {
-                    float: right;
-                }
+            .xe-list-board-header--sort {
+                float: right;
             }
         }
     }
@@ -171,53 +170,53 @@
                     }
                 }
             }
+        }
 
-            .xe-list-board-header__contents {
-                margin-bottom: 20px;
+        .xe-list-board-header__contents {
+            margin-bottom: 20px;
 
-                &:after {
-                    content: '';
-                    display: block;
-                    clear: both;
-                }
-                .xe-list-board-header--left-box {
-                    float: left;
-                    width: 345px;
+            &:after {
+                content: '';
+                display: block;
+                clear: both;
+            }
+            .xe-list-board-header--left-box {
+                float: left;
+                width: 345px;
 
-                    .xe-list-board--header__search {
-                        .xe-list-board--header__search__control {
-                            border: none;
-                            border-bottom: 1px solid #e0e0e0;
-                        }
+                .xe-list-board--header__search {
+                    .xe-list-board--header__search__control {
+                        border: none;
+                        border-bottom: 1px solid #e0e0e0;
                     }
                 }
+            }
 
-                .xe-list-board-header--right-box {
-                    float: right;
-                    display: flex;
-                    align-self: end;
+            .xe-list-board-header--right-box {
+                float: right;
+                display: flex;
+                align-self: end;
 
-                    .xe-list-board-header--dropdown-box {
+                .xe-list-board-header--dropdown-box {
+                    display: inline-block;
+
+                    &:after {
+                        content: '';
                         display: inline-block;
-
+                        margin-left: 7px;
+                        margin-right: 7px;
+                        width: 1px;
+                        height: 12px;
+                        background-color: #767676;
+                    }
+                    &:last-child {
                         &:after {
                             content: '';
-                            display: inline-block;
-                            margin-left: 7px;
-                            margin-right: 7px;
-                            width: 1px;
-                            height: 12px;
-                            background-color: #767676;
-                        }
-                        &:last-child {
-                            &:after {
-                                content: '';
-                                display: none;
-                            }
+                            display: none;
                         }
                     }
-
                 }
+
             }
         }
     }
