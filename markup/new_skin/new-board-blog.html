@@ -34,6 +34,8 @@
         <link href="../../assets/css/new-board-gallery.css" type="text/css" rel="stylesheet" media="all">
         <link href="../../assets/css/new-board-show.css" type="text/css" rel="stylesheet" media="all">
         <link href="../../assets/css/new-board-create.css" type="text/css" rel="stylesheet" media="all">
+        <link href="../../assets/css/new-board-search.css" type="text/css" rel="stylesheet" media="all">
+        <link href="../../assets/css/new-board-comment.css" type="text/css" rel="stylesheet" media="all">
         <link href="../../assets/css/new-board-dropdown.css" type="text/css" rel="stylesheet" media="all">
         <link href="../../assets/css/new-board-pagination.css" type="text/css" rel="stylesheet" media="all">
 
@@ -98,18 +100,20 @@
         </div>
     </div>
     <div class="xe-list-board-header__text">상단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다. </div>
-    <div class="xe-list-board-header__contents">
-        <div class="xe-list-board-header--left-box">
-            <div class="xe-list-board--header__search">
-                <input type="text" name="search" class="xe-list-board--header__search__control">
-                <span class="xe-list-board--header__search__icon">
-                    <i class="xi-search"></i>
-                </span>
-            </div>
+</div>
+
+<div class="xe-list-board-header__contents">
+    <div class="xe-list-board-header--left-box">
+        <div class="xe-list-board--header__search">
+            <input type="text" name="search" class="xe-list-board--header__search__control">
+            <span class="xe-list-board--header__search__icon">
+                <i class="xi-search"></i>
+            </span>
         </div>
-        <div class="xe-list-board-header--right-box">
-            <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
-                <div class="xe-list-board-header--dropdown">
+    </div>
+    <div class="xe-list-board-header--right-box">
+        <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
+            <div class="xe-list-board-header--dropdown">
     <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
         <div class="xe-list-board--header-dropdown__button-box">
             <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-category__button" data-toggle="xe-dropdown" aria-expanded="false">전체 카테고리 <i class="xi-angle-down-thin"></i></button>
@@ -159,9 +163,9 @@
         })
     })
 </script>
-            </div>
-            <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
-                <div class="xe-list-board-header--dropdown">
+        </div>
+        <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
+            <div class="xe-list-board-header--dropdown">
     <div class="xe-list-board-header-order__button xe-list-board-header--dropdown__button">
         <div class="xe-list-board--header-dropdown__button-box">
             <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-order__button" data-toggle="xe-dropdown" aria-expanded="false">정렬 <i class="xi-angle-down-thin"></i></button>
@@ -180,7 +184,6 @@
     </div>
 </div>
 
-            </div>
         </div>
     </div>
 </div>
@@ -299,7 +302,8 @@
             <a href="#" class="xe-list-board__btn">글쓰기</a>
         </div>
     </div>
-    <!-- PC -->
+</div>
+<!-- PC -->
 <div class="xe-list-board--pagination xe-list-board--pagination-pc">
     <ul class="xe-list-board--pagination-list">
         <li class="xe-list-board__pagination-item xe-list-board__btn_pagination xe-list-board__btn_prev"><a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-left"></i></a></li>
@@ -331,7 +335,6 @@
             <a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-right"></i></a>
         </li>
     </ul>
-</div>
 </div>
 <div class="xe-list-board-footer__text">
     하단 공통내용을 사용하여 글을 입력하였을 경우 이영역을 사용하게 됩니다. 영역은 100%를 활용하며 게시판 설정에서 사용여부를 통해 사용할 수 있습니다. 
