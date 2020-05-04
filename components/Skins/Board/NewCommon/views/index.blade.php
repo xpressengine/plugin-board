@@ -230,8 +230,9 @@
                                 {!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}
                             </div>
                         @else
-                            {{-- TODO 기본 출력 내용 스타일 필요--}}
-                            {!! $item->{$columnName} !!}
+                            <div class="xe-list-board-list__default">
+                                {!! $item->{$columnName} !!}
+                            </div>
                         @endif
                         @break
                     @endswitch
