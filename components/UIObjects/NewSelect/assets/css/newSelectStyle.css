@@ -1,57 +1,55 @@
 @charset "UTF-8";
 .xe-list-board-header--dropdown {
-  display: inline-block;
-  position: relative;
+    display: inline-block;
+    position: relative;
 }
 
 .xe-list-board-header--dropdown .xe-list-board-header--dropdown__button .xe-list-board--header-dropdown__button-box .xe-list-board--header-dropdown__button-text {
-  background: transparent;
-  border: none;
-  margin: 0;
-  padding: 0;
-  color: #767676;
-  font-size: 14px;
+    background: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: #767676;
+    font-size: 14px;
 }
 
 .xe-list-board-header--dropdown .xe-list-board-header--dropdown-menu {
-  z-index: 5;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: none;
-  border: 1px solid #d4d5dc;
-  border-radius: 3px;
-  background: #fff;
-  position: absolute;
+    z-index: 5;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    border: 1px solid #d4d5dc;
+    border-radius: 3px;
+    background: #fff;
+    position: absolute;
 }
 
 .xe-list-board-header--dropdown .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item a {
-  color: #141414;
-  font-size: 14px;
-  text-decoration: none;
+    color: #141414;
+    font-size: 14px;
+    text-decoration: none;
 }
 
 .open .xe-list-board-header--dropdown-menu {
-  display: block;
+    display: block;
 }
 
 .xe-list-board-header--dropdown-sub-menu {
-  margin: 0 0 0 10px;
-  padding: 0;
-  list-style-type: none;
+    margin: 0 0 0 10px;
+    padding: 0;
+    list-style-type: none;
 }
 
 .xe-list-board-header--dropdown-sub-menu .xe-list-board-header--dropdown-sub-menu-list {
-  padding: 5px 0;
+    padding: 5px 0;
 }
 
 .xe-list-board-header--dropdown-sub-menu .xe-list-board-header--dropdown-sub-menu-list:before {
-  content: '└';
+    content: '└';
 }
 
 .xe-list-board-header--dropdown-sub-menu .xe-list-board-header--dropdown-sub-menu-list .xe-list-board-header--dropdown-sub-menu-list-link {
-  text-decoration: none;
-  color: #141414;
+    text-decoration: none;
+    color: #141414;
 }
-
-/*# sourceMappingURL=new-board-dropdown.css.map */

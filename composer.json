@@ -68,6 +68,11 @@
           "name": "게시판 신규 블로그 스킨",
           "description": "게시판 신규 블로그 스킨."
         },
+        "uiobject/board@new_select": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\NewSelect\\NewSelectUIObject",
+          "name": "New select UIO",
+          "description": "신규 Select UIObject"
+        },
         "widget/board@list": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
           "name": "게시물 리스트 위젯",
