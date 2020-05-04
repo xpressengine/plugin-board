@@ -92,7 +92,7 @@
                         <div class="xe-list-board-header">
     <div class="xe-list-board-header__title-content">
         <div class="xe-list-board-header__title-box">
-            <h2 class="xe-list-board-header__title">New Theme</h2>
+            <h2 class="xe-list-board-header__title"><a href="#">New Theme</a></h2>
             <span class="xe-list-board-header__post-count">(62)</span>
         </div>
         <div class="xe-list-board-header__write-button">
@@ -103,17 +103,18 @@
 </div>
 
 <div class="xe-list-board-header__contents">
-    <div class="xe-list-board-header--left-box">
-        <div class="xe-list-board--header__search">
-            <input type="text" name="search" class="xe-list-board--header__search__control">
-            <span class="xe-list-board--header__search__icon">
-                <i class="xi-search"></i>
-            </span>
+    <form method="get" class="__xe_search">
+        <div class="xe-list-board-header--left-box">
+            <div class="xe-list-board--header__search">
+                <input type="text" name="search" class="xe-list-board--header__search__control">
+                <span class="xe-list-board--header__search__icon">
+                    <a href="#"><i class="xi-search"></i></a>
+                </span>
+            </div>
         </div>
-    </div>
-    <div class="xe-list-board-header--right-box">
-        <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
-            <div class="xe-list-board-header--dropdown">
+        <div class="xe-list-board-header--right-box __xe-forms">
+            <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
+                <div class="xe-list-board-header--dropdown __xe-dropdown-form">
     <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
         <div class="xe-list-board--header-dropdown__button-box">
             <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-category__button" data-toggle="xe-dropdown" aria-expanded="false">전체 카테고리 <i class="xi-angle-down-thin"></i></button>
@@ -163,9 +164,9 @@
         })
     })
 </script>
-        </div>
-        <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
-            <div class="xe-list-board-header--dropdown">
+            </div>
+            <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
+                <div class="xe-list-board-header--dropdown __xe-dropdown-form">
     <div class="xe-list-board-header-order__button xe-list-board-header--dropdown__button">
         <div class="xe-list-board--header-dropdown__button-box">
             <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-order__button" data-toggle="xe-dropdown" aria-expanded="false">정렬 <i class="xi-angle-down-thin"></i></button>
@@ -184,8 +185,9 @@
     </div>
 </div>
 
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 
                         @page-content
@@ -195,7 +197,7 @@
             <a href="#" class="xe-list-board__btn xe-list-board__btn-primary">관리</a>
         </div>
         <div class="xe-list-board--btn-right-box">
-            <a href="#" class="xe-list-board__btn">내가 쓴 글</a>
+            <a href="#" class="xe-list-board__btn active">내가 쓴 글</a>
             <a href="#" class="xe-list-board__btn">글쓰기</a>
         </div>
     </div>
