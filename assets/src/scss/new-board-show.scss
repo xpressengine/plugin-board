@@ -50,12 +50,14 @@
         .xe-list-board-list__icon-box {
           font-size: 22px;
           line-height: 41px;
-          
-        .xe-list-board-list__icon {
-            .xe-dropdown {
-              display: inline-block;
-              font-size: 18px;
-            }
+
+          .xe-list-board-list__icon {
+            vertical-align: middle;
+          }
+
+          .xe-dropdown {
+            display: inline-block;
+            font-size: 22px;
           }
         }
       }
@@ -181,16 +183,19 @@
       .xe-list-board-list__icon-box {
         font-size: 18px;
 
+          
+        .xe-dropdown {
+          display: inline-block;
+          font-size: 18px;
+          line-height: 43px;
+        }
+
         .xe-list-board-list__icon {
           margin-right: 5px;
+          vertical-align: middle;
 
           &:last-child {
             margin: 0;
-          }
-          
-          .xe-dropdown {
-            display: inline-block;
-            font-size: 18px;
           }
         }
       }
