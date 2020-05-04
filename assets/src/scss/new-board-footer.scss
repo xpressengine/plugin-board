@@ -1,7 +1,7 @@
 /* footer */
-
 .xe-list-board-footer {
     .xe-list-board--button-box {
+        margin-top: 10px;
         &:after {
             content: '';
             display: block;
@@ -28,6 +28,12 @@
                 &:hover {
                     background: #ebecf0;
                 }
+            }
+
+            &.active {
+                background: #2684ff;
+                border-color: #2684ff;
+                color: #fff;
             }
         }
 

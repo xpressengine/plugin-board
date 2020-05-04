@@ -16,7 +16,7 @@
                 @endif
             </div>
             <div class="xe-list-board-header__write-button">
-                <a href="{{ $urlHandler->get('create') }}"><img src="../../assets/img/pencil.svg"></a>
+                <a href="{{ $urlHandler->get('create') }}"><img src="../plugins/board/assets/img/pencil.svg"></a>
             </div>
         </div>
         

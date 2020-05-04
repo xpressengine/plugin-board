@@ -1,5 +1,15 @@
 @charset "UTF-8";
 /* 게시판 */
+.xe-list-board-body {
+  font-size: 14px;
+}
+
+.xe-list-board-body .xe-list-board-list__default {
+  font-size: 16px;
+  line-height: 50px;
+  color: #141414;
+}
+
 .xe-list-board-body .xe-list-board-list {
   border-top: 1px solid #141414;
   list-style-type: none;
@@ -75,6 +85,9 @@
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
   margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link {
@@ -86,8 +99,17 @@
   margin-bottom: 15px;
 }
 
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-text:hover {
+  text-decoration: underline;
+}
+
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-icon {
   display: inline-block;
+}
+
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-icon .xe-list-board-list__title-comment_count {
+  color: #2684ff;
+  font-size: 15px;
 }
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer {
@@ -163,6 +185,9 @@
         -ms-flex: 0 0 30px;
             flex: 0 0 30px;
     max-width: 30px;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__favorite a {
+    color: #141414;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__category {
     -webkit-box-flex: 0;
@@ -264,6 +289,17 @@
             flex: 0 0 30px;
     max-width: 30px;
   }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__favorite a {
+    color: #141414;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__favorite i:before {
+    content: '\ea1d';
+    display: inline-block;
+  }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__favorite .on i:before {
+    content: '\ea1c';
+    display: inline-block;
+  }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__category {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 100px;
@@ -288,6 +324,7 @@
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer .xe-list-board-list__user-image {
     width: 28px;
     height: 28px;
+    background-size: 25px;
     background: url(../img/defalut_profile.jpg) no-repeat 0% 50%;
     border-radius: 50px;
     float: left;

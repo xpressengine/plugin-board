@@ -1,4 +1,8 @@
 /* footer */
+.xe-list-board-footer .xe-list-board--button-box {
+  margin-top: 10px;
+}
+
 .xe-list-board-footer .xe-list-board--button-box:after {
   content: '';
   display: block;
@@ -27,6 +31,12 @@
 
 .xe-list-board-footer .xe-list-board--button-box .xe-list-board__btn.xe-list-board__btn-primary:hover {
   background: #ebecf0;
+}
+
+.xe-list-board-footer .xe-list-board--button-box .xe-list-board__btn.active {
+  background: #2684ff;
+  border-color: #2684ff;
+  color: #fff;
 }
 
 .xe-list-board-footer .xe-list-board--button-box .xe-list-board--btn-left-box {

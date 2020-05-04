@@ -50,6 +50,13 @@
         .xe-list-board-list__icon-box {
           font-size: 22px;
           line-height: 41px;
+          
+        .xe-list-board-list__icon {
+            .xe-dropdown {
+              display: inline-block;
+              font-size: 18px;
+            }
+          }
         }
       }
     }
@@ -180,6 +187,11 @@
           &:last-child {
             margin: 0;
           }
+          
+          .xe-dropdown {
+            display: inline-block;
+            font-size: 18px;
+          }
         }
       }
     }
@@ -294,7 +306,6 @@
         .xe-list-board-body__more-post-list-item {
           .xe-list-board-body__more-post-list-item-date {
             display: block;
-            flex-basis: 80px;
             margin-left: 10px;
           }
         }

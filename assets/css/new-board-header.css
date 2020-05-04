@@ -38,6 +38,11 @@
   display: inline-block;
 }
 
+.xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box .xe-list-board-header__title a {
+  text-decoration: none;
+  color: #141414;
+}
+
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box .xe-list-board-header__post-count {
   font-size: 13px;
   line-height: 27px;
@@ -55,10 +60,14 @@
 
 .xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__control {
   width: 100%;
-  padding: 10px;
+  padding: 10px 35px 10px 10px;
 }
 
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon .xi-search {
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon a {
+  display: inline-block;
+}
+
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon a .xi-search {
   position: absolute;
   top: 10px;
   right: 10px;

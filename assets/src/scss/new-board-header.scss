@@ -33,6 +33,11 @@
                     color: #141414;
                     letter-spacing: -0.4px;
                     display: inline-block;
+
+                    a {
+                        text-decoration: none;
+                        color: #141414;
+                    }
                 }
                 
                 .xe-list-board-header__post-count {
@@ -55,16 +60,20 @@
                 position: relative;
                 .xe-list-board--header__search__control {
                     width: 100%;
-                    padding: 10px;
+                    padding: 10px 35px 10px 10px;
                 }
 
                 .xe-list-board--header__search__icon {
-                    .xi-search {
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        font-size: 20px;
-                        color: #525252;
+                    a {
+                        display: inline-block;
+                        
+                        .xi-search {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            font-size: 20px;
+                            color: #525252;
+                        }
                     }
                 }
             }
@@ -225,7 +234,8 @@
 @media (min-width:992px) {
     .xe-list-board {
         max-width: 1140px;
-        .xe-list-board-header  .xe-list-board-header__title-content {
+
+        .xe-list-board-header .xe-list-board-header__title-content {
             .xe-list-board-header__title-box {
                 margin-top: 60px;
             }
