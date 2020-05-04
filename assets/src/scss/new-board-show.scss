@@ -27,9 +27,17 @@
         flex: 1;
 
         .xe-list-board-list__writer {
+          vertical-align: middle;
+          text-decoration: none;
+          text-rendering:optimizelegibility;
+          text-size-adjust:100%;
+          white-space:nowrap;
+          font-size: 14px;
+          .xe-dropdown-menu {
+            min-width: 0;
+          }
           a {
             color: #141414;
-            text-decoration: none;
           }
 
           .xe-list-board-list__user-image {
@@ -58,6 +66,10 @@
           .xe-dropdown {
             display: inline-block;
             font-size: 22px;
+
+            .share-item {
+              font-size: 14px;
+            }
           }
         }
       }
@@ -130,7 +142,6 @@
       .xe-list-board-body__like-box {
         border: 1px solid #e0e0e0;
         padding: 10px 0;
-        max-width: 141px;
         display: flex;
 
         .xe-list-board-body__like-box-item {
@@ -188,6 +199,10 @@
           display: inline-block;
           font-size: 18px;
           line-height: 43px;
+          
+          .share-item {
+            font-size: 14px;
+          }
         }
 
         .xe-list-board-list__icon {
