@@ -803,6 +803,10 @@ class Handler
         if ($request->get('writer') != null && $request->get('writer') !== '') {
             $query = $query->where('writer', $request->get('writer'));
         }
+        
+        if ($request->get('user_id') !== null && $request->get('user_id') !== '') {
+            $query = $query->where('user_id', $request->get('user_id'));
+        }
 
         if ($request->get('category_item_id') !== null && $request->get('category_item_id') !== '') {
             $categoryItem = CategoryItem::find($request->get('category_item_id'));
