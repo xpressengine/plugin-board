@@ -1,22 +1,38 @@
-{{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
-{{ XeFrontend::css('plugins/board/assets/css/board.css')->load() }}
-{{ XeFrontend::css('plugins/board/assets/css/new-board-create.css')->load() }}
+{{ XeFrontend::js('assets/core/xe-ui-component/js/xe-page.js')->appendTo('body')->load() }}
 
-<!-- BOARD -->
-<div class="board">
-    <!--topCommonContent-->
-    @if ($config->get('topCommonContentOnlyList') === false || request()->segment(2) == '')
-        {!! xe_trans($config->get('topCommonContent', '')) !!}
-    @endif
+{{ XeFrontend::css('plugins/board/assets/css/new-board-header.css')->load() }}
+{{ XeFrontend::css('plugins/board/assets/css/new-board-footer.css')->load() }}
+{{ XeFrontend::css('plugins/board/assets/css/new-board-common.css')->load() }}
+
+<section class="xe-list-board container">
+    <div class="xe-list-board-header">
+        <div class="xe-list-board-header__title-content">
+{{--            TODO 출력 옵션 적용--}}
+            <div class="xe-list-board-header__title-box">
+                <h2 class="xe-list-board-header__title"><a href="{{ $urlHandler->get('index') }}">{{ xe_trans(current_menu()['title']) }}</a></h2>
+                @if (request()->segment(2) === null)
+                    <span class="xe-list-board-header__post-count">({{ number_format($paginate->total()) }})</span>
+                @endif
+            </div>
+            <div class="xe-list-board-header__write-button">
+                <a href="{{ $urlHandler->get('create') }}"><img src="../../assets/img/pencil.svg"></a>
+            </div>
+        </div>
+        
+        @if ($config->get('topCommonContentOnlyList') === false || request()->segment(2) === '')
+            <div class="xe-list-board-header__text">
+                {!! xe_trans($config->get('topCommonContent', '')) !!}
+            </div>
+        @endif
+    </div>
 
     @section('content')
         {!! isset($content) ? $content : '' !!}
     @show
-
-    <!--bottomCommonContent-->
-    @if ($config->get('bottomCommonContentOnlyList') === false || request()->segment(2) == '')
+    
+    @if ($config->get('bottomCommonContentOnlyList') === false || request()->segment(2) === '')
+        <div class="xe-list-board-footer__text">
             {!! xe_trans($config->get('bottomCommonContent', '')) !!}
+        </div>
     @endif
-
-</div>
-<!-- /BOARD -->
+</section>

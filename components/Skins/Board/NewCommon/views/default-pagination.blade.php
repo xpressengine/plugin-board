@@ -1,35 +1,33 @@
-@if ($paginator->hasPages())
-<div class="bd_paginate xe-hidden-xs">
-    @if($paginator->currentPage() <= 1)
-        <span class="btn_pg btn_prev"><i class="xi-angle-left"><span class="bd_hidden">&laquo;</span></i></span>
-    @else
-        <a href="{{ $paginator->previousPageUrl() }}" class="btn_pg btn_prev"><i class="xi-angle-left"><span class="bd_hidden">&laquo;</span></i></a>
-    @endif
+{{ XeFrontend::css('plugins/board/assets/css/new-board-pagination.css')->load() }}
 
-        @foreach ($elements as $element)
-            {{-- "Three Dots" Separator --}}
-            @if (is_string($element))
-                <span>{{ $element }}</span>
-            @endif
-
-            {{-- Array Of Links --}}
-            @if (is_array($element))
-                @foreach ($element as $page => $url)
-                    @if ($page == $paginator->currentPage())
-                        <strong>{{ $page }}</strong>
-                    @else
-                        <a href="{{ htmlentities($url) }}">{{ $page }}</a>
-                    @endif
-                @endforeach
-            @endif
-        @endforeach
-
-
-    @if(!$paginator->hasMorePages())
-        <span class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">&raquo;</span></i></span>
-    @else
-        <a href="{{ $paginator->nextPageUrl() }}" class="btn_pg btn_next"><i class="xi-angle-right"><span class="bd_hidden">&raquo;</span></i></a>
-    @endif
+<div class="xe-list-board--pagination xe-list-board--pagination-pc">
+    <ul class="xe-list-board--pagination-list">
+        <li class="xe-list-board__pagination-item xe-list-board__btn_pagination xe-list-board__btn_prev"><a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-left"></i></a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number xe-list-board__pagination-number--active"><a class="xe-list-board__pagination-item-link" href="#">1</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">2</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">3</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">4</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">5</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">6</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">7</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">8</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">9</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-number"><a class="xe-list-board__pagination-item-link" href="#">10</a></li>
+        <li class="xe-list-board__pagination-item xe-list-board__btn_pagination xe-list-board__btn_next"><a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-right"></i></a></li>
+    </ul>
 </div>
-@endif
 
+<!-- 모바일 -->
+<div class="xe-list-board--pagination xe-list-board--pagination-mobile">
+    <ul class="xe-list-board--pagination-list">
+        <li class="xe-list-board__pagination-item xe-list-board__btn_pagination xe-list-board__btn_prev">
+            <a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-left"></i></a>
+        </li>
+        <li class="xe-list-board__pagination-item xe-list-board__pagination-box">
+            <span class="xe-list-board__pagination-number-present"><a class="xe-list-board__pagination-item-link" href="#">1</a></span> / <span class="xe-list-board__pagination-number-total"><a class="xe-list-board__pagination-item-link" href="#">10</a></span>
+        </li>
+        <li class="xe-list-board__pagination-item xe-list-board__btn_pagination xe-list-board__btn_next">
+            <a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-right"></i></a>
+        </li>
+    </ul>
+</div>

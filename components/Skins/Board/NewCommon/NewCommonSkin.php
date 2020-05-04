@@ -47,39 +47,6 @@ class NewCommonSkin extends GenericBoardSkin
     protected static $path = 'board/components/Skins/Board/NewCommon';
 
     /**
-     * @var array
-     * @deprecated beta.24.
-     */
-    protected $defaultListColumns = [
-        'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count',
-    ];
-
-    /**
-     * @var array
-     * @deprecated beta.24.
-     */
-    protected $defaultSelectedListColumns = [
-        'title', 'writer',  'assent_count', 'read_count', 'created_at',
-    ];
-
-    /**
-     * @var array
-     * @deprecated beta.24.
-     */
-    protected $defaultFormColumns = [
-        'title', 'content',
-    ];
-
-    /**
-     * @var array
-     * @deprecated beta.24.
-     */
-    protected $defaultSelectedFormColumns = [
-        'title', 'content',
-    ];
-
-
-    /**
      * intercept DynamicField 업데이트
      *
      * beta.24. 정렬 기능을 게시판 고유 기능으로 변경
@@ -439,6 +406,6 @@ class NewCommonSkin extends GenericBoardSkin
         return isset($this->data['instanceId']) && Gate::allows(
             BoardPermissionHandler::ACTION_MANAGE,
             new Instance($boardPermission->name($this->data['instanceId']))
-        ) ? true : false;
+        );
     }
 }
