@@ -138,20 +138,24 @@
 
     .xe-list-board-body--left-box {
       flex: 1;
-
-      .xe-list-board-body__like-box {
-        border: 1px solid #e0e0e0;
-        padding: 10px 0;
+      
+      .xe-list-board-body--like-box-wrapper {
         display: flex;
 
-        .xe-list-board-body__like-box-item {
-          border-right: 1px solid #e0e0e0;
-          padding: 0 20px;
-          text-align: center;
-        }
-
-        .xe-list-board-body__like-box-item:last-child {
-          border-right: none;
+        .xe-list-board-body__like-box {
+          border: 1px solid #e0e0e0;
+          padding: 10px 0;
+          display: flex;
+  
+          .xe-list-board-body__like-box-item {
+            border-right: 1px solid #e0e0e0;
+            padding: 0 20px;
+            text-align: center;
+          }
+  
+          .xe-list-board-body__like-box-item:last-child {
+            border-right: none;
+          }
         }
       }
     }
