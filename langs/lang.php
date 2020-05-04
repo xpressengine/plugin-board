@@ -83,11 +83,11 @@ return [
         'en' => 'Writer ID'
     ],
     'createdAt' => [
-        'ko' => '작성',
+        'ko' => '작성일',
         'en' => 'Created At',
     ],
     'created_at' => [
-        'ko' => '작성',
+        'ko' => '작성일',
         'en' => 'Created At',
     ],
     'updatedAt' => [
