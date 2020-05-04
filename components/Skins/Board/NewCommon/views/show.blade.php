@@ -1,129 +1,182 @@
-<!--topViewContent-->
+{{ XeFrontend::css('plugins/board/assets/css/new-board-show.css')->load() }}
+
 {!! xe_trans($config->get('topViewContent', '')) !!}
 
-    <div class="board_read">
-        @foreach ($skinConfig['formColumns'] as $columnName)
-            @if($columnName === 'title')
-                <div class="read_header">
-                    @if($item->status == $item::STATUS_NOTICE)
-                        <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $item->boardCategory !== null){{ xe_trans($item->boardCategory->getWord()) }}@endif</span>
-                    @elseif($config->get('category') == true && $item->boardCategory !== null)
-                        <span class="category">{{ xe_trans($item->boardCategory->getWord()) }}</span>
+<div class="xe-list-board-body">
+    @foreach ($skinConfig['formColumns'] as $columnName)
+        @switch ($columnName)
+            @case ('title')
+                <div class="xe-list-board-body__title">
+                    @if ($config->get('category') === true && $item->boardCategory !== null)
+                        <div class="xe-list-board-body__title-category">{{ xe_trans($item->boardCategory->getWord()) }}</div>
                     @endif
-                    <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
-
-                    <div class="more_info">
-                        <!-- [D] 클릭시 클래스 on 적용 -->
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                            <span class="xe-dropdown">
-                                <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
-                                   data-toggle="xe-page-toggle-menu"
-                                   data-url="{{ route('toggleMenuPage') }}"
-                                   data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{{ $item->writer }}</a>
-                           </span>
-                        @else
-                            <span>
-                                <a class="mb_autohr">{{ $item->writer }}</a>
-                            </span>
-                        @endif
-
-                        <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span data-xe-timeago="{{$item->created_at}}">{{$item->created_at}}</span></span>
-                        <span class="mb_readnum"><i class="xi-eye"></i> {{$item->read_count}}</span>
+                    <h3 class="xe-list-board-body__title-text">{!! $item->title !!}</h3>
+                    <div class="xe-list-board-body__title-post-info">
+                        <div class="xe-list-board-body--left-box">
+                            <div class="xe-list-board-list__writer">
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                    <a href="#" class="mb_author"
+                                       data-toggle="xe-page-toggle-menu"
+                                       data-url="{{ route('toggleMenuPage') }}"
+                                       data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
+                                        <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }});"><span class="blind">유저 이미지</span></span>
+                                        <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                    </a>
+                                @else
+                                    <a href="#">
+                                        <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
+                                        <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                    </a>
+                                @endif
+                            </div>
+                            
+                            <div class="xe-list-board-list-item___detail-info">
+                                <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-read_count xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span></span>
+                                <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-create_at xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d. H:i:s') }}</span>
+                            </div>
+                        </div>
+                        <div class="xe-list-board-body--right-box">
+                            <div class="xe-list-board-list__icon-box">
+                                <span class="xe-list-board-list__icon xe-list-board-list__share">
+                                    {!! uio('share', [
+                                        'item' => $item,
+                                        'url' => Request::url(),
+                                    ]) !!}
+                                </span>
+                                
+                                @if (Auth::check() === true)
+                                    <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
+                                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-bookmark-o"></i></a>
+                                    </span>
+                                @endif
+                                
+                                <span class="xe-list-board-list__icon xe-list-board-list__more">
+                                    <a href="#" class="xe-list-board-body__link" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instance_id]) !!}' data-side="dropdown-menu-right"><i class="xi-ellipsis-h"></i></a>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            @elseif($columnName === 'content')
-                <div class="read_body">
-                    {{-- @DEPRECATED .xe_content --}}
-                    <div class="xe_content xe-content xe-content-{{ $item->instance_id }}">
+                @break
+            
+            @case ('content')
+                <div class="xe-list-board-body__article">
+                    <div class="xe-list-board-body__article-text">
                         {!! compile($item->instance_id, $item->content, $item->format === Xpressengine\Plugins\Board\Models\Board::FORMAT_HTML) !!}
                     </div>
-                </div>
-            @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null && isset($dynamicFieldsById[$columnName]) && $dynamicFieldsById[$columnName]->get('use') == true)
-                <div class="__xe_{{$columnName}} __xe_section">
-                    {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
-                </div>
-            @endif
-        @endforeach
 
-        @foreach ($fieldTypes as $dynamicFieldConfig)
-            @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null && $dynamicFieldConfig->get('use') == true)
-            <div class="__xe_{{$columnName}} __xe_section">
-                {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
+                    @if ($config->get('useTag') == true)
+                        <div class="xe-list-board-body__article-tag">
+                            <ul class="xe-list-board-body__article-tag-list">
+                            @foreach ($item->tags->toArray() as $tag)
+                                <li class="xe-list-board-body__article-tag-list-item"><a href="{{ $urlHandler->get('index', ['searchTag' => $tag['word']], $item->instanceId) }}" class="xe-list-board-body__link">{{ $tag['word'] }}</a></li>
+                            @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                @break
+            
+            @default
+                @if (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) !== null && isset($dynamicFieldsById[$columnName]) && $dynamicFieldsById[$columnName]->get('use') === true)
+                    <div class="__xe_{{$columnName}} __xe_section">
+                        {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
+                    </div>
+                @endif
+        
+                @break
+        @endswitch
+    @endforeach
+
+    <div class="xe-list-board-body__more-info">
+        <div class="xe-list-board-body--left-box">
+            <div class="xe-list-board-body__like-box">
+                @if ($config->get('assent') === true)
+                    <div class="xe-list-board-list__box-assent_count xe-list-board-body__like-box-item">
+                        <span class="blind">{{ xe_trans('board::like') }}</span>
+                        <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif">
+                            <img src="{{ url('plugins/board/assets/img/assent.svg') }}" alt="추천 아이콘">
+                        </a>
+                        <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">
+                            <span class="xe-list-board-list__assent_count">{{ number_format($item->assent_count) }}</span>
+                        </a>
+                    </div>
+                @endif
+                
+                @if ($config->get('dissent') === true)
+                    <div class="xe-list-board-list__box-dissent_count xe-list-board-body__like-box-item">
+                        <span class="blind">{{ xe_trans('board::hate') }}</span>
+                        <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'dissent') === true) voted @endif">
+                            <img src="{{ url('plugins/board/assets/img/dissent.svg') }}" alt="비추천 아이콘">
+                        </a>
+                        <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_like_num bd_hate_num" data-id="{{$item->id}}">
+                            <span class="xe-list-board-list__dissent_count">{{ number_format($item->dissent_count) }}</span>
+                        </a>
+                    </div>
+                @endif
             </div>
-            @endif
-        @endforeach
-        <div class="read_footer">
-            @if ($config->get('useTag') == true)
-                <div class="boardTag">
-                    @foreach ($item->tags->toArray() as $tag)
-                        <a href="{{ $urlHandler->get('index', ['searchTag' => $tag['word']], $item->instanceId) }}"><span class="xe-badge xe-black">#{{ $tag['word'] }}</span></a>
-                    @endforeach
+        </div>
+        <div class="xe-list-board-body--right-box">
+            @if($isManager === true || $item->user_id === Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
+                <div class="xe-list-board-body__edit-box">
+                    <span class="xe-list-board-body__edit-item xe-list-board-body__edit"><a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}" class="xe-list-board-body__link">{{ xe_trans('xe::update') }}</a></span>
+                    <span class="xe-list-board-body__edit-item xe-list-board-body__delete"><a href="#" data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}" class="xe-list-board-body__link bd_delete">{{ xe_trans('xe::delete') }}</a></span>
                 </div>
             @endif
-
-            @if (count($item->files) > 0)
-            <div class="bd_file_list">
-                <!-- [D] 클릭시 클래스 on 적용 -->
-                <a href="#" class="bd_btn_file"><i class="xi-paperclip"></i><span class="xe-sr-only">{{trans('board::fileAttachedList')}}</span> <strong class="bd_file_num">{{ $item->data->file_count }}</strong></a>
-                <ul>
-                    @foreach($item->files as $file)
-                        <li><a href="{{ route('editor.file.download', ['instanceId' => $item->instance_id, 'id' => $file->id])}}"><i class="xi-download"></i> {{ $file->clientname }} <span class="file_size">({{ bytes($file->size) }})</span></a></li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-            <div class="bd_function">
-                <div class="bd_function_l">
-                    <!-- [D] 클릭시 클래스 on 적용 및 bd_like_more 영역 diplay:block -->
-                    @if ($config->get('assent') == true)
-                        <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif"><i class="xi-thumbs-up"></i><span class="xe-sr-only">{{ trans('board::like') }}</span></a>
-                        <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">{{$item->assent_count}}</a>
-                    @endif
-
-                    @if ($config->get('dissent') == true)
-                        <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'dissent') === true) voted @endif"><i class="xi-thumbs-down"></i><span class="xe-sr-only">{{ trans('board::hate') }}</span></a>
-                        <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_like_num bd_hate_num" data-id="{{$item->id}}">{{$item->dissent_count}}</a>
-                    @endif
-
-                    @if (Auth::check() === true)
-                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
-                    @endif
-
+            
+            <div class="xe-list-board-list__icon-box">
+                <span class="xe-list-board-list__icon xe-list-board-list__share">
                     {!! uio('share', [
                         'item' => $item,
                         'url' => Request::url(),
                     ]) !!}
-                </div>
-
-                <div class="bd_function_r">
-                    <a href="{{ $urlHandler->get('index', array_merge(Request::all())) }}" class="bd_ico bd_list"><i class="xi-list"></i><span class="xe-sr-only">{{xe_trans('xe::list')}}</span></a>
-                    @if($isManager == true || $item->user_id == Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
-                        <a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}" class="bd_ico bd_modify"><i class="xi-eraser"></i><span class="xe-sr-only">{{ xe_trans('xe::update') }}</span></a>
-                        <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}"><i class="xi-trash"></i><span class="xe-sr-only">{{ xe_trans('xe::delete') }}</span></a>
-                    @endif
-                    <div class="bd_more_area">
-                        <!-- [D] 클릭시 클래스 on 적용 -->
-                        <a href="#" class="bd_ico bd_more_view" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instance_id]) !!}' data-side="dropdown-menu-right"><i class="xi-ellipsis-h"></i><span class="xe-sr-only">{{ xe_trans('xe::more') }}</span></a>
-                    </div>
-                </div>
-                <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
+                </span>
+                
+                @if (Auth::check() === true)
+                    <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
+                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-bookmark-o"></i></a>
+                    </span>
+                @endif
+                <span class="xe-list-board-list__icon xe-list-board-list__more">
+                    <a href="#" class="xe-list-board-body__link" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instance_id]) !!}' data-side="dropdown-menu-right"><i class="xi-ellipsis-h"></i></a>
+                </span>
             </div>
         </div>
     </div>
+        
+{{--        TODO 기능 적용 필요--}}
+{{--    <div class="xe-list-board-body__more-post">--}}
+{{--        <h4 class="xe-list-board-body__more-post-title"><span class="xe-list-board-body__more-post-title-category">'카테고리명'</span>의 다른 글</h4>--}}
+{{--        <ul class="xe-list-board-body__more-post-list">--}}
+{{--            <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인</a>--}}
+{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--            </li>--}}
+{{--            <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">터널만 들어가면 먹통되던 내비, 이젠 LTE로 끊김없이 안내받는다</a>--}}
+{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--            </li>--}}
+{{--            <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다.</a>--}}
+{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--            </li>--}}
+{{--            <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너가 지켜봐야 할 시각적 트렌드</a>--}}
+{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--            </li>--}}
+{{--        </ul>--}}
+{{--    </div>--}}
+</div>
 
-    <!-- 댓글 -->
-    @if ($config->get('comment') === true && $item->boardData->allow_comment === 1)
+@if ($config->get('comment') === true && $item->boardData->allow_comment === 1)
     <div class="__xe_comment board_comment">
         {!! uio('comment', ['target' => $item]) !!}
     </div>
-    @endif
-    <!-- // 댓글 -->
+@endif
+
 <!--bottomViewContent-->
 {!! xe_trans($config->get('bottomViewContent', '')) !!}
 
-@if (isset($withoutList) === false || $withoutList === false)
-    <!-- 리스트 -->
-    @include($_skinPath.'/views/index')
-@endif
-
-
+{{--@if (isset($withoutList) === false || $withoutList === false)--}}
+{{--    @include($_skinPath.'/views/index')--}}
+{{--@endif--}}
