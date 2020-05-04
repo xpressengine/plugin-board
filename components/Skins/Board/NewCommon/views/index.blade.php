@@ -1,7 +1,7 @@
 {{ XeFrontend::css('plugins/board/assets/css/new-board.css')->load() }}
 
 <div class="xe-list-board-header__contents">
-    <form method="get" action="{{ $urlHandler->get('index') }}">
+    <form method="get" action="{{ $urlHandler->get('index') }}" class="__xe_search">
         <div class="xe-list-board-header--left-box">
             <div class="xe-list-board--header__search">
                 <input type="text" name="title_content" class="xe-list-board--header__search__control" value="{{ Request::get('title_content') }}">
@@ -10,7 +10,7 @@
                 </span>
             </div>
         </div>
-        <div class="xe-list-board-header--right-box">
+        <div class="xe-list-board-header--right-box __xe-forms">
             <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
                 <div class="xe-list-board-header--dropdown">
                     <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
