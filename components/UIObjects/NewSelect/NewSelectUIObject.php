@@ -115,7 +115,7 @@ class NewSelectUIObject extends AbstractUIObject
     private static function getSelectedItem($items, $selectedValue)
     {
         foreach($items as $item) {
-            if ($item['value'] === $selectedValue) {
+            if ((string)$item['value'] === (string)$selectedValue) {
                 return [
                     'value' => $item['value'],
                     'text' => $item['text']
