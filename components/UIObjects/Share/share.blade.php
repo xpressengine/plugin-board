@@ -5,5 +5,12 @@
    data-url="{{route('toggleMenuPage')}}"
    data-data='{!! json_encode(['id'=>$item->id, 'type'=>'uiobject/board@share', 'instanceId'=>$item->instance_id, 'url'=>$url]) !!}'
    data-side="dropdown-menu-right">
-    <i class="xi-external-link"></i><span class="xe-sr-only">{{ xe_trans('board::share') }}</span>
+    <i class="xi-share-alt-o"></i><span class="xe-sr-only">{{ xe_trans('board::share') }}</span>
 </a>
+
+<style>
+    a {
+        color: #141414;
+        text-decoration: none;
+    }
+</style>
