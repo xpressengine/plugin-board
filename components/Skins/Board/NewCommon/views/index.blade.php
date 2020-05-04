@@ -6,7 +6,7 @@
             <div class="xe-list-board--header__search">
                 <input type="text" name="title_content" class="xe-list-board--header__search__control" value="{{ Request::get('title_content') }}">
                 <span class="xe-list-board--header__search__icon">
-                    <i class="xi-search"></i>
+                    <a href="#"><i class="xi-search"></i></a>
                 </span>
             </div>
         </div>
@@ -48,9 +48,9 @@
                 @if ($columnName === 'favorite')
                     @if (Auth::check() === true)
                         @if (Request::has('favorite'))
-                            <div class="xe-list-board-list__favorite"><a href="{{ $urlHandler->get('index', Request::except(['favorite', 'page'])) }}"><i class="xi-star"></i></a></div>
+                            <div class="xe-list-board-list__favorite"><a href="{{ $urlHandler->get('index', Request::except(['favorite', 'page'])) }}"><i class="xi-bookmark"></i></a></div>
                         @else
-                            <div class="xe-list-board-list__favorite"><a href="{{ $urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1])) }}"><i class="xi-star-o"></i></a></div>
+                            <div class="xe-list-board-list__favorite"><a href="{{ $urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1])) }}"><i class="xi-bookmark-o"></i></a></div>
                         @endif
                     @endif
                 @elseif ($columnName === 'title')
@@ -74,7 +74,7 @@
                     @switch ($columnName)
                         @case ('favorite')
                             <div class="xe-list-board-list__favorite xe-hidden-mobile">
-                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i></a>
+                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark"></i></a>
                             </div>
                             @break
 
@@ -114,7 +114,7 @@
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"
                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                        <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }});"><span class="blind">유저 이미지</span></span>
+                                        <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
                                         <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
                                     </a>
                                 @else
@@ -160,7 +160,7 @@
                     @switch ($columnName)
                         @case ('favorite')
                         <div class="xe-list-board-list__favorite xe-hidden-mobile">
-                            <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i></a>
+                            <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark-o"></i></a>
                         </div>
                         @break
 
@@ -199,7 +199,7 @@
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
                                    data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                    <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }});"><span class="blind">유저 이미지</span></span>
+                                    <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
                                     <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
                                 </a>
                             @else
@@ -230,7 +230,7 @@
                                 {!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}
                             </div>
                         @else
-{{--                                TODO 기본 출력 내용 스타일 필요--}}
+                            {{-- TODO 기본 출력 내용 스타일 필요--}}
                             {!! $item->{$columnName} !!}
                         @endif
                         @break
