@@ -11,19 +11,21 @@
             </div>
         </div>
         <div class="xe-list-board-header--right-box __xe-forms">
-            <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
-                <div class="xe-list-board-header--dropdown">
-                    <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
-                        {!! uio('uiobject/board@new_select', [
-                            'name' => 'category_item_id',
-                            'label' => xe_trans('xe::category'),
-                            'value' => Request::get('category_item_id'),
-                            'items' => $categories,
-                            'open_target' => '.xe-list-board-header--category'
-                        ]) !!}
+            @if ($config->get('category') === true)
+                <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
+                    <div class="xe-list-board-header--dropdown">
+                        <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
+                            {!! uio('uiobject/board@new_select', [
+                                'name' => 'category_item_id',
+                                'label' => xe_trans('xe::category'),
+                                'value' => Request::get('category_item_id'),
+                                'items' => $categories,
+                                'open_target' => '.xe-list-board-header--category'
+                            ]) !!}
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
                 <div class="xe-list-board-header--dropdown">
                     <div class="xe-list-board-header-order__button xe-list-board-header--dropdown__button">
