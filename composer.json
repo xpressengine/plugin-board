@@ -73,6 +73,11 @@
           "name": "New select UIO",
           "description": "신규 Select UIObject"
         },
+        "uiobject/board@new_title": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\NewTitle\\NewTitleUIObject",
+          "name": "New title UIO",
+          "description": "신규 Title UIObject"
+        },
         "widget/board@list": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
           "name": "게시물 리스트 위젯",

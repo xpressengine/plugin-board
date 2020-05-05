@@ -19,6 +19,7 @@ use Xpressengine\Config\ConfigManager;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
+use Xpressengine\Plugins\Board\Components\UIObjects\NewTitle\NewTitleUIObject;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyUseCategoryHttpException;
 use Xpressengine\Plugins\Board\Handler;
@@ -233,6 +234,7 @@ class Resources
          */
         $uiObjectHandler = app('xe.uiobject');
         $uiObjectHandler->setAlias('titleWithSlug', TitleUIObject::getId());
+        $uiObjectHandler->setAlias('newTitleWithSlug', NewTitleUIObject::getId());
         $uiObjectHandler->setAlias('share', ShareUIObject::getId());
     }
 
