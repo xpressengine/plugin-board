@@ -254,14 +254,14 @@
     <div class="xe-list-board--button-box">
         @if ($isManager === true)
             <div class="xe-list-board--btn-left-box">
-                <a href="{{ $urlHandler->managerUrl('config', ['boardId' => $instanceId]) }}" class="xe-list-board__btn xe-list-board__btn-primary" target="_blank">관리</a>
+                <a href="{{ $urlHandler->managerUrl('config', ['boardId' => $instanceId]) }}" class="xe-list-board__btn xe-list-board__btn-primary" target="_blank">{{ xe_trans('xe::manage') }}</a>
             </div>
         @endif
         <div class="xe-list-board--btn-right-box">
             @if (Auth::check() === true)
                 <a href="{{ $urlHandler->get('index', ['user_id' => Auth::user()->getId()]) }}" class="xe-list-board__btn">내가 쓴 글</a>
             @endif
-            <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">글쓰기</a>
+            <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::newPost') }}</a>
         </div>
     </div>
 </div>
