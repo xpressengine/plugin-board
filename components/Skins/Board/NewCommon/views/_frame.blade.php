@@ -1,6 +1,7 @@
 {{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
 {{ XeFrontend::js('assets/core/xe-ui-component/js/xe-page.js')->appendTo('body')->load() }}
 
+{{ XeFrontend::css('assets/vendor/bootstrap/css/bootstrap.min.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-header.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-footer.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-common.css')->load() }}
@@ -16,7 +17,7 @@
                 @endif
             </div>
             <div class="xe-list-board-header__write-button">
-                <a href="{{ $urlHandler->get('create') }}"><img src="../plugins/board/assets/img/pencil.svg"></a>
+                <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
             </div>
         </div>
         
