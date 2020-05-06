@@ -35,7 +35,7 @@
     text-decoration: none;
     color: #767676;
     background-size: cover;
-    margin: 11px 0;
+    margin: 5px 0;
 }
 
 /* 상세정보 스타일 */
@@ -77,7 +77,7 @@
 
 /* 글이 아무것도 없을 때 */
 
-.xe-list-blog-board-body {
+.xe-list-blog-board__no-result {
     display: flex;
     align-items: center;
     justify-content: center;
