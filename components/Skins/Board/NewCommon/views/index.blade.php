@@ -6,7 +6,7 @@
             <div class="xe-list-board--header__search">
                 <input type="text" name="title_content" class="xe-list-board--header__search__control" value="{{ Request::get('title_content') }}">
                 <span class="xe-list-board--header__search__icon">
-                    <a href="#"><i class="xi-search"></i></a>
+                    <button type="submit"><i class="xi-search"></i></button>
                 </span>
             </div>
         </div>

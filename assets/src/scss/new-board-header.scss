@@ -64,8 +64,10 @@
                 }
 
                 .xe-list-board--header__search__icon {
-                    a {
+                    button {
                         display: inline-block;
+                        background: none;
+                        border: none;
                         
                         .xi-search {
                             position: absolute;

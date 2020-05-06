@@ -63,11 +63,13 @@
   padding: 10px 35px 10px 10px;
 }
 
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon a {
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon button {
   display: inline-block;
+  background: none;
+  border: none;
 }
 
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon a .xi-search {
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon button .xi-search {
   position: absolute;
   top: 10px;
   right: 10px;
