@@ -37,14 +37,16 @@
                         </div>
                         <div class="xe-list-board-body--right-box">
                             <div class="xe-list-board-list__icon-box">
-                                <span class="xe-list-board-list__icon xe-list-board-list__share">
-                                    {!! uio('share', [
-                                        'item' => $item,
-                                        'url' => Request::url(),
-                                    ]) !!}
-                                </span>
-                                
-                                @if (Auth::check() === true)
+                                @if (array_get($skinConfig, 'visibleShowShare', 'show') === 'show')
+                                    <span class="xe-list-board-list__icon xe-list-board-list__share">
+                                        {!! uio('share', [
+                                            'item' => $item,
+                                            'url' => Request::url(),
+                                        ]) !!}
+                                    </span>
+                                @endif
+
+                                @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                                     <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
                                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-bookmark-o"></i></a>
                                     </span>
