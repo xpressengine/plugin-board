@@ -29,4 +29,10 @@
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 3px;
   }
+
+  .ti-new-tag-input-wrapper input[data-v-61d92e31]::placeholder {
+    font-size: 14px;
+    line-height: 25px;
+    letter-spacing: -0.2px;
+  }
 </style>
