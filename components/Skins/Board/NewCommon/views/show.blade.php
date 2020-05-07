@@ -10,7 +10,7 @@
                     @if ($config->get('category') === true && $item->boardCategory !== null)
                         <div class="xe-list-board-body__title-category">{{ xe_trans($item->boardCategory->getWord()) }}</div>
                     @endif
-                    <h3 class="xe-list-board-body__title-text">{!! $item->title !!}</h3>
+                    <h3 class="xe-list-board-body__title-text"><span class="xe-list-board-body__title-notice">공지사항</span>{!! $item->title !!}</h3>
                     <div class="xe-list-board-body__title-post-info">
                         <div class="xe-list-board-body--left-box">
                             <div class="xe-list-board-list__writer">
@@ -19,7 +19,7 @@
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"
                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                        <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }});"><span class="blind">유저 이미지</span></span>
+                                        <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
                                         <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
                                     </a>
                                 @else
@@ -88,6 +88,22 @@
         @endswitch
     @endforeach
 
+    <div class="xe-list-board-body__file-attach">
+        <div class="xe-list-board-body__file-attach-count">
+            <a href="#" class="xe-list-board-body__file-attach-link">
+                <i class="xi-paperclip"></i>
+                <span class="blind">board::fileAttachedList</span>
+                <strong class="bd_file_num">1</strong>
+            </a>
+            <div class="xe-list-board-body__file-attach-name">
+                <a href="#" class="xe-list-board-body__file-attach-link">
+                    <i class="xi-download"></i>
+                    <span class="xe-list-board-body__file-attach-file-name">download.jpg</span>
+                    <span class="xe-list-board-body__file-attach-volume">(20.00KB)</span>
+                </a>
+            </div>
+        </div>
+    </div>
     <div class="xe-list-board-body__more-info">
         <div class="xe-list-board-body--left-box">
             @if ($config->get('assent') === true || $config->get('dissent') === true)
@@ -120,6 +136,9 @@
                 </div>
             @endif
         </div>
+
+        <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
+
         <div class="xe-list-board-body--right-box">
             @if($isManager === true || $item->user_id === Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
                 <div class="xe-list-board-body__edit-box">
@@ -184,3 +203,13 @@
 {{--@if (isset($withoutList) === false || $withoutList === false)--}}
 {{--    @include($_skinPath.'/views/index')--}}
 {{--@endif--}}
+
+
+<script>
+$(document).ready(function(){
+    $(".xe-list-board-body__file-attach-count > .xe-list-board-body__file-attach-link").click(function(){
+        event.preventDefault();
+        $(".xe-list-board-body__file-attach-name").toggleClass("open");
+    });
+});
+</script>

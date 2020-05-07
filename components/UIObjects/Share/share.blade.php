@@ -13,4 +13,10 @@
         color: #141414;
         text-decoration: none;
     }
+    a:hover,
+    a:active,
+    a:visited {
+        color: #141414;
+        text-decoration: none;
+    }
 </style>
