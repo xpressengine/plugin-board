@@ -7,7 +7,7 @@
         @switch ($columnName)
             @case ('title')
                 <div class="xe-list-board-body__title">
-                    @if ($config->get('category') === true && $item->boardCategory !== null)
+                    @if ($config->get('category') === true && $item->boardCategory !== null && array_get($skinConfig, 'visibleShowCategory', 'show') === 'show')
                         <div class="xe-list-board-body__title-category">{{ xe_trans($item->boardCategory->getWord()) }}</div>
                     @endif
                     <h3 class="xe-list-board-body__title-text"><span class="xe-list-board-body__title-notice">공지사항</span>{!! $item->title !!}</h3>
@@ -37,14 +37,16 @@
                         </div>
                         <div class="xe-list-board-body--right-box">
                             <div class="xe-list-board-list__icon-box">
-                                <span class="xe-list-board-list__icon xe-list-board-list__share">
-                                    {!! uio('share', [
-                                        'item' => $item,
-                                        'url' => Request::url(),
-                                    ]) !!}
-                                </span>
-                                
-                                @if (Auth::check() === true)
+                                @if (array_get($skinConfig, 'visibleShowShare', 'show') === 'show')
+                                    <span class="xe-list-board-list__icon xe-list-board-list__share">
+                                        {!! uio('share', [
+                                            'item' => $item,
+                                            'url' => Request::url(),
+                                        ]) !!}
+                                    </span>
+                                @endif
+
+                                @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                                     <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
                                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-bookmark-o"></i></a>
                                     </span>
@@ -148,14 +150,16 @@
             @endif
             
             <div class="xe-list-board-list__icon-box">
-                <span class="xe-list-board-list__icon xe-list-board-list__share">
-                    {!! uio('share', [
-                        'item' => $item,
-                        'url' => Request::url(),
-                    ]) !!}
-                </span>
+                @if (array_get($skinConfig, 'visibleShowShare', 'show') === 'show')
+                    <span class="xe-list-board-list__icon xe-list-board-list__share">
+                        {!! uio('share', [
+                            'item' => $item,
+                            'url' => Request::url(),
+                        ]) !!}
+                    </span>
+                @endif
                 
-                @if (Auth::check() === true)
+                @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                     <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
                         <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-bookmark-o"></i></a>
                     </span>
@@ -167,28 +171,30 @@
         </div>
     </div>
         
+    @if (array_get($skinConfig, 'visibleShowMoreBoardItems', 'show') === 'show')
 {{--        TODO 기능 적용 필요--}}
-{{--    <div class="xe-list-board-body__more-post">--}}
-{{--        <h4 class="xe-list-board-body__more-post-title"><span class="xe-list-board-body__more-post-title-category">'카테고리명'</span>의 다른 글</h4>--}}
-{{--        <ul class="xe-list-board-body__more-post-list">--}}
-{{--            <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인</a>--}}
-{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--            </li>--}}
-{{--            <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">터널만 들어가면 먹통되던 내비, 이젠 LTE로 끊김없이 안내받는다</a>--}}
-{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--            </li>--}}
-{{--            <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다.</a>--}}
-{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--            </li>--}}
-{{--            <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너가 지켜봐야 할 시각적 트렌드</a>--}}
-{{--                <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--            </li>--}}
-{{--        </ul>--}}
-{{--    </div>--}}
+{{--            <div class="xe-list-board-body__more-post">--}}
+{{--                <h4 class="xe-list-board-body__more-post-title"><span class="xe-list-board-body__more-post-title-category">'카테고리명'</span>의 다른 글</h4>--}}
+{{--                <ul class="xe-list-board-body__more-post-list">--}}
+{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인</a>--}}
+{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--                    </li>--}}
+{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">터널만 들어가면 먹통되던 내비, 이젠 LTE로 끊김없이 안내받는다</a>--}}
+{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--                    </li>--}}
+{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다.</a>--}}
+{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--                    </li>--}}
+{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
+{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너가 지켜봐야 할 시각적 트렌드</a>--}}
+{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
+{{--                    </li>--}}
+{{--                </ul>--}}
+{{--            </div>--}}
+    @endif
 </div>
 
 @if ($config->get('comment') === true && $item->boardData->allow_comment === 1)

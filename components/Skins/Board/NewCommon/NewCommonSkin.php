@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Components\Skins\Board\NewCommon;
 
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
+use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\GenericBoardSkin;
 use View;
 use Gate;
@@ -49,7 +50,7 @@ class NewCommonSkin extends GenericBoardSkin
      * @return \Illuminate\Contracts\Support\Renderable|string
      */
     public function render()
-    {        
+    {
         $this->setSkinConfig();
         $this->setDynamicFieldSkins();
         $this->setPaginationPresenter();
@@ -107,6 +108,30 @@ class NewCommonSkin extends GenericBoardSkin
         return $view;
     }
 
+    public function renderSetting(array $config = [])
+    {
+        /** @var ConfigHandler $configHandler */
+        $configHandler = app('xe.board.config');
+        
+//        TODO instanceId 개선 확인
+        $arr = explode(':', request()->get('instanceId'));
+        $instanceId = $arr[1];
+        
+        $boardConfig = $configHandler->get($instanceId);
+        
+        $config['boardConfig'] = $boardConfig;
+        $config['listColumns'] = $configHandler->getSortListColumns($boardConfig);
+        
+        $dynamicFields = [];
+        $fieldTypes = $configHandler->getDynamicFields($boardConfig);
+        foreach ($fieldTypes as $fieldType) {
+            $dynamicFields[$fieldType->get('id')] = $fieldType;
+        }
+        $config['dynamicFields'] = $dynamicFields;
+        
+        return parent::renderSetting($config);
+    }
+
     /**
      * set skin config to data
      *
@@ -114,8 +139,9 @@ class NewCommonSkin extends GenericBoardSkin
      */
     protected function setSkinConfig()
     {
-        $this->config['listColumns'] = $this->data['config']->get('listColumns');
         $this->config['formColumns'] = $this->data['config']->get('formColumns');
+        
+//        TODO skinConfig 스킨 변수로 변경
         $this->data['skinConfig'] = $this->config;
     }
 

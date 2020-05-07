@@ -66,6 +66,10 @@ return [
         'ko' => '제목',
         'en' => 'Title',
     ],
+    'titleDescription' => [
+        'ko' => '글제목입니다.',
+        'en' => 'Title',
+    ],
     'content' => [
         'ko' => '내용',
         'en' => 'Content',
@@ -77,6 +81,10 @@ return [
     'writer' => [
         'ko' => '작성자',
         'en' => 'Writer',
+    ],
+    'writerDescription' => [
+        'ko' => '글을 작성한 작성자입니다.',
+        'en' => 'The author who wrote the article.',
     ],
     'writerId' => [
         'ko' => '작성자 ID',
@@ -90,6 +98,10 @@ return [
         'ko' => '작성일',
         'en' => 'Created At',
     ],
+    'created_atDescription' => [
+        'ko' => '글을 작성한 시각입니다.',
+        'en' => 'It is the time of writing.',
+    ],
     'updatedAt' => [
         'ko' => '수정일',
         'en' => 'Updated At',
@@ -98,6 +110,10 @@ return [
         'ko' => '수정일',
         'en' => 'Updated At',
     ],
+    'updated_atDescription' => [
+        'ko' => '글을 수정한 시각입니다.',
+        'en' => 'This is the time when the text was modified.',
+    ],
     'readCount' => [
         'ko' => '조회수',
         'en' => 'Read',
@@ -105,6 +121,10 @@ return [
     'read_count' => [
         'ko' => '조회수',
         'en' => 'Read',
+    ],
+    'read_countDescription' => [
+        'ko' => '글을 조회한 수 입니다.',
+        'en' => 'The number of posts that have been viewed.',
     ],
     'read' => [
         'ko' => '조회',
@@ -171,6 +191,10 @@ return [
         'ko' => '추천수',
         'en' => 'Recommend',
     ],
+    'assent_countDescription' => [
+        'ko' => '글을 추천한 수 입니다.',
+        'en' => 'This is the assent number of articles.',
+    ],
     'dissentCount' => [
         'ko' => '비추천수',
         'en' => 'Disapprove',
@@ -178,6 +202,10 @@ return [
     'dissent_count' => [
         'ko' => '비추천수',
         'en' => 'Disapprove',
+    ],
+    'dissent_countDescription' => [
+        'ko' => '글을 비추천한 수 입니다.',
+        'en' => 'This is the disssent number of articles.',
     ],
     'boardSearch' => [
         'ko' => '게시판 검색',
@@ -274,6 +302,10 @@ return [
     'favorite' => [
         'ko' => '즐겨찾기',
         'en' => 'favorite',
+    ],
+    'favoriteDescription' => [
+        'ko' => '글을 즐겨찾기 하는 북마크입니다.',
+        'en' => 'It is a bookmark to bookmark writing.',
     ],
     'facebook' => [
         'ko' => '페이스북',

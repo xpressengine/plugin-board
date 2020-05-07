@@ -77,10 +77,23 @@
             .xe-list-board__pagination-item {
                 &.xe-list-board__btn_pagination {
                     border: 1px solid #e0e0e0;
+
+                    .xe-list-board__pagination-item-disabled-link {
+                        color: rgba(0, 0, 0, 0.2);
+                    }
                 }
 
                 &.xe-list-board__pagination-box {
                     flex: 1;
+                }
+                
+                span {
+                    text-decoration: none;
+                    color: #484848;
+                    line-height: 40px;
+                    display: inline-block;
+                    width: 40px;
+                    height: 40px;
                 }
 
                 .xe-list-board__pagination-item-link {
