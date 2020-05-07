@@ -7,16 +7,25 @@
 </div>
 
 <style>
-.__xe-board-tag .vue-tags-input .ti-input {
-  max-width: 100%;
-}
+  .xe-select-label {
+    height: 60px;
+  }
 
-.ti-input[data-v-61d92e31] {
-  border: none !important;
-}
+  .__xe-board-tag .vue-tags-input .ti-input {
+    max-width: 100%;
+  }
 
-.vue-tags-input[data-v-61d92e31] {
-  max-width: none;
-  line-height: 55px;
-}
+  .ti-input[data-v-61d92e31] {
+    border: none !important;
+  }
+  .vue-tags-input[data-v-61d92e31] {
+    max-width: none;
+    line-height: 60px;
+    border-bottom: 1px solid #c0c0c0;
+  }
+
+  .ti-tag.ti-invalid[data-v-61d92e31], .ti-tag.ti-tag.ti-deletion-mark[data-v-61d92e31] {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 0;
+  }
 </style>
