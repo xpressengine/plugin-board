@@ -104,4 +104,18 @@
   }
 }
 
+/* 좋아요, 싫어요 모달 스타일 */
+.xe-modal .xe-list-group {
+  text-decoration: none;
+}
+
+.xe-modal .xe-list-group .img-thumbnail {
+  overflow: hidden;
+  display: table-cell;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  border: 0px;
+}
+
 /*# sourceMappingURL=new-board-common.css.map */
