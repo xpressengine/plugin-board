@@ -256,7 +256,7 @@
 
                                 @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-blog-board-list-item___detail xe-list-blog-board-list-item___detail-vote_count">
-                                        <span class="xe-list-blog-board-leist-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
+                                        <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
                                     </p>
                                 @endif
                             </div>
