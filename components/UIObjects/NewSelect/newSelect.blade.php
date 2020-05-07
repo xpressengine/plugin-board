@@ -2,7 +2,7 @@
     use Xpressengine\Plugins\Board\Components\UIObjects\NewSelect\NewSelectUIObject;
 @endphp
 
-<div class="xe-dropdown __xe-dropdown-form">
+<div class="new-select __xe-dropdown-form">
     <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-valid-name="{{ xe_trans($label) }}">
     <div class="xe-list-board-header-{{ $name }}__button xe-dropdown__button">
         <div class="xe-dropdown__button-box">
