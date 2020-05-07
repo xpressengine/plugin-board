@@ -36,6 +36,7 @@
   color: #141414;
   letter-spacing: -0.4px;
   display: inline-block;
+  margin: 0;
 }
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box .xe-list-board-header__title a {
@@ -87,38 +88,9 @@
   clear: both;
 }
 
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:last-child .xe-list-board-header--dropdown__button .xe-list-board-header--dropdown-menu {
-  right: 0;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .open .xe-list-board-header--dropdown-menu {
-  padding: 8px 0;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .open .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item {
-  width: 100px;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .open .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item a {
-  color: #141414;
-  display: block;
-  padding: 5px;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .open .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item.on {
-  background: #141414;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .open .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item.on a {
-  color: #fff;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .open .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item:hover {
-  background: #d4d5dc;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .open .xe-list-board-header--dropdown-menu .xe-list-board-header--dropdown-menu-item:hover a {
-  color: #141414;
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown {
+  display: inline-block;
+  position: relative;
 }
 
 .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--category {
