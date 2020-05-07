@@ -84,7 +84,7 @@ class NewSelectUIObject extends AbstractUIObject
         }
 
         if (empty($args['open_target'])) {
-            $args['open_target'] = '';
+            $args['open_target'] = '.xe-dropdown--menu--' . $args['name'];
         }
         
         if (!isset($args['value']) || $args['value'] === '') {

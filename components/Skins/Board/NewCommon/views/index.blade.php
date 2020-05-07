@@ -19,8 +19,7 @@
                                 'name' => 'category_item_id',
                                 'label' => xe_trans('xe::category'),
                                 'value' => Request::get('category_item_id'),
-                                'items' => $categories,
-                                'open_target' => '.xe-list-board-header--category'
+                                'items' => $categories
                             ]) !!}
                         </div>
                     </div>
@@ -33,8 +32,7 @@
                             'name' => 'order_type',
                             'label' => xe_trans('xe::order'),
                             'value' => Request::get('order_type', $config->get('orderType')),
-                            'items' => $handler->getOrders(),
-                            'open_target' => '.xe-list-board-header-order__button' 
+                            'items' => $handler->getOrders()
                         ]) !!}
                     </div>
                 </div>
