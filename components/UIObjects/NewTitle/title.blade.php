@@ -74,7 +74,7 @@
 @endif
 
 <div class="__xe_titleWithSlug">
-    <input type="text" data-id="{{ $id }}" data-slug="{{ $slug }}" name="{{ $titleDomName }}" data-valid-name="{{ xe_trans('board::title') }}" placeholder="{{ xe_trans('board::enterTitle') }}" class="__xe_title {{$titleClassName}} xe-list-board-body--header-title-input">
+    <input type="text" name="{{ $titleDomName }}" data-valid-name="{{ xe_trans('board::title') }}" class="__xe_title {{$titleClassName}} xe-list-board-body--header-title-input" value="{{ $title }}" placeholder="{{ xe_trans('board::enterTitle') }}" data-id="{{ $id }}" data-slug="{{ $slug }}"/>
     
     <div class="__xe_slug_edit" style="display:none;">
         <i class="xi-link"></i>
