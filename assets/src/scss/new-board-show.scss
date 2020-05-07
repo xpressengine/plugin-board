@@ -156,6 +156,7 @@
 
       .xe-list-board-body__file-attach-link {
         text-decoration: none;
+        color: #141414;
         line-height: 1.8;
       }
 
@@ -183,11 +184,49 @@
           border: 1px solid #e0e0e0;
           padding: 10px 0;
           display: flex;
-  
+
           .xe-list-board-body__like-box-item {
             border-right: 1px solid #e0e0e0;
             padding: 0 20px;
             text-align: center;
+
+            a {
+              text-decoration: none;
+              color: #141414;
+
+              &.voted {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+              }
+            }
+            
+            &.xe-list-board-list__box-assent_count {
+              .bd_like {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                background: url('../img/assent.svg') no-repeat 50%;
+                
+
+                &.voted {
+                  background: url('../img/assent_up.svg') no-repeat 50%;
+                }
+              }
+            }
+            
+            &.xe-list-board-list__box-dissent_count {
+              .bd_like {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                background: url('../img/dissent.svg') no-repeat 50%;
+
+                &.voted {
+                  background: url('../img/dissent_down.svg') no-repeat 50%;
+                }
+              }
+            }
           }
   
           .xe-list-board-body__like-box-item:last-child {

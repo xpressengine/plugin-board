@@ -115,7 +115,6 @@
                             <div class="xe-list-board-list__box-assent_count xe-list-board-body__like-box-item">
                                 <span class="blind">{{ xe_trans('board::like') }}</span>
                                 <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif">
-                                    <img src="{{ url('plugins/board/assets/img/assent.svg') }}" alt="추천 아이콘">
                                 </a>
                                 <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}" class="bd_like_num" data-id="{{$item->id}}">
                                     <span class="xe-list-board-list__assent_count">{{ number_format($item->assent_count) }}</span>
@@ -127,7 +126,6 @@
                             <div class="xe-list-board-list__box-dissent_count xe-list-board-body__like-box-item">
                                 <span class="blind">{{ xe_trans('board::hate') }}</span>
                                 <a href="#" data-url="{{ $urlHandler->get('vote', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'dissent') === true) voted @endif">
-                                    <img src="{{ url('plugins/board/assets/img/dissent.svg') }}" alt="비추천 아이콘">
                                 </a>
                                 <a href="#" data-url="{{ $urlHandler->get('votedUsers', ['option' => 'dissent', 'id' => $item->id]) }}" class="bd_like_num bd_hate_num" data-id="{{$item->id}}">
                                     <span class="xe-list-board-list__dissent_count">{{ number_format($item->dissent_count) }}</span>
