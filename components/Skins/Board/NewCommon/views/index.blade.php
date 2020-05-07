@@ -257,7 +257,11 @@
         @endif
         <div class="xe-list-board--btn-right-box">
             @if (Auth::check() === true && array_get($skinConfig, 'visibleIndexMyBoard', 'show') === 'show')
-                <a href="{{ $urlHandler->get('index', ['user_id' => Auth::user()->getId()]) }}" class="xe-list-board__btn">내가 쓴 글</a>
+                @if (Request::get('user_id') === Auth::user()->getId())
+                    <a href="{{ $urlHandler->get('index') }}" class="xe-list-board__btn active">내가 쓴 글</a>
+                @else
+                    <a href="{{ $urlHandler->get('index', ['user_id' => Auth::user()->getId()]) }}" class="xe-list-board__btn">내가 쓴 글</a>
+                @endif
             @endif
             @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') !== 'hidden')
                 <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::newPost') }}</a>

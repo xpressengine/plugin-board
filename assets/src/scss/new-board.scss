@@ -67,6 +67,12 @@
                     padding: 0 10px;
                 }
             }
+            
+            .xe-list-board-list__category {
+                flex-basis: 100%;
+                font-weight: 700;
+                margin: 3px 0 2px 0;
+            }
 
             .xe-list-board-list__category,
             .xe-list-board-list__title {
@@ -296,6 +302,7 @@
                     max-width: 100px;
                     text-align: left;
                     margin-bottom: 0;
+                    font-weight: normal;
                     
                     font-size: 14px;
                     color: #141414;

@@ -75,6 +75,13 @@
   padding: 0 10px;
 }
 
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__category {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  font-weight: 700;
+  margin: 3px 0 2px 0;
+}
+
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__category:after,
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title:after {
   content: '';
@@ -307,6 +314,7 @@
     max-width: 100px;
     text-align: left;
     margin-bottom: 0;
+    font-weight: normal;
     font-size: 14px;
     color: #141414;
     line-height: 50px;
