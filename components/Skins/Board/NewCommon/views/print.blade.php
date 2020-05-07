@@ -1,51 +1,70 @@
-<div class="board_read">
+{{ XeFrontend::css('plugins/board/assets/css/new-board-show.css')->load() }}
+
+<div class="xe-list-board-body">
     @foreach ($skinConfig['formColumns'] as $columnName)
-        @if($columnName === 'title')
-            <div class="read_header">
-                @if($item->status == $item::STATUS_NOTICE)
-                    <span class="category">{{ xe_trans('xe::notice') }} @if($config->get('category') == true && $item->boardCategory !== null){{ xe_trans($item->boardCategory->getWord()) }}@endif</span>
-                @elseif($config->get('category') == true && $item->boardCategory !== null)
-                    <span class="category">{{ xe_trans($item->boardCategory->getWord()) }}</span>
-                @endif
-                <h1><a href="{{ $urlHandler->getShow($item) }}">{!! $item->title !!}</a></h1>
-
-                <div class="more_info">
-                    <!-- [D] 클릭시 클래스 on 적용 -->
-                    @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                        <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
-                           data-toggle="xe-page-toggle-menu"
-                           data-url="{{ route('toggleMenuPage') }}"
-                           data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{{ $item->writer }}</a>
-                    @else
-                        <a class="mb_autohr">{{ $item->writer }}</a>
+        @switch ($columnName)
+            @case ('title')
+                <div class="xe-list-board-body__title">
+                    @if ($config->get('category') === true && $item->boardCategory !== null && array_get($skinConfig, 'visibleShowCategory', 'show') === 'show')
+                        <div class="xe-list-board-body__title-category">{{ xe_trans($item->boardCategory->getWord()) }}</div>
                     @endif
-
-                    <span class="mb_time" title="{{$item->created_at}}"><i class="xi-time"></i> <span data-xe-timeago="{{$item->created_at}}">{{$item->created_at}}</span></span>
-                    <span class="mb_readnum"><i class="xi-eye"></i> {{$item->read_count}}</span>
+                    <h3 class="xe-list-board-body__title-text">
+                        @if($item->status === $item::STATUS_NOTICE)
+                            <span class="xe-list-board-body__title-notice">공지</span>
+                        @endif
+                        @if ($item->display === $item::DISPLAY_SECRET) <i class="xi-lock"></i> @endif
+                        {!! $item->title !!}
+                    </h3>
+                    <div class="xe-list-board-body__title-post-info">
+                        <div class="xe-list-board-body--left-box">
+                            <div class="xe-list-board-list__writer">
+                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                    @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
+                                        <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
+                                    @endif
+                                    @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
+                                        <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                    @endif
+                                @else
+                                    @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
+                                        <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
+                                    @endif
+                                    @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
+                                        <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                    @endif
+                                @endif
+                            </div>
+    
+                            <div class="xe-list-board-list-item___detail-info">
+                                @if (array_get($skinConfig, 'visibleShowReadCount', 'on') === 'on')
+                                    <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-read_count xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span></span>
+                                @endif
+                                @if (array_get($skinConfig, 'visibleShowCreatedAt', 'on') === 'on')
+                                    <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-create_at xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d. H:i:s') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        @elseif($columnName === 'content')
-            <div class="read_body">
-                {{-- @DEPRECATED .xe_content --}}
-                <div class="xe-content xe_content">
-                    {!! compile($item->instance_id, $item->content, $item->format === Xpressengine\Plugins\Board\Models\Board::FORMAT_HTML) !!}
+                @break
+
+            @case ('content')
+                <div class="xe-list-board-body__article">
+                    <div class="xe-list-board-body__article-text">
+                        {!! compile($item->instance_id, $item->content, $item->format === Xpressengine\Plugins\Board\Models\Board::FORMAT_HTML) !!}
+                    </div>
                 </div>
-            </div>
-        @elseif (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) != null && isset($dynamicFieldsById[$columnName]) && $dynamicFieldsById[$columnName]->get('use') == true)
-            <div class="__xe_{{$columnName}} __xe_section">
-                {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
-            </div>
-        @endif
-    @endforeach
+                @break
 
-    @foreach ($fieldTypes as $dynamicFieldConfig)
-        @if (in_array($dynamicFieldConfig->get('id'), $skinConfig['formColumns']) === false && ($fieldType = XeDynamicField::getByConfig($dynamicFieldConfig)) != null && $dynamicFieldConfig->get('use') == true)
-        <div class="__xe_{{$columnName}} __xe_section">
-            {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
-        </div>
-        @endif
+            @default
+                @if (($fieldType = XeDynamicField::get($config->get('documentGroup'), $columnName)) !== null && isset($dynamicFieldsById[$columnName]) && $dynamicFieldsById[$columnName]->get('use') === true)
+                    <div class="__xe_{{$columnName}} __xe_section">
+                        {!! $fieldType->getSkin()->show($item->getAttributes()) !!}
+                    </div>
+                @endif
+                @break
+        @endswitch
     @endforeach
-
 </div>
 
 <script>
