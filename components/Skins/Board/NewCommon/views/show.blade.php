@@ -11,8 +11,10 @@
                         <div class="xe-list-board-body__title-category">{{ xe_trans($item->boardCategory->getWord()) }}</div>
                     @endif
                     <h3 class="xe-list-board-body__title-text">
-                        <span class="xe-list-board-body__title-notice">공지</span>
-                        @if ($item->display == $item::DISPLAY_SECRET) <i class="xi-lock"></i> @endif
+                        @if($item->status === $item::STATUS_NOTICE)
+                            <span class="xe-list-board-body__title-notice">공지</span>
+                        @endif
+                        @if ($item->display === $item::DISPLAY_SECRET) <i class="xi-lock"></i> @endif
                         {!! $item->title !!}
                     </h3>
                     <div class="xe-list-board-body__title-post-info">
@@ -23,20 +25,32 @@
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"
                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                        <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
-                                        <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                        @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
+                                            <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
+                                        @endif
+                                        @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
+                                            <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                        @endif
                                     </a>
                                 @else
                                     <a href="#">
-                                        <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
-                                        <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                        @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
+                                            <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
+                                        @endif
+                                        @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
+                                            <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                        @endif
                                     </a>
                                 @endif
                             </div>
                             
                             <div class="xe-list-board-list-item___detail-info">
-                                <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-read_count xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span></span>
-                                <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-create_at xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d. H:i:s') }}</span>
+                                @if (array_get($skinConfig, 'visibleShowReadCount', 'on') === 'on')
+                                    <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-read_count xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span></span>
+                                @endif
+                                @if (array_get($skinConfig, 'visibleShowCreatedAt', 'on') === 'on')
+                                    <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-create_at xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d. H:i:s') }}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="xe-list-board-body--right-box">

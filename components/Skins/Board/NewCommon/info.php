@@ -1,5 +1,9 @@
 <?php
 
 return [
-    'setting' => 'setting'
+    'setting' => 'setting',
+    'support' => [
+        'mobile' => true,
+        'desktop' => true
+    ]
 ];

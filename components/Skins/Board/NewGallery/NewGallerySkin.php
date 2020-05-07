@@ -80,6 +80,19 @@ class NewGallerySkin extends NewCommonSkin
         return parent::render();
     }
 
+    public function resolveSetting(array $inputs = [])
+    {
+        if (isset($inputs['visibleIndexGalleryProfileImage']) === false) {
+            $inputs['visibleIndexGalleryProfileImage'] = '';
+        }
+
+        if (isset($inputs['visibleIndexGalleryDescription']) === false) {
+            $inputs['visibleIndexGalleryDescription'] = '';
+        }
+        
+        return parent::resolveSetting($inputs);
+    }
+
     /**
      * register board handler intercept
      * intercept BoardHandler getOrder(), getsNotice()

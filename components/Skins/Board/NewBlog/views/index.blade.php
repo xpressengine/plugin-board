@@ -69,20 +69,22 @@
                                         <span class="xe-list-board-list__subjec-secret"><i class="xi-lock"></i></span>
                                     @endif
                                     <h2 class="xe-list-blog-board-list-item__title">{!! $item->title !!}</h2>
-                                    @if ($item->isNew($config->get('newTime')))
+                                    @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <div class="xe-list-board-list__title-new-icon">
                                             <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>
                                         </div>
                                     @endif
                                 </div>
-                                <p class="xe-list-blog-board-list-item__description">{{ $item->pure_content }}</p>
+                                @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexBlogDescription', 'on') === 'on')
+                                    <p class="xe-list-blog-board-list-item__description">{{ $item->pure_content }}</p>
+                                @endif
                             </a>
                         </div>
                     @endif
 
                     <div class="xe-list-blog-board-list-item--wrapper">
-                        <div class="xe-list-board-list--left-box">
-                            @if (in_array('writer', $skinConfig['listColumns']) === true)
+                        @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexBlogProfileImage', 'on') === 'on')
+                            <div class="xe-list-board-list--left-box">
                                 <div class="xe-list-blog-board-list-item__user-info">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                         <a href="#" class="xe-list-blog-board-list-item__text-link"
@@ -97,26 +99,28 @@
                                         </a>
                                     @endif
                                 </div>
-                            @endif
-                        </div>
-                        <div class="xe-list-board-list--right-box">
-                            <div class="xe-list-board-list--title">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                    <a href="#" class="xe-list-blog-board-list-item__text-link"
-                                        data-toggle="xe-page-toggle-menu"
-                                        data-url="{{ route('toggleMenuPage') }}"
-                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                        <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                    </a>
-                                @else
-                                    <a href="#">
-                                        <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                    </a>
-                                @endif
                             </div>
+                        @endif
+                        <div class="xe-list-board-list--right-box">
+                            @if (in_array('writer', $skinConfig['listColumns']) === true)
+                                <div class="xe-list-board-list--title">
+                                    @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                        <a href="#" class="xe-list-blog-board-list-item__text-link"
+                                            data-toggle="xe-page-toggle-menu"
+                                            data-url="{{ route('toggleMenuPage') }}"
+                                            data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
+                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                        </a>
+                                    @else
+                                        <a href="#">
+                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
                             <div class="xe-list-blog-board-list-item___detail-info">
-                                <p class="xe-list-blog-board-list-item___detail  xe-list-blog-board-list-item___detail-board_count">
-                                    <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::board_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->board_count) }}</span>
+                                <p class="xe-list-blog-board-list-item___detail  xe-list-blog-board-list-item___detail-comment_count">
+                                    <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
                                 </p>
 
                                 @if (in_array('read_count', $skinConfig['listColumns']) === true)
@@ -181,19 +185,21 @@
                                     @if ($item->data->file_count > 0)
                                         <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
                                     @endif
-                                    @if ($item->isNew($config->get('newTime')))
+                                    @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <div class="xe-list-board-list__title-new-icon">
                                             <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>
                                         </div>
                                     @endif
                                 </div>
-                                <p class="xe-list-blog-board-list-item__description">{{ $item->pure_content }}</p>
+                                @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
+                                    <p class="xe-list-blog-board-list-item__description">{{ $item->pure_content }}</p>
+                                @endif
                             </a>
                         </div>
                     @endif
                     <div class="xe-list-blog-board-list-item--wrapper">
-                        <div class="xe-list-board-list--left-box">
-                            @if (in_array('writer', $skinConfig['listColumns']) === true)
+                        @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexBlogProfileImage', 'on') === 'on')
+                            <div class="xe-list-board-list--left-box">
                                 <div class="xe-list-blog-board-list-item__user-info">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                         <a href="#" class="xe-list-blog-board-list-item__text-link"
@@ -208,26 +214,28 @@
                                         </a>
                                     @endif
                                 </div>
-                            @endif
-                        </div>
-                        <div class="xe-list-board-list--right-box">
-                            <div class="xe-list-board-list--title">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                    <a href="#" class="xe-list-blog-board-list-item__text-link"
-                                        data-toggle="xe-page-toggle-menu"
-                                        data-url="{{ route('toggleMenuPage') }}"
-                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                        <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                    </a>
-                                @else
-                                    <a href="#">
-                                        <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                    </a>
-                                @endif
                             </div>
+                        @endif
+                        <div class="xe-list-board-list--right-box">
+                            @if (in_array('writer', $skinConfig['listColumns']) === true)
+                                <div class="xe-list-board-list--title">
+                                    @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                        <a href="#" class="xe-list-blog-board-list-item__text-link"
+                                            data-toggle="xe-page-toggle-menu"
+                                            data-url="{{ route('toggleMenuPage') }}"
+                                            data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
+                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                        </a>
+                                    @else
+                                        <a href="#">
+                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
                             <div class="xe-list-blog-board-list-item___detail-info">
-                                <p class="xe-list-blog-board-list-item___detail  xe-list-blog-board-list-item___detail-board_count">
-                                    <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::board_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->board_count) }}</span>
+                                <p class="xe-list-blog-board-list-item___detail  xe-list-blog-board-list-item___detail-comment_count">
+                                    <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
                                 </p>
 
                                 @if (in_array('read_count', $skinConfig['listColumns']) === true)
@@ -282,14 +290,16 @@
             </div>
         @endif
         <div class="xe-list-board--btn-right-box">
-            @if (Auth::check() === true)
+            @if (Auth::check() === true && array_get($skinConfig, 'visibleIndexMyBoard', 'show') === 'show')
                 @if (Request::get('user_id') === Auth::user()->getId())
                     <a href="{{ $urlHandler->get('index') }}" class="xe-list-board__btn active">내가 쓴 글</a>
                 @else
                     <a href="{{ $urlHandler->get('index', ['user_id' => Auth::user()->getId()]) }}" class="xe-list-board__btn">내가 쓴 글</a>
                 @endif
             @endif
-            <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::newPost') }}</a>
+            @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') !== 'hidden')
+                <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::newPost') }}</a>
+            @endif
         </div>
     </div>
 </div>

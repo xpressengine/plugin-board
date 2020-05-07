@@ -44,7 +44,7 @@
 <div class="xe-list-board-body">
     <ul class="xe-list-board-list--item xe-list-board-list">
         <li class="xe-list-board-list--header">
-            @foreach ($skinConfig['sortListColumns'] as $columnName)
+            @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName === 'favorite')
                     @if (Auth::check() === true)
                         @if (Request::has('favorite'))
@@ -70,7 +70,7 @@
 
         @foreach ($notices as $item)
             <li class="xe-list-board-list--item xe-list-board-list--item-notice">
-                @foreach ($skinConfig['sortListColumns'] as $columnName)
+                @foreach ($skinConfig['listColumns'] as $columnName)
                     @switch ($columnName)
                         @case ('favorite')
                             <div class="xe-list-board-list__favorite xe-hidden-mobile">
@@ -156,7 +156,7 @@
         
         @foreach ($paginate as $item)
             <li class="xe-list-board-list--item">
-                @foreach ($skinConfig['sortListColumns'] as $columnName)
+                @foreach ($skinConfig['listColumns'] as $columnName)
                     @switch ($columnName)
                         @case ('favorite')
                         <div class="xe-list-board-list__favorite xe-hidden-mobile">

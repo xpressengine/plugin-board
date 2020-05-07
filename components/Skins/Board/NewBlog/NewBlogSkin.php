@@ -29,4 +29,17 @@ use Xpressengine\Plugins\Board\Components\Skins\Board\NewGallery\NewGallerySkin;
 class NewBlogSkin extends NewGallerySkin
 {
     protected static $path = 'board/components/Skins/Board/NewBlog';
+    
+    public function resolveSetting(array $inputs = [])
+    {
+        if (isset($inputs['visibleIndexBlogProfileImage']) === false) {
+            $inputs['visibleIndexBlogProfileImage'] = '';
+        }
+
+        if (isset($inputs['visibleIndexBlogDescription']) === false) {
+            $inputs['visibleIndexBlogDescription'] = '';
+        }
+        
+        return parent::resolveSetting($inputs);
+    }
 }
