@@ -241,7 +241,7 @@
         @endforeach
         
         @if ($paginate->total() === 0)
-            <div class="xe-list-blog-board-body">
+            <div class="xe-list-blog-board__no-result">
                 <span class="xe-list-blog-board__text">등록된 게시물이 없습니다.</span>
             </div>
         @endif
