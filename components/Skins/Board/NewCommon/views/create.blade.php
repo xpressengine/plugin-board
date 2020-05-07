@@ -112,6 +112,12 @@
             </div>
             
             <div class="draft_container"></div>
+            <div class="captcha_container">
+                @if($config['useCaptcha'] === true)
+                    {!! uio('captcha') !!}
+                @endif
+            </div>
+
             
             <div class="xe-list-board-body--footer-button-box">
 

@@ -219,6 +219,10 @@
   border-color: #adb8c0;
 }
 
+.xe-list-board-body .xe-list-board-body--footer .captcha_container {
+  margin: 20px 0 50px 0;
+}
+
 .xe-list-board-body .xe-list-board-body--footer .xe-list-board-body--footer-button-box {
   display: -webkit-box;
   display: -ms-flexbox;
