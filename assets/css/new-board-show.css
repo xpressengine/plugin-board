@@ -19,10 +19,11 @@
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-text .xe-list-board-body__title-notice {
   background: #2684ff;
+  font-size: 18px;
+  line-height: 30px;
   color: #fff;
   padding: 0 10px;
   margin-right: 10px;
-  font-size: 16px;
 }
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info {
@@ -375,7 +376,8 @@
     margin-bottom: 25px;
   }
   .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-text .xe-list-board-body__title-notice {
-    font-size: 22px;
+    font-size: 24px;
+    line-height: 44px;
   }
   .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info {
     padding-bottom: 40px;

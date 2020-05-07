@@ -10,7 +10,11 @@
                     @if ($config->get('category') === true && $item->boardCategory !== null && array_get($skinConfig, 'visibleShowCategory', 'show') === 'show')
                         <div class="xe-list-board-body__title-category">{{ xe_trans($item->boardCategory->getWord()) }}</div>
                     @endif
-                    <h3 class="xe-list-board-body__title-text"><span class="xe-list-board-body__title-notice">공지사항</span>{!! $item->title !!}</h3>
+                    <h3 class="xe-list-board-body__title-text">
+                        <span class="xe-list-board-body__title-notice">공지</span>
+                        @if ($item->display == $item::DISPLAY_SECRET) <i class="xi-lock"></i> @endif
+                        {!! $item->title !!}
+                    </h3>
                     <div class="xe-list-board-body__title-post-info">
                         <div class="xe-list-board-body--left-box">
                             <div class="xe-list-board-list__writer">
