@@ -18,8 +18,8 @@
         @foreach ($skinConfig['formColumns'] as $columnName)
             @switch ($columnName)
                 @case ('title')
-                    <div class="xe-list-board-body--header">
-                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-8">
+                    <div class="xe-list-board-body--header row">
+                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-12 @if ($config->get('category') === true) col-md-8 @endif">
                             {!! uio('newTitleWithSlug', [
                                 'title' => Request::old('title'),
                                 'slug' => Request::old('slug'),
@@ -33,8 +33,7 @@
                                     'name' => 'category_item_id',
                                     'label' => xe_trans('xe::category'),
                                     'value' => Request::get('category_item_id'),
-                                    'items' => $categories,
-                                    'open_target' => '.xe-list-board-body--header-select'
+                                    'items' => $categories
                                 ]) !!}
                             </div>
                         @endif
@@ -49,10 +48,12 @@
                             ]) !!}
                         </div>
 
-{{--                        TODO UIO 변경--}}
-                        <div class="xe-list-board-body--footer-tag">
-                            <h4 class="xe-list-board-body--footer-title">tag</h4>
-                            <input placeholder="태그를 입력한 후 Enter를 누르세요." type="text" class="xe-list-board-body--footer-tag-input">
+                        <div class="xe-list-board-body--tag">
+                            @if($config->get('useTag') === true)
+                                {!! uio('uiobject/board@tag', [
+                                    'placeholder' => '태그를 입력한 후 Enter를 누르세요'
+                                ]) !!}
+                            @endif
                         </div>
                         @break
                 
@@ -113,10 +114,17 @@
             <div class="draft_container"></div>
             
             <div class="xe-list-board-body--footer-button-box">
-                <div class="xe-list-board-body--footer-btn__transient">
-                    <button type="button" class="xe-list-board-body--footer-button xe-list-board-body--footer-button__transient __xe_temp_btn_save">{{ xe_trans('xe::draftSave') }}</button>
+
+                <div class="xe-list-board-body--footer-button">
+                    <div class="xe-list-board-body--footer-button__transient __xe_temp_btn_save">
+                        <a href="#" class="xe-list-board-body--footer-button__draftsave">{{ xe_trans('xe::draftSave') }}</a>
+                        
+                        <a href="#" class="xe-list-board-body--footer-button__draftload-arrow">
+                            <i class="xi-angle-down-min"></i>
+                        </a>
+                    </div>
                     <div class="xe-list-board-body--footer-button__transient-content">
-                        <a href="#">{{ xe_trans('xe::draftLoad') }}</a>
+                        <a href="#" class="xe-list-board-body--footer-button__draftload">{{ xe_trans('xe::draftLoad') }}</a>
                     </div>
                 </div>
                 <button type="button" class="xe-list-board-body--footer-button xe-list-board-body--footer-button__preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
@@ -172,6 +180,12 @@
                     })
                 })
             }
+        });
+    });
+
+    $(document).ready(function(){
+        $(".xe-list-board-body--footer-button__draftload-arrow").click(function(){
+            $(".xe-list-board-body--footer-button__transient-content").toggleClass("open");
         });
     });
 </script>
