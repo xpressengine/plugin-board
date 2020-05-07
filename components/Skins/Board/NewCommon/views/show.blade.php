@@ -94,22 +94,27 @@
         @endswitch
     @endforeach
 
-    <div class="xe-list-board-body__file-attach">
-        <div class="xe-list-board-body__file-attach-count">
-            <a href="#" class="xe-list-board-body__file-attach-link">
-                <i class="xi-paperclip"></i>
-                <span class="blind">board::fileAttachedList</span>
-                <strong class="bd_file_num">1</strong>
-            </a>
-            <div class="xe-list-board-body__file-attach-name">
+    @if (count($item->files) > 0)
+        <div class="xe-list-board-body__file-attach">
+            <div class="xe-list-board-body__file-attach-count">
                 <a href="#" class="xe-list-board-body__file-attach-link">
-                    <i class="xi-download"></i>
-                    <span class="xe-list-board-body__file-attach-file-name">download.jpg</span>
-                    <span class="xe-list-board-body__file-attach-volume">(20.00KB)</span>
+                    <i class="xi-paperclip"></i>
+                    <span class="blind">{{ xe_trans('board::fileAttachedList') }}</span>
+                    <strong class="bd_file_num">{{ $item->data->file_count }}</strong>
                 </a>
+                <div class="xe-list-board-body__file-attach-name">
+                    @foreach ($item->files as $file)
+                        <a href="{{ route('editor.file.download', ['instanceId' => $item->instance_id, 'id' => $file->id])}}" class="xe-list-board-body__file-attach-link">
+                            <i class="xi-download"></i>
+                            <span class="xe-list-board-body__file-attach-file-name">{{ $file->clientname }}</span>
+                            <span class="xe-list-board-body__file-attach-volume">({{ bytes($file->size) }})</span>
+                        </a>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
+    @endif
+
     <div class="xe-list-board-body__more-info">
         <div class="xe-list-board-body--left-box">
             @if ($config->get('assent') === true || $config->get('dissent') === true)

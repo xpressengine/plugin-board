@@ -164,6 +164,7 @@
 }
 
 .xe-list-board-body .xe-list-board-body__file-attach .xe-list-board-body__file-attach-count .xe-list-board-body__file-attach-link {
+  display: block;
   text-decoration: none;
   color: #141414;
   line-height: 1.8;
