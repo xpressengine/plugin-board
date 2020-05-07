@@ -74,6 +74,16 @@
             vertical-align: middle;
             text-decoration: none;
             color: #141414;
+
+            &.xe-list-board-list__bookmark i:before {
+              content: '\ea1d';
+              display: inline-block;
+            }
+
+            &.xe-list-board-list__bookmark .on i:before {
+              content: '\ea1c';
+              display: inline-block;
+            }
           }
 
           .xe-dropdown {
@@ -236,6 +246,50 @@
           }
         }
       }
+
+      .bd_like_more {
+        .bd_like_more_list {
+          background: #fff;
+          margin: 0;
+          padding: 10px 10px 0 0;
+          list-style-type: none;
+          display: flex;
+          align-items: center;
+          li {
+            position: relative;
+
+            &.on:before {
+              position: absolute;
+              top: 0;
+              right: 5px;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background-color: #2684ff;
+              content: "";
+              z-index: 1;
+            }
+          }
+          .bd_like_more_list_item {
+            margin-right: 5px;
+            position: relative;
+
+            img {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+            }
+          }
+        }
+        .bd_like_more_text {
+          margin: 0;
+          .bd_like_more_text_link {
+            color: #2684ff;
+            text-decoration: underline;
+            font-weight: 600;
+          }
+        }
+      }
     }
 
     .xe-list-board-body--right-box {
@@ -294,6 +348,16 @@
           margin-right: 5px;
           vertical-align: middle;
 
+          &.xe-list-board-list__bookmark i:before {
+            content: '\ea1d';
+            display: inline-block;
+          }
+
+          &.xe-list-board-list__bookmark .on i:before {
+            content: '\ea1c';
+            display: inline-block;
+          }
+
           &:last-child {
             margin: 0;
           }
@@ -350,6 +414,17 @@
         }
       }
     }
+  }
+}
+
+.xe-modal{
+  .xe-modal-dialog {
+    .xe-modal-content {
+      border-radius: 10px;
+    }
+    .slickgrid_247976 .slick-row {
+      height: 100px;
+  }
   }
 }
 

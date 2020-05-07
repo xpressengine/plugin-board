@@ -9,13 +9,13 @@
 </a>
 
 <style>
-    a {
+    .xe-share {
         color: #141414;
         text-decoration: none;
     }
-    a:hover,
-    a:active,
-    a:visited {
+    .xe-share:hover,
+    .xe-share:active,
+    .xe-share:visited {
         color: #141414;
         text-decoration: none;
     }

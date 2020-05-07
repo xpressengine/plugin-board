@@ -144,9 +144,8 @@
                     </div>
                 </div>
             @endif
+            <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
         </div>
-
-        <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
 
         <div class="xe-list-board-body--right-box">
             @if($isManager === true || $item->user_id === Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
