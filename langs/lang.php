@@ -331,6 +331,10 @@ return [
         'ko' => ':count 명이 이 글을 좋아합니다.',
         'en' => ':count peoples like this posts.',
     ],
+    'dissentThisPosts' => [
+        'ko' => ':count 명이 이 글을 싫어합니다.',
+        'en' => ':count peoples hate this posts.',
+    ],
     'secretPost' => [
         'ko' => '비밀글',
         'en' => 'Secret post',
