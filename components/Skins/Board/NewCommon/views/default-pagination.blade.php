@@ -21,10 +21,14 @@
 <div class="xe-list-board--pagination xe-list-board--pagination-mobile">
     <ul class="xe-list-board--pagination-list">
         <li class="xe-list-board__pagination-item xe-list-board__btn_pagination xe-list-board__btn_prev">
-            <a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-left"></i></a>
+            @if ($paginator->currentPage() <= 1)
+                <a class="xe-list-board__pagination-item-link xe-list-board__pagination-item-disabled-link" onclick="return false;"><i class="xi-angle-left"></i></a>
+            @else
+                <a class="xe-list-board__pagination-item-link" href="{{ $paginator->previousPageUrl() }}"><i class="xi-angle-left"></i></a>
+            @endif
         </li>
         <li class="xe-list-board__pagination-item xe-list-board__pagination-box">
-            <span class="xe-list-board__pagination-number-present"><a class="xe-list-board__pagination-item-link" href="#">1</a></span> / <span class="xe-list-board__pagination-number-total"><a class="xe-list-board__pagination-item-link" href="#">10</a></span>
+            <span class="xe-list-board__pagination-number-present">1</span> / <span class="xe-list-board__pagination-number-total">10</span>
         </li>
         <li class="xe-list-board__pagination-item xe-list-board__btn_pagination xe-list-board__btn_next">
             <a class="xe-list-board__pagination-item-link" href="#"><i class="xi-angle-right"></i></a>
