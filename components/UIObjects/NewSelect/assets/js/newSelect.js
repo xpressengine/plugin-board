@@ -3,7 +3,7 @@ $(function () {
         e.preventDefault()
         
         var $this = $(this)
-        var $container = $(this).closest('.xe-dropdown')
+        var $container = $(this).closest('.new-select')
         var $parent = $(this).closest('.xe-dropdown__button')
         var name = $('.xe-dropdown--menu').data('name')
         var $nameInput = $container.find('[name=' + name + ']')
@@ -13,6 +13,6 @@ $(function () {
         $nameInput.val($this.data('value'))
         $container.find('button').text($this.text())
         
-        // $nameInput.trigger('change')
+        $nameInput.trigger('change')
     })
 })
