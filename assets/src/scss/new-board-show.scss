@@ -74,6 +74,16 @@
             vertical-align: middle;
             text-decoration: none;
             color: #141414;
+
+            &.xe-list-board-list__bookmark i:before {
+              content: '\ea1d';
+              display: inline-block;
+            }
+
+            &.xe-list-board-list__bookmark .on i:before {
+              content: '\ea1c';
+              display: inline-block;
+            }
           }
 
           .xe-dropdown {
@@ -337,6 +347,16 @@
         .xe-list-board-list__icon {
           margin-right: 5px;
           vertical-align: middle;
+
+          &.xe-list-board-list__bookmark i:before {
+            content: '\ea1d';
+            display: inline-block;
+          }
+
+          &.xe-list-board-list__bookmark .on i:before {
+            content: '\ea1c';
+            display: inline-block;
+          }
 
           &:last-child {
             margin: 0;
