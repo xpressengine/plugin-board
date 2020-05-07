@@ -17,15 +17,16 @@
 
   .ti-input[data-v-61d92e31] {
     border: none !important;
+    height: 55px;
   }
   .vue-tags-input[data-v-61d92e31] {
     max-width: none;
     line-height: 60px;
-    border-bottom: 1px solid #c0c0c0;
+    border-bottom: 1px solid #e0e0e0;
   }
 
   .ti-tag.ti-invalid[data-v-61d92e31], .ti-tag.ti-tag.ti-deletion-mark[data-v-61d92e31] {
     background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 0;
+    border-radius: 3px;
   }
 </style>
