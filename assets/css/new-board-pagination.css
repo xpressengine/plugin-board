@@ -33,6 +33,10 @@
   height: 40px;
 }
 
+.xe-list-board--pagination.xe-list-board--pagination-pc .xe-list-board--pagination-list .xe-list-board__pagination-item .xe-list-board__pagination-item-link.xe-list-board__pagination-item-disabled-link {
+  color: rgba(0, 0, 0, 0.2);
+}
+
 .xe-list-board--pagination.xe-list-board--pagination-pc .xe-list-board--pagination-list .xe-list-board__btn_pagination {
   border: 1px solid #e0e0e0;
   margin: 0 15px;

@@ -20,6 +20,10 @@
                     line-height: 40px;
                     width: 40px;
                     height: 40px;
+
+                    &.xe-list-board__pagination-item-disabled-link {
+                        color: rgba(0, 0, 0, 0.2);
+                    }
                 }
             }
 
