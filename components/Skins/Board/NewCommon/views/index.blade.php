@@ -44,7 +44,7 @@
 <div class="xe-list-board-body">
     <ul class="xe-list-board-list--item xe-list-board-list">
         <li class="xe-list-board-list--header">
-            @foreach ($skinConfig['listColumns'] as $columnName)
+            @foreach ($skinConfig['sortListColumns'] as $columnName)
                 @if ($columnName === 'favorite')
                     @if (Auth::check() === true)
                         @if (Request::has('favorite'))
@@ -70,7 +70,7 @@
 
         @foreach ($notices as $item)
             <li class="xe-list-board-list--item xe-list-board-list--item-notice">
-                @foreach ($skinConfig['listColumns'] as $columnName)
+                @foreach ($skinConfig['sortListColumns'] as $columnName)
                     @switch ($columnName)
                         @case ('favorite')
                             <div class="xe-list-board-list__favorite xe-hidden-mobile">
@@ -100,7 +100,7 @@
                                         @if ($item->data->file_count > 0)
                                             <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
                                         @endif
-                                        @if( $item->isNew($config->get('newTime')) )
+                                        @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                             <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>
                                         @endif
                                     </div>
@@ -156,7 +156,7 @@
         
         @foreach ($paginate as $item)
             <li class="xe-list-board-list--item">
-                @foreach ($skinConfig['listColumns'] as $columnName)
+                @foreach ($skinConfig['sortListColumns'] as $columnName)
                     @switch ($columnName)
                         @case ('favorite')
                         <div class="xe-list-board-list__favorite xe-hidden-mobile">
@@ -185,7 +185,7 @@
                                     @if ($item->data->file_count > 0)
                                         <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
                                     @endif
-                                    @if( $item->isNew($config->get('newTime')) )
+                                    @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>
                                     @endif
                                 </div>
@@ -256,10 +256,12 @@
             </div>
         @endif
         <div class="xe-list-board--btn-right-box">
-            @if (Auth::check() === true)
+            @if (Auth::check() === true && array_get($skinConfig, 'visibleIndexMyBoard', 'show') === 'show')
                 <a href="{{ $urlHandler->get('index', ['user_id' => Auth::user()->getId()]) }}" class="xe-list-board__btn">내가 쓴 글</a>
             @endif
-            <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::newPost') }}</a>
+            @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') !== 'hidden')
+                <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::newPost') }}</a>
+            @endif
         </div>
     </div>
 </div>

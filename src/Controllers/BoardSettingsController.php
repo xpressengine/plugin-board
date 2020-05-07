@@ -380,6 +380,8 @@ class BoardSettingsController extends Controller
      * @param string $boardId board id
      *
      * @return mixed|\Xpressengine\Presenter\Presentable
+     *
+     * @deprecated instead use ColumnSetting or BoardSettingsController@editConfig
      */
     public function editColumns($boardId)
     {
@@ -403,6 +405,8 @@ class BoardSettingsController extends Controller
      * @param string  $boardId board id
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
+     * @deprecated instead use ColumnSetting or BoardSettingsController@editConfig
      */
     public function updateColumns(Request $request, $boardId)
     {
