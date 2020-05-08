@@ -79,9 +79,11 @@
                                         </div>
                                     @endif
                                 </div>
-                                @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
-                                    <p class="xe-list-gallery-board-list-item__description">{{ $item->pure_content }}</p>
-                                @endif
+                                <p class="xe-list-gallery-board-list-item__description">
+                                    @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
+                                        {{ $item->pure_content }}
+                                    @endif
+                                </p>
                             </a>
                         </div>
                     @endif
@@ -195,9 +197,11 @@
                                         </div>
                                     @endif
                                 </div>
-                                @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
-                                    <p class="xe-list-gallery-board-list-item__description">{{ $item->pure_content }}</p>
-                                @endif
+                                <p class="xe-list-gallery-board-list-item__description">
+                                    @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
+                                        {{ $item->pure_content }}
+                                    @endif
+                                </p>
                             </a>
                         </div>
                     @endif
