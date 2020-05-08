@@ -182,7 +182,7 @@
                             @endif
                             <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-webzine-board-list-item__text-link" id="title_{{$item->id}}">
                                 <div class="xe-list-webzine-board-list-item__title-box">
-                                    @if ($item->display !== $item::DISPLAY_SECRET)
+                                    @if ($item->display === $item::DISPLAY_SECRET)
                                         <span class="xe-list-webzine-board-list__subject-secret"><i class="xi-lock"></i></span>
                                     @endif
                                     <h2 class="xe-list-webzine-board-list-item__title">{!! $item->title !!}</h2>
