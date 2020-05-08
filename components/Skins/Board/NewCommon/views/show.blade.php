@@ -133,6 +133,9 @@
         <div class="xe-list-board-body--left-box">
             @if ($config->get('assent') === true || $config->get('dissent') === true)
                 <div class="xe-list-board-body--like-box-wrapper">
+                    <div class="xe-list-board__btn-box">
+                        <a href="#" class="xe-list-board__btn">목록</a>
+                    </div>
                     <div class="xe-list-board-body__like-box">
                         @if ($config->get('assent') === true)
                             <div class="xe-list-board-list__box-assent_count xe-list-board-body__like-box-item">
@@ -159,6 +162,7 @@
                 </div>
             @endif
             <div class="bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
+            
         </div>
 
         <div class="xe-list-board-body--right-box">

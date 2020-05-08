@@ -193,10 +193,19 @@
       .xe-list-board-body--like-box-wrapper {
         display: flex;
 
+        .xe-list-board__btn-box {
+          .xe-list-board__btn {
+            margin: 0;
+            text-decoration: none;
+            color: #141414;
+          }
+        }
+
         .xe-list-board-body__like-box {
           border: 1px solid #e0e0e0;
           padding: 10px 0;
           display: flex;
+          margin-left: 15px;
 
           .xe-list-board-body__like-box-item {
             border-right: 1px solid #e0e0e0;
@@ -305,6 +314,14 @@
         margin-right: 25px;
 
         .xe-list-board-body__edit-item {
+          .xe-list-board-body__link {
+            &:focus,
+            &:hover,
+            &:active {
+              text-decoration: none;
+              color: #141414;
+            }
+          }
 
           &:after {
             content: '';
