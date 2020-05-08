@@ -8,11 +8,11 @@
                 <div class="form-group list-style">
                     <label>모바일 목록 스타일 <small> 모바일 화면에서 보여지는 스타일을 설정합니다.</small></label>
                     <div class="row form-group">
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <img src="{{ url('plugins/board/components/Skins/Board/NewWebzine/assets/img/settingSingleMobile.png') }}">
                             <input type="radio" name="visibleIndexWebzineMobileType" value="single" @if (array_get($config, 'visibleIndexWebzineMobileType', 'double') === 'single') checked @endif>1단 스타일
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <img src="{{ url('plugins/board/components/Skins/Board/NewWebzine/assets/img/settingDoubleMobile.png') }}">
                             <input type="radio" name="visibleIndexWebzineMobileType" value="double" @if (array_get($config, 'visibleIndexWebzineMobileType', 'double') === 'double') checked @endif>2단 스타일
                         </div>
@@ -156,9 +156,9 @@
     .checkbox { margin-bottom: 0; }
     .panel .panel-heading { padding: 0; }
     .panel .panel-heading .panel-title { font-size: 18px; }
-    .list-style .form-group .col-md-6 { text-align: center; }
+    .list-style .form-group .col-xs-6 { text-align: center; }
     .list-style .form-group { margin-top: 20px; }
-    .list-style .form-group .col-md-6 input {
+    .list-style .form-group .col-xs-6 input {
         display: block;
         margin: 10px auto;
     }
