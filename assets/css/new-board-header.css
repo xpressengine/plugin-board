@@ -101,6 +101,10 @@
   float: right;
 }
 
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--sort .xe-list-board-header--dropdown .xe-dropdown--menu {
+  right: 0;
+}
+
 @media (min-width: 768px) {
   .xe-list-board {
     max-width: 991px;
@@ -154,6 +158,9 @@
     display: flex;
     -ms-flex-item-align: end;
         align-self: end;
+  }
+  .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--category .xe-list-board-header--dropdown .xe-dropdown--menu {
+    right: 0;
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box {
     display: inline-block;
