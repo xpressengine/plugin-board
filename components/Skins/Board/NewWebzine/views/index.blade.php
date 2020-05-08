@@ -44,7 +44,7 @@
 <div class="xe-list-webzine-board-body">
     <ul class="xe-list-webzine-board-list row">
         @foreach ($notices as $item)
-            <li class="xe-list-webzine-board-list-item col-xs-6 col-md-6 col-lg-4">
+            <li class="xe-list-webzine-board-list-item @if (array_get($skinConfig, 'visibleIndexWebzineMobileType', 'double') === 'double') col-xs-6 @endif col-md-6 col-lg-4">
                 <a href="{{$urlHandler->getShow($item, Request::all())}}">
                     <div class="xe-list-webzine-board-list-item__img-box">
                         <div class="xe-list-board-list-item__notice-banner">공지</div>
@@ -163,7 +163,7 @@
         @endforeach
 
         @foreach ($paginate as $item)
-            <li class="xe-list-webzine-board-list-item col-xs-6 col-md-6 col-lg-4">
+            <li class="xe-list-webzine-board-list-item @if (array_get($skinConfig, 'visibleIndexWebzineMobileType', 'double') === 'double') col-xs-6 @endif col-md-6 col-lg-4">
                 <a href="{{$urlHandler->getShow($item, Request::all())}}">
                     <div class="xe-list-webzine-board-list-item__img-box">
                         <div class="xe-list-webzine-board-list-item__img" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>

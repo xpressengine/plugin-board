@@ -14,7 +14,7 @@
 
 namespace Xpressengine\Plugins\Board\Components\Skins\Board\NewBlog;
 
-use Xpressengine\Plugins\Board\Components\Skins\Board\NewGallery\NewGallerySkin;
+use Xpressengine\Plugins\Board\Components\Skins\Board\NewWebzine\NewWebzine;
 
 /**
  * NewBlogSkin
@@ -26,7 +26,7 @@ use Xpressengine\Plugins\Board\Components\Skins\Board\NewGallery\NewGallerySkin;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
-class NewBlogSkin extends NewGallerySkin
+class NewBlogSkin extends NewWebzine
 {
     protected static $path = 'board/components/Skins/Board/NewBlog';
     
