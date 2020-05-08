@@ -56,17 +56,26 @@
         "module/board@board/skin/board@new_default": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewCommon\\NewCommonSkin",
           "name": "게시판 신규 기본 스킨",
-          "description": "게시판 신규 기본 스킨."
+          "description": "게시판 신규 기본 스킨.",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/new_default.jpg"
+          ]
         },
         "module/board@board/skin/board@new_webzine": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewWebzine\\NewWebzine",
           "name": "게시판 신규 웹진 스킨",
-          "description": "게시판 신규 웹진 스킨."
+          "description": "게시판 신규 웹진 스킨.",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/webzine.jpg"
+          ]
         },
         "module/board@board/skin/board@new_blog": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewBlog\\NewBlogSkin",
           "name": "게시판 신규 블로그 스킨",
-          "description": "게시판 신규 블로그 스킨."
+          "description": "게시판 신규 블로그 스킨.",
+          "screenshot" : [
+            "/plugins/board/assets/img/screenshots/new_blog.jpg"
+          ]
         },
         "uiobject/board@new_select": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\NewSelect\\NewSelectUIObject",
