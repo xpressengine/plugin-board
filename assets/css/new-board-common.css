@@ -94,6 +94,42 @@
   color: #484848;
 }
 
+/* 버튼 */
+.xe-list-board__btn {
+  color: #141414;
+  display: inline-block;
+  border: 1px solid #e0e0e0;
+  text-decoration: none;
+  padding: 10px 20px;
+  margin: 10px 0;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  background: transparent;
+}
+
+.xe-list-board__btn:hover {
+  background: #f4f5f7;
+}
+
+/* guest id */
+.xe-board-body.user {
+  max-width: 500px;
+}
+
+.xe-board-body.user .xe-board-body__title {
+  text-align: center;
+}
+
+.xe-board-body.user .xe-board-body__input .xe-form-control {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.xe-board-body.user .xe-list-board__btn {
+  width: 100%;
+}
+
 /* PC에서만 보이게 */
 @media (min-width: 992px) {
   .xe-hidden-mobile {
