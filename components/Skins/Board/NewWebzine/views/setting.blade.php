@@ -9,12 +9,12 @@
                     <label>모바일 목록 스타일 <small> 모바일 화면에서 보여지는 스타일을 설정합니다.</small></label>
                     <div class="row form-group">
                         <div class="col-md-6">
-                            <img src="{{ url('plugins/board/components/Skins/Board/NewGallery/assets/img/settingSingleMobile.png') }}">
-                            <input type="radio" name="visibleIndexGalleryMobileType" value="single" @if (array_get($config, 'visibleIndexGalleryMobileType', 'double') === 'single') checked @endif>1단 스타일
+                            <img src="{{ url('plugins/board/components/Skins/Board/NewWebzine/assets/img/settingSingleMobile.png') }}">
+                            <input type="radio" name="visibleIndexWebzineMobileType" value="single" @if (array_get($config, 'visibleIndexWebzineMobileType', 'double') === 'single') checked @endif>1단 스타일
                         </div>
                         <div class="col-md-6">
-                            <img src="{{ url('plugins/board/components/Skins/Board/NewGallery/assets/img/settingDoubleMobile.png') }}">
-                            <input type="radio" name="visibleIndexGalleryMobileType" value="double" @if (array_get($config, 'visibleIndexGalleryMobileType', 'double') === 'double') checked @endif>2단 스타일
+                            <img src="{{ url('plugins/board/components/Skins/Board/NewWebzine/assets/img/settingDoubleMobile.png') }}">
+                            <input type="radio" name="visibleIndexWebzineMobileType" value="double" @if (array_get($config, 'visibleIndexWebzineMobileType', 'double') === 'double') checked @endif>2단 스타일
                         </div>
                     </div>
                 </div>
@@ -23,10 +23,10 @@
                     <label>목록 출력 설정<small> 출력할 목록 항목을 설정할 수 있습니다.</small></label>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="visibleIndexGalleryProfileImage" value="on" @if (array_get($config, 'visibleIndexGalleryProfileImage', 'on') === 'on') checked @endif>프로필 사진
+                            <input type="checkbox" name="visibleIndexWebzineProfileImage" value="on" @if (array_get($config, 'visibleIndexWebzineProfileImage', 'on') === 'on') checked @endif>프로필 사진
                         </label>
                         <label>
-                            <input type="checkbox" name="visibleIndexGalleryDescription" value="on" @if (array_get($config, 'visibleIndexGalleryDescription', 'on') === 'on') checked @endif>본문 미리보기
+                            <input type="checkbox" name="visibleIndexWebzineDescription" value="on" @if (array_get($config, 'visibleIndexWebzineDescription', 'on') === 'on') checked @endif>본문 미리보기
                         </label>
                     </div>
                 </div>
