@@ -58,10 +58,10 @@
           "name": "게시판 신규 기본 스킨",
           "description": "게시판 신규 기본 스킨."
         },
-        "module/board@board/skin/board@new_gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewGallery\\NewGallerySkin",
-          "name": "게시판 신규 갤러리 스킨",
-          "description": "게시판 신규 갤러리 스킨."
+        "module/board@board/skin/board@new_webzine": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewWebzine\\NewWebzine",
+          "name": "게시판 신규 웹진 스킨",
+          "description": "게시판 신규 웹진 스킨."
         },
         "module/board@board/skin/board@new_blog": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewBlog\\NewBlogSkin",

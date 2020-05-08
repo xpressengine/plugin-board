@@ -1,4 +1,4 @@
-{{ XeFrontend::css('plugins/board/assets/css/new-board-gallery.css')->load() }}
+{{ XeFrontend::css('plugins/board/assets/css/new-board-webzine.css')->load() }}
 
 <div class="xe-list-board-header__contents">
     <form method="get" action="{{ $urlHandler->get('index') }}" class="__xe_search">
@@ -19,8 +19,7 @@
                                 'name' => 'category_item_id',
                                 'label' => xe_trans('xe::category'),
                                 'value' => Request::get('category_item_id'),
-                                'items' => $categories,
-                                'open_target' => '.xe-list-board-header--category'
+                                'items' => $categories
                             ]) !!}
                         </div>
                     </div>
@@ -33,8 +32,7 @@
                             'name' => 'order_type',
                             'label' => xe_trans('xe::order'),
                             'value' => Request::get('order_type', $config->get('orderType')),
-                            'items' => $handler->getOrders(),
-                            'open_target' => '.xe-list-board-header-order__button' 
+                            'items' => $handler->getOrders()
                         ]) !!}
                     </div>
                 </div>
@@ -43,35 +41,35 @@
     </form>
 </div>
 
-<div class="xe-list-gallery-board-body">
-    <ul class="xe-list-gallery-board-list row">
+<div class="xe-list-webzine-board-body">
+    <ul class="xe-list-webzine-board-list row">
         @foreach ($notices as $item)
-            <li class="xe-list-gallery-board-list-item col-md-6 col-lg-4">
+            <li class="xe-list-webzine-board-list-item col-xs-6 col-md-6 col-lg-4">
                 <a href="{{$urlHandler->getShow($item, Request::all())}}">
-                    <div class="xe-list-gallery-board-list-item__img-box">
+                    <div class="xe-list-webzine-board-list-item__img-box">
                         <div class="xe-list-board-list-item__notice-banner">공지</div>
-                        <div class="xe-list-gallery-board-list-item__img" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
+                        <div class="xe-list-webzine-board-list-item__img" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </div>
                 </a>
                 
-                <div class="xe-list-gallery-board-list-item__body">
+                <div class="xe-list-webzine-board-list-item__body">
                     @if (in_array('title', $skinConfig['listColumns']) === true)
-                        <div class="xe-list-gallery-board-list-item__text">
+                        <div class="xe-list-webzine-board-list-item__text">
                             @if ($config->get('category') === true)
-                                <h3 class="xe-list-gallery-board-list-item__category">
+                                <h3 class="xe-list-webzine-board-list-item__category">
                                     @if ($item->boardCategory !== null)
                                         {!! xe_trans($item->boardCategory->categoryItem->word) !!}
                                     @endif
                                 </h3>
                             @endif
-                            <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-gallery-board-list-item__text-link" id="title_{{$item->id}}">
-                                <div class="xe-list-gallery-board-list-item__title-box">
+                            <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-webzine-board-list-item__text-link" id="title_{{$item->id}}">
+                                <div class="xe-list-webzine-board-list-item__title-box">
                                     @if ($item->display === $item::DISPLAY_SECRET)
-                                        <span class="xe-list-gallery-board-list__subject-secret"><i class="xi-lock"></i></span>
+                                        <span class="xe-list-webzine-board-list__subject-secret"><i class="xi-lock"></i></span>
                                     @endif
-                                    <h2 class="xe-list-gallery-board-list-item__title">{!! $item->title !!}</h2>
+                                    <h2 class="xe-list-webzine-board-list-item__title">{!! $item->title !!}</h2>
                                     @if ($item->data->file_count > 0)
-                                        <span class="xe-list-gallery-board-list__subject-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
+                                        <span class="xe-list-webzine-board-list__subject-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
                                     @endif
                                     @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <div class="xe-list-board-list__title-new-icon">
@@ -79,20 +77,20 @@
                                         </div>
                                     @endif
                                 </div>
-                                <p class="xe-list-gallery-board-list-item__description">
-                                    @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
+                                <p class="xe-list-webzine-board-list-item__description">
+                                    @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexWebzineDescription', 'on') === 'on')
                                         {{ $item->pure_content }}
                                     @endif
                                 </p>
                             </a>
                         </div>
                     @endif
-                    <div class="xe-list-gallery-board-list-item--wrapper">
-                        @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexGalleryProfileImage', 'on') === 'on')
+                    <div class="xe-list-webzine-board-list-item--wrapper">
+                        @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexWebzineProfileImage', 'on') === 'on')
                             <div class="xe-list-board-list--left-box">
-                                <div class="xe-list-gallery-board-list-item__user-info">
+                                <div class="xe-list-webzine-board-list-item__user-info">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                        <a href="#" class="xe-list-gallery-board-list-item__text-link"
+                                        <a href="#" class="xe-list-webzine-board-list-item__text-link"
                                         data-toggle="xe-page-toggle-menu"
                                         data-url="{{ route('toggleMenuPage') }}"
                                         data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
@@ -110,7 +108,7 @@
                             @if (in_array('writer', $skinConfig['listColumns']) === true)
                                 <div class="xe-list-board-list--title">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                        <a href="#" class="xe-list-gallery-board-list-item__text-link"
+                                        <a href="#" class="xe-list-webzine-board-list-item__text-link"
                                             data-toggle="xe-page-toggle-menu"
                                             data-url="{{ route('toggleMenuPage') }}"
                                             data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
@@ -123,38 +121,38 @@
                                     @endif
                                 </div>
                             @endif
-                            <div class="xe-list-gallery-board-list-item___detail-info">
-                                <p class="xe-list-gallery-board-list-item___detail  xe-list-gallery-board-list-item___detail-comment_count">
-                                    <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
+                            <div class="xe-list-webzine-board-list-item___detail-info">
+                                <p class="xe-list-webzine-board-list-item___detail  xe-list-webzine-board-list-item___detail-comment_count">
+                                    <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
                                 </p>
 
                                 @if (in_array('read_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-read_count">
-                                        <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-read_count">
+                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
                                     </p>
                                 @endif
 
                                 @if (in_array('created_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-create_at">
-                                        <span class="xe-list-gallery-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
+                                        <span class="xe-list-webzine-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
                                 @if (in_array('updated_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-updated_at">
-                                        <span class="xe-list-gallery-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-updated_at">
+                                        <span class="xe-list-webzine-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
                                 @if (in_array('assent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-vote_count">
-                                        <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
+                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
                                     </p>
                                 @endif
 
                                 @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-vote_count">
-                                        <span class="xe-list-gallery-board-leist-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
+                                        <span class="xe-list-webzine-board-leist-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
                                     </p>
                                 @endif
                             </div>
@@ -165,31 +163,31 @@
         @endforeach
 
         @foreach ($paginate as $item)
-            <li class="xe-list-gallery-board-list-item col-md-6 col-lg-4">
+            <li class="xe-list-webzine-board-list-item col-xs-6 col-md-6 col-lg-4">
                 <a href="{{$urlHandler->getShow($item, Request::all())}}">
-                    <div class="xe-list-gallery-board-list-item__img-box">
-                        <div class="xe-list-gallery-board-list-item__img" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
+                    <div class="xe-list-webzine-board-list-item__img-box">
+                        <div class="xe-list-webzine-board-list-item__img" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
                     </div>
                 </a>
 
-                <div class="xe-list-gallery-board-list-item__body">
+                <div class="xe-list-webzine-board-list-item__body">
                     @if (in_array('title', $skinConfig['listColumns']) === true)
-                        <div class="xe-list-gallery-board-list-item__text">
+                        <div class="xe-list-webzine-board-list-item__text">
                             @if ($config->get('category') === true)
-                                <h3 class="xe-list-gallery-board-list-item__category">
+                                <h3 class="xe-list-webzine-board-list-item__category">
                                     @if ($item->boardCategory !== null)
                                         {!! xe_trans($item->boardCategory->categoryItem->word) !!}
                                     @endif
                                 </h3>
                             @endif
-                            <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-gallery-board-list-item__text-link" id="title_{{$item->id}}">
-                                <div class="xe-list-gallery-board-list-item__title-box">
+                            <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-webzine-board-list-item__text-link" id="title_{{$item->id}}">
+                                <div class="xe-list-webzine-board-list-item__title-box">
                                     @if ($item->display !== $item::DISPLAY_SECRET)
-                                        <span class="xe-list-gallery-board-list__subject-secret"><i class="xi-lock"></i></span>
+                                        <span class="xe-list-webzine-board-list__subject-secret"><i class="xi-lock"></i></span>
                                     @endif
-                                    <h2 class="xe-list-gallery-board-list-item__title">{!! $item->title !!}</h2>
+                                    <h2 class="xe-list-webzine-board-list-item__title">{!! $item->title !!}</h2>
                                     @if ($item->data->file_count > 0)
-                                        <span class="xe-list-gallery-board-list__subject-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
+                                        <span class="xe-list-webzine-board-list__subject-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
                                     @endif
                                     @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <div class="xe-list-board-list__title-new-icon">
@@ -197,8 +195,8 @@
                                         </div>
                                     @endif
                                 </div>
-                                <p class="xe-list-gallery-board-list-item__description">
-                                    @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
+                                <p class="xe-list-webzine-board-list-item__description">
+                                    @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexWebzineDescription', 'on') === 'on')
                                         {{ $item->pure_content }}
                                     @endif
                                 </p>
@@ -206,12 +204,12 @@
                         </div>
                     @endif
 
-                    <div class="xe-list-gallery-board-list-item--wrapper">
-                        @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexGalleryProfileImage', 'on') === 'on')
+                    <div class="xe-list-webzine-board-list-item--wrapper">
+                        @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexWebzineProfileImage', 'on') === 'on')
                             <div class="xe-list-board-list--left-box">
-                                <div class="xe-list-gallery-board-list-item__user-info">
+                                <div class="xe-list-webzine-board-list-item__user-info">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                        <a href="#" class="xe-list-gallery-board-list-item__text-link"
+                                        <a href="#" class="xe-list-webzine-board-list-item__text-link"
                                         data-toggle="xe-page-toggle-menu"
                                         data-url="{{ route('toggleMenuPage') }}"
                                         data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
@@ -229,7 +227,7 @@
                             @if (in_array('writer', $skinConfig['listColumns']) === true)
                                 <div class="xe-list-board-list--title">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                        <a href="#" class="xe-list-gallery-board-list-item__text-link"
+                                        <a href="#" class="xe-list-webzine-board-list-item__text-link"
                                             data-toggle="xe-page-toggle-menu"
                                             data-url="{{ route('toggleMenuPage') }}"
                                             data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
@@ -242,38 +240,38 @@
                                     @endif
                                 </div>
                             @endif
-                            <div class="xe-list-gallery-board-list-item___detail-info">
-                                <p class="xe-list-gallery-board-list-item___detail  xe-list-gallery-board-list-item___detail-comment_count">
-                                    <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
+                            <div class="xe-list-webzine-board-list-item___detail-info">
+                                <p class="xe-list-webzine-board-list-item___detail  xe-list-webzine-board-list-item___detail-comment_count">
+                                    <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
                                 </p>
 
                                 @if (in_array('read_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-read_count">
-                                        <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-read_count">
+                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
                                     </p>
                                 @endif
 
                                 @if (in_array('created_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-create_at">
-                                        <span class="xe-list-gallery-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
+                                        <span class="xe-list-webzine-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
                                 @if (in_array('updated_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-updated_at">
-                                        <span class="xe-list-gallery-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-updated_at">
+                                        <span class="xe-list-webzine-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
                                 @if (in_array('assent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-vote_count">
-                                        <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
+                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
                                     </p>
                                 @endif
 
                                 @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-vote_count">
-                                        <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
+                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
+                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
                                     </p>
                                 @endif
                             </div>
@@ -284,8 +282,8 @@
         @endforeach
         
         @if ($paginate->total() === 0)
-        <div class="xe-list-blog-board__no-result xe-gallery-board__no-search-result">
-            <span class="xe-list-gallery-board__text">등록된 게시물이 없습니다.</span>
+        <div class="xe-list-blog-board__no-result xe-webzine-board__no-search-result">
+            <span class="xe-list-webzine-board__text">등록된 게시물이 없습니다.</span>
         </div>
         @endif
     </ul>

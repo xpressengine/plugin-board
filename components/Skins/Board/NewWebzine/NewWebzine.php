@@ -1,6 +1,6 @@
 <?php
 /**
- * NewGallerySkin
+ * NewWebzine
  *
  * PHP version 7
  *
@@ -12,28 +12,27 @@
  * @link        https://xpressengine.io
  */
 
-namespace Xpressengine\Plugins\Board\Components\Skins\Board\NewGallery;
+namespace Xpressengine\Plugins\Board\Components\Skins\Board\NewWebzine;
 
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Http\Request;
-use Xpressengine\Media\Models\Image;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Components\Skins\Board\NewCommon\NewCommonSkin;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
+use App;
 use XeStorage;
 use XeSkin;
 use View;
 use Event;
 use Input;
-use App;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Media\Repositories\ImageRepository;
 
 /**
- * NewGallerySkin
+ * NewWebzineSkin
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -42,9 +41,9 @@ use Xpressengine\Media\Repositories\ImageRepository;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
-class NewGallerySkin extends NewCommonSkin
+class NewWebzine extends NewCommonSkin
 {
-    protected static $path = 'board/components/Skins/Board/NewGallery';
+    protected static $path = 'board/components/Skins/Board/NewWebzine';
 
     /**
      * @var array
@@ -82,12 +81,12 @@ class NewGallerySkin extends NewCommonSkin
 
     public function resolveSetting(array $inputs = [])
     {
-        if (isset($inputs['visibleIndexGalleryProfileImage']) === false) {
-            $inputs['visibleIndexGalleryProfileImage'] = '';
+        if (isset($inputs['visibleIndexWebzineProfileImage']) === false) {
+            $inputs['visibleIndexWebzineProfileImage'] = '';
         }
 
-        if (isset($inputs['visibleIndexGalleryDescription']) === false) {
-            $inputs['visibleIndexGalleryDescription'] = '';
+        if (isset($inputs['visibleIndexWebzineDescription']) === false) {
+            $inputs['visibleIndexWebzineDescription'] = '';
         }
         
         return parent::resolveSetting($inputs);
