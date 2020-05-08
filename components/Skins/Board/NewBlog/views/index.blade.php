@@ -129,13 +129,13 @@
 
                                 @if (in_array('created_at', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-blog-board-list-item___detail xe-list-blog-board-list-item___detail-create_at">
-                                        <span class="xe-list-blog-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                        <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
                                 @if (in_array('updated_at', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-blog-board-list-item___detail xe-list-blog-board-list-item___detail-updated_at">
-                                        <span class="xe-list-blog-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
+                                        <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
@@ -216,7 +216,7 @@
                         @endif
                         <div class="xe-list-board-list--right-box">
                             @if (in_array('writer', $skinConfig['listColumns']) === true)
-                                <div class="xe-list-board-list--title">
+                                <div class="xe-list-board-list--writer">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
                                         <a href="#" class="xe-list-blog-board-list-item__text-link"
                                             data-toggle="xe-page-toggle-menu"
@@ -244,13 +244,13 @@
 
                                 @if (in_array('created_at', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-blog-board-list-item___detail xe-list-blog-board-list-item___detail-create_at">
-                                        <span class="xe-list-blog-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                        <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
                                 @if (in_array('updated_at', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-blog-board-list-item___detail xe-list-blog-board-list-item___detail-updated_at">
-                                        <span class="xe-list-blog-board-list-item___detail-label xe-hidden-pc">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
+                                        <span class="xe-list-blog-board-list-item___detail-label">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 

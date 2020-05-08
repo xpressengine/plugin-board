@@ -168,19 +168,6 @@
                 $(ui.item.context).css("display", "table-row");
             }
         }).disableSelection();
-
-        $('form').bind('submit', function(event) {
-            var list = [];
-
-            $('[name="listColumns[]"]').each(function() {
-                list.push($(this).val());
-            });
-
-            $('[name="sortListColumns[]"]').remove();
-            for (var i in list) {
-                $(this).append($('<input type="hidden" name="sortListColumns[]">').val(list[i]));
-            }
-        });
     });
 </script>
 

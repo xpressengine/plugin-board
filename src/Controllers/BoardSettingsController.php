@@ -210,10 +210,15 @@ class BoardSettingsController extends Controller
     {
         $config = $this->configHandler->get($boardId);
 
+        $sortListColumns = $this->configHandler->getSortListColumns($config);
+        $sortFormColumns = $this->configHandler->getSortFormColumns($config);
+
         return $this->presenter->make('module.config', [
             'config' => $config,
             'boardId' => $boardId,
             'captcha' => $captcha,
+            'sortListColumns' => $sortListColumns,
+            'sortFormColumns' => $sortFormColumns
         ]);
     }
 
@@ -241,6 +246,10 @@ class BoardSettingsController extends Controller
             if (isset($inputs['managerEmail']) === false) {
                 $inputs['managerEmail'] = '';
             }
+        }
+
+        if (isset($inputs['listColumns']) === false) {
+            $inputs['listColumns'] = [];
         }
 
         foreach ($inputs as $key => $value) {

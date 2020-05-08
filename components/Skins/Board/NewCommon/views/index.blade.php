@@ -44,7 +44,11 @@
 <div class="xe-list-board-body">
     <ul class="xe-list-board-list--item xe-list-board-list">
         <li class="xe-list-board-list--header">
-            @foreach ($skinConfig['listColumns'] as $columnName)
+            @foreach ($skinConfig['skinListColumns'] as $columnName)
+                @if (in_array($columnName, $config->get('listColumns', [])) === false)
+                    @continue;
+                @endif
+                
                 @if ($columnName === 'favorite')
                     @if (Auth::check() === true)
                         @if (Request::has('favorite'))
@@ -70,7 +74,11 @@
 
         @foreach ($notices as $item)
             <li class="xe-list-board-list--item xe-list-board-list--item-notice">
-                @foreach ($skinConfig['listColumns'] as $columnName)
+                @foreach ($skinConfig['skinListColumns'] as $columnName)
+                    @if (in_array($columnName, $config->get('listColumns', [])) === false)
+                        @continue;
+                    @endif
+                
                     @switch ($columnName)
                         @case ('favorite')
                             <div class="xe-list-board-list__favorite xe-hidden-mobile">
@@ -156,7 +164,11 @@
         
         @foreach ($paginate as $item)
             <li class="xe-list-board-list--item">
-                @foreach ($skinConfig['listColumns'] as $columnName)
+                @foreach ($skinConfig['skinListColumns'] as $columnName)
+                    @if (in_array($columnName, $config->get('listColumns', [])) === false)
+                        @continue;
+                    @endif
+                    
                     @switch ($columnName)
                         @case ('favorite')
                         <div class="xe-list-board-list__favorite xe-hidden-mobile">

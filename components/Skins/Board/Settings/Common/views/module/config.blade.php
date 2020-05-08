@@ -433,7 +433,6 @@
                                     </div>
 
                                     <div class="row">
-
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
@@ -454,6 +453,68 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>목록 출력 설정</label>
+                                                </div>
+                                            </div>
+                                            
+                                            @foreach ($sortListColumns as $column)
+                                                <div class="checkbox-inline">
+                                                    <label>
+                                                        <input type="checkbox" class="__board-sort-lists" name="{{ $column }}" value="{{ $column }}" @if (in_array($column, $config->get('listColumns')) === true) checked @endif>{{ xe_trans('board::' . $column) }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>상세화면 출력 순서 설정</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="table-responsive item-setting">
+                                                <table class="table table-sortable">
+                                                    <colgroup>
+                                                        <col style="width: 200px;">
+                                                        <col>
+                                                        <col>
+                                                    </colgroup>
+                                                    <tbody>
+                                                    @foreach($sortFormColumns as $columnName)
+                                                        <tr>
+                                                            <td>
+                                                                <button class="btn handler"><i class="xi-drag-vertical"></i></button>
+                                                                <em class="item-title">{{ xe_trans('board::' . $columnName) }}</em>
+                                                            </td>
+                                                            <td>
+                                                                <span class="item-subtext">{{ xe_trans('board::' . $columnName . 'ShowDescription') }}</span>
+                                                            </td>
+                                                            <td>
+                                                                <input type="hidden" name="formColumns[]" value="{{ $columnName }}" />
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="panel-footer">
                             <div class="pull-right">
@@ -463,7 +524,35 @@
                     </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
+
+<script>
+    $(function () {
+        $(".table-sortable tbody").sortable({
+            handle: '.handler',
+            cancel: '',
+            update: function( event, ui ) {
+            },
+            start: function(e, ui) {
+                ui.placeholder.height(ui.helper.outerHeight());
+                ui.placeholder.css("display", "table-row");
+                ui.helper.css("display", "table");
+            },
+            stop: function(e, ui) {
+                $(ui.item.context).css("display", "table-row");
+            }
+        }).disableSelection();
+        
+        $('#board_manage_form').bind('submit', function (e) {
+            var $form = $(this)
+            
+            $('.__board-sort-lists').each(function () {
+                if ($(this).prop('checked') === true) {
+                    $form.append($('<input type="hidden" name="listColumns[]">').val($(this).val()))
+                }
+            })
+        })
+    })
+</script>

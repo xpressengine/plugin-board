@@ -120,7 +120,8 @@ class NewCommonSkin extends GenericBoardSkin
         $boardConfig = $configHandler->get($instanceId);
         
         $config['boardConfig'] = $boardConfig;
-        $config['listColumns'] = $configHandler->getSortListColumns($boardConfig);
+        $config['sortListColumns'] = $configHandler->getSortListColumns($boardConfig);
+        $config['listColumns'] = $boardConfig->get('listColumns');
         
         $dynamicFields = [];
         $fieldTypes = $configHandler->getDynamicFields($boardConfig);
@@ -164,6 +165,12 @@ class NewCommonSkin extends GenericBoardSkin
      */
     protected function setSkinConfig()
     {
+        if (isset($this->config['listColumns']) === true) {
+            $this->config['skinListColumns'] = $this->config['listColumns'];
+        } else {
+            $this->config['skinListColumns'] = $this->data['config']->get('listColumns');
+        }
+
         $this->config['formColumns'] = $this->data['config']->get('formColumns');
         $this->config['listColumns'] = $this->data['config']->get('listColumns');
 //        TODO skinConfig 스킨 변수로 변경

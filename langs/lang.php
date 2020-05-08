@@ -70,9 +70,17 @@ return [
         'ko' => '글제목입니다.',
         'en' => 'Title',
     ],
+    'titleShowDescription' => [
+        'ko' => '상세화면에서 제목 및 작성자, 작성일등을 포함한 그룹입니다.',
+        'en' => 'It is a group including the title, author, and creation date on the detail screen.'
+    ],
     'content' => [
         'ko' => '내용',
         'en' => 'Content',
+    ],
+    'contentShowDescription' => [
+        'ko' => '상세화면에서 글내용을 포함한 그룹입니다.',
+        'en' => 'In the detail screen, it is a group containing the content of the text.'
     ],
     'titleAndContent' => [
         'ko' => '제목+내용',
