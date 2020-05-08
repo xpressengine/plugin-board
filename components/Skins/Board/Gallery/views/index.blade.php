@@ -330,7 +330,7 @@
                             <span class="mb_time" title="{{ $item->updated_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->updated_at }}">{{$item->updated_at}}</span></span>
                         @endif
 
-                        @if (in_array('read_num', $skinConfig['listColumns']) == true)
+                        @if (in_array('read_count', $skinConfig['listColumns']) == true)
                             <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                         @endif
 
@@ -407,7 +407,7 @@
                             <span class="mb_time" title="{{ $item->updated_at }}"><i class="xi-time"></i> <span data-xe-timeago="{{ $item->updated_at }}">{{$item->updated_at}}</span></span>
                         @endif
 
-                        @if (in_array('read_num', $skinConfig['listColumns']) == true)
+                        @if (in_array('read_count', $skinConfig['listColumns']) == true)
                             <span class="mb_read_num"><i class="xi-eye"></i> {{ $item->read_count }}</span>
                         @endif
 
