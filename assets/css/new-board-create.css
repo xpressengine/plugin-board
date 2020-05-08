@@ -3,6 +3,10 @@
   margin-right: 0;
 }
 
+.xe-list-board-body .pdr20 {
+  padding-right: 20px !important;
+}
+
 .xe-list-board-body .xe-list-board-body--header .xe-list-board-body--header-item {
   padding: 0;
 }
@@ -385,7 +389,6 @@
 
 @media (min-width: 992px) {
   .xe-list-board-body .xe-list-board-body--header .xe-list-board-body--header-title {
-    padding-right: 20px;
     border-bottom: 0;
   }
   .xe-list-board-body .xe-list-board-body--header .xe-list-board-body--header-title .xe-list-board-body--header-title-input {

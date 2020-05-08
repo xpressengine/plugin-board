@@ -19,7 +19,7 @@
             @switch ($columnName)
                 @case ('title')
                     <div class="xe-list-board-body--header row">
-                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-12 @if ($config->get('category') === true) col-md-8 @endif">
+                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-12 @if ($config->get('category') === true) col-md-8 pdr20 @endif">
                             {!! uio('newTitleWithSlug', [
                                 'title' => Request::old('title'),
                                 'slug' => Request::old('slug'),
