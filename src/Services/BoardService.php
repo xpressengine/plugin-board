@@ -15,6 +15,7 @@ namespace Xpressengine\Plugins\Board\Services;
 
 use Auth;
 use Event;
+use Illuminate\Support\Collection;
 use XeEditor;
 use XeCaptcha;
 use Xpressengine\Category\Models\Category;
@@ -177,6 +178,33 @@ class BoardService
 
         $paginate = $query->paginate($config->get('perPage'))->appends($request->except('page'));
         return $paginate;
+    }
+
+    /**
+     * 신규 스킨 상세보기 페이지에서 사용할 동일 게시판의 최근 글 반
+     *
+     * @param ConfigEntity $config        board config entity환
+     * @param string       $currentItemId current show board item id
+     *
+     * @return Collection
+     */
+    public function getBoardMoreItems(ConfigEntity $config, $currentItemId)
+    {
+        /** @var Board $model */
+        $model = Board::division($config->get('boardId'));
+        $query = $model->where('instance_id', $config->get('boardId'))
+            ->where('id', '<>', $currentItemId)->visible();
+
+        if ($config->get('category') === true) {
+            $query->leftJoin(
+                'board_category',
+                sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                '=',
+                sprintf('%s.%s', 'board_category', 'target_id')
+            );
+        }
+        
+        return $query->take(4)->orderByDesc('head')->get();
     }
 
     /**

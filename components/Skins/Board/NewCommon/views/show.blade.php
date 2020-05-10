@@ -196,28 +196,17 @@
     </div>
         
     @if (array_get($skinConfig, 'visibleShowMoreBoardItems', 'show') === 'show')
-{{--        TODO 기능 적용 필요--}}
-{{--            <div class="xe-list-board-body__more-post">--}}
-{{--                <h4 class="xe-list-board-body__more-post-title"><span class="xe-list-board-body__more-post-title-category">'카테고리명'</span>의 다른 글</h4>--}}
-{{--                <ul class="xe-list-board-body__more-post-list">--}}
-{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인 디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다. 사용하기 쉽고 의미있는 인터페이스가인터페이스가인</a>--}}
-{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--                    </li>--}}
-{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">터널만 들어가면 먹통되던 내비, 이젠 LTE로 끊김없이 안내받는다</a>--}}
-{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--                    </li>--}}
-{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너는 인터랙션 디자인의 전문가가되어 유용하고 의미있는 사용자 인터페이스를 만듭니다.</a>--}}
-{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--                    </li>--}}
-{{--                    <li class="xe-list-board-body__more-post-list-item">--}}
-{{--                        <a href="#" class="xe-list-board-body__more-post-list-item-link">디자이너가 지켜봐야 할 시각적 트렌드</a>--}}
-{{--                        <span class="xe-list-board-body__more-post-list-item-date">2020-04-05</span>--}}
-{{--                    </li>--}}
-{{--                </ul>--}}
-{{--            </div>--}}
+        <div class="xe-list-board-body__more-post">
+            <h4 class="xe-list-board-body__more-post-title"><span class="xe-list-board-body__more-post-title-category">{{ xe_trans(current_menu()['title']) }}</span>의 다른 글</h4>
+            <ul class="xe-list-board-body__more-post-list">
+                @foreach ($boardMoreItems as $item)
+                    <li class="xe-list-board-body__more-post-list-item">
+                        <a href="{{ $urlHandler->getShow($item) }}" class="xe-list-board-body__more-post-list-item-link">{!! $item->title !!}</a>
+                        <span class="xe-list-board-body__more-post-list-item-date">{{ $item->created_at->format('Y-m-d') }}</span>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 </div>
 
@@ -230,14 +219,9 @@
 <!--bottomViewContent-->
 {!! xe_trans($config->get('bottomViewContent', '')) !!}
 
-{{--@if (isset($withoutList) === false || $withoutList === false)--}}
-{{--    @include($_skinPath.'/views/index')--}}
-{{--@endif--}}
-
-
 <script>
 $(document).ready(function(){
-    $(".xe-list-board-body__file-attach-count > .xe-list-board-body__file-attach-link").click(function(){
+    $(".xe-list-board-body__file-attach-count > .xe-list-board-body__file-attach-link").click(function(event){
         event.preventDefault();
         $(".xe-list-board-body__file-attach-name").toggleClass("open");
     });

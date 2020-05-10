@@ -232,6 +232,7 @@ class BoardModuleController extends Controller
         $fieldTypes = $service->getFieldTypes($this->config);
         $categories = $service->getCategoryItemsTree($this->config);
         $searchOptions = $service->getSearchOptions($request);
+        $boardMoreItems = $service->getBoardMoreItems($this->config, $id);
 
         $dynamicFieldsById = [];
         foreach ($fieldTypes as $fieldType) {
@@ -252,6 +253,7 @@ class BoardModuleController extends Controller
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
             'searchOptions' => $searchOptions,
+            'boardMoreItems' => $boardMoreItems
         ]);
     }
 
