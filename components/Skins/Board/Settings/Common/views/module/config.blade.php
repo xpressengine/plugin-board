@@ -573,6 +573,10 @@
                     $form.append($('<input type="hidden" name="listColumns[]">').val($(this).val()))
                 }
             })
+
+            $('[name="formColumns[]"]').each(function() {
+                $form.append($('<input type="hidden" name="sortFormColumns[]">').val($(this).val()));
+            });
         })
     })
 </script>
