@@ -171,7 +171,6 @@
             }
         })
         
-        // sortable 한 table 구현해야 함
         $(".table-sortable tbody").sortable({
             handle: '.handler',
             cancel: '',

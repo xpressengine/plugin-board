@@ -6,6 +6,10 @@
 {{ XeFrontend::css('plugins/board/assets/css/new-board-footer.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-common.css')->load() }}
 
+{{ expose_trans('board::selectPost') }}
+{{ expose_trans('board::selectBoard') }}
+{{ expose_trans('board::msgDeleteConfirm') }}
+
 <section class="xe-list-board container">
     <div class="xe-list-board-header">
         @if (request()->segment(2) !== 'print')

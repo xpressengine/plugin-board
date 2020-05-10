@@ -153,7 +153,6 @@
                                     {!! $fieldType->getSkin()->output($columnName, $item->getAttributes()) !!}
                                 </div>
                             @else
-{{--                                TODO 기본 출력 내용 스타일 필요--}}
                                 {!! $item->{$columnName} !!}
                             @endif
                             @break
