@@ -161,6 +161,11 @@ class BoardModuleController extends Controller
         $orders = $this->handler->getOrders();
         $searchOptions = $service->getSearchOptions($request);
 
+        $isWritable = Gate::allows(
+            BoardPermissionHandler::ACTION_CREATE,
+            new Instance($boardPermission->name($this->instanceId))
+        );
+
         $dynamicFieldsById = [];
         foreach ($fieldTypes as $fieldType) {
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
@@ -174,6 +179,7 @@ class BoardModuleController extends Controller
             'orders' => $orders,
             'dynamicFieldsById' => $dynamicFieldsById,
             'searchOptions' => $searchOptions,
+            'isWritable' => $isWritable
         ]);
     }
 

@@ -19,9 +19,15 @@
                     @endif
                 </div>
                 @if (array_get($skinConfig, 'visibleIndexMobileWriteButton', 'on') === 'on')
-                    <div class="xe-list-board-header__write-button">
-                        <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
-                    </div>
+                    @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'show')
+                        <div class="xe-list-board-header__write-button">
+                            <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
+                        </div>
+                    @elseif (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
+                        <div class="xe-list-board-header__write-button">
+                            <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
+                        </div>
+                    @endif
                 @endif
             </div>
         @endif

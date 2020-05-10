@@ -305,7 +305,11 @@
                 @endif
             @endif
             @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') !== 'hidden')
-                <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::newPost') }}</a>
+                @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'show')
+                    <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::writeItem') }}</a>
+                @elseif (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
+                    <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::writeItem') }}</a>
+                @endif
             @endif
         </div>
     </div>

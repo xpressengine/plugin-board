@@ -146,6 +146,10 @@ return [
         'ko' => '새로운 글작성',
         'en' => 'New Post',
     ],
+    'writeItem' => [
+        'ko' => '글쓰기',
+        'en' => 'Writing'
+    ],
     'noPost' => [
         'ko' => '등록된 게시글이 없습니다.',
         'en' => 'There is no registered post.',
