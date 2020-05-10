@@ -66,7 +66,7 @@
 
                                 @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                                     <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
-                                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-bookmark-o"></i></a>
+                                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-bookmark"><i class="xi-bookmark-o"></i></a>
                                     </span>
                                 @endif
                                 
@@ -185,7 +185,7 @@
                 
                 @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                     <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
-                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-bookmark-o"></i></a>
+                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-bookmark"><i class="xi-bookmark-o"></i></a>
                     </span>
                 @endif
                 <span class="xe-list-board-list__icon xe-list-board-list__more">
@@ -220,10 +220,29 @@
 {!! xe_trans($config->get('bottomViewContent', '')) !!}
 
 <script>
-$(document).ready(function(){
+$(document).ready(function() {
     $(".xe-list-board-body__file-attach-count > .xe-list-board-body__file-attach-link").click(function(event){
         event.preventDefault();
         $(".xe-list-board-body__file-attach-name").toggleClass("open");
     });
+
+    $('.__xe-bd-bookmark').on('click', function (event) {
+        event.preventDefault()
+        var id = $(this).data('id')
+        var url = $(this).data('url')
+
+        window.XE.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: {id: id}
+        }).done(function (json) {
+            if (json.favorite === true) {
+                $('.__xe-bd-bookmark').addClass('on')
+            } else {
+                $('.__xe-bd-bookmark').removeClass('on')
+            }
+        })
+    })
 });
 </script>
