@@ -19,6 +19,7 @@ use Xpressengine\Config\ConfigManager;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
+use Xpressengine\Plugins\Board\Components\Skins\Board\NewCommon\NewCommonSkin;
 use Xpressengine\Plugins\Board\Components\UIObjects\NewTitle\NewTitleUIObject;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyUseCategoryHttpException;
@@ -31,7 +32,6 @@ use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
 use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
-use Xpressengine\Plugins\Board\Components\Skins\Board\Common\CommonSkin;
 use Xpressengine\Plugins\Board\Components\UIObjects\Title\TitleUIObject;
 use Xpressengine\Plugins\Board\Components\UIObjects\Share\ShareUIObject;
 use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\CopyItem;
@@ -273,7 +273,7 @@ class Resources
     {
         XeSkin::setDefaultSkin(
             BoardModule::getId(),
-            CommonSkin::getId()
+            NewCommonSkin::getId()
         );
     }
 
