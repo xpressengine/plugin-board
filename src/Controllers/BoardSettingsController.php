@@ -212,13 +212,20 @@ class BoardSettingsController extends Controller
 
         $sortListColumns = $this->configHandler->getSortListColumns($config);
         $sortFormColumns = $this->configHandler->getSortFormColumns($config);
+        
+        $dynamicFields = [];
+        $fieldTypes = $this->configHandler->getDynamicFields($config);
+        foreach ($fieldTypes as $fieldType) {
+            $dynamicFields[$fieldType->get('id')] = $fieldType;
+        }
 
         return $this->presenter->make('module.config', [
             'config' => $config,
             'boardId' => $boardId,
             'captcha' => $captcha,
             'sortListColumns' => $sortListColumns,
-            'sortFormColumns' => $sortFormColumns
+            'sortFormColumns' => $sortFormColumns,
+            'dynamicFields' => $dynamicFields
         ]);
     }
 

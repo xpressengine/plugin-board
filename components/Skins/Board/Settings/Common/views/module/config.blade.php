@@ -467,7 +467,12 @@
                                             @foreach ($sortListColumns as $column)
                                                 <div class="checkbox-inline">
                                                     <label>
-                                                        <input type="checkbox" class="__board-sort-lists" name="{{ $column }}" value="{{ $column }}" @if (in_array($column, $config->get('listColumns')) === true) checked @endif>{{ xe_trans('board::' . $column) }}
+                                                        <input type="checkbox" class="__board-sort-lists" name="{{ $column }}" value="{{ $column }}" @if (in_array($column, $config->get('listColumns')) === true) checked @endif>
+                                                            @if (isset($dynamicFields[$column]) === false)
+                                                                {{ xe_trans('board::' . $column) }}
+                                                            @else
+                                                                {{ xe_trans($dynamicFields[$column]->get('label')) }}
+                                                            @endif
                                                     </label>
                                                 </div>
                                             @endforeach
@@ -495,18 +500,33 @@
                                                     </colgroup>
                                                     <tbody>
                                                     @foreach($sortFormColumns as $columnName)
-                                                        <tr>
-                                                            <td>
-                                                                <button class="btn handler"><i class="xi-drag-vertical"></i></button>
-                                                                <em class="item-title">{{ xe_trans('board::' . $columnName) }}</em>
-                                                            </td>
-                                                            <td>
-                                                                <span class="item-subtext">{{ xe_trans('board::' . $columnName . 'ShowDescription') }}</span>
-                                                            </td>
-                                                            <td>
-                                                                <input type="hidden" name="formColumns[]" value="{{ $columnName }}" />
-                                                            </td>
-                                                        </tr>
+                                                        @if (isset($dynamicFields[$columnName]) === false)
+                                                            <tr>
+                                                                <td>
+                                                                    <button class="btn handler"><i class="xi-drag-vertical"></i></button>
+                                                                    <em class="item-title">{{ xe_trans('board::' . $columnName) }}</em>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="item-subtext">{{ xe_trans('board::' . $columnName . 'ShowDescription') }}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="hidden" name="formColumns[]" value="{{ $columnName }}" />
+                                                                </td>
+                                                            </tr>
+                                                        @else
+                                                            <tr>
+                                                                <td>
+                                                                    <button class="btn handler"><i class="xi-drag-vertical"></i></button>
+                                                                    <em class="item-title">{{ xe_trans($dynamicFields[$columnName]->get('label')) }}</em>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="item-subtext"></span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="hidden" name="formColumns[]" value="{{ $columnName }}" />
+                                                                </td>
+                                                            </tr>
+                                                        @endif
                                                     @endforeach
                                                     </tbody>
                                                 </table>
