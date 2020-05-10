@@ -131,7 +131,7 @@
                         </a>
                     </div>
                     <div class="xe-list-board-body--footer-button__transient-content">
-                        <a href="#" class="xe-list-board-body--footer-button__draftload">{{ xe_trans('xe::draftLoad') }}</a>
+                        <a href="#" class="xe-list-board-body--footer-button__draftload xe-list-board-body--footer-button__transient-content __xe_temp_btn_load">{{ xe_trans('xe::draftLoad') }}</a>
                     </div>
                 </div>
                 <button type="button" class="xe-list-board-body--footer-button xe-list-board-body--footer-button__preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
