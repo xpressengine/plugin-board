@@ -113,6 +113,24 @@
                         <option value="hidden" @if (array_get($config, 'visibleShowCategory', 'show') === 'hidden') selected @endif>표시안함</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label>목록 출력 설정<small> 출력할 목록 항목을 설정할 수 있습니다.</small></label>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="visibleShowProfileImage" value="on" @if (array_get($config, 'visibleShowProfileImage', 'on') === 'on') checked @endif>프로필 사진
+                        </label>
+                        <label>
+                            <input type="checkbox" name="visibleShowDisplayName" value="on" @if (array_get($config, 'visibleShowDisplayName', 'on') === 'on') checked @endif>작성자
+                        </label>
+                        <label>
+                            <input type="checkbox" name="visibleShowReadCount" value="on" @if (array_get($config, 'visibleShowReadCount', 'on') === 'on') checked @endif>조회수
+                        </label>
+                        <label>
+                            <input type="checkbox" name="visibleShowCreatedAt" value="on" @if (array_get($config, 'visibleShowCreatedAt', 'on') === 'on') checked @endif>작성일
+                        </label>
+                    </div>
+                </div>
                 
                 <div class="form-group">
                     <label>공유하기<small> 소셜서비스 및 링크로 공유할 수 있습니다.</small></label>
