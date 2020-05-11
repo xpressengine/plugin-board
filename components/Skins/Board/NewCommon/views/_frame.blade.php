@@ -27,7 +27,7 @@
                         <div class="xe-list-board-header__write-button">
                             <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
                         </div>
-                    @elseif (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
+                    @elseif (request()->segment(2) === null && array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
                         <div class="xe-list-board-header__write-button">
                             <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
                         </div>
