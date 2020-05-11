@@ -407,30 +407,41 @@
 
       .xe-list-board-body__more-post-list-item {
         color: #9c9c9c;
-        display: flex;
         line-height: 27px;
 
-        &:hover {
-          color: #141414;
-        }
-
         .xe-list-board-body__more-post-list-item-link {
-          display: inline-block;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
           color: #9c9c9c;
-          flex: 1;
+          display: flex;
 
           &:hover {
             color: #141414;
+            text-decoration: none;
+          }
+
+          &:hover .xe-list-board-body__more-post-list-item-title {
+            text-decoration: underline;
+          }
+
+          .xe-list-board-body__more-post-list-item-title {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+          }
+
+          .xe-list-board-body__more-post-list-item-date {
+            display: none;
+
+            &:hover {
+              color: #141414;
+              text-decoration: none;
+            }
           }
         }
 
-        .xe-list-board-body__more-post-list-item-date {
-          display: none;
-        }
       }
+
     }
   }
 }
@@ -509,9 +520,11 @@
 
       .xe-list-board-body__more-post-list {
         .xe-list-board-body__more-post-list-item {
-          .xe-list-board-body__more-post-list-item-date {
-            display: block;
-            margin-left: 10px;
+          .xe-list-board-body__more-post-list-item-link {
+            .xe-list-board-body__more-post-list-item-date {
+              display: block;
+              margin-left: 10px;
+            }
           }
         }
       }
