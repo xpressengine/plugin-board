@@ -3,6 +3,7 @@
     .xe-list-board--button-box {
         margin-top: 10px;
         display: flex;
+        justify-content: flex-end;
 
         &:after {
             content: '';
@@ -42,7 +43,6 @@
         .xe-list-board--btn-left-box {
             flex: 1;
         }
-
     }
 }
 
