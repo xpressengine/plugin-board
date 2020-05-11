@@ -104,8 +104,10 @@
 
                 .xe-list-board-list--right-box {
                     .xe-list-blog-board-list-item___detail-info {
+                        word-break: break-all;
+                        
                         p {
-                            display: inline-block;
+                            display: inline;
                             margin-bottom: 0;
                         }
         

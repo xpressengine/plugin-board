@@ -108,8 +108,12 @@
   color: #181818;
 }
 
+.xe-list-blog-board-body .xe-list-blog-board-list-item .xe-list-blog-board-list-item__body .xe-list-blog-board-list-item--wrapper .xe-list-board-list--right-box .xe-list-blog-board-list-item___detail-info {
+  word-break: break-all;
+}
+
 .xe-list-blog-board-body .xe-list-blog-board-list-item .xe-list-blog-board-list-item__body .xe-list-blog-board-list-item--wrapper .xe-list-board-list--right-box .xe-list-blog-board-list-item___detail-info p {
-  display: inline-block;
+  display: inline;
   margin-bottom: 0;
 }
 
