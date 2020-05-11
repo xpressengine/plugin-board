@@ -130,6 +130,10 @@ return [
         'ko' => '조회수',
         'en' => 'Read',
     ],
+    'comment_count' => [
+        'ko' => '댓글수',
+        'en' => 'Comments'
+    ],
     'read_countDescription' => [
         'ko' => '글을 조회한 수 입니다.',
         'en' => 'The number of posts that have been viewed.',
