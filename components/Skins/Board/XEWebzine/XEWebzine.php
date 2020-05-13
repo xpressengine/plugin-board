@@ -1,6 +1,6 @@
 <?php
 /**
- * NewBlogSkin
+ * XEWebzine
  *
  * PHP version 7
  *
@@ -12,12 +12,12 @@
  * @link        https://xpressengine.io
  */
 
-namespace Xpressengine\Plugins\Board\Components\Skins\Board\NewBlog;
+namespace Xpressengine\Plugins\Board\Components\Skins\Board\XEWebzine;
 
-use Xpressengine\Plugins\Board\Components\Skins\Board\NewWebzine\NewWebzine;
+use Xpressengine\Plugins\Board\Components\Skins\Board\XEGallery\XEGallery;
 
 /**
- * NewBlogSkin
+ * XEWebzine
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -26,9 +26,9 @@ use Xpressengine\Plugins\Board\Components\Skins\Board\NewWebzine\NewWebzine;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
-class NewBlogSkin extends NewWebzine
+class XEWebzine extends XEGallery
 {
-    protected static $path = 'board/components/Skins/Board/NewBlog';
+    protected static $path = 'board/components/Skins/Board/XEWebzine';
     
     public function resolveSetting(array $inputs = [])
     {

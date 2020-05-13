@@ -80,7 +80,7 @@
 }
 
 /* 글이 아무것도 없을 때 */
-.xe-list-blog-board__no-result {
+.xe-list-webzine-board__no-result {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -93,7 +93,7 @@
   min-height: 500px;
 }
 
-.xe-list-blog-board__no-result .xe-list-blog-board__text {
+.xe-list-webzine-board__no-result .xe-list-webzine-board__text {
   font-size: 15px;
   line-height: 24px;
   letter-spacing: -0.4px;

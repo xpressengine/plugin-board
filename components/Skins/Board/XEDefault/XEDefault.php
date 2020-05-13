@@ -1,6 +1,6 @@
 <?php
 /**
- * NewCommonSkin
+ * XEDefault
  *
  * PHP version 7
  *
@@ -12,7 +12,7 @@
  * @link        https://xpressengine.io
  */
 
-namespace Xpressengine\Plugins\Board\Components\Skins\Board\NewCommon;
+namespace Xpressengine\Plugins\Board\Components\Skins\Board\XEDefault;
 
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
@@ -24,14 +24,11 @@ use XeFrontend;
 use XeRegister;
 use XePresenter;
 Use XeSkin;
-use Xpressengine\Config\ConfigEntity;
-use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Components\DynamicFields\Category\Skins\DesignSelect\DesignSelectSkin;
 use Xpressengine\Presenter\Presenter;
-use Xpressengine\Routing\InstanceConfig;
 
 /**
- * NewCommonSkin
+ * XEDefault
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -40,9 +37,9 @@ use Xpressengine\Routing\InstanceConfig;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
-class NewCommonSkin extends GenericBoardSkin
+class XEDefault extends GenericBoardSkin
 {
-    protected static $path = 'board/components/Skins/Board/NewCommon';
+    protected static $path = 'board/components/Skins/Board/XEDefault';
 
     /**
      * render

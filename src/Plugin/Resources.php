@@ -19,7 +19,7 @@ use Xpressengine\Config\ConfigManager;
 use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
-use Xpressengine\Plugins\Board\Components\Skins\Board\NewCommon\NewCommonSkin;
+use Xpressengine\Plugins\Board\Components\Skins\Board\XEDefault\XEDefault;
 use Xpressengine\Plugins\Board\Components\UIObjects\NewTitle\NewTitleUIObject;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyUseCategoryHttpException;
@@ -273,7 +273,7 @@ class Resources
     {
         XeSkin::setDefaultSkin(
             BoardModule::getId(),
-            NewCommonSkin::getId()
+            XEDefault::getId()
         );
     }
 

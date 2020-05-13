@@ -1,6 +1,6 @@
 <?php
 /**
- * NewWebzine
+ * XEGallery
  *
  * PHP version 7
  *
@@ -12,12 +12,12 @@
  * @link        https://xpressengine.io
  */
 
-namespace Xpressengine\Plugins\Board\Components\Skins\Board\NewWebzine;
+namespace Xpressengine\Plugins\Board\Components\Skins\Board\XEGallery;
 
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
-use Xpressengine\Plugins\Board\Components\Skins\Board\NewCommon\NewCommonSkin;
+use Xpressengine\Plugins\Board\Components\Skins\Board\XEDefault\XEDefault;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Handler as BoardHandler;
@@ -32,7 +32,7 @@ use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Media\Repositories\ImageRepository;
 
 /**
- * NewWebzineSkin
+ * XEGallery
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -41,9 +41,9 @@ use Xpressengine\Media\Repositories\ImageRepository;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
-class NewWebzine extends NewCommonSkin
+class XEGallery extends XEDefault
 {
-    protected static $path = 'board/components/Skins/Board/NewWebzine';
+    protected static $path = 'board/components/Skins/Board/XEGallery';
 
     /**
      * @var array

@@ -53,28 +53,28 @@
             "/plugins/board/assets/img/screenshots/blog_skin.png"
           ]
         },
-        "module/board@board/skin/board@new_default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewCommon\\NewCommonSkin",
-          "name": "게시판 신규 기본 스킨",
-          "description": "게시판 신규 기본 스킨.",
+        "module/board@board/skin/board@xe_default": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEDefault\\XEDefault",
+          "name": "XE 기본형 스킨",
+          "description": "XE 기본형 스킨",
           "screenshot" : [
-            "/plugins/board/assets/img/screenshots/new_default.jpg"
+            "/plugins/board/assets/img/screenshots/xe-default.jpg"
           ]
         },
-        "module/board@board/skin/board@new_webzine": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewWebzine\\NewWebzine",
-          "name": "게시판 신규 웹진 스킨",
-          "description": "게시판 신규 웹진 스킨.",
+        "module/board@board/skin/board@xe_gallery": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEGallery\\XEGallery",
+          "name": "XE 갤러리형 스킨",
+          "description": "XE 갤러리형 스킨",
           "screenshot" : [
-            "/plugins/board/assets/img/screenshots/webzine.jpg"
+            "/plugins/board/assets/img/screenshots/xe-gallery.jpg"
           ]
         },
-        "module/board@board/skin/board@new_blog": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\NewBlog\\NewBlogSkin",
-          "name": "게시판 신규 블로그 스킨",
-          "description": "게시판 신규 블로그 스킨.",
+        "module/board@board/skin/board@xe_webzine": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEWebzine\\XEWebzine",
+          "name": "XE 웹진형 스킨",
+          "description": "XE 웹진형 스킨",
           "screenshot" : [
-            "/plugins/board/assets/img/screenshots/new_blog.jpg"
+            "/plugins/board/assets/img/screenshots/xe-webzine.jpg"
           ]
         },
         "uiobject/board@new_select": {
