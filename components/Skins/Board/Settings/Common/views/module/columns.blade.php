@@ -9,6 +9,16 @@
         <div class="col-sm-12">
             <div class="panel-group">
                 <div class="panel">
+
+                    <div class="panel-warning">
+                        <p>1.0.10 버전 변경사항 안내</p>
+                        <ul class="panel-warning-list">
+                            <li> - 기존 출력순서변경 기능은 게시판 기본스킨에서만 적용되어 기본스킨의 설정으로 이동 되었습니다.</li>
+                            <li> - 목록 출력 항목, 입력/출력 페이지 출력순서 설정은 게시판 상세설정으로 이동되었습니다.</li>
+                            <li> - 출력순서 탭은 다음 버전에서 삭제될 예정입니다.</li>
+                        </ul>
+                    </div>
+                    
                     <div class="panel-heading">
                         <div class="pull-left">
                             <h3 class="panel-title">{{xe_trans('board::outputOrder')}}</h3>
@@ -112,10 +122,6 @@
         </div>
     </div>
 
-
-
-
-
 <script type="text/javascript">
     $(function() {
         // sortable 한 table 구현해야 함
@@ -158,3 +164,17 @@
         });
     });
 </script>
+
+<style>
+    .panel-warning {
+        padding: 20px;
+        margin: 20px;
+        background: #ffba00;
+        font-weight: 700;
+        border-radius: 5px;
+    }
+    .panel-warning-list {
+        padding-left: 10px;
+        list-style-type: none;
+    }
+</style>
