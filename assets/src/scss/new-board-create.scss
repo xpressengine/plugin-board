@@ -5,6 +5,7 @@
     }
     .pdr20 {
         padding-right: 20px !important;
+        border-bottom: 1px solid #e0e0e0 ;
     }
 
     .xe-list-board-body--header {
@@ -26,7 +27,7 @@
                 border: none;
                 padding: 15px;
                 font-size: 17px;
-                border-bottom: 1px solid #e0e0e0;
+                height: 55px;
 
                 &::placeholder {
                     font-size: 17px !important;
@@ -358,7 +359,6 @@
                         border: none;
                     }
                 }
-
             }
         }
     }
