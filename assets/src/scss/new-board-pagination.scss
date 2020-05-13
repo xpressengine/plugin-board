@@ -18,7 +18,7 @@
                 .xe-list-board__pagination-item-link {
                     display: inline-block;
                     padding: 0 10px;
-                    line-height: 34px;
+                    line-height: 40px;
                     min-width: 40px;
                     min-height: 40px;
 
@@ -52,6 +52,14 @@
                     text-decoration: none;
                     color: #484848;
                     font-size: 14px;
+
+                    &:hover {
+                        background: #e0e0e0;
+                        z-index: -1;
+                    }
+                    &:focus {
+                        background: #e0e0e0;
+                    }
                 }
 
                 &.xe-list-board__pagination-number--active {
@@ -60,6 +68,13 @@
 
                     .xe-list-board__pagination-item-link {
                         color: #000;
+
+                        &:hover {
+                            background: transparent !important;
+                        }
+                        &:focus {
+                            background: transparent !important;
+                        }
                     }
                 }
             }

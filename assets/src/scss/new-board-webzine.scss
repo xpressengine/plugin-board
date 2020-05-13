@@ -1,4 +1,6 @@
 .xe-list-webzine-board-body {
+    padding: 0 8px;
+
     .xe-webzine-board__no-search-result {
         clear: both;
         min-height: 200px;
@@ -14,6 +16,7 @@
 
         .xe-list-webzine-board-list-item {
             margin-bottom: 32px;
+            padding: 0 8px;
 
             &.col-xs-6 {
                 .xe-list-webzine-board-list-item__img-box .xe-list-webzine-board-list-item__img {
@@ -29,8 +32,8 @@
     
                 .xe-list-board-list-item__notice-banner {
                     position: absolute;
-                    top: 0;
-                    left: 0;
+                    top: 1px;
+                    left: 1px;
                     padding: 5px 15px;
                     background: #2684ff;
                     color: #fff;
@@ -195,20 +198,6 @@
                         .xe-list-board-list--left-box {
                             display: block;
                         }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@media (min-width:1200px) {
-    .xe-list-webzine-board-body {
-        .xe-list-webzine-board-list {
-            .xe-list-webzine-board-list-item {
-                .xe-list-webzine-board-list-item__img-box {
-                    .xe-list-webzine-board-list-item__img {
                     }
                 }
             }

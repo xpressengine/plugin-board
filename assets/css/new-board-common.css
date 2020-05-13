@@ -138,6 +138,15 @@
   width: 100%;
 }
 
+/* 포커스 */
+.xe-list-board__btn.xe-list-board__btn-primary:focus {
+  background: #ebecf0;
+}
+
+.xe-list-board__btn:focus {
+  background: #f4f5f7;
+}
+
 /* PC에서만 보이게 */
 @media (min-width: 992px) {
   .xe-hidden-mobile {
