@@ -85,6 +85,7 @@
             .xe-list-board-list__title {
                 flex-basis: 100%;
                 margin-bottom: 10px;
+                word-break: keep-all;
                 
                 overflow: hidden;
                 text-overflow: ellipsis;

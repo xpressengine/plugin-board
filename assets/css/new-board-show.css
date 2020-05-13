@@ -16,6 +16,7 @@
   color: #141414;
   margin-bottom: 15px;
   margin-top: 10px;
+  word-break: keep-all;
 }
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-text .xe-list-board-body__title-notice {

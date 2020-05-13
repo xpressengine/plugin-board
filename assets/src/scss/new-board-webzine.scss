@@ -65,6 +65,7 @@
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
+                            word-break: keep-all;
                         }
 
                         .xe-list-board-list__title-file,
