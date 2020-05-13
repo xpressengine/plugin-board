@@ -16,7 +16,15 @@
             <div class="xe-list-board-header__title-content">
                 <div class="xe-list-board-header__title-box">
                     @if (in_array(array_get($skinConfig, 'titleStyle', 'titleWithCount'), ['titleWithCount', 'title']) === true)
-                        <h2 class="xe-list-board-header__title"><a href="{{ $urlHandler->get('index') }}">{{ xe_trans(current_menu()['title']) }}</a></h2>
+                        <h2 class="xe-list-board-header__title">
+                            <a href="{{ $urlHandler->get('index') }}">
+                                @if (xe_trans($config->get('boardName', '')) !== '')
+                                    {{ xe_trans($config->get('boardName')) }}
+                                @else
+                                    {{ xe_trans(current_menu()['title']) }}
+                                @endif
+                            </a>
+                        </h2>
                         @if (array_get($skinConfig, 'titleStyle', 'titleWithCount') === 'titleWithCount')
                             <span class="xe-list-board-header__post-count">({{ number_format($paginate->total()) }})</span>
                         @endif
