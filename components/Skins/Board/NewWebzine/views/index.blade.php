@@ -280,13 +280,13 @@
                 </div>
             </li>
         @endforeach
-        
-        @if ($paginate->total() === 0)
+    </ul>
+
+    @if ($paginate->total() === 0)
         <div class="xe-list-blog-board__no-result xe-webzine-board__no-search-result">
             <span class="xe-list-webzine-board__text">등록된 게시물이 없습니다.</span>
         </div>
-        @endif
-    </ul>
+    @endif
 </div>
 
 <div class="xe-list-board-footer">
