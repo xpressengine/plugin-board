@@ -3,6 +3,7 @@
 .xe-list-board {
   font-family: 'Roboto', 'Noto Sans KR', sans-serif;
   font-size: 16px;
+  word-break: break-all;
 }
 
 .xe-list-board-list__title-new {

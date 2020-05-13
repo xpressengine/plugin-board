@@ -92,6 +92,7 @@
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
   margin-bottom: 10px;
+  word-break: keep-all;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

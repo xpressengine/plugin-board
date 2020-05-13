@@ -73,6 +73,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  word-break: keep-all;
 }
 
 .xe-list-webzine-board-body .xe-list-webzine-board-list-item .xe-list-webzine-board-list-item__body .xe-list-webzine-board-list-item__text .xe-list-webzine-board-list-item__text-link .xe-list-webzine-board-list-item__title-box .xe-list-board-list__title-file,

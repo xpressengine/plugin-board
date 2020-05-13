@@ -97,6 +97,7 @@
   white-space: normal;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  word-break: keep-all;
 }
 
 .xe-list-gallery-board-body .xe-list-gallery-board-list .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item__text .xe-list-gallery-board-list-item__text-link .xe-list-gallery-board-list-item__title-box .xe-list-board-list__title-new-icon {
