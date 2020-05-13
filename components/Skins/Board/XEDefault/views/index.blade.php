@@ -81,9 +81,11 @@
                 
                     @switch ($columnName)
                         @case ('favorite')
-                            <div class="xe-list-board-list__favorite xe-hidden-mobile">
-                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark"></i></a>
-                            </div>
+                            @if (Auth::check() === true)
+                                <div class="xe-list-board-list__favorite xe-hidden-mobile">
+                                    <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark"></i></a>
+                                </div>
+                            @endif
                             @break
 
                         @case ('title')
@@ -170,9 +172,11 @@
                     
                     @switch ($columnName)
                         @case ('favorite')
-                        <div class="xe-list-board-list__favorite xe-hidden-mobile">
-                            <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark-o"></i></a>
-                        </div>
+                        @if (Auth::check() === true)
+                            <div class="xe-list-board-list__favorite xe-hidden-mobile">
+                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark-o"></i></a>
+                            </div>
+                        @endif
                         @break
 
                         @case ('title')
