@@ -304,8 +304,8 @@
                     <a href="{{ $urlHandler->get('index', ['user_id' => Auth::user()->getId()]) }}" class="xe-list-board__btn">내가 쓴 글</a>
                 @endif
             @endif
-            @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') !== 'hidden')
-                @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'show')
+            @if (array_get($skinConfig, 'visibleIndexWriteButton', 'always') !== 'hidden')
+                @if (array_get($skinConfig, 'visibleIndexWriteButton', 'always') === 'alwaysalways')
                     <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::writeItem') }}</a>
                 @elseif (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
                     <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::writeItem') }}</a>
