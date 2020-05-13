@@ -101,6 +101,10 @@
                     letter-spacing: -0.4px;
                     margin-bottom: 15px;
 
+                    &:focus .xe-list-board-list__title-text {
+                        text-decoration: underline;
+                    }
+
                     .xe-list-board-list__title-text {
                         &:hover {
                             text-decoration: underline;

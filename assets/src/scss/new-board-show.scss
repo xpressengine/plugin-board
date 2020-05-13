@@ -314,12 +314,22 @@
       letter-spacing: -0.2px;
       color: #141414;
 
+      .xe-share {
+        &:focus,
+        &:hover,
+        &:active {
+          text-decoration: none;
+          color: #141414;
+        }
+      }
+
       .xe-list-board-body__edit-box {
         font-size: 14px;
         margin-right: 25px;
 
         .xe-list-board-body__edit-item {
           .xe-list-board-body__link {
+
             &:focus,
             &:hover,
             &:active {
@@ -418,12 +428,17 @@
           color: #9c9c9c;
           display: flex;
 
-          &:hover {
+          &:focus,
+          &:hover,
+          &:active {
             color: #141414;
             text-decoration: none;
           }
 
           &:hover .xe-list-board-body__more-post-list-item-title {
+            text-decoration: underline;
+          }
+          &:focus .xe-list-board-body__more-post-list-item-title {
             text-decoration: underline;
           }
 
@@ -439,6 +454,11 @@
             display: none;
 
             &:hover {
+              color: #141414;
+              text-decoration: none;
+            }
+
+            &:focus {
               color: #141414;
               text-decoration: none;
             }
@@ -458,8 +478,14 @@
     }
     .slickgrid_247976 .slick-row {
       height: 100px;
+    }
   }
-  }
+}
+
+.xe-dropdown-menu li>a:focus {
+  text-decoration: underline;
+  background-color: transparent;
+  color: #2c8beb !important;
 }
 
 @media (min-width: 768px) {
@@ -550,6 +576,5 @@
   
   .board_comment {
     max-width: 1000px;
-    margin: 0 auto;
   }
 }
