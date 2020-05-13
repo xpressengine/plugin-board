@@ -29,9 +29,9 @@
 .xe-list-board--pagination.xe-list-board--pagination-pc .xe-list-board--pagination-list .xe-list-board__pagination-item .xe-list-board__pagination-item-link {
   display: inline-block;
   padding: 0 10px;
-  line-height: 40px;
-  min-width: 40px;
-  min-height: 40px;
+  line-height: 36px;
+  min-width: 36px;
+  min-height: 36px;
 }
 
 .xe-list-board--pagination.xe-list-board--pagination-pc .xe-list-board--pagination-list .xe-list-board__pagination-item .xe-list-board__pagination-item-link.xe-list-board__pagination-item-disabled-link {
@@ -125,19 +125,19 @@
 .xe-list-board--pagination.xe-list-board--pagination-mobile .xe-list-board--pagination-list .xe-list-board__pagination-item span {
   text-decoration: none;
   color: #484848;
-  line-height: 40px;
+  line-height: 36px;
   display: inline-block;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
 }
 
 .xe-list-board--pagination.xe-list-board--pagination-mobile .xe-list-board--pagination-list .xe-list-board__pagination-item .xe-list-board__pagination-item-link {
   text-decoration: none;
   color: #484848;
-  line-height: 40px;
+  line-height: 36px;
   display: inline-block;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
 }
 
 @media (min-width: 768px) {
