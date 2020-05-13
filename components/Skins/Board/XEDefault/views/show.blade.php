@@ -134,7 +134,7 @@
             @if ($config->get('assent') === true || $config->get('dissent') === true)
                 <div class="xe-list-board-body--like-box-wrapper">
                     <div class="xe-list-board__btn-box">
-                        <a href="{{ $urlHandler->get('index', array_merge(Request::all())) }}" class="xe-list-board__btn">목록</a>
+                        <a href="{{ $urlHandler->get('index', array_merge(Request::all())) }}" class="xe-list-board__btn"><span class="xe-list-board__btn-text">목록</span><i class="xi-list"></i></a>
                     </div>
                     <div class="xe-list-board-body__like-box">
                         @if ($config->get('assent') === true)
