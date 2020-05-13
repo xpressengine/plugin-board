@@ -117,6 +117,10 @@ class XEDefault extends GenericBoardSkin
             $inputs['visibleIndexMobileWriteButton'] = '';
         }
 
+        if (isset($inputs['visibleIndexDefaultProfileImage']) === false) {
+            $inputs['visibleIndexDefaultProfileImage'] = '';
+        }
+        
         if (isset($inputs['visibleShowProfileImage']) === false) {
             $inputs['visibleShowProfileImage'] = '';
         }

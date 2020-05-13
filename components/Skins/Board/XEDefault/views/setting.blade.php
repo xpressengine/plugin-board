@@ -93,6 +93,15 @@
                         <option value="hidden" @if (array_get($config, 'visibleIndexNewIcon', 'show') === 'hidden') selected @endif>표시안함</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label>목록 출력 설정<small> 출력할 목록 항목을 설정할 수 있습니다.</small></label>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="visibleIndexDefaultProfileImage" value="on" @if (array_get($config, 'visibleIndexDefaultProfileImage', 'on') === 'on') checked @endif>프로필 사진
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
