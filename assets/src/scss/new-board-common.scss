@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;500;700&display=swap');
+
+.xe-list-board {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    font-size: 16px;
+}
+            
 .xe-list-board-list__title-new {
     background: url('../../assets/img/icon_new.svg') no-repeat;
     display: inline-block;
@@ -8,7 +15,7 @@
 /* 한줄 */
 
 .xe-content--text-ellipsis-one {
-    overflow: hidden;
+    overflow: hidden;                               
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -46,7 +53,7 @@
 
     &:after {
         content: '·';
-        margin: 0 5px;
+        margin: 0 2px;
     }
 
     &:last-child:after {
@@ -97,10 +104,12 @@
     display: inline-block;
     border: 1px solid #e0e0e0;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 10px 0;
+    text-align: center;
     margin: 10px 0;
     transition: all 0.2s;
     background: transparent;
+    font-size: 14px;
 
     &:hover {
         background: #f4f5f7;

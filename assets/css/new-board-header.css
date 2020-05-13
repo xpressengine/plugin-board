@@ -1,6 +1,6 @@
 /* header */
 .xe-list-board {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
 }
 
 .xe-list-board .xe-list-board-header__text,
@@ -10,10 +10,6 @@
   line-height: 22px;
   letter-spacing: -0.4px;
   color: #767676;
-}
-
-.xe-list-board .xe-list-board-header {
-  margin-top: 28px;
 }
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content {
@@ -42,6 +38,7 @@
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box .xe-list-board-header__title a {
   text-decoration: none;
   color: #141414;
+  font-weight: 500;
 }
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box .xe-list-board-header__post-count {
@@ -68,12 +65,9 @@
   display: inline-block;
   background: none;
   border: none;
-}
-
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon button .xi-search {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 0px;
   font-size: 20px;
   color: #525252;
 }
@@ -153,11 +147,7 @@
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box {
     float: right;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-item-align: end;
-        align-self: end;
+    padding: 0;
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--category .xe-list-board-header--dropdown .xe-dropdown--menu {
     right: 0;
@@ -169,23 +159,23 @@
     content: '';
     display: inline-block;
     margin-left: 7px;
-    margin-right: 7px;
+    margin-right: 15px;
     width: 1px;
     height: 12px;
-    background-color: #767676;
+    background-color: #e0e0e0;
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:last-child:after {
     content: '';
     display: none;
   }
+  .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box .xe-dropdown__button-box {
+    line-height: 45px;
+  }
 }
 
 @media (min-width: 992px) {
   .xe-list-board {
-    max-width: 1140px;
-  }
-  .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box {
-    margin-top: 60px;
+    max-width: 1200px;
   }
 }
 

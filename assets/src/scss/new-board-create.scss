@@ -13,7 +13,6 @@
         }
 
         .xe-list-board-body--header-title {
-            border-bottom: 1px solid #e0e0e0;
 
             .current-slug {
                 padding: 10px;
@@ -26,9 +25,11 @@
                 width: 100%;
                 border: none;
                 padding: 15px;
+                font-size: 17px;
+                border-bottom: 1px solid #e0e0e0;
 
                 &::placeholder {
-                    font-size: 17px;
+                    font-size: 17px !important;
                     color: #aeaeae;
                 }
             }
@@ -165,6 +166,7 @@
                             -webkit-user-select: none;
                             -moz-user-select: none;
                             -ms-user-select: none;
+                            font-weight: 400;
                         }
 
                         & + label:before {
@@ -274,18 +276,6 @@
 }
 
 
-@media (max-width:992px) {
-    .new-select .xe-dropdown__button .xe-dropdown--menu .xe-dropdown--menu-item:hover:after {
-        width: 2000px !important;
-        left: -600px !important;
-    }
-
-    .new-select .xe-dropdown__button .xe-dropdown--menu .xe-dropdown--menu-item.on:after {
-        width: 2000px !important;
-        left: -600px !important;
-    }
-}
-
 @media (min-width:768px) {
     .xe-list-board-body {
         .xe-list-board-body--header {
@@ -341,7 +331,7 @@
 
                     .xe-list-board-body--footer-check-item {
                         margin-right: 25px;
-
+                        
                         &:last-child {
                             margin-right: 0;
                         }
@@ -375,13 +365,37 @@
 }
 
 @media (min-width: 992px){
+    .new-select .xe-dropdown__button .xe-dropdown--menu .xe-dropdown--menu-item:hover:after {
+        width: 2000px !important;
+        left: -600px !important;
+    }
+
+    .new-select .xe-dropdown__button .xe-dropdown--menu .xe-dropdown--menu-item.on:after {
+        width: 2000px !important;
+        left: -600px !important;
+    }
+
     .xe-list-board-body {
         .xe-list-board-body--header {
             .xe-list-board-body--header-title {
                 border-bottom: 0;
-
+    
                 .xe-list-board-body--header-title-input {
                     border-bottom: 1px solid #e0e0e0;
+                    padding: 15px 0;
+
+                }
+            }
+
+            .xe-list-board-body--header-select {
+                .new-select {
+                    .xe-dropdown__button-text {
+                        padding: 15px 0;
+                    }
+
+                    .xe-dropdown--menu {
+                        padding: 15px 0;
+                    }
                 }
             }
         }

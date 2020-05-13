@@ -7,7 +7,9 @@
 
     .xe-list-blog-board-list-item {
         display: flex;
-        margin: 50px 0;
+        margin-bottom: 24px;
+
+        &:last-child { margin-bottom: 0;}
 
         .xe-list-blog-board-list-item__img-box {
             position: relative;
@@ -24,13 +26,14 @@
 
             .xe-list-blog-board-list-item__img {
                 background: url(../img/board_default_img.png) no-repeat 50% 50%;
-                padding-top: 65%;
+                padding-top: 75%;
                 background-size: cover;
+                border: 1px solid rgba(0, 0, 0, 0.1)
             }
         }
 
         .xe-list-blog-board-list-item__body {
-            padding-left: 25px;
+            padding-left: 32px;
             width: 60%;
 
             .xe-list-blog-board-list-item__text {
@@ -80,12 +83,7 @@
                 }
                 
                 .xe-list-blog-board-list-item__description {
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;
-                    white-space: normal;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
+                    display: none;
                 }
             }
 
@@ -103,12 +101,42 @@
                 }
 
                 .xe-list-board-list--right-box {
+                    padding-top: 3px;
+                    
+                    .xe-list-board-list__display_name {
+                        font-size: 13px;
+                        line-height: 16px;
+                        letter-spacing: 0;
+                        color: #141414;
+                    }
+
+                    .xe-list-blog-board-list-item__category {
+                        font-size: 13px;
+                        line-height: 24px;
+                        letter-spacing: -0.2px;
+                        color: #9c9c9c;
+                        text-transform: uppercase;
+                        position: relative;
+                        margin-left: 10px;
+                        padding-left: 10px;
+
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            top: 3px;
+                            left: 0;
+                            width: 1px;
+                            height: 12px;
+                            background-color: #9c9c9c;
+                            
+                        }
+                    }
+
                     .xe-list-blog-board-list-item___detail-info {
                         word-break: break-all;
                         
                         p {
                             display: inline;
-                            margin-bottom: 0;
                         }
         
                         .xe-list-blog-board-list-item___detail {
@@ -118,7 +146,7 @@
         
                             &:after {
                                 content: '·';
-                                margin: 0 5px;
+                                margin: 0 2px;
                             }
         
                             &:last-child:after {
@@ -136,21 +164,37 @@
     .xe-list-blog-board-body {
         .xe-list-blog-board-list {
             .xe-list-blog-board-list-item {
+                margin-bottom: 32px;
+
                 .xe-list-blog-board-list-item__img-box {
                     width: 40%;
+                    
+                    .xe-list-blog-board-list-item__img {
+                        background: url(../img/board_default_img.png) no-repeat 50% 50%;
+                        padding-top: 56.25%;
+                        background-size: cover;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                    }
                 }
                 .xe-list-blog-board-list-item__body {
                     width: 60%;
+                
+                    .xe-list-blog-board-list-item__description {
+                        display: block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        white-space: normal;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+    
+                        font-size: 16px;
+                        line-height: 22px;
+                        letter-spacing: -0.1px;
+                        color: #767676;
+                    }
 
                     .xe-list-blog-board-list-item__text {
-                        .xe-list-blog-board-list-item__category {
-                            display: block;
-                            font-size: 13px;
-                            line-height: 24px;
-                            letter-spacing: -0.2px;
-                            color: #767676;
-                            text-transform: uppercase;
-                        }
 
                         .xe-list-blog-board-list-item__title-box {
                             
@@ -201,6 +245,8 @@
     .xe-list-blog-board-body {
         .xe-list-blog-board-list {
             .xe-list-blog-board-list-item {
+                margin-bottom: 40px;
+
                 .xe-list-blog-board-list-item__img-box {
                     width: 30%;
                 }

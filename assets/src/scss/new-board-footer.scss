@@ -16,9 +16,9 @@
             display: inline-block;
             border: 1px solid #e0e0e0;
             text-decoration: none;
-            padding: 10px 10px;
             margin: 10px 0;
             transition: all 0.2s;
+            width: 80px;
 
             &:hover {
                 background: #f4f5f7;
@@ -26,6 +26,7 @@
 
             &.xe-list-board__btn-primary {
                 background: #f4f5f7;
+                width: 65px;
                 border: 0;
 
                 &:hover {
@@ -50,7 +51,6 @@
     .xe-list-board-footer {
         .xe-list-board--button-box {
             .xe-list-board__btn {
-                padding: 10px 20px;
             }
         }
     }

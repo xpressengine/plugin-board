@@ -55,13 +55,6 @@
                 <div class="xe-list-webzine-board-list-item__body">
                     @if (in_array('title', $skinConfig['listColumns']) === true)
                         <div class="xe-list-webzine-board-list-item__text">
-                            @if ($config->get('category') === true)
-                                <h3 class="xe-list-webzine-board-list-item__category">
-                                    @if ($item->boardCategory !== null)
-                                        {!! xe_trans($item->boardCategory->categoryItem->word) !!}
-                                    @endif
-                                </h3>
-                            @endif
                             <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-webzine-board-list-item__text-link" id="title_{{$item->id}}">
                                 <div class="xe-list-webzine-board-list-item__title-box">
                                     @if ($item->display === $item::DISPLAY_SECRET)
@@ -118,6 +111,13 @@
                                         <a href="#">
                                             <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                         </a>
+                                    @endif
+                                    @if ($config->get('category') === true)
+                                        <span class="xe-list-webzine-board-list-item__category">
+                                            @if ($item->boardCategory !== null)
+                                                {!! xe_trans($item->boardCategory->categoryItem->word) !!}
+                                            @endif
+                                        </span>
                                     @endif
                                 </div>
                             @endif
@@ -173,13 +173,6 @@
                 <div class="xe-list-webzine-board-list-item__body">
                     @if (in_array('title', $skinConfig['listColumns']) === true)
                         <div class="xe-list-webzine-board-list-item__text">
-                            @if ($config->get('category') === true)
-                                <h3 class="xe-list-webzine-board-list-item__category">
-                                    @if ($item->boardCategory !== null)
-                                        {!! xe_trans($item->boardCategory->categoryItem->word) !!}
-                                    @endif
-                                </h3>
-                            @endif
                             <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-webzine-board-list-item__text-link" id="title_{{$item->id}}">
                                 <div class="xe-list-webzine-board-list-item__title-box">
                                     @if ($item->display === $item::DISPLAY_SECRET)
@@ -237,6 +230,13 @@
                                         <a href="#">
                                             <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                         </a>
+                                    @endif
+                                    @if ($config->get('category') === true)
+                                        <span class="xe-list-webzine-board-list-item__category">
+                                            @if ($item->boardCategory !== null)
+                                                {!! xe_trans($item->boardCategory->categoryItem->word) !!}
+                                            @endif
+                                        </span>
                                     @endif
                                 </div>
                             @endif

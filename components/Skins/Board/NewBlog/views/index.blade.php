@@ -54,13 +54,6 @@
                 <div class="xe-list-blog-board-list-item__body">
                     @if (in_array('title', $skinConfig['listColumns']) === true)
                         <div class="xe-list-blog-board-list-item__text">
-                            @if ($config->get('category') === true)
-                                @if ($item->boardCategory !== null)
-                                    <h3 class="xe-list-blog-board-list-item__category">
-                                        {!! xe_trans($item->boardCategory->categoryItem->word) !!}
-                                    </h3>
-                                @endif
-                            @endif
                             <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-blog-board-list-item__text-link" id="title_{{$item->id}}">
                                 <div class="xe-list-blog-board-list-item__title-box">
                                     @if ($item->display === $item::DISPLAY_SECRET)
@@ -113,6 +106,14 @@
                                         <a href="#">
                                             <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                         </a>
+                                    @endif
+                                    
+                                    @if ($config->get('category') === true)
+                                        @if ($item->boardCategory !== null)
+                                            <span class="xe-list-blog-board-list-item__category">
+                                                {!! xe_trans($item->boardCategory->categoryItem->word) !!}
+                                            </span>
+                                        @endif
                                     @endif
                                 </div>
                             @endif
@@ -167,13 +168,6 @@
                 <div class="xe-list-blog-board-list-item__body">
                     @if (in_array('title', $skinConfig['listColumns']) === true)
                         <div class="xe-list-blog-board-list-item__text">
-                            @if ($config->get('category') === true)
-                                @if ($item->boardCategory !== null)
-                                    <h3 class="xe-list-blog-board-list-item__category">
-                                        {!! xe_trans($item->boardCategory->categoryItem->word) !!}
-                                    </h3>
-                                @endif
-                            @endif
                             <a href="{{$urlHandler->getShow($item, Request::all())}}" class="xe-list-blog-board-list-item__text-link" id="title_{{$item->id}}">
                                 <div class="xe-list-blog-board-list-item__title-box">
                                     @if ($item->display === $item::DISPLAY_SECRET)
@@ -228,6 +222,13 @@
                                         <a href="#">
                                             <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                         </a>
+                                    @endif
+                                    @if ($config->get('category') === true)
+                                        @if ($item->boardCategory !== null)
+                                            <span class="xe-list-blog-board-list-item__category">
+                                                {!! xe_trans($item->boardCategory->categoryItem->word) !!}
+                                            </span>
+                                        @endif
                                     @endif
                                 </div>
                             @endif
