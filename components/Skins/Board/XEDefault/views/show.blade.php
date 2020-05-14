@@ -199,11 +199,11 @@
         <div class="xe-list-board-body__more-post">
             <h4 class="xe-list-board-body__more-post-title"><span class="xe-list-board-body__more-post-board-name">{{ xe_trans(current_menu()['title']) }}</span>의 다른 글</h4>
             <ul class="xe-list-board-body__more-post-list">
-                @foreach ($boardMoreItems as $item)
+                @foreach ($boardMoreItems as $boardMoreItem)
                     <li class="xe-list-board-body__more-post-list-item">
-                        <a href="{{ $urlHandler->getShow($item) }}" class="xe-list-board-body__more-post-list-item-link">
-                            <span class="xe-list-board-body__more-post-list-item-title">{!! $item->title !!}</span>
-                            <span class="xe-list-board-body__more-post-list-item-date">{{ $item->created_at->format('Y-m-d') }}</span>
+                        <a href="{{ $urlHandler->getShow($boardMoreItem) }}" class="xe-list-board-body__more-post-list-item-link">
+                            <span class="xe-list-board-body__more-post-list-item-title">{!! $boardMoreItem->title !!}</span>
+                            <span class="xe-list-board-body__more-post-list-item-date">{{ $boardMoreItem->created_at->format('Y-m-d') }}</span>
                         </a>
                     </li>
                 @endforeach
