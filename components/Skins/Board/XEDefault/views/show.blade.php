@@ -26,7 +26,7 @@
                                        data-url="{{ route('toggleMenuPage') }}"
                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
                                         @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
-                                            <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 48px;"><span class="blind">유저 이미지</span></span>
+                                            <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}) 50% 50%; background-size: 48px;"><span class="blind">유저 이미지</span></span>
                                         @endif
                                         @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
                                             <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
