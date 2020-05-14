@@ -124,13 +124,11 @@
             }
 
             .xe-list-board-list__writer {
-                overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
 
                 &:after {
-                    content: '';
-                    margin: 0 10px 0 0;
+                    display: none;
                 }
                 a {
                     color: #141414 ;
@@ -138,7 +136,8 @@
 
                     .xe-list-board-list__display_name {
                         color: #141414;
-
+                        display: block;
+                        margin-right: 10px;
                     }
                 }
 
@@ -265,7 +264,6 @@
                     flex-basis: 10%;
                     line-height: 50px;
                     
-                    overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     padding: 0 12px;
@@ -320,12 +318,21 @@
 
                 .xe-list-board-list__writer {
                     flex: 0 0 130px;
-                    max-width: 130px; 
                     text-align: left;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
                     padding-left: 0;
+
+                    > a {
+                        position:absolute;
+                        display: block;
+                        height: 50px; 
+                    }
+
+                    .xe-list-board-list__display_name {
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        max-width: 100px; 
+                        overflow: hidden;
+                    }
 
                     .xe-list-board-list__user-image {
                         width: 28px;
@@ -338,12 +345,11 @@
                         text-decoration: none;
                         color: #767676;
                         background-size: cover;
-                        margin: 11px 0;
+                        margin: 11px 10px 11px 0;
                     }
 
                     .xe-list-board-list__display_name {
-                        display: inline-block;
-                        margin-left: 5px;
+                        display: block;
                     }
                 }
                 .xe-list-board-list__created_at {
