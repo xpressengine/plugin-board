@@ -169,3 +169,30 @@
         }
     }
 }
+
+
+
+/**/
+.xe-list-board-header--right-box {
+    display: flex;
+    .xe-list-board-header--icon-tab {
+        margin-right: 25px;
+        line-height: 45px;
+
+        .xe-list-board-header--icon-tab-list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+    
+            .xe-list-board-header--icon-tab-item {
+                color: #767676;
+
+                .xe-list-board-header--icon-tab-button {
+                    background: transparent;
+                    border: none;
+                }
+            }
+        }
+    }
+}
