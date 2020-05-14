@@ -105,7 +105,7 @@
                                     <span class="xe-list-board-list__title-text">{{ $item->title }}</span>
                                     <div class="xe-list-board-list__title-icon">
                                         @if($item->comment_count > 0)
-                                            <span class="xe-list-board-list__title-comment_count">{{ $item->comment_count }}</span>
+                                            <span class="xe-list-board-list__title-comment_count">{{ number_format($item->comment_count) }}</span>
                                         @endif
                                         @if ($item->data->file_count > 0)
                                             <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
@@ -199,7 +199,7 @@
                                 <span class="xe-list-board-list__title-text">{{ $item->title }}</span>
                                 <div class="xe-list-board-list__title-icon">
                                     @if($item->comment_count > 0)
-                                        <span class="xe-list-board-list__title-comment_count">{{ $item->comment_count }}</span>
+                                        <span class="xe-list-board-list__title-comment_count">{{ number_format($item->comment_count) }}</span>
                                     @endif
                                     @if ($item->data->file_count > 0)
                                         <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>

@@ -244,9 +244,9 @@
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__read_count {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 50px;
-            flex: 0 0 50px;
-    max-width: 50px;
+        -ms-flex: 0 0 100px;
+            flex: 0 0 100px;
+    max-width: 100px;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--header .xe-list-board-list__title {
     -webkit-box-flex: 1;
@@ -383,9 +383,9 @@
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__read_count {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 50px;
-            flex: 0 0 50px;
-    max-width: 50px;
+        -ms-flex: 0 0 100px;
+            flex: 0 0 100px;
+    max-width: 100px;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title {
     -webkit-box-flex: 1;
