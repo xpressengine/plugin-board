@@ -10,7 +10,7 @@
 {{ expose_trans('board::selectBoard') }}
 {{ expose_trans('board::msgDeleteConfirm') }}
 
-<section class="xe-list-board container">
+<section class="xe-list-board">
     <div class="xe-list-board-header">
         @if (request()->segment(2) === null)
             <div class="xe-list-board-header__title-content">

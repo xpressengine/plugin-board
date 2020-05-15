@@ -19,7 +19,7 @@
             @switch ($columnName)
                 @case ('title')
                     <div class="xe-list-board-body--header row">
-                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-12 @if ($config->get('category') === true) col-md-8 pdr20 @endif">
+                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-12 @if ($config->get('category') === true) col-md-8 @endif">
                             {!! uio('newTitleWithSlug', [
                                 'title' => Request::old('title'),
                                 'slug' => Request::old('slug'),
@@ -28,7 +28,7 @@
                             ]) !!}
                         </div>
                         @if($config->get('category') === true)
-                            <div class="xe-list-board-body--header-item xe-list-board-body--header-select col-md-4">
+                            <div class=" @if ($config->get('category') === true) pdl20 @endif xe-list-board-body--header-item xe-list-board-body--header-select col-md-4">
                                 {!! uio('uiobject/board@new_select', [
                                     'name' => 'category_item_id',
                                     'label' => xe_trans('xe::category'),
@@ -120,7 +120,6 @@
 
             
             <div class="xe-list-board-body--footer-button-box">
-
                 <div class="xe-list-board-body--footer-button">
                     <div class="xe-list-board-body--footer-button__transient __xe_temp_btn_save">
                         <a href="#" class="xe-list-board-body--footer-button__draftsave">{{ xe_trans('xe::draftSave') }}</a>
