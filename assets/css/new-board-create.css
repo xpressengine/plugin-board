@@ -5,7 +5,6 @@
 
 .xe-list-board-body .pdr20 {
   padding-right: 20px !important;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 .xe-list-board-body .xe-list-board-body--header .xe-list-board-body--header-item {
@@ -24,7 +23,7 @@
   border: none;
   padding: 15px;
   font-size: 17px;
-  height: 55px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .xe-list-board-body .xe-list-board-body--header .xe-list-board-body--header-title .xe-list-board-body--header-title-input::-webkit-input-placeholder {

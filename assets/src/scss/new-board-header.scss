@@ -14,8 +14,6 @@
     .xe-list-board-header {
         .xe-list-board-header__title-content {
             margin-bottom: 25px;
-            display: flex;
-            align-items: center;
 
             &:after {
                 content: '';
@@ -25,7 +23,6 @@
 
             .xe-list-board-header__title-box {
                 float: left;
-                flex: 1;
 
                 .xe-list-board-header__title {
                     font-size: 20px;

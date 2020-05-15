@@ -14,12 +14,6 @@
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content {
   margin-bottom: 25px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content:after {
@@ -30,9 +24,6 @@
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box {
   float: left;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
 }
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__title-box .xe-list-board-header__title {
