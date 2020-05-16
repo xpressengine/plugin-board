@@ -2,6 +2,10 @@
   margin: 30px 0 40px 0;
 
   .xe-list-board-body__title {
+    margin: 0 -15px 25px 0;
+    padding: 0 15px 25px 0;
+    border-bottom: 1px solid #ececec;
+
     .xe-list-board-body__title-category {
       font-size: 16px;
       line-height: 24px;
@@ -19,20 +23,19 @@
       word-break: keep-all;
 
       .xe-list-board-body__title-notice {
+        vertical-align: middle;
         background: #2684ff;
-        font-size: 18px;
-        line-height: 30px;
+        border-radius: 4px;
+        font-size: 16px;
         color: #fff;
+        display: inline-block;
         padding: 0 10px;
-        margin-right: 10px;
+        margin: 0 10px 0 0;
       }
     }
 
     .xe-list-board-body__title-post-info {
       display: flex;
-      border-bottom: 1px solid #ececec;
-      padding-bottom: 25px;
-      margin-bottom: 25px;
 
       .xe-list-board-body--left-box {
         flex: 1;
@@ -54,7 +57,10 @@
           }
 
           .xe-list-board-list__user-image {
-            margin: 6px 10px 6px 0;
+            margin: 0 10px 0 0;
+            width: 40px;
+            height: 40px;
+
           }
 
           .xe-list-board-list__display_name {
@@ -68,7 +74,6 @@
       }
 
       .xe-list-board-body--right-box {
-        flex-basis: 25%;
         text-align: right;
 
         .xe-list-board-list__icon-box {
@@ -81,14 +86,45 @@
             color: #141414;
             margin-right: 10px;
 
-            &.xe-list-board-list__bookmark i:before {
-              content: '\ea1d';
-              display: inline-block;
-            }
+            &.xe-list-board-list__bookmark {
+              .on {
+                .bookmark {
+                  width: 18px;
+                  height: 18px;
+                  background: url('../img/bookmark-color.svg') no-repeat center center;
+                  display: inline-block;
+                }
+              }
+              .xe-list-board-body__link:focus,
+              .xe-list-board-body__link:visited,
+              .xe-list-board-body__link:active {
+                text-decoration: none;
+              }
 
-            &.xe-list-board-list__bookmark .on i:before {
-              content: '\ea1c';
-              display: inline-block;
+              &.xe-list-board-list__bookmark {
+                width: 18px;
+                height: 18px;
+                display: inline-block;
+                position: relative;
+              }
+
+              .bookmark {
+                width: 18px;
+                height: 18px;
+                background: url('../img/bookmark.svg') no-repeat center center;
+                display: inline-block;
+                position: absolute;
+                top: 2px;
+                left: 0;
+              }
+            }
+            &.xe-list-board-list__bookmark .on {
+              .bookmark {
+                width: 18px;
+                height: 18px;
+                background: url('../img/bookmark-color.svg') no-repeat center center;
+                display: inline-block;
+              }
             }
           }
 
@@ -218,10 +254,10 @@
         }
 
         .xe-list-board-body__like-box {
+          height: 44px;
           border: 1px solid #e0e0e0;
-          padding: 10px 0;
           display: flex;
-          margin-left: 15px;
+          align-items: center;
 
           .xe-list-board-body__like-box-item {
             border-right: 1px solid #e0e0e0;
@@ -245,6 +281,7 @@
                 width: 18px;
                 height: 18px;
                 background: url('../img/assent.svg') no-repeat 50%;
+                margin-bottom: -2px;
                 
 
                 &.voted {
@@ -259,6 +296,7 @@
                 width: 18px;
                 height: 18px;
                 background: url('../img/dissent.svg') no-repeat 50%;
+                margin-bottom: -5px;
 
                 &.voted {
                   background: url('../img/dissent_down.svg') no-repeat 50%;
@@ -320,7 +358,7 @@
 
     .xe-list-board-body--right-box {
       display: flex;
-      line-height: 43px;
+      align-items: center;
       text-align: right;
       letter-spacing: -0.2px;
       color: #141414;
@@ -333,6 +371,24 @@
           color: #141414;
         }
       }
+      
+      .xe-list-board-list__bookmark {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        position: relative;
+      }
+
+      .bookmark {
+        width: 18px;
+        height: 18px;
+        background: url('../img/bookmark.svg') no-repeat center center;
+        display: inline-block;
+        position: absolute;
+        top: 2px;
+        left: 0;
+      }
+
 
       .xe-list-board-body__edit-box {
         font-size: 14px;
@@ -340,7 +396,6 @@
 
         .xe-list-board-body__edit-item {
           .xe-list-board-body__link {
-
             &:focus,
             &:hover,
             &:active {
@@ -372,7 +427,9 @@
       }
 
       .xe-list-board-list__icon-box {
-        font-size: 18px;
+        img {
+          width: 18px;
+        }
 
         .xe-dropdown {
           display: inline-block;
@@ -392,15 +449,10 @@
           margin-right: 10px;
           vertical-align: middle;
 
-          &.xe-list-board-list__bookmark i:before {
-            content: '\ea1d';
-            display: inline-block;
+          .xe-list-board-body__link {
+            display: inline-block; 
           }
 
-          &.xe-list-board-list__bookmark .on i:before {
-            content: '\ea1c';
-            display: inline-block;
-          }
 
           &:last-child {
             margin: 0;
@@ -413,7 +465,8 @@
   .xe-list-board-body__more-post {
     border-top: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
-    padding: 30px 20px;
+    padding: 32px 20px;
+    margin: 0 -15px;
 
     .xe-list-board-body__more-post-title {
       font-size: 16px;
@@ -499,6 +552,43 @@
   color: #2c8beb !important;
 }
 
+
+@media (max-width: 400px) {
+  .xe-list-board-body {
+    .xe-list-board-body__more-info {
+      .xe-list-board-body--left-box {
+        .xe-list-board-body--like-box-wrapper {
+          .xe-list-board-body__like-box {
+            padding: 0;
+            .xe-list-board-body__like-box-item.xe-list-board-list__box-dissent_count,
+            .xe-list-board-body__like-box-item.xe-list-board-list__box-assent_count {
+              padding: 0px 10px;
+              .bd_like {
+                width: 14px;
+                height: 14px;
+                background-size: 14px;
+              }
+              .bd_like_num, .bd_hate_num { font-size: 12px;}
+            }
+          }
+
+        }
+      }
+      .xe-list-board-body--right-box {
+        .xe-list-board-body__edit-box {
+          margin-right: 14px;
+        }
+        .xe-list-board-list__icon-box {
+          margin-top: -3px;
+          .xe-list-board-list__icon {
+            img {width: 14px;}
+          }
+        }
+      }
+    }
+  }
+}
+
 @media (min-width: 768px) {
   .xe-list-board-body {
     margin: 60px 0 80px 0;
@@ -510,22 +600,15 @@
 
       .xe-list-board-body__title-text {
         font-size: 30px;
-        line-height: 44px;
         margin-bottom: 25px;
 
-        .xe-list-board-body__title-notice {
-          font-size: 24px;
-          line-height: 44px;
-        }
       }
 
       .xe-list-board-body__title-post-info {
-        padding-bottom: 40px;
-        margin-bottom: 40px;
-
         .xe-list-board-body--left-box .xe-list-board-list__writer .xe-list-board-list__user-image {
           width: 40px;
           height: 40px;
+          margin: 0 8px 0 0;
         }
       }
     }
@@ -556,6 +639,7 @@
       border-left: 1px solid #e0e0e0;
       border-right: 1px solid #e0e0e0;
       padding: 40px;
+      margin: 0;
 
       .xe-list-board-body__more-post-title {
         font-size: 16px;
@@ -583,13 +667,8 @@
         .xe-list-board-body--like-box-wrapper {
           .xe-list-board__btn-box {
             .xe-list-board__btn {
-              .xe-list-board__btn-text {
-                display: inline-block;
-              }
-
-              i {
-                display: none;
-              }
+              .xe-list-board__btn-text {display: inline-block;}
+              i {display: none;}
             }
           }
         }
@@ -607,7 +686,10 @@
   .xe-list-board {
     .board_comment {
       max-width: 1000px;
-      margin: 100px auto 0;
+      margin: 40px auto 0;
     }
   }
 }
+
+
+

@@ -46,7 +46,6 @@
 
 .new-select .xe-dropdown__button .xe-dropdown--menu .xe-dropdown--menu-item.on {
     color: #fff;
-    padding: 5px 10px;
 }
 
 .new-select .xe-dropdown__button .xe-dropdown--menu .xe-dropdown--menu-item .xe-dropdown--menu-item-link:focus:after {
