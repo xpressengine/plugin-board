@@ -18,8 +18,8 @@
         @foreach ($skinConfig['formColumns'] as $columnName)
             @switch ($columnName)
                 @case ('title')
-                <div class="xe-list-board-body--header row">
-                    <div class="xe-list-board-body--header-item xe-list-board-body--header-title col-md-12 @if ($config->get('category') === true) col-md-8 pdr20 @endif">
+                <div class="xe-list-board-body--header xf-row">
+                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title @if ($config->get('category') === true) xf-col-md-8 @else xf-col-md-12 @endif">
                         {!! uio('newTitleWithSlug', [
                             'title' => Request::old('title', $item->title),
                             'slug' => $item->getSlug(),
@@ -28,7 +28,7 @@
                         ]) !!}
                     </div>
                     @if($config->get('category') === true)
-                        <div class="xe-list-board-body--header-item xe-list-board-body--header-select col-md-4">
+                            <div class="pdl20 xe-list-board-body--header-item xe-list-board-body--header-select xf-col-md-4">
                             {!! uio('uiobject/board@new_select', [
                                 'name' => 'category_item_id',
                                 'label' => xe_trans('xe::category'),

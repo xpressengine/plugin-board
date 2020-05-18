@@ -199,7 +199,6 @@
 @media (min-width: 992px) {
   .xe-list-board-body .xe-list-board-list {
     overflow-x: auto;
-    padding-bottom: 30px;
   }
   .xe-list-board-body .xe-list-board-list .xe-hidden-pc {
     display: none !important;

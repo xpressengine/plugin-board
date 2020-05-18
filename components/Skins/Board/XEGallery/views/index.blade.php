@@ -42,9 +42,9 @@
 </div>
 
 <div class="xe-list-gallery-board-body">
-    <ul class="xe-list-gallery-board-list row">
+    <ul class="xe-list-gallery-board-list xf-row">
         @foreach ($notices as $item)
-            <li class="xe-list-gallery-board-list-item @if (array_get($skinConfig, 'visibleIndexWebzineMobileType', 'double') === 'double') col-sm-6 @endif col-md-6 col-lg-4">
+            <li class="xe-list-gallery-board-list-item @if (array_get($skinConfig, 'visibleIndexWebzineMobileType', 'double') === 'double') xf-col-sm-6 @endif xf-col-md-6 xf-col-lg-4">
                 <a href="{{$urlHandler->getShow($item, Request::all())}}">
                     <div class="xe-list-gallery-board-list-item__img-box">
                         <div class="xe-list-board-list-item__notice-banner">공지</div>
@@ -163,7 +163,7 @@
         @endforeach
 
         @foreach ($paginate as $item)
-            <li class="xe-list-gallery-board-list-item @if (array_get($skinConfig, 'visibleIndexWebzineMobileType', 'double') === 'double') col-sm-6 @endif col-md-6 col-lg-4">
+            <li class="xe-list-gallery-board-list-item @if (array_get($skinConfig, 'visibleIndexWebzineMobileType', 'double') === 'double') xf-col-sm-6 @endif xf-col-md-6 xf-col-lg-4">
                 <a href="{{$urlHandler->getShow($item, Request::all())}}">
                     <div class="xe-list-gallery-board-list-item__img-box">
                         <div class="xe-list-gallery-board-list-item__img" @if($item->board_thumbnail_path) style="background-image: url('{{ $item->board_thumbnail_path }}')" @endif></div>
