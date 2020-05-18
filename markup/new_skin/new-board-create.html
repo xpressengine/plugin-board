@@ -103,90 +103,98 @@
     <form method="get" class="__xe_search">
         <div class="xe-list-board-header--left-box">
             <div class="xe-list-board--header__search">
-                <input type="text" name="search" class="xe-list-board--header__search__control">
+                <input type="text" name="title_content" class="xe-list-board--header__search__control" value="">
                 <span class="xe-list-board--header__search__icon">
-                    <a href="#"><i class="xi-search"></i></a>
+                    <button type="submit"><i class="xi-search"></i></button>
                 </span>
             </div>
         </div>
         <div class="xe-list-board-header--right-box __xe-forms">
-            <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
-                <div class="xe-list-board-header--dropdown __xe-dropdown-form">
-    <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
-        <div class="xe-list-board--header-dropdown__button-box">
-            <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-category__button" data-toggle="xe-dropdown" aria-expanded="false">전체 카테고리 <i class="xi-angle-down-thin"></i></button>
-        </div>
-        <ul class="xe-list-board-header--dropdown-menu xe-list-board-header--dropdown-menu">
-            <li class="xe-list-board-header--dropdown-menu-item on">
-                <a href="#">전체 카테고리</a>
-            </li>
-            <li class="xe-list-board-header--dropdown-menu-item">
-                <a href="#">공지사항</a>
-            </li>
-            <li class="xe-list-board-header--dropdown-menu-item">
-                <a href="#">릴리즈 노트</a>
-            </li>
-            <ul class="xe-list-board-header--dropdown-sub-menu">
-                <li class="xe-list-board-header--dropdown-sub-menu-list">
-                    <a href="#" class="xe-list-board-header--dropdown-sub-menu-list-link">2뎁스-1</a>
-                </li>
-                <li class="xe-list-board-header--dropdown-sub-menu-list">
-                    <a href="#" class="xe-list-board-header--dropdown-sub-menu-list-link">2뎁스-2</a>
-                </li>
-                <ul class="xe-list-board-header--dropdown-sub-menu">
-                    <li class="xe-list-board-header--dropdown-sub-menu-list">
-                        <a href="#" class="xe-list-board-header--dropdown-sub-menu-list-link">3뎁스-1</a>
-                    </li>
-                    <li class="xe-list-board-header--dropdown-sub-menu-list">
-                        <a href="#" class="xe-list-board-header--dropdown-sub-menu-list-link">3뎁스-2</a>
-                    </li>
-                    <li class="xe-list-board-header--dropdown-sub-menu-list">
-                        <a href="#" class="xe-list-board-header--dropdown-sub-menu-list-link">3뎁스-3</a>
-                    </li>
+            <div class="xe-list-board-header--icon-tab">
+                <ul class="xe-list-board-header--icon-tab-list">
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">리스트 게시판</span><i class="xi-align-justify"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">갤러리 게시판</span><i class="xi-border-all"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">웹진 게시판</span><i class="xi-list-square"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">비디오 웹진 게시판</span><i class="xi-videocam"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">비디오 갤러리 게시판</span><i class="xi-library-video"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">오디오 리스트 게시판</span><i class="xi-library-music"></i></button></li>
                 </ul>
-            </ul>
-        </ul>
-    </div>
-</div>
-<script>
-    $(function () {
-        $('.xe-list-board-header--dropdown-menu-item').on('click', function (e) {
-            e.preventDefault()
-            var $this = $(this)
-            var $parent = $(this).closest('.xe-list-board-header--dropdown__button')
-            var $container = $(this).closest('.xe-list-board-header--dropdown')
-            $parent.find('.xe-list-board-header--dropdown-menu-item').removeClass('on')
-            $this.addClass('on')
-            $container.find('button').text($this.text())
-        })
-    })
-</script>
             </div>
-            <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
-                <div class="xe-list-board-header--dropdown __xe-dropdown-form">
-    <div class="xe-list-board-header-order__button xe-list-board-header--dropdown__button">
-        <div class="xe-list-board--header-dropdown__button-box">
-            <button class="xe-list-board--header-dropdown__button-text" type="button" data-target=".xe-list-board-header-order__button" data-toggle="xe-dropdown" aria-expanded="false">정렬 <i class="xi-angle-down-thin"></i></button>
+            <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
+                    <div class="xe-list-board-header--right-box __xe-forms">
+        <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
+            <div class="xe-list-board-header--dropdown">
+                <div class="xe-list-board-header-category__button xe-list-board-header--dropdown__button">
+                    <div class="new-select __xe-dropdown-form">
+                        <input type="hidden" name="category_item_id" value="" data-valid-name="분류">
+                        <div class="xe-list-board-header-category_item_id__button xe-dropdown__button">
+                            <div class="xe-dropdown__button-box">
+                                <button class="xe-dropdown__button-text" type="button" data-target=".xe-dropdown--menu--category_item_id" data-toggle="xe-dropdown" aria-expanded="true">
+                                    분류
+                                </button>
+                            </div>
+                            <div class="xe-dropdown--menu xe-dropdown--menu--category_item_id open" data-name="category_item_id">
+                                <a href="#" class="xe-dropdown--menu-item-link">
+                                    <div class="xe-dropdown--menu-item  on">
+                                        분류
+                                    </div>
+                                </a>
+                                <div class="xe-dropdown--menu-item " data-value="2">
+                                    <a href="#" class="xe-dropdown--menu-item-link">XEHUB</a>
+                                </div>
+                                <div class="xe-dropdown--sub-menu">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-        <ul class="xe-list-board-header--dropdown-menu">
-            <li class="xe-list-board-header--dropdown-menu-item on">
-                <a href="#">정렬</a>
-            </li>
-            <li class="xe-list-board-header--dropdown-menu-item">
-                <a href="#">최신순</a>
-            </li>
-            <li class="xe-list-board-header--dropdown-menu-item">
-                <a href="#">추천순</a>
-            </li>
-        </ul>
+        <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
+            <div class="xe-list-board-header--dropdown">
+                <div class="xe-list-board-header-order__button xe-list-board-header--dropdown__button">
+                    <div class="new-select __xe-dropdown-form">
+                        <input type="hidden" name="order_type" value="" data-valid-name="정렬">
+                        <div class="xe-list-board-header-order_type__button xe-dropdown__button">
+                            <div class="xe-dropdown__button-box">
+                                <button class="xe-dropdown__button-text" type="button" data-target=".xe-dropdown--menu--order_type" data-toggle="xe-dropdown" aria-expanded="false">
+                                    정렬
+                                </button>
+                            </div>
+                            <div class="xe-dropdown--menu xe-dropdown--menu--order_type" data-name="order_type">
+                                <a href="#" class="xe-dropdown--menu-item-link">
+                                    <div class="xe-dropdown--menu-item">
+                                        정렬
+                                    </div>
+                                </a>
+                                <div class="xe-dropdown--menu-item " data-value="assent_count">
+                                    <a href="#" class="xe-dropdown--menu-item-link">추천순</a>
+                                </div>
+                                <div class="xe-dropdown--sub-menu">
+                                </div>
+                                <div class="xe-dropdown--menu-item " data-value="recently_created">
+                                    <a href="#" class="xe-dropdown--menu-item-link">최신순</a>
+                                </div>
+                                <div class="xe-dropdown--sub-menu">
+                                </div>
+                                <div class="xe-dropdown--menu-item " data-value="recently_updated">
+                                    <a href="#" class="xe-dropdown--menu-item-link">최근 수정순</a>
+                                </div>
+                                <div class="xe-dropdown--sub-menu">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
             </div>
         </div>
     </form>
 </div>
-
                         
         <div class="xe-list-board-body">
             <div class="xe-list-board-body--header">

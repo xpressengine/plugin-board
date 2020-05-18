@@ -13,17 +13,17 @@
 .xf-row {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
 }
 
-.xf-col-sm-6 {
+.xf-col-sm-6, .xf-col-md-6, .xf-col-md-8, .xf-col-md-4, .xf-col-md-12, .xf-col-lg-4  {
     position: relative;
     min-height: 1px;
     padding-right: 15px;
     padding-left: 15px;
 }
-
+.xf-col-sm-6, .xf-col-md-6, .xf-col-md-8, .xf-col-md-4, .xf-col-md-12, .xf-col-lg-4 {
+    width: 100%;
+}
 
 @media (min-width: 768px){
     .xf-col-sm-6 {
@@ -66,7 +66,6 @@
     font-family: 'Roboto', 'Noto Sans KR', sans-serif;
     font-size: 16px;
     word-break: break-all;
-    overflow: hidden;
 }
             
 .xe-list-board-list__title-new {

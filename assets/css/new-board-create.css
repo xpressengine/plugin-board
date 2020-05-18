@@ -371,12 +371,6 @@
   }
 }
 
-@media (max-width: 767px) {
-  .xe-list-board {
-    margin: 0 -15px;
-  }
-}
-
 @media (min-width: 768px) {
   .xe-list-board-body .row {
     margin-left: 0;
