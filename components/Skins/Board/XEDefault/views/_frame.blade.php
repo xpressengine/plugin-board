@@ -1,11 +1,14 @@
 {{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
+{{ XeFrontend::js('assets/core/xe-ui-component/js/xe-page.js')->appendTo('body')->load() }}
+
 {{ XeFrontend::css('plugins/board/assets/css/new-board-common.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-header.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-footer.css')->load() }}
-{{ XeFrontend::css('plugins/board/assets/css/new-board-common.css')->load() }}
+
 {{ expose_trans('board::selectPost') }}
 {{ expose_trans('board::selectBoard') }}
-<link href="" type="text/css" rel="stylesheet" media="all">
+{{ expose_trans('board::msgDeleteConfirm') }}
+
 <section class="xe-list-board">
     <div class="xe-list-board-header">
         @if (request()->segment(2) === null)
