@@ -1,5 +1,9 @@
 @charset "UTF-8";
 /* 게시판 */
+.xe-list-board-footer {
+  margin-top: -70px;
+}
+
 .xe-list-board-body {
   font-size: 14px;
   letter-spacing: -0.2px;
