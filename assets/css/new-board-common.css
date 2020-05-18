@@ -71,6 +71,11 @@
   color: #141414;
 }
 
+/* color gray */
+.list-board__color-gray {
+  color: #767676 !important;
+}
+
 /* 모바일에서만 보이게 */
 .xe-hidden-pc {
   display: inline-block;
@@ -103,11 +108,18 @@
 
 /* 버튼 */
 .xe-list-board__btn {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   color: #141414;
-  display: inline-block;
   border: 1px solid #e0e0e0;
   text-decoration: none;
-  padding: 10px 0;
   text-align: center;
   margin: 10px 0;
   -webkit-transition: all 0.2s;

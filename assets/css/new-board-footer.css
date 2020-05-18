@@ -1,4 +1,8 @@
 /* footer */
+.xe-list-board-footer {
+  margin-top: -20px;
+}
+
 .xe-list-board-footer .xe-list-board--button-box {
   margin-top: 10px;
   display: -webkit-box;
@@ -17,13 +21,13 @@
 
 .xe-list-board-footer .xe-list-board--button-box .xe-list-board__btn {
   color: #141414;
-  display: inline-block;
   border: 1px solid #e0e0e0;
   text-decoration: none;
   margin: 10px 0;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
   width: 80px;
+  height: 36px;
 }
 
 .xe-list-board-footer .xe-list-board--button-box .xe-list-board__btn:hover {

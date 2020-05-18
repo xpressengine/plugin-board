@@ -13,11 +13,11 @@
                 </button>
         </div>
         <div class="xe-dropdown--menu xe-dropdown--menu--{{ $name }}" data-name="{{ $name }}">
-            <a href="#" class="xe-dropdown--menu-item-link">
                 <div class="xe-dropdown--menu-item @if ((string)$value === (string)$default) on @endif">
+            <a href="#" class="xe-dropdown--menu-item-link">
                     {{ xe_trans($label) }}
-                </div>
             </a>
+                </div>
             {!! NewSelectUIObject::renderList($items, $value) !!}
         </div>
     </div>

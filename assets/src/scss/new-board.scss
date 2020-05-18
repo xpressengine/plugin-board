@@ -1,10 +1,15 @@
 /* 게시판 */
 .xe-list-board-body {
     font-size: 14px;
+    letter-spacing: -0.2px;
 
+    .xi-lock {
+        color: #aeaeae;
+    }
     .xe-list-board-list__default {
         font-size: 16px;
-        line-height: 50px;
+        letter-spacing: -0.4px;
+        // line-height: 50px;
         color: #141414;
     }
 
@@ -21,18 +26,21 @@
         .xe-list-board-list--header {
             display: none;
             border-bottom: 1px solid #e0e0e0;
+            color: #141414;
+            padding: 10px 0;
         }
 
 
         .xe-list-board-list--item {
             display: flex;
             flex-wrap: wrap;
+            align-content: center;
             position: relative;
-            padding: 10px 0;
             border-bottom: 1px solid #e0e0e0;
+            padding: 12px 0;
 
             > div {
-                flex-shrink: 0;
+            flex-shrink: 0;
 
                 &:after {
                     content: '·';
@@ -47,12 +55,13 @@
 
             .xe-list-board-list__mobile-style {
                 font-size: 12px;
+                letter-spacing: -0.2px;
                 color: #9c9c9c;
             }
 
             .xe-list-board-list__category {
                 font-size: 13px;
-                line-height: 24px;
+                // line-height: 24px;
                 letter-spacing: -0.2px;
                 color: #767676;
                 margin-bottom: 5px;
@@ -61,10 +70,13 @@
             .xe-list-board-list__notice--box-form {
                 color:#fff;
                 margin-right: 10px;
+                line-height: 20px;
                 
                 .xe-list-board-list__notice--box-form-bg {
                     background: #2684ff;
                     padding: 5px 10px;
+                    border-radius: 4px;
+                    display: inline-block;
                 }
             }
             
@@ -98,9 +110,12 @@
                     text-decoration: none;
                     color: #141414;
                     size: 15px;
-                    line-height: 22px;
+                    // line-height: 22px;
                     letter-spacing: -0.4px;
                     margin-bottom: 15px;
+                    &:visited {
+                        color: #767676 !important;
+                    }
 
                     &:focus .xe-list-board-list__title-text {
                         text-decoration: underline;
@@ -118,28 +133,31 @@
                         .xe-list-board-list__title-comment_count {
                             color: #2684ff;
                             font-size: 15px;
+                            letter-spacing: -0.4px;
                         }
                     }
                 }
             }
 
             .xe-list-board-list__writer {
-                overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
 
                 &:after {
-                    content: '';
-                    margin: 0 10px 0 0;
+                    display: none;
                 }
                 a {
                     color: #141414 ;
                     text-decoration: none;
 
                     .xe-list-board-list__display_name {
-                        color: #141414;
-
+                        color: #767676;
+                        display: block;
+                        margin-right: 10px;
                     }
+                }
+                .xe-dropdown-menu {
+                    margin-top: -10px !important;
                 }
 
             }
@@ -182,9 +200,10 @@
 }
 
 @media (min-width:992px) {
-    .xe-list-board-body{
+    .xe-list-board-body {
         .xe-list-board-list {
             overflow-x: auto;
+            padding-bottom: 30px;
 
             .xe-hidden-pc {
                 display: none !important;
@@ -196,15 +215,17 @@
 
             .xe-list-board-list--header {
                 display: flex;
-                padding: 10px 0;
+                align-items: center;
 
-                div {
+                > div {
                     text-align: center;
+                    padding: 0 12px;
                 }
 
                 .xe-list-board-list__favorite {
                     flex: 0 0 48px;
                     max-width: 48px;
+                    text-align: left;
 
                     a {
                         color: #141414;
@@ -233,12 +254,12 @@
                     max-width: 80px;
                 }
                 .xe-list-board-list__dissent_count {
-                    flex: 0 0 80px;
-                    max-width: 80px;
+                      flex: 0 0 80px;
+                      max-width: 80px;
                 }
                 .xe-list-board-list__read_count {
-                    flex: 0 0 50px;
-                    max-width: 50px;
+                      flex: 0 0 100px;
+                      max-width: 100px;
                 }
 
                 .xe-list-board-list__title {
@@ -256,6 +277,7 @@
             .xe-list-board-list--item {
                 display: flex;
                 flex-wrap: nowrap;
+                padding: 0;
 
                 > div {
                     flex-wrap: nowrap;
@@ -263,9 +285,10 @@
                     flex-shrink: 1;
                     flex-grow: 1;
                     flex-basis: 10%;
-                    line-height: 50px;
+                    // line-height: 50px; */
+                    display: flex;
+                    align-items: center;
                     
-                    overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     padding: 0 12px;
@@ -278,6 +301,7 @@
 
                 .xe-list-board-list__mobile-style {
                     font-size: 14px;
+                    letter-spacing: -0.2px;
                     color: #141414;
                 }
 
@@ -285,7 +309,7 @@
                     background:#fafafa;
                 }
 
-                &.xe-list-board-list--item-notice:hover {
+                &.xe-list-board-list--item-notice {
                     background: #f3f9fc;
                 }
 
@@ -313,19 +337,36 @@
                     font-weight: normal;
                     margin: 0;
                     font-size: 14px;
-                    color: #141414;
-                    line-height: 50px;
-                    padding-left: 0;
+                    letter-spacing: -0.2px;
+
+                    .xe-list-board-list__text {
+                        color: #141414;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+
+
+                    }
+                    // line-height: 50px;
                 }
 
                 .xe-list-board-list__writer {
                     flex: 0 0 130px;
-                    max-width: 130px; 
                     text-align: left;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    padding-left: 0;
+
+                    > a {
+                        position:absolute;
+                        display: flex;
+                        align-items: center;
+                        height: 50px; 
+                    }
+
+                    .xe-list-board-list__display_name {
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        max-width: 100px; 
+                        overflow: hidden;
+                    }
 
                     .xe-list-board-list__user-image {
                         width: 28px;
@@ -338,33 +379,42 @@
                         text-decoration: none;
                         color: #767676;
                         background-size: cover;
-                        margin: 11px 0;
+                        margin: 11px 10px 11px 0;
                     }
 
                     .xe-list-board-list__display_name {
-                        display: inline-block;
-                        margin-left: 5px;
+                        display: block;
                     }
                 }
                 .xe-list-board-list__created_at {
                     flex: 0 0 150px;
                     max-width: 150px;
+                    color: #767676;
+                    justify-content: center;
                 }
                 .xe-list-board-list__updated_at {
                     flex: 0 0 150px;
                     max-width: 150px;
+                    color: #767676;
+                    justify-content: center;
                 }
                 .xe-list-board-list__assent_count {
                     flex: 0 0 80px;
                     max-width: 80px;
+                    color: #767676;
+                    justify-content: center;
                 }
                 .xe-list-board-list__dissent_count {
                     flex: 0 0 80px;
                     max-width: 80px;
+                    color: #767676;
+                    justify-content: center;
                 }
                 .xe-list-board-list__read_count {
-                    flex: 0 0 50px;
-                    max-width: 50px;
+                    flex: 0 0 100px;
+                    max-width: 100px;
+                    color: #767676;
+                    justify-content: center;
                 }
                     
                 .xe-list-board-list__title {
@@ -374,7 +424,7 @@
                     text-align: left;
                     padding-right: 10px;
                     margin: 0;
-                    padding-left: 0;
+                    align-items: flex-start;
                     
                     .xe-list-board-list__title-link {
                         text-decoration: none;
@@ -382,13 +432,20 @@
                         display: flex;
                         margin: 0;
 
+                        span {
+                            display: flex;
+                            align-items: center;
+                        }
+
                         .xe-list-board-list__subjec-secret {
-                            line-height: 50px;
+                            // line-height: 50px;
+                            height: 50px;
                             margin-right: 5px;
                         }
 
                         .xe-list-board-list__title-text {
-                            line-height: 50px;
+                            // line-height: 50px;
+                            height: 50px;
                             margin-right: 5px;
                             overflow: hidden;
                             text-overflow: ellipsis;
@@ -397,7 +454,8 @@
 
                         .xe-list-board-list__title-icon {
                             display: inline-block;
-                            line-height: 50px;
+                            // line-height: 50px;
+                            height: 50px;
                             display: flex;
 
                             .xe-list-board-list__title-new {
@@ -408,12 +466,14 @@
 
                     .xe-list-board-list__notice--box-form {
                         color:#fff;
-                        line-height: 50px;
+                        // line-height: 50px;
+                        height: 50px;
                         margin-right: 10px;
                         
                         .xe-list-board-list__notice--box-form-bg {
                             background: #2684ff;
                             padding: 5px 10px;
+                            border-radius: 4px;
                         }
                     }
 
@@ -426,4 +486,57 @@
             }
         }
     }
+    .xe-list-board-list--header {
+        height: 50px;
+        .xe-list-board-list__favorite-link {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            
+            .bookmark {
+                width: 18px;
+                height: 18px;
+                background: url('../img/bookmark.svg') no-repeat center center;
+                display: inline-block;
+                position: absolute;
+                top: 2px;
+                left: 0;
+            }
+    
+            &.on {
+                .bookmark {
+                  width: 18px;
+                  height: 18px;
+                  background: url('../img/bookmark-color.svg') no-repeat center center !important;
+                  display: inline-block;
+                }
+            }
+        }
+    }
+        .xe-list-board-list__favorite .xe-list-board-list__favorite-link {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            
+            .bookmark {
+                width: 18px;
+                height: 18px;
+                background: url('../img/bookmark.svg') no-repeat center center;
+                display: inline-block;
+                position: absolute;
+                top: 2px;
+                left: 0;
+            }
+    
+            &.on {
+                .bookmark {
+                  width: 18px;
+                  height: 18px;
+                  background: url('../img/bookmark-color.svg') no-repeat center center !important;
+                  display: inline-block;
+                }
+            }
+        }
 }

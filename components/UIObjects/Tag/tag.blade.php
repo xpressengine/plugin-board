@@ -35,4 +35,8 @@
     line-height: 25px;
     letter-spacing: -0.2px;
   }
+  
+  .ti-new-tag-input-wrapper input[data-v-61d92e31] {
+    font-size: 18px;
+  }
 </style>

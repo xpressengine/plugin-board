@@ -26,7 +26,7 @@
                                        data-url="{{ route('toggleMenuPage') }}"
                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
                                         @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
-                                            <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 48px;"><span class="blind">유저 이미지</span></span>
+                                            <span class="xe-list-board-list__user-image" style="background: url({{ $item->user->getProfileImage() }}) 50% 50%; background-size: 48px;"><span class="blind">유저 이미지</span></span>
                                         @endif
                                         @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
                                             <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
@@ -35,7 +35,7 @@
                                 @else
                                     <a href="#">
                                         @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
-                                            <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
+                                            <span class="xe-list-board-list__user-image"><span class="blind">유저 이미지</span></span>
                                         @endif
                                         @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
                                             <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
@@ -49,7 +49,7 @@
                                     <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-read_count xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span></span>
                                 @endif
                                 @if (array_get($skinConfig, 'visibleShowCreatedAt', 'on') === 'on')
-                                    <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-create_at xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d. H:i:s') }}</span>
+                                    <span class="xe-list-board-list-item___detail xe-list-board-list-item___detail-create_at xe-list-board-list__mobile-style"><span class="xe-list-board-list-item___detail-label blind">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d. H:i:s') }}</span>
                                 @endif
                             </div>
                         </div>
@@ -66,12 +66,15 @@
 
                                 @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                                     <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
-                                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-bookmark"><i class="xi-bookmark-o"></i></a>
+                                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-bookmark">
+                                            <!-- <img src="{{ url('plugins/board/assets/img/bookmark.svg') }}"> -->
+                                            <div class="bookmark"></div>
+                                        </a>
                                     </span>
                                 @endif
                                 
                                 <span class="xe-list-board-list__icon xe-list-board-list__more">
-                                    <a href="#" class="xe-list-board-body__link" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instance_id]) !!}' data-side="dropdown-menu-right"><i class="xi-ellipsis-h"></i></a>
+                                    <a href="#" class="xe-list-board-body__link" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instance_id]) !!}' data-side="dropdown-menu-right"><img src="{{ url('plugins/board/assets/img/ellipsis-h.svg') }}"></a>
                                 </span>
                             </div>
                         </div>
@@ -133,9 +136,6 @@
         <div class="xe-list-board-body--left-box">
             @if ($config->get('assent') === true || $config->get('dissent') === true)
                 <div class="xe-list-board-body--like-box-wrapper">
-                    <div class="xe-list-board__btn-box">
-                        <a href="{{ $urlHandler->get('index', array_merge(Request::all())) }}" class="xe-list-board__btn"><span class="xe-list-board__btn-text">목록</span><i class="xi-list"></i></a>
-                    </div>
                     <div class="xe-list-board-body__like-box">
                         @if ($config->get('assent') === true)
                             <div class="xe-list-board-list__box-assent_count xe-list-board-body__like-box-item">
@@ -166,12 +166,14 @@
         </div>
 
         <div class="xe-list-board-body--right-box">
-            @if($isManager === true || $item->user_id === Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
                 <div class="xe-list-board-body__edit-box">
+                    <span class="xe-list-board-body__edit-item xe-list-board-body__list"><a href="{{ $urlHandler->get('index', array_merge(Request::all())) }}" class="xe-list-board-body__link"><span class="xe-list-board__btn-text">목록</span></a></span>
+                    @if($isManager === true || $item->user_id === Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
                     <span class="xe-list-board-body__edit-item xe-list-board-body__edit"><a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}" class="xe-list-board-body__link">{{ xe_trans('xe::update') }}</a></span>
                     <span class="xe-list-board-body__edit-item xe-list-board-body__delete"><a href="#" data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}" class="xe-list-board-body__link bd_delete">{{ xe_trans('xe::delete') }}</a></span>
+                    @endif
                 </div>
-            @endif
+            
             
             <div class="xe-list-board-list__icon-box">
                 @if (array_get($skinConfig, 'visibleShowShare', 'show') === 'show')
@@ -185,11 +187,13 @@
                 
                 @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                     <span class="xe-list-board-list__icon xe-list-board-list__bookmark">
-                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-bookmark"><i class="xi-bookmark-o"></i></a>
+                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="xe-list-board-body__link @if($item->favorite !== null) on @endif __xe-bd-bookmark">
+                            <div class="bookmark"></div>
+                        </a>
                     </span>
                 @endif
                 <span class="xe-list-board-list__icon xe-list-board-list__more">
-                    <a href="#" class="xe-list-board-body__link" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instance_id]) !!}' data-side="dropdown-menu-right"><i class="xi-ellipsis-h"></i></a>
+                    <a href="#" class="xe-list-board-body__link" data-toggle="xe-page-toggle-menu" data-url="{{route('toggleMenuPage')}}" data-data='{!! json_encode(['id'=>$item->id,'type'=>'module/board@board','instanceId'=>$item->instance_id]) !!}' data-side="dropdown-menu-right"><img src="{{ url('plugins/board/assets/img/ellipsis-h.svg') }}"></a>
                 </span>
             </div>
         </div>
@@ -199,11 +203,11 @@
         <div class="xe-list-board-body__more-post">
             <h4 class="xe-list-board-body__more-post-title"><span class="xe-list-board-body__more-post-board-name">{{ xe_trans(current_menu()['title']) }}</span>의 다른 글</h4>
             <ul class="xe-list-board-body__more-post-list">
-                @foreach ($boardMoreItems as $item)
+                @foreach ($boardMoreItems as $boardMoreItem)
                     <li class="xe-list-board-body__more-post-list-item">
-                        <a href="{{ $urlHandler->getShow($item) }}" class="xe-list-board-body__more-post-list-item-link">
-                            <span class="xe-list-board-body__more-post-list-item-title">{!! $item->title !!}</span>
-                            <span class="xe-list-board-body__more-post-list-item-date">{{ $item->created_at->format('Y-m-d') }}</span>
+                        <a href="{{ $urlHandler->getShow($boardMoreItem) }}" class="xe-list-board-body__more-post-list-item-link">
+                            <span class="xe-list-board-body__more-post-list-item-title">{!! $boardMoreItem->title !!}</span>
+                            <span class="xe-list-board-body__more-post-list-item-date">{{ $boardMoreItem->created_at->format('Y-m-d') }}</span>
                         </a>
                     </li>
                 @endforeach

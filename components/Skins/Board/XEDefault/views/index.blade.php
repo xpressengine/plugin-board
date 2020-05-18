@@ -51,11 +51,17 @@
                 
                 @if ($columnName === 'favorite')
                     @if (Auth::check() === true)
-                        @if (Request::has('favorite'))
-                            <div class="xe-list-board-list__favorite"><a href="{{ $urlHandler->get('index', Request::except(['favorite', 'page'])) }}"><i class="xi-bookmark"></i></a></div>
-                        @else
-                            <div class="xe-list-board-list__favorite"><a href="{{ $urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1])) }}"><i class="xi-bookmark-o"></i></a></div>
-                        @endif
+                        <div class="xe-list-board-list__favorite xe-list-board-list__favorite-link">
+                            @if (Request::has('favorite'))
+                                <a href="{{ $urlHandler->get('index', Request::except(['favorite', 'page'])) }}" class="xe-list-board-list__favorite-link on">
+                                    <div class="bookmark"></div>
+                                </a>
+                            @else
+                                <a href="{{ $urlHandler->get('index', array_merge(Request::except('page'), ['favorite' => 1])) }}" class="xe-list-board-list__favorite-link">
+                                    <div class="bookmark"></div>
+                                </a>
+                            @endif
+                        </div>
                     @endif
                 @elseif ($columnName === 'title')
                     @if ($config->get('category') === true)
@@ -83,7 +89,9 @@
                         @case ('favorite')
                             @if (Auth::check() === true)
                                 <div class="xe-list-board-list__favorite xe-hidden-mobile">
-                                    <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark"></i></a>
+                                    <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="xe-list-board-list__favorite-link @if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}">
+                                        <div class="bookmark"></div>
+                                    </a>
                                 </div>
                             @endif
                             @break
@@ -105,7 +113,7 @@
                                     <span class="xe-list-board-list__title-text">{{ $item->title }}</span>
                                     <div class="xe-list-board-list__title-icon">
                                         @if($item->comment_count > 0)
-                                            <span class="xe-list-board-list__title-comment_count">{{ $item->comment_count }}</span>
+                                            <span class="xe-list-board-list__title-comment_count">{{ number_format($item->comment_count) }}</span>
                                         @endif
                                         @if ($item->data->file_count > 0)
                                             <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
@@ -120,7 +128,7 @@
                         @case ('writer')
                             <div class="xe-list-board-list__writer">
                                 @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                    <a href="#" class="mb_author"
+                                    <a href="#" class="mb_author list-board__color-gray"
                                        data-toggle="xe-page-toggle-menu"
                                        data-url="{{ route('toggleMenuPage') }}"
                                        data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
@@ -143,7 +151,7 @@
                         @case ('created_at')
                         @case ('updated_at')
                         @case ('published_at')
-                            <div class="xe-list-board-list__{{ $columnName }} xe-list-board-list__mobile-style"><span class="xe-hidden-pc">{{ xe_trans('board::' . $columnName) }}</span> {{ $item->{$columnName}->format('Y. m. d.') }}</div>
+                            <div class="xe-list-board-list__{{ $columnName }} xe-list-board-list__mobile-style"><span class="blind">{{ xe_trans('board::' . $columnName) }}</span> {{ $item->{$columnName}->format('Y. m. d.') }}</div>
                             @break
 
                         @case ('read_count')
@@ -178,7 +186,9 @@
                         @case ('favorite')
                         @if (Auth::check() === true)
                             <div class="xe-list-board-list__favorite xe-hidden-mobile">
-                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="@if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-bookmark-o"></i></a>
+                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="xe-list-board-list__favorite-link @if ($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}">
+                                <div class="bookmark"></div>
+                                </a>
                             </div>
                         @endif
                         @break
@@ -199,7 +209,7 @@
                                 <span class="xe-list-board-list__title-text">{{ $item->title }}</span>
                                 <div class="xe-list-board-list__title-icon">
                                     @if($item->comment_count > 0)
-                                        <span class="xe-list-board-list__title-comment_count">{{ $item->comment_count }}</span>
+                                        <span class="xe-list-board-list__title-comment_count">{{ number_format($item->comment_count) }}</span>
                                     @endif
                                     @if ($item->data->file_count > 0)
                                         <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
@@ -214,7 +224,7 @@
                         @case ('writer')
                         <div class="xe-list-board-list__writer">
                             @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                <a href="#" class="mb_author"
+                                <a href="#" class="mb_author list-board__color-gray"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
                                    data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
@@ -289,7 +299,7 @@
             @if (array_get($skinConfig, 'visibleIndexWriteButton', 'always') !== 'hidden')
                 @if (array_get($skinConfig, 'visibleIndexWriteButton', 'always') === 'always')
                     <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::writeItem') }}</a>
-                @elseif (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
+                @elseif (array_get($skinConfig, 'visibleIndexWriteButton', 'always') === 'permission' && $isWritable === true)
                     <a href="{{ $urlHandler->get('create') }}" class="xe-list-board__btn">{{ xe_trans('board::writeItem') }}</a>
                 @endif
             @endif

@@ -15,7 +15,7 @@
 
 /* 한줄 */
 .xe-content--text-ellipsis-one {
-    overflow: hidden;                               
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -72,6 +72,12 @@
     }
 }
 
+/* color gray */
+
+.list-board__color-gray {
+    color: #767676 !important;
+}
+
 
 /* 모바일에서만 보이게 */
 .xe-hidden-pc {
@@ -99,11 +105,12 @@
 
 /* 버튼 */
 .xe-list-board__btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     color: #141414;
-    display: inline-block;
     border: 1px solid #e0e0e0;
     text-decoration: none;
-    padding: 10px 0;
     text-align: center;
     margin: 10px 0;
     transition: all 0.2s;
@@ -143,6 +150,7 @@
 .xe-list-board__btn:focus {
     background: #f4f5f7;
 }
+
 
 /* PC에서만 보이게 */
 @media (min-width:992px) {
