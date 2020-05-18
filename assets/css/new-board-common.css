@@ -246,4 +246,34 @@
   border: 0px;
 }
 
+/**/
+.xe-list-board-header--right-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.xe-list-board-header--right-box .xe-list-board-header--icon-tab {
+  margin-right: 25px;
+  line-height: 45px;
+}
+
+.xe-list-board-header--right-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.xe-list-board-header--right-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list .xe-list-board-header--icon-tab-item {
+  color: #767676;
+}
+
+.xe-list-board-header--right-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list .xe-list-board-header--icon-tab-item .xe-list-board-header--icon-tab-button {
+  background: transparent;
+  border: none;
+}
+
 /*# sourceMappingURL=new-board-common.css.map */

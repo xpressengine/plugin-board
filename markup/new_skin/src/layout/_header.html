@@ -15,18 +15,25 @@
     <form method="get" class="__xe_search">
         <div class="xe-list-board-header--left-box">
             <div class="xe-list-board--header__search">
-                <input type="text" name="search" class="xe-list-board--header__search__control">
+                <input type="text" name="title_content" class="xe-list-board--header__search__control" value="">
                 <span class="xe-list-board--header__search__icon">
-                    <a href="#"><i class="xi-search"></i></a>
+                    <button type="submit"><i class="xi-search"></i></button>
                 </span>
             </div>
         </div>
         <div class="xe-list-board-header--right-box __xe-forms">
+            <div class="xe-list-board-header--icon-tab">
+                <ul class="xe-list-board-header--icon-tab-list">
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">리스트 게시판</span><i class="xi-align-justify"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">갤러리 게시판</span><i class="xi-border-all"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">웹진 게시판</span><i class="xi-list-square"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">비디오 웹진 게시판</span><i class="xi-videocam"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">비디오 갤러리 게시판</span><i class="xi-library-video"></i></button></li>
+                    <li class="xe-list-board-header--icon-tab-item"><button class="xe-list-board-header--icon-tab-button"><span class="blind">오디오 리스트 게시판</span><i class="xi-library-music"></i></button></li>
+                </ul>
+            </div>
             <div class="xe-list-board-header--category xe-list-board-header--dropdown-box">
                 <include src="layout/_dropdown-category.html"></include>
-            </div>
-            <div class="xe-list-board-header--sort xe-list-board-header--dropdown-box">
-                <include src="layout/_dropdown-order.html"></include>
             </div>
         </div>
     </form>
