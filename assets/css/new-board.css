@@ -514,9 +514,9 @@
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__dynamic-field {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 100px;
-            flex: 0 0 100px;
-    max-width: 100px;
+        -ms-flex: 0 0 150px;
+            flex: 0 0 150px;
+    max-width: 150px;
   }
   .xe-list-board-list--header {
     height: 50px;
