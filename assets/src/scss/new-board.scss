@@ -156,6 +156,9 @@
                         margin-right: 10px;
                     }
                 }
+                .xe-dropdown-menu {
+                    margin-top: -10px !important;
+                }
 
             }
             .xe-list-board-list__read_count {
@@ -200,6 +203,8 @@
     .xe-list-board-body {
         .xe-list-board-list {
             overflow-x: auto;
+            padding-bottom: 30px;
+
             .xe-hidden-pc {
                 display: none !important;
             }

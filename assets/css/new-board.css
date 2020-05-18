@@ -163,6 +163,10 @@
   margin-right: 10px;
 }
 
+.xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer .xe-dropdown-menu {
+  margin-top: -10px !important;
+}
+
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__vote-count {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -195,6 +199,7 @@
 @media (min-width: 992px) {
   .xe-list-board-body .xe-list-board-list {
     overflow-x: auto;
+    padding-bottom: 30px;
   }
   .xe-list-board-body .xe-list-board-list .xe-hidden-pc {
     display: none !important;

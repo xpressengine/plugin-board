@@ -1,7 +1,6 @@
 {{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
 {{ XeFrontend::js('assets/core/xe-ui-component/js/xe-page.js')->appendTo('body')->load() }}
 
-{{ XeFrontend::css('assets/vendor/bootstrap/css/bootstrap.min.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-header.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-footer.css')->load() }}
 {{ XeFrontend::css('plugins/board/assets/css/new-board-common.css')->load() }}
