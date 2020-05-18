@@ -29,6 +29,10 @@
   width: 100%;
 }
 
+.xf-col-sm-6 {
+  width: 50%;
+}
+
 @media (min-width: 768px) {
   .xf-col-sm-6 {
     float: left;
