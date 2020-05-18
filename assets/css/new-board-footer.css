@@ -1,4 +1,8 @@
 /* footer */
+.xe-list-board-footer {
+  margin-top: -70px;
+}
+
 .xe-list-board-footer .xe-list-board--button-box {
   margin-top: 10px;
   display: -webkit-box;
