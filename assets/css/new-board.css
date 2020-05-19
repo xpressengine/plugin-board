@@ -313,6 +313,9 @@
         -ms-flex: 0 0 150px;
             flex: 0 0 150px;
     max-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item {
     display: -webkit-box;

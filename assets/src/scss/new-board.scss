@@ -295,6 +295,9 @@
                 .xe-list-board-list__dynamic-field {
                     flex: 0 0 150px;
                     max-width: 150px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
                 }            
             }
 
