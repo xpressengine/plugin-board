@@ -174,6 +174,9 @@
         -ms-flex-align: center;
             align-items: center;
   }
+  .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-link .xe-list-board-list__title-icon .xe-list-board-list__title-comment_count {
+    margin-right: 5px;
+  }
 }
 
 .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer {

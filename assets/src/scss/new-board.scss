@@ -160,6 +160,10 @@
                         .xe-list-board-list__title-icon {
                             display: flex;
                             align-items: center;
+
+                            .xe-list-board-list__title-comment_count {
+                                margin-right: 5px;
+                            }
                         }
                     }
                 }
