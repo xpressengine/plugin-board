@@ -123,15 +123,15 @@
             <div class="xe-list-board-body--footer-button-box">
 
                 <div class="xe-list-board-body--footer-button">
-                    <div class="xe-list-board-body--footer-button__transient __xe_temp_btn_save">
-                        <a href="#" class="xe-list-board-body--footer-button__draftsave">{{ xe_trans('xe::draftSave') }}</a>
+                    <div class="xe-list-board-body--footer-button__transient">
+                        <a href="#" class="xe-list-board-body--footer-button__draftsave __xe_temp_btn_save" onclick="return false;">{{ xe_trans('xe::draftSave') }}</a>
 
-                        <a href="#" class="xe-list-board-body--footer-button__draftload-arrow">
+                        <a href="#" class="xe-list-board-body--footer-button__draftload-arrow"  onclick="return false;">
                             <i class="xi-angle-down-min"></i>
                         </a>
                     </div>
-                    <div class="xe-list-board-body--footer-button__transient-content transient-content-edit">
-                        <a href="#" class="xe-list-board-body--footer-button__draftload xe-list-board-body--footer-button__transient-content __xe_temp_btn_load">{{ xe_trans('xe::draftLoad') }}</a>
+                    <div class="xe-list-board-body--footer-button__transient-content">
+                        <a href="#" class="xe-list-board-body--footer-button__draftload xe-list-board-body--footer-button__transient-content __xe_temp_btn_load transient-content-edit">{{ xe_trans('xe::draftLoad') }}</a>
                     </div>
                 </div>
                 <button type="button" class="xe-list-board-body--footer-button xe-list-board-body--footer-button__preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
