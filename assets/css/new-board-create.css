@@ -276,6 +276,7 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  cursor: pointer;
 }
 
 .xe-list-board-body .xe-list-board-body--footer .xe-list-board-body--footer-button-box .xe-list-board-body--footer-button:first-child {
