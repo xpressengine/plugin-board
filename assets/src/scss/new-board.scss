@@ -150,6 +150,13 @@
                             font-size: 15px;
                             letter-spacing: -0.4px;
                         }
+
+                    }
+                    @media(min-width: 992px) {
+                        .xe-list-board-list__title-icon {
+                            display: flex;
+                            align-items: center;
+                        }
                     }
                 }
             }
@@ -479,7 +486,7 @@
                             display: flex;
 
                             .xe-list-board-list__title-new {
-                                margin: 17px 0 0 0;
+                                margin:  0;
                             }
                         }
                     }

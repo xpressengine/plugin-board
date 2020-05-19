@@ -50,6 +50,7 @@
 
 .xe-list-board .xe-list-board-header .xe-list-board-header__title-content .xe-list-board-header__write-button {
   float: right;
+  padding: 5px 0;
 }
 
 .xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search {
