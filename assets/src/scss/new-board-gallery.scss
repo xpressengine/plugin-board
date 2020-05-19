@@ -1,10 +1,11 @@
 .xe-list-gallery-board-body {
     padding: 0 8px;
     
-    .row:before {
-        display: table-row;
-    }
 
+    .open .xe-dropdown-menu {
+        z-index: 100;
+    }
+    
     .xe-gallery-board__no-search-result {
         clear: both;
         min-height: 200px;

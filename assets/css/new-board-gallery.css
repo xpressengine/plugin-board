@@ -3,8 +3,8 @@
   padding: 0 8px;
 }
 
-.xe-list-gallery-board-body .row:before {
-  display: table-row;
+.xe-list-gallery-board-body .open .xe-dropdown-menu {
+  z-index: 100;
 }
 
 .xe-list-gallery-board-body .xe-gallery-board__no-search-result {
