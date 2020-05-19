@@ -6,6 +6,10 @@
     font-size: 14px;
     letter-spacing: -0.2px;
 
+    .open .xe-dropdown-menu {
+        z-index: 100;
+    }
+
     .xi-lock {
         color: #aeaeae;
     }

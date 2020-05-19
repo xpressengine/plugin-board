@@ -9,6 +9,10 @@
   letter-spacing: -0.2px;
 }
 
+.xe-list-board-body .open .xe-dropdown-menu {
+  z-index: 100;
+}
+
 .xe-list-board-body .xi-lock {
   color: #aeaeae;
 }
