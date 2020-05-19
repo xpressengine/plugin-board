@@ -2,7 +2,6 @@
 .xe-list-board-body {
   margin: 30px 0 40px 0;
 
-
   .xe-list-board-body__title {
     margin: 0 -15px 25px 0;
     padding: 0 15px 25px 0;
@@ -88,46 +87,13 @@
             color: #141414;
             margin-right: 10px;
             display: inline-block;
-
-          .xe-dropdown-menu {
-            right: 0 !important;
-            left: auto;
           }
-            
-
-            &.xe-list-board-list__bookmark {
-              .on {
-                .bookmark {
-                  width: 18px;
-                  height: 18px;
-                  background: url('../img/bookmark-color.svg') no-repeat center center;
-                  display: inline-block;
-                }
-              }
-              .xe-list-board-body__link:focus,
-              .xe-list-board-body__link:visited,
-              .xe-list-board-body__link:active {
-                text-decoration: none;
-              }
-
-              &.xe-list-board-list__bookmark {
-                width: 18px;
-                height: 18px;
-                display: inline-block;
-                position: relative;
-              }
-
-              .bookmark {
-                width: 18px;
-                height: 18px;
-                background: url('../img/bookmark.svg') no-repeat center center;
-                display: inline-block;
-                position: absolute;
-                top: -1px;
-                left: 0;
-              }
-            }
-            &.xe-list-board-list__bookmark .on {
+          .xe-list-board-list__bookmark {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            position: relative;
+            .xe-list-board-body__link.on {
               .bookmark {
                 width: 18px;
                 height: 18px;
@@ -136,6 +102,16 @@
               }
             }
           }
+    
+          .bookmark {
+            width: 18px;
+            height: 18px;
+            background: url('../img/bookmark.svg') no-repeat center center;
+            display: inline-block;
+            position: absolute;
+            top: -1px;
+            left: 0;
+          }
 
           .xe-dropdown {
             display: inline-block;
@@ -143,6 +119,8 @@
 
             .xe-dropdown-menu {
               font-size: 14px;
+              right: 0 !important;
+              left: auto;
             }
 
             .share-item {
@@ -386,6 +364,14 @@
         height: 18px;
         display: inline-block;
         position: relative;
+        .xe-list-board-body__link.on {
+          .bookmark {
+            width: 18px;
+            height: 18px;
+            background: url('../img/bookmark-color.svg') no-repeat center center;
+            display: inline-block;
+          }
+        }
       }
 
       .bookmark {
@@ -445,7 +431,6 @@
           font-size: 18px;
           line-height: 43px;
 
-            
           .xe-dropdown-menu {
             font-size: 14px;
             right: 0 !important;
@@ -467,7 +452,6 @@
           a {
             display: inline-block; 
           }
-
 
           &:last-child {
             margin: 0;
@@ -706,4 +690,3 @@
     }
   }
 }
-

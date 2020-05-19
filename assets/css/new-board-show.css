@@ -99,32 +99,21 @@
   display: inline-block;
 }
 
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon .xe-dropdown-menu {
-  right: 0 !important;
-  left: auto;
-}
-
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon.xe-list-board-list__bookmark .on .bookmark {
-  width: 18px;
-  height: 18px;
-  background: url("../img/bookmark-color.svg") no-repeat center center;
-  display: inline-block;
-}
-
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon.xe-list-board-list__bookmark .xe-list-board-body__link:focus,
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon.xe-list-board-list__bookmark .xe-list-board-body__link:visited,
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon.xe-list-board-list__bookmark .xe-list-board-body__link:active {
-  text-decoration: none;
-}
-
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon.xe-list-board-list__bookmark.xe-list-board-list__bookmark {
+.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__bookmark {
   width: 18px;
   height: 18px;
   display: inline-block;
   position: relative;
 }
 
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon.xe-list-board-list__bookmark .bookmark {
+.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__bookmark .xe-list-board-body__link.on .bookmark {
+  width: 18px;
+  height: 18px;
+  background: url("../img/bookmark-color.svg") no-repeat center center;
+  display: inline-block;
+}
+
+.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .bookmark {
   width: 18px;
   height: 18px;
   background: url("../img/bookmark.svg") no-repeat center center;
@@ -134,13 +123,6 @@
   left: 0;
 }
 
-.xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-list-board-list__icon.xe-list-board-list__bookmark .on .bookmark {
-  width: 18px;
-  height: 18px;
-  background: url("../img/bookmark-color.svg") no-repeat center center;
-  display: inline-block;
-}
-
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-dropdown {
   display: inline-block;
   font-size: 22px;
@@ -148,6 +130,8 @@
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-dropdown .xe-dropdown-menu {
   font-size: 14px;
+  right: 0 !important;
+  left: auto;
 }
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-dropdown .share-item {
@@ -401,6 +385,13 @@
   height: 18px;
   display: inline-block;
   position: relative;
+}
+
+.xe-list-board-body .xe-list-board-body__more-info .xe-list-board-body--right-box .xe-list-board-list__bookmark .xe-list-board-body__link.on .bookmark {
+  width: 18px;
+  height: 18px;
+  background: url("../img/bookmark-color.svg") no-repeat center center;
+  display: inline-block;
 }
 
 .xe-list-board-body .xe-list-board-body__more-info .xe-list-board-body--right-box .bookmark {
