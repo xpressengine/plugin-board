@@ -97,7 +97,7 @@
                 }
             }
 
-            @media (max-width: 767px) {
+            @media (max-width: 991px) {
                 .xe-list-board-list__title {
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -107,7 +107,7 @@
                 -webkit-box-orient: vertical;
                 }
             }
-            @media (min-width: 768px) {
+            @media (min-width: 992px) {
                 .xe-list-board-list__title .xe-list-board-list__title-text,
                 .xe-list-board-list__title .xe-list-board-list__title-text span {
                 overflow: hidden;

@@ -104,7 +104,7 @@
   margin: 0;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -115,7 +115,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-text,
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__title .xe-list-board-list__title-text span {
     overflow: hidden;
