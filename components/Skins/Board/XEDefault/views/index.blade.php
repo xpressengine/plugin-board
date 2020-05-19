@@ -110,7 +110,7 @@
                                     @if ($item->display == $item::DISPLAY_SECRET)
                                         <span class="xe-list-board-list__subjec-secret"><i class="xi-lock"></i></span>
                                     @endif
-                                    <span class="xe-list-board-list__title-text">{{ $item->title }}</span>
+                                    <span class="xe-list-board-list__title-text"><span>{{ $item->title }}</span></span>
                                     <div class="xe-list-board-list__title-icon">
                                         @if($item->comment_count > 0)
                                             <span class="xe-list-board-list__title-comment_count">{{ number_format($item->comment_count) }}</span>
@@ -206,7 +206,7 @@
                                 @if ($item->display == $item::DISPLAY_SECRET)
                                     <span class="xe-list-board-list__subjec-secret"><i class="xi-lock"></i></span>
                                 @endif
-                                <span class="xe-list-board-list__title-text">{{ $item->title }}</span>
+                                <span class="xe-list-board-list__title-text"><span>{{ $item->title }}</span></span>
                                 <div class="xe-list-board-list__title-icon">
                                     @if($item->comment_count > 0)
                                         <span class="xe-list-board-list__title-comment_count">{{ number_format($item->comment_count) }}</span>

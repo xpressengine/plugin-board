@@ -2,6 +2,11 @@
   margin: 30px 0 40px 0;
 }
 
+.xe-list-board-body .xe-dropdown-menu {
+  right: 0 !important;
+  left: auto;
+}
+
 .xe-list-board-body .xe-list-board-body__title {
   margin: 0 -15px 25px 0;
   padding: 0 15px 25px 0;

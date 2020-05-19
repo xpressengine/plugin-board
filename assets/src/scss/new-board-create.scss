@@ -285,6 +285,11 @@
             background-color: #f1f1f1;
             z-index: 1;
 
+            .transient-content-edit {
+              top: 20px;
+
+            }
+
             &.open {
               display: block;
             }

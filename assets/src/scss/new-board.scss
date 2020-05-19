@@ -97,17 +97,29 @@
                 }
             }
 
-            .xe-list-board-list__title {
-                flex-basis: 100%;
-                margin-bottom: 10px;
-                word-break: keep-all;
-                
+            @media (max-width: 767px) {
+                .xe-list-board-list__title {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 display: -webkit-box;
                 white-space: normal;
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
+                }
+            }
+            @media (min-width: 768px) {
+                .xe-list-board-list__title .xe-list-board-list__title-text,
+                .xe-list-board-list__title .xe-list-board-list__title-text span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                }
+            }
+
+            .xe-list-board-list__title {
+                flex-basis: 100%;
+                margin-bottom: 10px;
+                word-break: keep-all;
 
                 .xe-list-board-list__title-link {
                     text-decoration: none;
@@ -160,7 +172,6 @@
                     }
                 }
                 .xe-dropdown-menu {
-                    margin-top: -10px !important;
                 }
 
             }
@@ -433,16 +444,16 @@
                         color: #141414;
                         display: flex;
                         margin: 0;
-
-                        span {
-                            display: flex;
-                            align-items: center;
-                        }
+                        width: 100%;
 
                         .xe-list-board-list__subjec-secret {
                             // line-height: 50px;
                             height: 50px;
                             margin-right: 5px;
+                        }
+                        > span {
+                            display: flex;
+                            align-items: center;
                         }
 
                         .xe-list-board-list__title-text {
@@ -452,6 +463,13 @@
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
+
+                            > span {
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                
+                            }
                         }
 
                         .xe-list-board-list__title-icon {
@@ -542,3 +560,16 @@
             }
         }
 }
+
+
+
+
+
+@media (max-width: 768px) {
+
+}
+  
+  
+  
+  
+  

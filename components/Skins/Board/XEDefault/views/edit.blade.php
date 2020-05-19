@@ -130,7 +130,7 @@
                             <i class="xi-angle-down-min"></i>
                         </a>
                     </div>
-                    <div class="xe-list-board-body--footer-button__transient-content">
+                    <div class="xe-list-board-body--footer-button__transient-content transient-content-edit">
                         <a href="#" class="xe-list-board-body--footer-button__draftload xe-list-board-body--footer-button__transient-content __xe_temp_btn_load">{{ xe_trans('xe::draftLoad') }}</a>
                     </div>
                 </div>

@@ -1,5 +1,11 @@
+
 .xe-list-board-body {
   margin: 30px 0 40px 0;
+  .xe-dropdown-menu {
+    right: 0 !important;
+    left: auto;
+  }
+  
 
   .xe-list-board-body__title {
     margin: 0 -15px 25px 0;
@@ -86,7 +92,6 @@
             color: #141414;
             margin-right: 10px;
             display: inline-block;
-
 
             &.xe-list-board-list__bookmark {
               .on {
@@ -450,7 +455,8 @@
         .xe-list-board-list__icon {
           margin-right: 10px;
           vertical-align: middle;
-            display: inline-block; 
+            display: inline-block;
+
 
           a {
             display: inline-block; 
@@ -694,6 +700,4 @@
     }
   }
 }
-
-
 

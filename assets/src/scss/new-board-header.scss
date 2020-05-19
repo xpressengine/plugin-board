@@ -82,6 +82,7 @@
 
         .xe-list-board-header--right-box {
             padding: 20px 0;
+            display: flex;
 
             &:after {
                 content: '';
@@ -96,6 +97,7 @@
 
             .xe-list-board-header--category {
                 float: left;
+                flex: 1;
             }
 
             .xe-list-board-header--sort {
