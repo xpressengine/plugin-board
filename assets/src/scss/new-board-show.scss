@@ -445,8 +445,12 @@
           font-size: 18px;
           line-height: 43px;
 
+            
           .xe-dropdown-menu {
             font-size: 14px;
+            right: 0 !important;
+            left: auto;
+            text-align: left;
           }
           
           .share-item {

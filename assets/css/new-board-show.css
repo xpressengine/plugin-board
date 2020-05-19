@@ -455,6 +455,9 @@
 
 .xe-list-board-body .xe-list-board-body__more-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-dropdown .xe-dropdown-menu {
   font-size: 14px;
+  right: 0 !important;
+  left: auto;
+  text-align: left;
 }
 
 .xe-list-board-body .xe-list-board-body__more-info .xe-list-board-body--right-box .xe-list-board-list__icon-box .xe-dropdown .share-item {
