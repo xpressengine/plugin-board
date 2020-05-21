@@ -91,18 +91,15 @@
   position: relative;
 }
 
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--category {
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:first-child {
   float: left;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
 }
 
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--sort {
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:last-child {
   float: right;
 }
 
-.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--sort .xe-list-board-header--dropdown .xe-dropdown--menu {
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:last-child .xe-list-board-header--dropdown .xe-dropdown--menu {
   right: 0;
 }
 
@@ -159,13 +156,14 @@
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box {
     float: right;
     padding: 0;
-    width: 128px;
+  }
+  .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box:after {
+    content: '';
+    display: block;
+    clear: both;
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--category .xe-list-board-header--dropdown .xe-dropdown--menu {
     right: 0;
-  }
-  .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box {
-    display: inline-block;
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:after {
     content: '';
