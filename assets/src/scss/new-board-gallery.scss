@@ -1,7 +1,4 @@
 .xe-list-gallery-board-body {
-    padding: 0 8px;
-    
-
     .open .xe-dropdown-menu {
         z-index: 100;
     }
@@ -13,7 +10,7 @@
 
     .xe-list-gallery-board-list {
         padding: 0;
-        margin: 0 -15px;
+        margin: 0 -8px;
         list-style-type: none;
         
         display: flex;
@@ -84,6 +81,7 @@
                                 letter-spacing: -0.2px;
                                 color: #141414;
                                 overflow: hidden;
+                                max-height: 52px;
                                 text-overflow: ellipsis;
                                 display: -webkit-box;
                                 white-space: normal;
@@ -105,6 +103,7 @@
                             letter-spacing: -0.2px;
                             color: #767676;
                             overflow: hidden;
+                            max-height: 44px;
                             text-overflow: ellipsis;
                             display: -webkit-box;
                             white-space: normal;

@@ -188,6 +188,7 @@
                         white-space: normal;
                         -webkit-line-clamp: 2;
                         -webkit-box-orient: vertical;
+                        max-height: 44px;
     
                         font-size: 16px;
                         line-height: 22px;
@@ -228,6 +229,7 @@
                 
                         .xe-list-webzine-board-list-item__description {
                             -webkit-line-clamp: 3;
+                            max-height: 66px;
                         }
                     }
                     .xe-list-webzine-board-list-item--wrapper {

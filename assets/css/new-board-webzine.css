@@ -188,6 +188,7 @@
     white-space: normal;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    max-height: 44px;
     font-size: 16px;
     line-height: 22px;
     letter-spacing: -0.1px;
@@ -216,6 +217,7 @@
   }
   .xe-list-webzine-board-body .xe-list-webzine-board-list .xe-list-webzine-board-list-item .xe-list-webzine-board-list-item__body .xe-list-webzine-board-list-item__text .xe-list-webzine-board-list-item__description {
     -webkit-line-clamp: 3;
+    max-height: 66px;
   }
   .xe-list-webzine-board-body .xe-list-webzine-board-list .xe-list-webzine-board-list-item .xe-list-webzine-board-list-item__body .xe-list-webzine-board-list-item--wrapper .xe-list-board-list--left-box {
     display: block;

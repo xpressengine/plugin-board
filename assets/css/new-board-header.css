@@ -159,6 +159,7 @@
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box {
     float: right;
     padding: 0;
+    width: 128px;
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--category .xe-list-board-header--dropdown .xe-dropdown--menu {
     right: 0;

@@ -405,7 +405,6 @@
     text-align: left;
   }
   .xe-list-board-body .xe-list-board-list .xe-list-board-list--item .xe-list-board-list__writer > a {
-    position: absolute;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;500;700&display=swap');
 
-/**/
+.xe-list-board {
+    overflow-x:hidden;
+}
+
 .blind {
     position: absolute;
     overflow: hidden;
