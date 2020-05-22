@@ -10,7 +10,7 @@
 @endif
 
 <div class="xe-list-board-body">
-    <form method="post" id="board_form" class="row __board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
+    <form method="post" id="board_form" class=" __board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
         <input type="hidden" name="head" value="{{$head}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}" />

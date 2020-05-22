@@ -232,6 +232,7 @@
                                         <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
                                     @endif
                                     <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
+                                    
                                 </a>
                             @else
                                 <a href="#">
