@@ -130,7 +130,7 @@
 
                                 @if (in_array('created_at', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                        <span class="xe-list-webzine-board-list-item___detail-label blind">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
@@ -241,7 +241,7 @@
 
                                 @if (in_array('created_at', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                        <span class="xe-list-webzine-board-list-item___detail-label blind">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
                                     </p>
                                 @endif
 
