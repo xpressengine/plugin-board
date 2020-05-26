@@ -261,12 +261,6 @@
                                         </p>
                                     @endif
 
-                                    @if (in_array('assent_count', $skinConfig['listColumns']) === true)
-                                        <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-vote_count">
-                                            <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
-                                        </p>
-                                    @endif
-
                                     @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
                                         <p class="xe-list-gallery-board-list-item___detail xe-list-gallery-board-list-item___detail-vote_count">
                                             <span class="xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
