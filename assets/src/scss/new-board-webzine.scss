@@ -126,11 +126,13 @@
                 }
 
                 .xe-list-board-list--middle-box {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    padding-right: 40px;
+                    margin-right: 40px;
                     
+                    .xe-list-board-list--middle-box-wrapper {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                    } 
                     .xe-list-board-list__display_name {
                         font-size: 13px;
                         line-height: 16px;

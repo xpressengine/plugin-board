@@ -153,10 +153,13 @@
                     }
 
                     .xe-list-board-list--middle-box {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        padding-right: 40px;
+                        margin-right: 40px;
+                        
+                        .xe-list-board-list--middle-box-wrapper {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                        } 
 
                         .xe-list-gallery-board-list-item___detail-info {
                             p {

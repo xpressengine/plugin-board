@@ -93,58 +93,60 @@
                             </div>
                         @endif
                         <div class="xe-list-board-list--middle-box">
-                            @if (in_array('writer', $skinConfig['listColumns']) === true)
-                                <div class="xe-list-board-list--title">
-                                    @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                        <a href="#" class="xe-list-webzine-board-list-item__text-link"
-                                            data-toggle="xe-page-toggle-menu"
-                                            data-url="{{ route('toggleMenuPage') }}"
-                                            data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                        </a>
-                                    @else
-                                        <a href="#">
-                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                        </a>
-                                    @endif
-                                    
-                                    @if ($config->get('category') === true)
-                                        @if ($item->boardCategory !== null)
-                                            <span class="xe-list-webzine-board-list-item__category">
-                                                {!! xe_trans($item->boardCategory->categoryItem->word) !!}
-                                            </span>
+                            <div class="xe-list-board-list--middle-wraper">
+                                @if (in_array('writer', $skinConfig['listColumns']) === true)
+                                    <div class="xe-list-board-list--title">
+                                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                            <a href="#" class="xe-list-webzine-board-list-item__text-link"
+                                                data-toggle="xe-page-toggle-menu"
+                                                data-url="{{ route('toggleMenuPage') }}"
+                                                data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
+                                                <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                            </a>
+                                        @else
+                                            <a href="#">
+                                                <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                            </a>
                                         @endif
+                                        
+                                        @if ($config->get('category') === true)
+                                            @if ($item->boardCategory !== null)
+                                                <span class="xe-list-webzine-board-list-item__category">
+                                                    {!! xe_trans($item->boardCategory->categoryItem->word) !!}
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </div>
+                                @endif
+                                <div class="xe-list-webzine-board-list-item___detail-info">
+                                    <p class="xe-list-webzine-board-list-item___detail  xe-list-webzine-board-list-item___detail-comment_count">
+                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
+                                    </p>
+
+                                    @if (in_array('read_count', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-read_count">
+                                            <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
+                                        </p>
+                                    @endif
+
+                                    @if (in_array('created_at', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
+                                            <span class="xe-list-webzine-board-list-item___detail-label blind">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                        </p>
+                                    @endif
+
+                                    @if (in_array('updated_at', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-updated_at">
+                                            <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
+                                        </p>
+                                    @endif
+
+                                    @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
+                                            <span class="xe-list-webzine-board-leist-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
+                                        </p>
                                     @endif
                                 </div>
-                            @endif
-                            <div class="xe-list-webzine-board-list-item___detail-info">
-                                <p class="xe-list-webzine-board-list-item___detail  xe-list-webzine-board-list-item___detail-comment_count">
-                                    <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
-                                </p>
-
-                                @if (in_array('read_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-read_count">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
-                                    </p>
-                                @endif
-
-                                @if (in_array('created_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
-                                        <span class="xe-list-webzine-board-list-item___detail-label blind">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
-                                    </p>
-                                @endif
-
-                                @if (in_array('updated_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-updated_at">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
-                                    </p>
-                                @endif
-
-                                @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
-                                        <span class="xe-list-webzine-board-leist-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
-                                    </p>
-                                @endif
                             </div>
                         </div>
                         <div class="xe-list-board-list--right-box">
@@ -205,57 +207,59 @@
                             </div>
                         @endif
                         <div class="xe-list-board-list--middle-box">
-                            @if (in_array('writer', $skinConfig['listColumns']) === true)
-                                <div class="xe-list-board-list--writer">
-                                    @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                        <a href="#" class="xe-list-webzine-board-list-item__text-link"
-                                            data-toggle="xe-page-toggle-menu"
-                                            data-url="{{ route('toggleMenuPage') }}"
-                                            data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                        </a>
-                                    @else
-                                        <a href="#">
-                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                        </a>
-                                    @endif
-                                    @if ($config->get('category') === true)
-                                        @if ($item->boardCategory !== null)
-                                            <span class="xe-list-webzine-board-list-item__category">
-                                                {!! xe_trans($item->boardCategory->categoryItem->word) !!}
-                                            </span>
+                            <div class="xe-list-board-list--middle-wraper">
+                                @if (in_array('writer', $skinConfig['listColumns']) === true)
+                                    <div class="xe-list-board-list--writer">
+                                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                            <a href="#" class="xe-list-webzine-board-list-item__text-link"
+                                                data-toggle="xe-page-toggle-menu"
+                                                data-url="{{ route('toggleMenuPage') }}"
+                                                data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
+                                                <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                            </a>
+                                        @else
+                                            <a href="#">
+                                                <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                            </a>
                                         @endif
+                                        @if ($config->get('category') === true)
+                                            @if ($item->boardCategory !== null)
+                                                <span class="xe-list-webzine-board-list-item__category">
+                                                    {!! xe_trans($item->boardCategory->categoryItem->word) !!}
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </div>
+                                @endif
+                                <div class="xe-list-webzine-board-list-item___detail-info">
+                                    <p class="xe-list-webzine-board-list-item___detail  xe-list-webzine-board-list-item___detail-comment_count">
+                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
+                                    </p>
+
+                                    @if (in_array('read_count', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-read_count">
+                                            <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
+                                        </p>
+                                    @endif
+
+                                    @if (in_array('created_at', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
+                                            <span class="xe-list-webzine-board-list-item___detail-label blind">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
+                                        </p>
+                                    @endif
+
+                                    @if (in_array('updated_at', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-updated_at">
+                                            <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
+                                        </p>
+                                    @endif
+
+                                    @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
+                                        <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
+                                            <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
+                                        </p>
                                     @endif
                                 </div>
-                            @endif
-                            <div class="xe-list-webzine-board-list-item___detail-info">
-                                <p class="xe-list-webzine-board-list-item___detail  xe-list-webzine-board-list-item___detail-comment_count">
-                                    <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::comment_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->comment_count) }}</span>
-                                </p>
-
-                                @if (in_array('read_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-read_count">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::read_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->read_count) }}</span>
-                                    </p>
-                                @endif
-
-                                @if (in_array('created_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-create_at">
-                                        <span class="xe-list-webzine-board-list-item___detail-label blind">{{ xe_trans('board::created_at') }}</span> {{ $item->created_at->format('Y. m. d.') }}
-                                    </p>
-                                @endif
-
-                                @if (in_array('updated_at', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-updated_at">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::updated_at') }}</span> {{ $item->updated_at->format('Y. m. d.') }}
-                                    </p>
-                                @endif
-
-                                @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
-                                    </p>
-                                @endif
                             </div>
                         </div>
                         <div class="xe-list-board-list--right-box">

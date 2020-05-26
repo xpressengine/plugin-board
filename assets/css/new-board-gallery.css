@@ -163,6 +163,10 @@
 }
 
 .xe-list-gallery-board-body .xe-list-gallery-board-list .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--wrapper .xe-list-board-list--middle-box {
+  margin-right: 40px;
+}
+
+.xe-list-gallery-board-body .xe-list-gallery-board-list .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--wrapper .xe-list-board-list--middle-box .xe-list-board-list--middle-box-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -173,7 +177,6 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  padding-right: 40px;
 }
 
 .xe-list-gallery-board-body .xe-list-gallery-board-list .xe-list-gallery-board-list-item .xe-list-gallery-board-list-item__body .xe-list-gallery-board-list-item--wrapper .xe-list-board-list--middle-box .xe-list-gallery-board-list-item___detail-info p {
