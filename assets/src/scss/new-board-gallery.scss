@@ -109,25 +109,55 @@
                             white-space: normal;
                             -webkit-line-clamp: 2;
                             -webkit-box-orient: vertical;
+                            margin: 0;
                         }
                     }
                 }
 
                 .xe-list-gallery-board-list-item--wrapper {
                     display: flex;
+                    position: relative;
+
+                    .xe-list-board-list--right-box {
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+
+                        .xe-list-board-list-item___detail-number {
+                            color: #484848;
+                            font-size: 13px;
+                            letter-spacing: -0.2px;
+                            font-weight: 400;
+                        }
+
+                        .xe-list-board-vote-count__icon {
+                            display: inline-block;
+                            width: 16px;
+                            height: 16px;
+                            margin: 0 3px 0 0;
+                            background: url(../img/assent.svg) no-repeat;
+                            background-size: 16px;
+                            margin-bottom: -2px;
+                        }
+                    }
 
                     .xe-list-board-list--left-box {
-                        margin: 2px 10px 5px 0;
-                        display: none;
+                        margin: 5px 10px 0 0;
+                        // display: none;
                     }
 
                     .xe-list-gallery-board-list-item__text-link {
                         text-decoration: none;
                         color: #181818;
+                        line-height: 1;
                     }
 
-                    .xe-list-board-list--right-box {
-                        padding-top: 3px;
+                    .xe-list-board-list--middle-box {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        padding-right: 40px;
+
                         .xe-list-gallery-board-list-item___detail-info {
                             p {
                                 display: inline-block;
@@ -140,8 +170,8 @@
                                 color: #9c9c9c;
             
                                 &:after {
-                                    content: '·';
-                                    margin: 0 5px;
+                                    content: '᛫';
+                                    margin: 0 2px;
                                 }
             
                                 &:last-child:after {

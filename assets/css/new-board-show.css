@@ -34,6 +34,7 @@
   display: inline-block;
   padding: 0 10px;
   margin: 0 10px 0 0;
+  line-height: 30px;
 }
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info {
@@ -66,6 +67,7 @@
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--left-box .xe-list-board-list__writer a {
   color: #141414;
+  text-decoration: none;
 }
 
 .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--left-box .xe-list-board-list__writer .xe-list-board-list__user-image {
@@ -596,6 +598,7 @@
   }
   .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-text {
     font-size: 30px;
+    line-height: 44px;
     margin-bottom: 25px;
   }
   .xe-list-board-body .xe-list-board-body__title .xe-list-board-body__title-post-info .xe-list-board-body--left-box .xe-list-board-list__writer .xe-list-board-list__user-image {

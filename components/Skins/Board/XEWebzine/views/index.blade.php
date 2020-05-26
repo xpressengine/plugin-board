@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="xe-list-board-list--right-box">
+                        <div class="xe-list-board-list--middle-box">
                             @if (in_array('writer', $skinConfig['listColumns']) === true)
                                 <div class="xe-list-board-list--title">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
@@ -140,18 +140,17 @@
                                     </p>
                                 @endif
 
-                                @if (in_array('assent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
-                                    </p>
-                                @endif
-
                                 @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
                                         <span class="xe-list-webzine-board-leist-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
                                     </p>
                                 @endif
                             </div>
+                        </div>
+                        <div class="xe-list-board-list--right-box">
+                            @if (in_array('assent_count', $skinConfig['listColumns']) === true)
+                            <span class="blind xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span><p class="xe-list-board-vote-count__icon"></p> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -174,9 +173,6 @@
                                         <span class="xe-list-board-list__subjec-secret"><i class="xi-lock"></i></span>
                                     @endif
                                     <h2 class="xe-list-webzine-board-list-item__title">{!! $item->title !!}</h2>
-                                    @if ($item->data->file_count > 0)
-                                        <span class="xe-list-board-list__title-file"><i class="xi-paperclip"></i><span class="blind">첨부파일</span></span>
-                                    @endif
                                     @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <div class="xe-list-board-list__title-new-icon">
                                             <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>
@@ -208,7 +204,7 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="xe-list-board-list--right-box">
+                        <div class="xe-list-board-list--middle-box">
                             @if (in_array('writer', $skinConfig['listColumns']) === true)
                                 <div class="xe-list-board-list--writer">
                                     @if ($item->hasAuthor() && $config->get('anonymity') === false)
@@ -255,18 +251,17 @@
                                     </p>
                                 @endif
 
-                                @if (in_array('assent_count', $skinConfig['listColumns']) === true)
-                                    <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
-                                        <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
-                                    </p>
-                                @endif
-
                                 @if (in_array('dissent_count', $skinConfig['listColumns']) === true)
                                     <p class="xe-list-webzine-board-list-item___detail xe-list-webzine-board-list-item___detail-vote_count">
                                         <span class="xe-list-webzine-board-list-item___detail-label">{{ xe_trans('board::dissent_count') }}</span> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->dissent_count) }}</span>
                                     </p>
                                 @endif
                             </div>
+                        </div>
+                        <div class="xe-list-board-list--right-box">
+                            @if (in_array('assent_count', $skinConfig['listColumns']) === true)
+                            <span class="blind xe-list-gallery-board-list-item___detail-label">{{ xe_trans('board::assent_count') }}</span><p class="xe-list-board-vote-count__icon"></p> <span class="xe-list-board-list-item___detail-number">{{ number_format($item->assent_count) }}</span>
+                            @endif
                         </div>
                     </div>
                 </div>

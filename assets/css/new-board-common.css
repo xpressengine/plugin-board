@@ -1,7 +1,11 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;500;700&display=swap");
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 .xe-list-board {
   overflow-x: hidden;
+}
+
+.xe-list-board a, .xe-list-board button, .xe-list-board input {
+  outline: none;
 }
 
 .blind {
@@ -71,7 +75,7 @@
 
 /* 게시판 공통 */
 .xe-list-board {
-  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  font-family: 'Spoqa Han Sans', 'Sans-serif';
   font-size: 16px;
   word-break: break-all;
 }
@@ -107,11 +111,9 @@
   background: url(../img/defalut_profile.jpg) no-repeat 0% 50%;
   border-radius: 50px;
   float: left;
-  margin-right: 8px;
   text-decoration: none;
   color: #767676;
   background-size: cover;
-  margin: 5px 0;
 }
 
 /* 상세정보 스타일 */
@@ -255,18 +257,25 @@
 }
 
 /**/
-.xe-list-board-header--right-box {
+.xe-list-board-header--middle-box {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
-.xe-list-board-header--right-box .xe-list-board-header--icon-tab {
+.xe-list-board-header--middle-box .xe-list-board-header--icon-tab {
   margin-right: 25px;
   line-height: 45px;
 }
 
-.xe-list-board-header--right-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list {
+.xe-list-board-header--middle-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -275,11 +284,11 @@
   display: flex;
 }
 
-.xe-list-board-header--right-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list .xe-list-board-header--icon-tab-item {
+.xe-list-board-header--middle-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list .xe-list-board-header--icon-tab-item {
   color: #767676;
 }
 
-.xe-list-board-header--right-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list .xe-list-board-header--icon-tab-item .xe-list-board-header--icon-tab-button {
+.xe-list-board-header--middle-box .xe-list-board-header--icon-tab .xe-list-board-header--icon-tab-list .xe-list-board-header--icon-tab-item .xe-list-board-header--icon-tab-button {
   background: transparent;
   border: none;
 }
