@@ -65,6 +65,7 @@
   -moz-appearance: none;
   appearance: none;
   border-radius: 0;
+  height: 50px;
 }
 
 .xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon button {
@@ -73,7 +74,7 @@
   border: none;
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 0px;
   font-size: 20px;
   color: #525252;
 }
