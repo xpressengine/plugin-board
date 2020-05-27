@@ -113,15 +113,14 @@
             </div>
 
             <div class="draft_container"></div>
-            <div class="captcha_container">
-                @if($config['useCaptcha'] === true)
-                    {!! uio('captcha') !!}
-                @endif
-            </div>
 
+            @if($config['useCaptcha'] === true)
+                <div class="captcha_container">
+                    {!! uio('captcha') !!}
+                </div>
+            @endif
 
             <div class="xe-list-board-body--footer-button-box">
-
                 <div class="xe-list-board-body--footer-button">
                     <div class="xe-list-board-body--footer-button__transient">
                         <a href="#" class="xe-list-board-body--footer-button__draftsave __xe_temp_btn_save" onclick="return false;">{{ xe_trans('xe::draftSave') }}</a>
