@@ -100,14 +100,16 @@
             .xe-list-board-header--dropdown {
                 display: inline-block;
                 position: relative;
-
-                .xe-list-board-header--dropdown-box .xe-list-board-header--dropdown .xe-dropdown--menu {
-                    z-index: 15;
-                }
             }
 
             .xe-list-board-header--dropdown-box:first-child {
                 float: left;
+                .xe-list-board-header--dropdown {
+                    .xe-dropdown--menu {
+                        right: 0;
+                        z-index: 15;
+                    }
+                }
             }
 
             .xe-list-board-header--dropdown-box:last-child {
@@ -116,6 +118,7 @@
                 .xe-list-board-header--dropdown {
                     .xe-dropdown--menu {
                         right: 0;
+                        z-index: 15;
                     }
                 }
             }
