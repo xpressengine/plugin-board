@@ -69,14 +69,25 @@
 }
 
 .xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon button {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  right: 10px;
   display: inline-block;
   background: none;
   border: none;
-  position: absolute;
-  top: 12px;
   right: 0px;
   font-size: 20px;
   color: #525252;
+}
+
+.xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon button .xi-search {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  right: 10px;
 }
 
 .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box {
@@ -102,7 +113,7 @@
 }
 
 .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box .xe-list-board-header--dropdown-box:first-child .xe-list-board-header--dropdown .xe-dropdown--menu {
-  right: 0;
+  left: 0;
   z-index: 15;
 }
 
@@ -177,10 +188,6 @@
     border: none;
     border-bottom: 1px solid #e0e0e0;
     border-radius: 0;
-  }
-  .xe-list-board .xe-list-board-header__contents .xe-list-board-header--left-box .xe-list-board--header__search .xe-list-board--header__search__icon button {
-    top: 10px;
-    right: 0px;
   }
   .xe-list-board .xe-list-board-header__contents .xe-list-board-header--right-box {
     float: right;
