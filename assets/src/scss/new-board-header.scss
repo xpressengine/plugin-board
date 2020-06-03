@@ -66,20 +66,27 @@
                     -moz-appearance: none;
                     appearance: none;
                     border-radius: 0;
+                    height: 50px;
                 }
 
                 .xe-list-board--header__search__icon {
                     button {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 10px;
                         display: inline-block;
                         background: none;
                         border: none;
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
+                        right: 0px;
                         font-size: 20px;
                         color: #525252;
                         
                         .xi-search {
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            right: 10px;
                         }
                     }
                 }
@@ -103,6 +110,11 @@
 
             .xe-list-board-header--dropdown-box:first-child {
                 float: left;
+                .xe-list-board-header--dropdown {
+                    .xe-dropdown--menu {
+                        z-index: 15;
+                    }
+                }
             }
 
             .xe-list-board-header--dropdown-box:last-child {
@@ -111,6 +123,7 @@
                 .xe-list-board-header--dropdown {
                     .xe-dropdown--menu {
                         right: 0;
+                        z-index: 15;
                     }
                 }
             }
@@ -196,13 +209,6 @@
                         border: none;
                         border-bottom: 1px solid #e0e0e0;
                         border-radius: 0;
-                    }
-
-                    .xe-list-board--header__search__icon {
-                        button {
-                            top: 10px;
-                            right: 0px;
-                        }
                     }
                 }
             }
