@@ -73,9 +73,9 @@
                 @if ($item->user_type == $item::USER_TYPE_GUEST)
                     <div class="xe-list-board-body--footer-nonmember">
                         <h4 class="xe-list-board-body--footer-title blind">비회원</h4>
-                        <input type="text" name="writer" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer') }}">
+                        <input type="text" name="writer" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer', $item->writer) }}">
                         <input type="password" name="certify_key" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}" data-valid-name="{{xe_trans('xe::certify_key')}}">
-                        <input type="email" name="email" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email') }}">
+                        <input type="email" name="email" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email', $item->email) }}">
                     </div>
                 @endif
 
