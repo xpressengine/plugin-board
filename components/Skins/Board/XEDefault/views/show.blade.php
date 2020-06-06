@@ -33,14 +33,12 @@
                                         @endif
                                     </a>
                                 @else
-                                    <a href="#">
-                                        @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
-                                            <span class="xe-list-board-list__user-image"><span class="blind">유저 이미지</span></span>
-                                        @endif
-                                        @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
-                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                        @endif
-                                    </a>
+                                    @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
+                                        <span class="xe-list-board-list__user-image"><span class="blind">유저 이미지</span></span>
+                                    @endif
+                                    @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
+                                        <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
+                                    @endif
                                 @endif
                             </div>
                             
