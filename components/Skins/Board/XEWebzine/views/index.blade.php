@@ -93,7 +93,7 @@
                             </div>
                         @endif
                         <div class="xe-list-board-list--middle-box">
-                            <div class="xe-list-board-list--middle-wraper">
+                            <div class="xe-list-board-list--middle-wrapper">
                                 @if (in_array('writer', $skinConfig['listColumns']) === true)
                                     <div class="xe-list-board-list--title">
                                         @if ($item->hasAuthor() && $config->get('anonymity') === false)
@@ -104,9 +104,7 @@
                                                 <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                             </a>
                                         @else
-                                            <a href="#">
-                                                <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                            </a>
+                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                         @endif
                                         
                                         @if ($config->get('category') === true)
@@ -199,9 +197,7 @@
                                             <span class="xe-list-board-list__user-image" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
                                         </a>
                                     @else
-                                        <a href="#">
-                                            <span class="xe-list-board-list__user-image"><span class="blind">유저 이미지</span></span>
-                                        </a>
+                                        <span class="xe-list-board-list__user-image"><span class="blind">유저 이미지</span></span>
                                     @endif
                                 </div>
                             </div>

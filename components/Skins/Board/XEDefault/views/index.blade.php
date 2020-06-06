@@ -138,12 +138,10 @@
                                         <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
                                     </a>
                                 @else
-                                    <a href="#">
-                                        @if (array_get($skinConfig, 'visibleIndexDefaultProfileImage', 'on') === 'on')
-                                            <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
-                                        @endif
-                                        <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
-                                    </a>
+                                    @if (array_get($skinConfig, 'visibleIndexDefaultProfileImage', 'on') === 'on')
+                                        <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
+                                    @endif
+                                    <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
                                 @endif
                             </div>
                             @break
@@ -235,12 +233,10 @@
                                     
                                 </a>
                             @else
-                                <a href="#">
-                                    @if (array_get($skinConfig, 'visibleIndexDefaultProfileImage', 'on') === 'on')
-                                        <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
-                                    @endif
-                                    <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
-                                </a>
+                                @if (array_get($skinConfig, 'visibleIndexDefaultProfileImage', 'on') === 'on')
+                                    <span class="xe-list-board-list__user-image xe-hidden-mobile"><span class="blind">유저 이미지</span></span>
+                                @endif
+                                <span class="xe-list-board-list__display_name xe-list-board-list__mobile-style">{{ $item->writer }}</span>
                             @endif
                         </div>
                         @break

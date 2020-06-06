@@ -107,9 +107,7 @@
                                                 <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                             </a>
                                         @else
-                                            <a href="#">
-                                                <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                            </a>
+                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                         @endif
                                         @if ($config->get('category') === true)
                                             <span class="xe-list-gallery-board-list-item__category">
@@ -225,9 +223,7 @@
                                                 <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                             </a>
                                         @else
-                                            <a href="#">
-                                                <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
-                                            </a>
+                                            <span class="xe-list-board-list__display_name">{{ $item->writer }}</span>
                                         @endif
                                         @if ($config->get('category') === true)
                                             <span class="xe-list-gallery-board-list-item__category">
