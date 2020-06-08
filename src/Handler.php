@@ -808,7 +808,10 @@ class Handler
             $query = $query->where('user_id', $request->get('user_id'));
         }
 
-        if ($request->get('category_item_id') !== null && $request->get('category_item_id') !== '') {
+        if ($config->get('category') === true &&
+            $request->get('category_item_id') !== null &&
+            $request->get('category_item_id') !== ''
+        ) {
             $categoryItem = CategoryItem::find($request->get('category_item_id'));
             if ($categoryItem !== null) {
                 $targetCategoryItemIds = $categoryItem->descendants(false)->get()->pluck('id');
