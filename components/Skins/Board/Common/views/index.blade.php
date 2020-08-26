@@ -319,7 +319,7 @@
                             @if ($item->display == $item::DISPLAY_SECRET)
                                 <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                             @endif
-                            <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                            <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">@if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}</a>
                             @if($item->comment_count > 0)
                                 <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
                             @endif
@@ -359,7 +359,7 @@
                     <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                 @endif
                 @if (in_array('title', $skinConfig['listColumns']))
-                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">@if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}</a>
                 @endif
                 @if($item->comment_count > 0)
                     <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
@@ -432,7 +432,7 @@
                         @if ($item->display == $item::DISPLAY_SECRET)
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
-                        <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                        <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">@if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}</a>
                         @if($item->comment_count > 0)
                             <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
                         @endif
@@ -471,7 +471,7 @@
                     <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                 @endif
                 @if (in_array('title', $skinConfig['listColumns']))
-                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">{!! $item->title !!}</a>
+                    <a href="{{$urlHandler->getShow($item, Request::all())}}" id="{{$columnName}}_{{$item->id}}" class="title_text">@if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}</a>
                 @endif
                 @if ($item->data->file_count > 0)
                     <span class="bd_ico_file"><i class="xi-paperclip"></i><span class="xe-sr-only">file</span></span>

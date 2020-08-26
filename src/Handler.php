@@ -205,6 +205,10 @@ class Handler
             $useAlarm = 0;
         }
         $fileCount = count(\XeStorage::fetchByFileable($board->id));
+        $titleHead = '';
+        if (isset($args['title_head'])) {
+            $titleHead = $args['title_head'];
+        }
 
         $data = $board->boardData;
         if ($data === null) {
@@ -212,11 +216,13 @@ class Handler
                 'allow_comment' => $allowComment,
                 'use_alarm' => $useAlarm,
                 'file_count' => $fileCount,
+                'title_head' => $titleHead,
             ]);
         } else {
             $data->allow_comment = $allowComment;
             $data->use_alarm = $useAlarm;
             $data->file_count = $fileCount;
+            $data->title_head = $titleHead;
         }
 
         $board->boardData()->save($data);

@@ -59,7 +59,7 @@
                                     @if ($item->display === $item::DISPLAY_SECRET)
                                         <span class="xe-list-board-list__subjec-secret"><i class="xi-lock"></i></span>
                                     @endif
-                                    <h2 class="xe-list-webzine-board-list-item__title">{!! $item->title !!}</h2>
+                                    <h2 class="xe-list-webzine-board-list-item__title">@if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}</h2>
                                     @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <div class="xe-list-board-list__title-new-icon">
                                             <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>
@@ -172,7 +172,7 @@
                                     @if ($item->display === $item::DISPLAY_SECRET)
                                         <span class="xe-list-board-list__subjec-secret"><i class="xi-lock"></i></span>
                                     @endif
-                                    <h2 class="xe-list-webzine-board-list-item__title">{!! $item->title !!}</h2>
+                                    <h2 class="xe-list-webzine-board-list-item__title">@if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}</h2>
                                     @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
                                         <div class="xe-list-board-list__title-new-icon">
                                             <span class="xe-list-board-list__title-new"><span class="blind">새글</span></span>

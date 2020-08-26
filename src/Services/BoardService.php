@@ -561,4 +561,31 @@ class BoardService
         }
         return $perm;
     }
+
+    /**
+     * get category item tree
+     *
+     * @param ConfigEntity $config board config entity
+     * @return array
+     */
+    public function getTitleHeadItems(ConfigEntity $config)
+    {
+        $items = [];
+        if ($config->get('useTitleHead') === true) {
+            $strTitleHeadItem = $config->get('titleHeadItem');
+            if ($strTitleHeadItem == null) {
+                $strTitleHeadItem = '';
+            }
+
+            $arrTitleHeadItem = explode(',', $strTitleHeadItem);
+            foreach ($arrTitleHeadItem as $titleHeadItem) {
+                $items[] = [
+                    'value' => $titleHeadItem,
+                    'text' => $titleHeadItem,
+                ];
+            }
+        }
+
+        return $items;
+    }
 }

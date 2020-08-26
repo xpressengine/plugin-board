@@ -41,7 +41,7 @@ class BoardData extends DynamicModel
 
     protected $primaryKey = 'target_id';
 
-    protected $fillable = ['allow_comment', 'use_alarm', 'file_count'];
+    protected $fillable = ['allow_comment', 'use_alarm', 'file_count', 'title_head'];
 
     public $incrementing = false;
 
@@ -49,6 +49,7 @@ class BoardData extends DynamicModel
         'allow_comment' => 'int',
         'use_alarm' => 'int',
         'file_count' => 'int',
+        'title_head' => 'string',
     ];
 
     /**

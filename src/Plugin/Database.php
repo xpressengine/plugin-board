@@ -62,6 +62,7 @@ class Database
                 $table->integer('allow_comment')->default(1);
                 $table->integer('use_alarm')->default(1);
                 $table->integer('file_count')->default(0);
+                $table->string('title_head', 255)->default('')->comment('title head is specific tag of title');
 
                 $table->primary(array('target_id'));
             });

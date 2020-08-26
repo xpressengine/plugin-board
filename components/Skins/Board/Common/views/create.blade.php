@@ -25,6 +25,15 @@
                 'items' => $categories,
                 ]) !!}
                 @endif
+
+                @if($config->get('useTitleHead') == true)
+                    {!! uio('uiobject/board@select', [
+                    'name' => 'title_head',
+                    'label' => xe_trans('board::titleHead'),
+                    'value' => Request::old('title_head'),
+                    'items' => $titleHeadItems,
+                    ]) !!}
+                @endif
             </div>
             <div class="write_title">
                 {!! uio('titleWithSlug', [

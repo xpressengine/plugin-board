@@ -117,6 +117,39 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
+                                                    <label>{{xe_trans('board::titleHead')}} <small>{{xe_trans('board::titleHeadDescription')}} </small></label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="useTitleHead" @if($config->getPure('useTitleHead') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="useTitleHead" class="form-control" @if($config->getPure('useTitleHead') === null) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('useTitleHead') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('useTitleHead') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>{{xe_trans('board::titleHeadItem')}} <small>{{xe_trans('board::titleHeadItemDescription')}} </small></label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="titleHeadItem" @if($config->getPure('titleHeadItem') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <input type="text" name="titleHeadItem" class="form-control" @if($config->getPure('titleHeadItem') === null) disabled="disabled" @endif value="{{ Request::old('titleHeadItem', $config->get('titleHeadItem')) }}" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
                                                     <label>{{xe_trans('xe::recommend')}} </label>
                                                     <div class="checkbox pull-right">
                                                         <label>

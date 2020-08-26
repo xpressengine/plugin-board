@@ -454,6 +454,8 @@ class BoardModuleController extends Controller
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
+        $titleHeadItems = $service->getTitleHeadItems($this->config);
+
         XeSEO::notExec();
 
         return XePresenter::makeAll('create', [
@@ -462,6 +464,7 @@ class BoardModuleController extends Controller
             'head' => '',
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
+            'titleHeadItems' => $titleHeadItems,
         ]);
     }
 
@@ -600,6 +603,8 @@ class BoardModuleController extends Controller
 
         $thumb = $this->handler->getThumb($item->id);
 
+        $titleHeadItems = $service->getTitleHeadItems($this->config);
+
         XeSEO::notExec();
 
         return XePresenter::make('edit', [
@@ -610,6 +615,7 @@ class BoardModuleController extends Controller
             'parent' => null,
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
+            'titleHeadItems' => $titleHeadItems,
         ]);
     }
 

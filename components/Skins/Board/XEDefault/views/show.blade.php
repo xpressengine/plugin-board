@@ -15,7 +15,7 @@
                             <span class="xe-list-board-body__title-notice">공지</span>
                         @endif
                         @if ($item->display === $item::DISPLAY_SECRET) <i class="xi-lock"></i> @endif
-                        {!! $item->title !!}
+                            @if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}
                     </h3>
                     <div class="xe-list-board-body__title-post-info">
                         <div class="xe-list-board-body--left-box">

@@ -281,7 +281,7 @@
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
                         <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
-                            {!! $item->title !!}
+                            @if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}
                         </a>
                         @if($item->comment_count > 0)
                             <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>
@@ -361,7 +361,7 @@
                             <span class="bd_ico_lock"><i class="xi-lock"></i><span class="xe-sr-only">secret</span></span>
                         @endif
                         <a class="title" href="{{$urlHandler->getShow($item, Request::all())}}" id="title_{{$item->id}}">
-                            {!! $item->title !!}
+                            @if ($item->data->title_head != '')<span class="title-head title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>@endif{!! $item->title !!}
                         </a>
                         @if($item->comment_count > 0)
                             <a href="#" class="reply_num xe-hidden-xs" title="Replies">{{ $item->comment_count }}</a>

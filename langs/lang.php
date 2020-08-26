@@ -651,4 +651,20 @@ You may receive an error occurs in the associated function if not in a state cap
         'ko' => '하단 글보기 내용',
         'en' => 'Article-View content at the bottom',
     ],
+    'titleHead' => [
+        'ko' => '말머리',
+        'en' => 'Title head',
+    ],
+    'titleHeadDescription' => [
+        'ko' => '제목 앞에 붙일 선택 항목을 사용하도록 설정합니다.',
+        'en' => 'Enables the selection to be placed in front of the title.',
+    ],
+    'titleHeadItem' => [
+        'ko' => '말머리 항목',
+        'en' => 'Title head item',
+    ],
+    'titleHeadItemDescription' => [
+        'ko' => '선택 항목을 입력합니다. 콤마(,)로 다수의 머리말 항목을 설정할 수 있습니다.',
+        'en' => 'Enter your selection. You can set multiple header items with commas (,).',
+    ],
 ];

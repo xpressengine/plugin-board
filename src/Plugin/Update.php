@@ -103,6 +103,11 @@ class Update
             return false;
         }
 
+        // ver 1.0.15
+        if (static::hasUseTitleHeadConfig() === false) {
+            return false;
+        }
+
         return true;
     }
 
@@ -200,6 +205,11 @@ class Update
         // ver 0.9.26
         if (static::hasUseApproveConfig() === false) {
             static::updateUseApproveConfig();
+        }
+
+        // ver 1.0.15
+        if (static::hasUseTitleHeadConfig() === false) {
+            static::updateUseTitleHeadConfig();
         }
     }
 
@@ -433,5 +443,39 @@ class Update
 
         $config->set('useApprove', false);
         XeConfig::modify($config);
+    }
+
+    /**
+     * check has use approve config
+     *
+     * @return bool
+     */
+    protected static function hasUseTitleHeadConfig()
+    {
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
+        if ($config->get('useTitleHead') === null) {
+            return false;
+        }
+    }
+
+    /**
+     * update use approvce config
+     *
+     * @return void
+     */
+    protected static function updateUseTitleHeadConfig()
+    {
+        $config = XeConfig::get(ConfigHandler::CONFIG_NAME);
+
+        $config->set('useTitleHead', false);
+        $config->set('titleHeadItem', '');
+        XeConfig::modify($config);
+
+        // add title head column to
+        if (Schema::hasColumn('board_data', 'title_head') == false) {
+            Schema::table('board_data', function (Blueprint $table) {
+                $table->string('title_head', 255)->default('')->comment('title head is specific tag of title')->after('file_count');
+            });
+        }
     }
 }
