@@ -97,7 +97,7 @@
                                                     <div class="clearfix">
                                                         <label>{{xe_trans('board::titleHeadItem')}} <small>{{xe_trans('board::titleHeadItemDescription')}} </small></label>
                                                     </div>
-                                                    <input type="text" name="titleHeadItem" class="form-control" @if($config->getPure('titleHeadItem') === null) disabled="disabled" @endif value="{{ Request::old('titleHeadItem', $config->get('titleHeadItem')) }}" />
+                                                    <input type="text" name="titleHeadItem" class="form-control" value="{{ Request::old('titleHeadItem', $config->get('titleHeadItem')) }}" />
                                                 </div>
                                             </div>
                                         </div>

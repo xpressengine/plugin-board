@@ -573,8 +573,8 @@ class BoardService
         $items = [];
         if ($config->get('useTitleHead') === true) {
             $strTitleHeadItem = $config->get('titleHeadItem');
-            if ($strTitleHeadItem == null) {
-                $strTitleHeadItem = '';
+            if ($strTitleHeadItem == null || $strTitleHeadItem == '') {
+                return $items;
             }
 
             $arrTitleHeadItem = explode(',', $strTitleHeadItem);
