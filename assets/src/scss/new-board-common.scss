@@ -1,9 +1,7 @@
-// @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;500;700&display=swap');
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
 .xe-list-board {
     overflow-x: hidden;
-
 
     a, button, input {
         outline: none;
@@ -80,7 +78,7 @@
     font-size: 16px;
     word-break: break-all;
 }
-            
+
 .xe-list-board-list__title-new {
     background: url('../../assets/img/icon_new.svg') no-repeat;
     display: inline-block;
@@ -241,7 +239,7 @@
 .xe-modal {
     .xe-list-group {
         text-decoration: none;
-        
+
         .img-thumbnail {
             overflow:hidden;
             display: table-cell;
@@ -260,7 +258,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+
     .xe-list-board-header--icon-tab {
         margin-right: 25px;
         line-height: 45px;
@@ -270,7 +268,7 @@
             padding: 0;
             list-style-type: none;
             display: flex;
-    
+
             .xe-list-board-header--icon-tab-item {
                 color: #767676;
 

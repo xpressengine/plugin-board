@@ -6,124 +6,182 @@
 {{ XeFrontend::css('assets/core/common/css/draft.css')->load() }}
 
 @if($config->get('useTag') === true)
-{{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
+    {{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 @endif
 
 <div class="xe-list-board-body">
-    <form method="post" id="board_form" class=" __board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
-        <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
-        <input type="hidden" name="head" value="{{$head}}" />
-        <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}" />
-        
+    <form method="post" id="board_form" class=" __board_form" action="{{ $urlHandler->get('store') }}"
+          enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast"
+          data-instance_id="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
+        <input type="hidden" name="_token" value="{{{ Session::token() }}}"/>
+        <input type="hidden" name="head" value="{{$head}}"/>
+        <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}"/>
+
         @foreach ($skinConfig['formColumns'] as $columnName)
             @switch ($columnName)
-                @case ('title')
-                    <div class="xe-list-board-body--header xf-row">
-                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title @if ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">
+                {{--                @case ('title')--}}
+                {{--                    <div class="xe-list-board-body--header xf-row">--}}
+                {{--                        <div class="xe-list-board-body--header-item xe-list-board-body--header-title @if ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">--}}
 
-                            {!! uio('newTitleWithSlug', [
-                                'title' => Request::old('title'),
-                                'slug' => Request::old('slug'),
-                                'titleClassName' => 'bd_input',
-                                'config' => $config
-                            ]) !!}
-                        </div>
-                        @if($config->get('category') === true || $config->get('useTitleHead') == true)
-                            <div class="pdl20 xe-list-board-body--header-item xe-list-board-body--header-select xf-col-md-4">
-                                @if ($config->get('category') === true)
-                                {!! uio('uiobject/board@new_select', [
-                                    'name' => 'category_item_id',
-                                    'label' => xe_trans('xe::category'),
-                                    'value' => Request::get('category_item_id'),
-                                    'items' => $categories
-                                ]) !!}
-                                @endif
-                                @if ($config->get('useTitleHead') == true)
+                {{--                            {!! uio('newTitleWithSlug', [--}}
+                {{--                                'title' => Request::old('title'),--}}
+                {{--                                'slug' => Request::old('slug'),--}}
+                {{--                                'titleClassName' => 'bd_input',--}}
+                {{--                                'config' => $config--}}
+                {{--                            ]) !!}--}}
+                {{--                        </div>--}}
+                {{--                        @if($config->get('category') === true || $config->get('useTitleHead') == true)--}}
+                {{--                            <div class="pdl20 xe-list-board-body--header-item xe-list-board-body--header-select xf-col-md-4">--}}
+                {{--                                @if ($config->get('category') === true)--}}
+                {{--                                {!! uio('uiobject/board@new_select', [--}}
+                {{--                                    'name' => 'category_item_id',--}}
+                {{--                                    'label' => xe_trans('xe::category'),--}}
+                {{--                                    'value' => Request::get('category_item_id'),--}}
+                {{--                                    'items' => $categories--}}
+                {{--                                ]) !!}--}}
+                {{--                                @endif--}}
+                {{--                                @if ($config->get('useTitleHead') == true)--}}
+                {{--                                {!! uio('uiobject/board@new_select', [--}}
+                {{--                                'name' => 'title_head',--}}
+                {{--                                'label' => xe_trans('board::titleHead'),--}}
+                {{--                                'value' => Request::old('title_head'),--}}
+                {{--                                'items' => $titleHeadItems,--}}
+                {{--                                ]) !!}--}}
+                {{--                                @endif--}}
+                {{--                            </div>--}}
+                {{--                        @endif--}}
+                {{--                    </div>--}}
+                {{--                    @break--}}
+
+                @case ('title')
+                <div class="xe-list-board-body--header xf-row">
+                    {{--                    @if($config->get('category') === true || $config->get('useTitleHead') == true)--}}
+                    <div
+                        class="xe-list-board-body--header-item xe-list-board-body--header-select @if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-row @elseif ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-4 @else xf-display-none @endif">
+                        @if ($config->get('useTitleHead') == true)
+                        <div class="@if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">
                                 {!! uio('uiobject/board@new_select', [
                                 'name' => 'title_head',
                                 'label' => xe_trans('board::titleHead'),
                                 'value' => Request::old('title_head'),
                                 'items' => $titleHeadItems,
                                 ]) !!}
-                                @endif
-                            </div>
+                        </div>
+                        @endif
+                        @if ($config->get('category') === true)
+                        <div class="@if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-4 @else xf-col-md-12 @endif">
+                                {!! uio('uiobject/board@new_select', [
+                                    'name' => 'category_item_id',
+                                    'label' => xe_trans('xe::category'),
+                                    'value' => Request::get('category_item_id'),
+                                    'items' => $categories
+                                ]) !!}
+                        </div>
                         @endif
                     </div>
-                    @break
-                
-                    @case('content')
-                        <div class="xe-list-board-body--editor">
-                            {!! editor($config->get('boardId'), [
-                            'content' => Request::old('content'),
-                            'cover' => true,
-                            ]) !!}
-                        </div>
+                    {{--                    @endif--}}
+                    <div class="xe-list-board-body--header-item xe-list-board-body--header-title @if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-12 @elseif ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">
+                        {!! uio('newTitleWithSlug', [
+                            'title' => Request::old('title'),
+                            'slug' => Request::old('slug'),
+                            'titleClassName' => 'bd_input',
+                            'config' => $config
+                        ]) !!}
+                    </div>
+                </div>
+                @break
 
-                        <div class="xe-list-board-body--tag">
-                            @if($config->get('useTag') === true)
-                                {!! uio('uiobject/board@tag', [
-                                    'placeholder' => '태그를 입력한 후 Enter를 누르세요'
-                                ]) !!}
-                            @endif
-                        </div>
-                        @break
-                
-                    @default
-                        @if (isset($dynamicFieldsById[$columnName]) && $dynamicFieldsById[$columnName]->get('use') === true)
-                            <div class="__xe_{{$columnName}} __xe_section">
-                                {!! df_create($config->get('documentGroup'), $columnName, Request::all()) !!}
-                            </div>
-                        @endif
-                        @break
+                @case('content')
+                <div class="xe-list-board-body--editor">
+                    {!! editor($config->get('boardId'), [
+                    'content' => Request::old('content'),
+                    'cover' => true,
+                    ]) !!}
+                </div>
+
+                <div class="xe-list-board-body--tag">
+                    @if($config->get('useTag') === true)
+                        {!! uio('uiobject/board@tag', [
+                            'placeholder' => '태그를 입력한 후 Enter를 누르세요'
+                        ]) !!}
+                    @endif
+                </div>
+                @break
+
+                @default
+                @if (isset($dynamicFieldsById[$columnName]) && $dynamicFieldsById[$columnName]->get('use') === true)
+                    <div class="__xe_{{$columnName}} __xe_section">
+                        {!! df_create($config->get('documentGroup'), $columnName, Request::all()) !!}
+                    </div>
+                @endif
+                @break
             @endswitch
         @endforeach
-        
+
         <div class="xe-list-board-body--footer">
             <div class="xe-list-board-body--footer-additional-box">
                 @if (Auth::check() === false)
                     <div class="xe-list-board-body--footer-nonmember">
                         <h4 class="xe-list-board-body--footer-title blind">비회원</h4>
-                        <input type="text" name="writer" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}" value="{{ Request::old('writer') }}">
-                        <input type="password" name="certify_key" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}" data-valid-name="{{xe_trans('xe::certify_key')}}">
-                        <input type="email" name="email" class="xe-list-board-body--footer-nonmember-input" placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}" value="{{ Request::old('email') }}">
+                        <input type="text" name="writer" class="xe-list-board-body--footer-nonmember-input"
+                               placeholder="{{ xe_trans('xe::writer') }}" title="{{ xe_trans('xe::writer') }}"
+                               value="{{ Request::old('writer') }}">
+                        <input type="password" name="certify_key" class="xe-list-board-body--footer-nonmember-input"
+                               placeholder="{{ xe_trans('xe::password') }}" title="{{ xe_trans('xe::password') }}"
+                               data-valid-name="{{xe_trans('xe::certify_key')}}">
+                        <input type="email" name="email" class="xe-list-board-body--footer-nonmember-input"
+                               placeholder="{{ xe_trans('xe::email') }}" title="{{ xe_trans('xe::email') }}"
+                               value="{{ Request::old('email') }}">
                     </div>
                 @endif
-                
+
                 <div class="xe-list-board-body--footer-check-box">
                     <ul class="xe-list-board-body--footer-check-list">
                         @if($config->get('secretPost') === true)
                             <li class="xe-list-board-body--footer-check-item">
-                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-secret" name="display" value="{{\Xpressengine\Document\Models\Document::DISPLAY_SECRET}}">
-                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-secret">{{xe_trans('board::secretPost')}}</label>
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input"
+                                       id="xe-list-board-body--footer-check-item-secret" name="display"
+                                       value="{{\Xpressengine\Document\Models\Document::DISPLAY_SECRET}}">
+                                <label class="xe-list-board-body--footer-check-item-text"
+                                       for="xe-list-board-body--footer-check-item-secret">{{xe_trans('board::secretPost')}}</label>
                             </li>
                         @endif
 
                         @if($config->get('comment') === true)
                             <li class="xe-list-board-body--footer-check-item">
-                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-comment" name="allow_comment" value="1" checked="checked">
-                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-comment">{{xe_trans('board::allowComment')}}</label>
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input"
+                                       id="xe-list-board-body--footer-check-item-comment" name="allow_comment" value="1"
+                                       checked="checked">
+                                <label class="xe-list-board-body--footer-check-item-text"
+                                       for="xe-list-board-body--footer-check-item-comment">{{xe_trans('board::allowComment')}}</label>
                             </li>
                         @endif
 
                         @if (Auth::check() === true)
                             <li class="xe-list-board-body--footer-check-item">
-                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-alarm" name="use_alarm" value="1" @if($config->get('newCommentNotice') === true) checked="checked" @endif>
-                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-alarm">{{xe_trans('board::useAlarm')}}</label>
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input"
+                                       id="xe-list-board-body--footer-check-item-alarm" name="use_alarm" value="1"
+                                       @if($config->get('newCommentNotice') === true) checked="checked" @endif>
+                                <label class="xe-list-board-body--footer-check-item-text"
+                                       for="xe-list-board-body--footer-check-item-alarm">{{xe_trans('board::useAlarm')}}</label>
                             </li>
                         @endif
-                        
+
                         @if ($isManager === true)
                             <li class="xe-list-board-body--footer-check-item">
-                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input" id="xe-list-board-body--footer-check-item-notice" name="status" value="{{\Xpressengine\Document\Models\Document::STATUS_NOTICE}}">
-                                <label class="xe-list-board-body--footer-check-item-text" for="xe-list-board-body--footer-check-item-notice">{{xe_trans('xe::notice')}}</label>
+                                <input type="checkbox" class="xe-list-board-body--footer-check-item-input"
+                                       id="xe-list-board-body--footer-check-item-notice" name="status"
+                                       value="{{\Xpressengine\Document\Models\Document::STATUS_NOTICE}}">
+                                <label class="xe-list-board-body--footer-check-item-text"
+                                       for="xe-list-board-body--footer-check-item-notice">{{xe_trans('xe::notice')}}</label>
                             </li>
                         @endif
                     </ul>
                 </div>
             </div>
-            
+
             <div class="draft_container"></div>
-            
+
             @if($config['useCaptcha'] === true)
                 <div class="captcha_container">
                     {!! uio('captcha') !!}
@@ -133,18 +191,22 @@
             <div class="xe-list-board-body--footer-button-box">
                 <div class="xe-list-board-body--footer-button">
                     <div class="xe-list-board-body--footer-button__transient">
-                        <a href="#" class="xe-list-board-body--footer-button__draftsave __xe_temp_btn_save" onclick="return false;">{{ xe_trans('xe::draftSave') }}</a>
-                        
-                        <a href="#" class="xe-list-board-body--footer-button__draftload-arrow"  onclick="return false;">
+                        <a href="#" class="xe-list-board-body--footer-button__draftsave __xe_temp_btn_save"
+                           onclick="return false;">{{ xe_trans('xe::draftSave') }}</a>
+
+                        <a href="#" class="xe-list-board-body--footer-button__draftload-arrow" onclick="return false;">
                             <i class="xi-angle-down-min"></i>
                         </a>
                     </div>
                     <div class="xe-list-board-body--footer-button__transient-content">
-                        <a href="#" class="xe-list-board-body--footer-button__draftload __xe_temp_btn_load">{{ xe_trans('xe::draftLoad') }}</a>
+                        <a href="#"
+                           class="xe-list-board-body--footer-button__draftload __xe_temp_btn_load">{{ xe_trans('xe::draftLoad') }}</a>
                     </div>
                 </div>
-                <button type="button" class="xe-list-board-body--footer-button xe-list-board-body--footer-button__preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
-                <button type="submit" class="xe-list-board-body--footer-button xe-list-board-body--footer-button__register __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
+                <button type="button"
+                        class="xe-list-board-body--footer-button xe-list-board-body--footer-button__preview __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
+                <button type="submit"
+                        class="xe-list-board-body--footer-button xe-list-board-body--footer-button__register __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
             </div>
         </div>
     </form>
@@ -199,8 +261,8 @@
         });
     });
 
-    $(document).ready(function(){
-        $(".xe-list-board-body--footer-button__draftload-arrow").click(function(){
+    $(document).ready(function () {
+        $(".xe-list-board-body--footer-button__draftload-arrow").click(function () {
             $(".xe-list-board-body--footer-button__transient-content").toggleClass("open");
         });
     });
