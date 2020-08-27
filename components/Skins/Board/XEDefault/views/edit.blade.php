@@ -18,8 +18,32 @@
         @foreach ($skinConfig['formColumns'] as $columnName)
             @switch ($columnName)
                 @case ('title')
+
                 <div class="xe-list-board-body--header xf-row">
-                    <div class="xe-list-board-body--header-item xe-list-board-body--header-title @if ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">
+                    <div
+                        class="xe-list-board-body--header-item xe-list-board-body--header-select @if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-row @elseif ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-4 @else xf-display-none @endif">
+                        @if ($config->get('useTitleHead') == true)
+                            <div class="@if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">
+                                {!! uio('uiobject/board@new_select', [
+                                'name' => 'title_head',
+                                'label' => xe_trans('board::titleHead'),
+                                'value' => Request::old('title_head', $item->data->title_head),
+                                'items' => $titleHeadItems,
+                                ]) !!}
+                            </div>
+                        @endif
+                        @if ($config->get('category') === true)
+                            <div class="@if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-4 @else xf-col-md-12 @endif">
+                                {!! uio('uiobject/board@new_select', [
+                                    'name' => 'category_item_id',
+                                    'label' => xe_trans('xe::category'),
+                                    'value' => $item->boardCategory != null ? $item->boardCategory->item_id : '',
+                                    'items' => $categories
+                                ]) !!}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="xe-list-board-body--header-item xe-list-board-body--header-title @if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-12 @elseif ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">
                         {!! uio('newTitleWithSlug', [
                             'title' => Request::old('title', $item->title),
                             'slug' => $item->getSlug(),
@@ -27,26 +51,6 @@
                             'config' => $config
                         ]) !!}
                     </div>
-                    @if($config->get('category') === true || $config->get('useTitleHead') == true)
-                        <div class="pdl20 xe-list-board-body--header-item xe-list-board-body--header-select xf-col-md-4">
-                            @if ($config->get('category') === true)
-                                {!! uio('uiobject/board@new_select', [
-                                    'name' => 'category_item_id',
-                                    'label' => xe_trans('xe::category'),
-                                    'value' => $item->boardCategory != null ? $item->boardCategory->item_id : '',
-                                    'items' => $categories
-                                ]) !!}
-                            @endif
-                            @if ($config->get('useTitleHead') == true)
-                                {!! uio('uiobject/board@new_select', [
-                                'name' => 'title_head',
-                                'label' => xe_trans('board::titleHead'),
-                                'value' => Request::old('title_head', $item->data->title_head),
-                                'items' => $titleHeadItems,
-                                ]) !!}
-                            @endif
-                        </div>
-                    @endif
                 </div>
                 @break
 
