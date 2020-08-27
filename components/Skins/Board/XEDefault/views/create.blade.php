@@ -25,22 +25,23 @@
                         class="xe-list-board-body--header-item xe-list-board-body--header-select @if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-row @elseif ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col-md-4 @else xf-display-none @endif">
                         @if ($config->get('useTitleHead') == true)
                         <div class="@if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-8 @else xf-col-md-12 @endif">
-                                {!! uio('uiobject/board@new_select', [
-                                'name' => 'title_head',
-                                'label' => xe_trans('board::titleHead'),
-                                'value' => Request::old('title_head'),
-                                'items' => $titleHeadItems,
-                                ]) !!}
+                            {!! uio('uiobject/board@new_select', [
+                                'name' => 'category_item_id',
+                                'label' => xe_trans('xe::category'),
+                                'value' => Request::get('category_item_id'),
+                                'items' => $categories
+                            ]) !!}
+
                         </div>
                         @endif
                         @if ($config->get('category') === true)
                         <div class="@if ($config->get('category') === true && $config->get('useTitleHead') == true) xf-col-md-4 @else xf-col-md-12 @endif">
-                                {!! uio('uiobject/board@new_select', [
-                                    'name' => 'category_item_id',
-                                    'label' => xe_trans('xe::category'),
-                                    'value' => Request::get('category_item_id'),
-                                    'items' => $categories
-                                ]) !!}
+                            {!! uio('uiobject/board@new_select', [
+                                'name' => 'title_head',
+                                'label' => xe_trans('board::titleHead'),
+                                'value' => Request::old('title_head'),
+                                'items' => $titleHeadItems,
+                            ]) !!}
                         </div>
                         @endif
                     </div>
