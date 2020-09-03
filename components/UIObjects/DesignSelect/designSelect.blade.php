@@ -32,6 +32,7 @@
     </ul>
 </div>
 
+@if($scriptInit === true)
 <style>
 .xe-dropdown-menu li.on a {
     color: unset;
@@ -324,3 +325,4 @@
     color: #fff
 }
 </style>
+@endif
