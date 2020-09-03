@@ -177,6 +177,7 @@ class BoardService
         }
 
         $paginate = $query->paginate($config->get('perPage'))->appends($request->except('page'));
+
         return $paginate;
     }
 

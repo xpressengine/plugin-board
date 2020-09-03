@@ -222,7 +222,9 @@ class Handler
             $data->allow_comment = $allowComment;
             $data->use_alarm = $useAlarm;
             $data->file_count = $fileCount;
-            $data->title_head = $titleHead;
+            if (isset($args['title_head'])) {
+                $data->title_head = $titleHead;
+            }
         }
 
         $board->boardData()->save($data);
@@ -824,6 +826,20 @@ class Handler
 
                 $query = $query->whereIn('board_category.item_id', $targetCategoryItemIds);
             }
+        }
+
+        if (
+            $config->get('useTitleHead') === true &&
+            $request->has('title_head') &&
+            $request->get('title_head') != ''
+        ) {
+            $query->leftJoin(
+                'board_data',
+                sprintf('%s.%s', $query->getQuery()->from, 'id'),
+                '=',
+                sprintf('%s.%s', 'board_data', 'target_id')
+            );
+            $query->where('board_data.title_head', $request->get('title_head'));
         }
 
         if ($request->get('start_created_at') != null && $request->get('start_created_at') !== '') {

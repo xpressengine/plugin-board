@@ -34,6 +34,15 @@
         ]) !!}
         @endif
 
+        @if($config->get('useTitleHead') == true)
+        {!! uio('uiobject/board@select', [
+                'name' => 'title_head',
+                'label' => xe_trans('board::titleHead'),
+                'value' => Request::get('title_head'),
+                'items' => $titleHeadItems,
+                ]) !!}
+        @endif
+
         {!! uio('uiobject/board@select', [
             'name' => 'order_type',
             'label' => xe_trans('xe::order'),
@@ -126,22 +135,24 @@
             <div class="bd_search_detail_option">
                 <div class="xe-row">
                     @if($config->get('category') == true)
-                    <div class="xe-col-sm-6">
-                        <div class="xe-row">
-                            <div class="xe-col-sm-3">
-                                <label class="xe-control-label">{{ xe_trans('xe::category') }}</label>
-                            </div>
-                            <div class="xe-col-sm-9">
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">{{ xe_trans('xe::category') }}</label>
+                                </div>
+                                <div class="xe-col-sm-9">
                                     {!! uio('uiobject/board@select', [
-                                        'name' => 'category_item_id',
-                                        'label' => xe_trans('xe::category'),
-                                        'value' => Request::get('category_item_id'),
-                                        'items' => $categories,
+                                    'name' => 'category_item_id',
+                                    'label' => xe_trans('xe::category'),
+                                    'value' => Request::get('category_item_id'),
+                                    'items' => $categories,
                                     ]) !!}
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endif
+                </div>
+                <div class="xe-row">
                     <div class="xe-col-sm-6">
                         <div class="xe-row">
                             <div class="xe-col-sm-3">
@@ -152,6 +163,23 @@
                             </div>
                         </div>
                     </div>
+                    @if($config->get('useTitleHead') == true)
+                        <div class="xe-col-sm-6">
+                            <div class="xe-row">
+                                <div class="xe-col-sm-3">
+                                    <label class="xe-control-label">{{ xe_trans('board::titleHead') }}</label>
+                                </div>
+                                <div class="xe-col-sm-9">
+                                    {!! uio('uiobject/board@select', [
+                                    'name' => 'title_head',
+                                    'label' => xe_trans('board::titleHead'),
+                                    'value' => Request::get('title_head'),
+                                    'items' => $titleHeadItems,
+                                    ]) !!}
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="xe-row">
                     <div class="xe-col-sm-6">

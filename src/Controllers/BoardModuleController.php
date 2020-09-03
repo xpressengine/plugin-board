@@ -171,6 +171,8 @@ class BoardModuleController extends Controller
             $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
         }
 
+        $titleHeadItems = $service->getTitleHeadItems($this->config);
+
         return XePresenter::makeAll('index', [
             'notices' => $notices,
             'paginate' => $paginate,
@@ -179,7 +181,8 @@ class BoardModuleController extends Controller
             'orders' => $orders,
             'dynamicFieldsById' => $dynamicFieldsById,
             'searchOptions' => $searchOptions,
-            'isWritable' => $isWritable
+            'isWritable' => $isWritable,
+            'titleHeadItems' => $titleHeadItems,
         ]);
     }
 
@@ -249,6 +252,8 @@ class BoardModuleController extends Controller
 
         $item->setCanonical($this->urlHandler->getShow($item));
 
+        $titleHeadItems = $service->getTitleHeadItems($this->config);
+
         return XePresenter::make('show', [
             'item' => $item,
             'thumb' => $thumb,
@@ -259,7 +264,8 @@ class BoardModuleController extends Controller
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
             'searchOptions' => $searchOptions,
-            'boardMoreItems' => $boardMoreItems
+            'boardMoreItems' => $boardMoreItems,
+            'titleHeadItems' => $titleHeadItems,
         ]);
     }
 
