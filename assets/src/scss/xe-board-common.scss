@@ -9339,20 +9339,12 @@
   .xe-board-dropdown-box,
   .xf-board-dropdown-box {
     flex: 1;
+    display: flex;
+    justify-content: flex-end;
 
     .xf-board-dropdown {
-      &:first-child {
+      &:last-child {
         flex: 1;
-      }
-    }
-
-    .xe-board-dropdown,
-    .xf-board-dropdown {
-      &:first-child {
-        .new-select .xe-dropdown--menu {
-          left: 0;
-          right: auto;
-        }
       }
     }
   }

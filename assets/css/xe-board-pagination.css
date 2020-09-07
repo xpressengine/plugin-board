@@ -16,8 +16,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   margin: 0 -15px;
 }
 
@@ -94,8 +94,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .xf-board-pagination-box .xf-board-pagenation-mobile .xf-pagination-list .xf-pagination-item.xf-pagination-arrow {
@@ -108,8 +108,8 @@
 
 .xf-board-pagination-box .xf-board-pagenation-mobile .xf-pagination-list .xf-pagination-item.xe-list-board__pagination-box {
   -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
 .xf-board-pagination-box .xf-board-pagenation-mobile .xf-pagination-list .xf-pagination-item .xf-pagination-number {
@@ -129,4 +129,4 @@
   height: 36px;
 }
 
-/*# sourceMappingURL=xe-board_temp-pagination.css.map */
+/*# sourceMappingURL=xe-board-pagination.css.map */

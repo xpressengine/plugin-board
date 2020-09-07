@@ -3,7 +3,7 @@
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
 .xf-board-body .xf-board-writing-form input::-webkit-input-placeholder {
@@ -136,8 +136,8 @@
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link.xf-board-draft__text {
   -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   text-align: center;
   padding: 13px;
   font-size: 14px;
@@ -151,11 +151,11 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   padding: 0 11px;
 }
 
@@ -189,11 +189,11 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn {
@@ -208,11 +208,11 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
     -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn {
     margin: 0 10px 0 0;
@@ -234,11 +234,11 @@
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
     -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link.xf-board-draft__text {
     padding: 10.5px;
@@ -269,7 +269,7 @@
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+        flex-wrap: wrap;
     margin: 0 0 32px 0;
   }
   .xf-board-body .xf-board-writing-form .xf-col01 {
@@ -348,8 +348,8 @@
   }
   .xf-board-body .xf-board-writing-form .xf-write-btn-box {
     -webkit-box-pack: end;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
   }
   .xf-board-body .xf-board-writing-form .xf-write-btn-box .xf-board-write-btn {
     min-width: 120px;
@@ -375,4 +375,4 @@
   }
 }
 
-/*# sourceMappingURL=xe-board_temp-create.css.map */
+/*# sourceMappingURL=xe-board-create.css.map */
