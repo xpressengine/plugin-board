@@ -111,7 +111,7 @@
                                 <div class="xf-secret-icon"></div>
                             @endif
                             <span class="xf-item-inner__text base-w500">
-                                @if ($item->data->title_head !== '')
+                                @if ($item->data->title_head !== null)
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
                                 {{ $item->title }}
@@ -246,7 +246,7 @@
                                 <div class="xf-secret-icon"></div>
                             @endif
                             <span class="xf-item-inner__text">
-                                @if ($item->data->title_head !== '')
+                                @if ($item->data->title_head !== null)
                                     <span
                                         class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
