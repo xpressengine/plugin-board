@@ -1,62 +1,76 @@
 {{ XeFrontend::js('plugins/board/assets/js/board.js')->appendTo('body')->load() }}
 {{ XeFrontend::js('assets/core/xe-ui-component/js/xe-page.js')->appendTo('body')->load() }}
 
-{{ XeFrontend::css('plugins/board/assets/css/new-board-common.css')->load() }}
-{{ XeFrontend::css('plugins/board/assets/css/new-board-header.css')->load() }}
-{{ XeFrontend::css('plugins/board/assets/css/new-board-footer.css')->load() }}
+{{ XeFrontend::css('plugins/board/assets/css/xe-board-common.css')->load() }}
 
 {{ expose_trans('board::selectPost') }}
 {{ expose_trans('board::selectBoard') }}
 {{ expose_trans('board::msgDeleteConfirm') }}
 
-        
-<section class="xf-board">
-    @if ($config->get('topCommonContentOnlyList') === false || request()->segment(2) === '')
-        <div class="xe-list-board-header__text">
-            {!! xe_trans($config->get('topCommonContent', '')) !!}
-        </div>
-    @endif
-    <section class="xe-list-board">
-        <div class="xe-list-board-header">
-            @if (request()->segment(2) === null)
-                <div class="xe-list-board-header__title-content">
-                    <div class="xe-list-board-header__title-box">
-                        @if (in_array(array_get($skinConfig, 'titleStyle', 'titleWithCount'), ['titleWithCount', 'title']) === true)
-                            <h2 class="xe-list-board-header__title">
-                                <a href="{{ $urlHandler->get('index') }}">
-                                    @if (xe_trans($config->get('boardName', '')) !== '')
-                                        {{ xe_trans($config->get('boardName')) }}
-                                    @else
-                                        {{ xe_trans(current_menu()['title']) }}
-                                    @endif
-                                </a>
-                            </h2>
-                            @if (array_get($skinConfig, 'titleStyle', 'titleWithCount') === 'titleWithCount')
-                                <span class="xe-list-board-header__post-count">({{ number_format($paginate->total()) }})</span>
-                            @endif
+<div class="xf-section-board">
+    <!-- 게시판 헤더 -->
+    <div class="xf-board-header">
+        <!-- 상단 타이틀 -->
+        @if (request()->segment(2) === null)
+            <div class="xf-board-title-wrap xf-mo-mb20 xf-pc-mb08">
+                @if (in_array(array_get($skinConfig, 'titleStyle', 'titleWithCount'), ['titleWithCount', 'title']) === true)
+                    <div class="xf-board-title-box">
+                        <h2 class="xf-board-title xf-heading xf-mr06">
+                            <a href="{{ $urlHandler->get('index') }}" class="xf-a">
+                                @if (xe_trans($config->get('boardName', '')) !== '')
+                                    {{ xe_trans($config->get('boardName')) }}
+                                @else
+                                    {{ xe_trans(current_menu()['title']) }}
+                                @endif
+                            </a>
+                        </h2>
+                        @if (array_get($skinConfig, 'titleStyle', 'titleWithCount') === 'titleWithCount')
+                            <span class="xf-board-title-number">({{ number_format($paginate->total()) }})</span>
                         @endif
                     </div>
-                    @if (array_get($skinConfig, 'visibleIndexMobileWriteButton', 'on') === 'on')
-                        @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'show')
-                            <div class="xe-list-board-header__write-button">
-                                <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
-                            </div>
-                        @elseif (request()->segment(2) === null && array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
-                            <div class="xe-list-board-header__write-button">
-                                <a href="{{ $urlHandler->get('create') }}"><img src="{{ url('plugins/board/assets/img/pencil.svg') }}" alt="모바일 글쓰기 이미지"></a>
-                            </div>
-                        @endif
+                @endif
+                @if (array_get($skinConfig, 'visibleIndexMobileWriteButton', 'on') === 'on')
+                    @if (array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'show')
+                        <a href="{{ $urlHandler->get('create') }}" class="xf-write-btn">
+                        </a>
+                    @elseif (request()->segment(2) === null && array_get($skinConfig, 'visibleIndexWriteButton', 'show') === 'permission' && $isWritable === true)
+                        <div class="xe-list-board-header__write-button">
+                            <a href="{{ $urlHandler->get('create') }}" class="xf-write-btn">
+                            </a>
+                        </div>
                     @endif
+                @endif
+            </div>
+            @if ($config->get('topCommonContentOnlyList') === true)
+                <div class="xf-board-common-box xf-pc-mb24">
+                    <p class="xf-common-text xf-common-top xf-p">
+                        {!! xe_trans($config->get('topCommonContent', '')) !!}
+                    </p>
                 </div>
             @endif
-        </div>
+        @endif
+    </div>
+    <!-- //게시판 헤더 -->
+
+    <!-- 게시판 본문 -->
+    <div class="xf-board-body">
         @section('content')
             {!! isset($content) ? $content : '' !!}
         @show
-    </section>
-    @if ($config->get('bottomCommonContentOnlyList') === false || request()->segment(2) === '')
-        <div class="xe-list-board-footer__text">
-            {!! xe_trans($config->get('bottomCommonContent', '')) !!}
-        </div>
+    </div>
+    <!-- //게시판 본문 -->
+
+    <!-- 게시판 푸터 -->
+    <div class="xf-board-footer">
+        <!-- 하단 공통 내용 -->
+        @if ($config->get('bottomCommonContentOnlyList') === true)
+            <div class="xf-board-common-box xf-mb40">
+                <p class="xf-common-text xf-common-bottom xf-p">
+                    {!! xe_trans($config->get('bottomCommonContent', '')) !!}
+                </p>
+            </div>
     @endif
-</section>
+    <!-- //하단 공통 내용 -->
+    </div>
+    <!-- //게시판 푸터 -->
+</div>

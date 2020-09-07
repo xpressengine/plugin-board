@@ -1,0 +1,159 @@
+.xf-board-body .xf-board-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-board-item__link {
+  display: inline-block;
+  width: 100%;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-board-item__link .xf-post-contents .xf-post-title {
+  max-height: 52px;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-board-item__link .xf-post-contents .xf-post-text {
+  max-height: 44px;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-thumbnail-box {
+  position: relative;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-thumbnail-box .xf-thumbnail-img {
+  background-image: url("/assets/core/common/img/default_image_1200x800.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding-top: 56.25%;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box {
+  letter-spacing: -0.2px;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info .xf-item__writer-link {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info .xf-item__writer-link .xf-writer__nickname {
+  word-break: break-all;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info .xf-info-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info .xf-info-list .xf-info-item {
+  margin-right: 4px;
+  line-height: 1;
+}
+
+.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info .xf-info-list .xf-info-item .xf-info-item__text {
+  font-size: 12px;
+  color: #9c9c9c;
+}
+
+.xf-board-management-btn-box {
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .xf-board-body {
+    overflow: hidden;
+  }
+  .xf-board-body .xf-board-list .xf-board-item {
+    width: 100%;
+    margin-top: 32px;
+  }
+  .xf-board-body .xf-board-list .xf-board-item:first-child {
+    margin-top: 20px;
+  }
+  .xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-board-item__link .xf-detail-box .xf-post-contents .xf-post-title {
+    font-size: 17px;
+    line-height: 26px;
+    max-height: 52px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 {
+    margin: 0 -7px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 .xf-board-item {
+    width: 50%;
+    padding: 0 7px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 .xf-board-item:nth-child(2) {
+    margin-top: 20px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 .xf-board-item .xf-board-item-inner .xf-board-item__link .xf-thumbnail-box .xf-thumbnail-img {
+    padding-top: 75%;
+  }
+}
+
+@media (min-width: 768px) {
+  .xf-board-body {
+    overflow: hidden;
+  }
+  .xf-board-body .xf-board-list .xf-board-item {
+    width: 50%;
+    margin-top: 32px;
+  }
+  .xf-board-body .xf-board-list .xf-board-item:nth-child(2) {
+    margin-top: 32px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 {
+    margin: 0 -7px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 .xf-board-item {
+    width: 50%;
+    padding: 0 7px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 .xf-board-item:nth-child(2) {
+    margin-top: 32px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 .xf-board-item .xf-board-item-inner .xf-board-item__link .xf-thumbnail-box .xf-thumbnail-img {
+    padding-top: 56.25%;
+  }
+}
+
+@media (min-width: 992px) {
+  .xf-board-body {
+    overflow: hidden;
+  }
+  .xf-board-body .xf-board-list {
+    margin: 0 -17px;
+  }
+  .xf-board-body .xf-board-list .xf-board-item {
+    width: 33.33%;
+    padding: 0 17px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 {
+    margin: 0 -17px;
+  }
+  .xf-board-body .xf-board-list.xf-col2 .xf-board-item {
+    width: 33.33%;
+    padding: 0 17px;
+  }
+}
+
+/*# sourceMappingURL=xe-board_temp-gallery.css.map */
