@@ -18,7 +18,7 @@
                     </div>
                 @endif
                 <div class="xf-post-title xf-post-detail-title">
-                    @if ($item->data->title_head !== '')
+                    @if ($item->data->title_head !== null)
                         <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">
                             [{{$item->data->title_head}}]
                         </span>
