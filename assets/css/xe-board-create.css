@@ -45,11 +45,13 @@
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .new-select {
+  height: 61px;
   border-bottom: 1px solid #e0e0e0;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .xe-dropdown__button-box .xe-dropdown__button-text {
   width: 100%;
+  height: 61px;
   padding: 18px 15px;
   position: relative;
   opacity: 0.7;
@@ -74,6 +76,7 @@
   width: 100%;
   border-bottom: 1px solid #e0e0e0;
   padding: 18px 15px;
+  height: 61px;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-editor-box {
