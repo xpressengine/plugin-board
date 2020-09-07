@@ -11,16 +11,12 @@
   font-weight: 400;
 }
 
-/* reset */
-* {
-  outline: none;
-  vertical-align: middle;
-  line-height: 1.5;
-}
-
 .xf-section-board {
   font-family: 'Inter', 'Noto Sans KR', sans-serif !important;
   font-weight: 400;
+  outline: none;
+  vertical-align: middle;
+  line-height: 1.5;
 }
 
 .blind {
