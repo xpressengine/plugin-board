@@ -72,7 +72,7 @@
                                 <span class="xf-info-item__text">{{ $item->created_at->format('Y.m.d') }}</span>
                             </li>
                         @endif
-                        <li class="xf-info-item xf-pc-display-in">
+                        <li class="xf-info-item xf-pc-display-fl">
                             <span
                                 class="xf-info-item__text">{{ xe_trans('board::comment_count') }} {{ number_format($item->comment_count) }}</span>
                         </li>

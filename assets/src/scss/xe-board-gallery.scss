@@ -1,29 +1,43 @@
 .xf-board-body {
+  line-height: 1.5;
+
   .xf-board-list {
     display: flex;
     flex-wrap: wrap;
+    line-height: 1.5;
 
     .xf-board-item {
+      line-height: 1.5;
+
       .xf-board-item-inner {
+        line-height: 1.5;
+
         .xf-board-item__link {
           display: inline-block;
           width: 100%;
+          line-height: 1.5;
 
           .xf-post-contents {
+            line-height: 1.5;
+
             .xf-post-title {
               max-height: 52px;
+              line-height: 1.5;
             }
 
             .xf-post-text {
               max-height: 44px;
+              line-height: 1.5;
             }
           }
         }
 
         .xf-thumbnail-box {
           position: relative;
+          line-height: 1.5;
 
           .xf-thumbnail-img {
+            line-height: 1.5;
             background-image: url("/assets/core/common/img/default_image_1200x800.jpg");
             background-repeat: no-repeat;
             background-position: center center;
@@ -33,25 +47,31 @@
         }
 
         .xf-detail-box {
+          line-height: 1.5;
           letter-spacing: -0.2px;
 
           .xf-post-info {
             display: flex;
+            line-height: 1.5;
 
             .xf-detail-info {
               flex: 1;
+              line-height: 1.5;
 
               .xf-item__writer-link {
                 display: flex;
+                line-height: 1.5;
 
                 .xf-writer__nickname {
                   word-break: break-all;
+                  line-height: 1.5;
                 }
               }
 
               .xf-info-list {
                 display: flex;
                 flex-wrap: wrap;
+                line-height: 1.5;
 
                 .xf-info-item {
                   margin-right: 4px;
@@ -60,6 +80,8 @@
                   .xf-info-item__text {
                     font-size: 12px;
                     color: #9c9c9c;
+                    line-height: 1.5;
+
                   }
                 }
               }
@@ -73,6 +95,7 @@
 
 .xf-board-management-btn-box {
   margin-top: 20px;
+  line-height: 1.5;
 }
 
 @media (max-width: 768px) {

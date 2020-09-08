@@ -1,11 +1,22 @@
 .xf-board-list {
+  line-height: 1.5;
+
   .xf-board-item {
     border-bottom: 1px solid #e0e0e0;
+    line-height: 1.5;
 
     &.xf-board-notice {
+      line-height: 1.5;
+
       .xf-board-item-inner {
+        line-height: 1.5;
+
         &.xf-item__title {
+          line-height: 1.5;
+
           .xf-board-item__link {
+            line-height: 1.5;
+
             &:visited {
               .xf-item-inner__text {
                 color: #767676;
@@ -17,9 +28,14 @@
     }
 
     .xf-board-item-inner {
+      line-height: 1.5;
+
       &.xf-item__title {
+        line-height: 1.5;
+
         .xf-board-item__link {
           width: 100%;
+          line-height: 1.5;
 
           &:visited {
             .xf-item-inner__text {
@@ -34,6 +50,8 @@
 
 @media (max-width: 992px) {
   .xf-board-list {
+    line-height: 1.5;
+
     .xf-board-item {
       padding: 20px 0;
 
@@ -172,7 +190,7 @@
   .xf-board-body {
     .xf-board-list {
       overflow-x: auto;
-      min-width: 992px;
+      min-width: 100%;
       padding-bottom: 72px;
 
       .xf-board-item {

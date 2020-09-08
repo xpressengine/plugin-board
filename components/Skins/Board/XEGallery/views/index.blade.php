@@ -60,10 +60,10 @@
                                 @if ($item->display === $item::DISPLAY_SECRET)
                                     <div class="xf-secret-icon"></div>
                                 @endif
+                                @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
+                                    <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
+                                @endif
                                 <strong class="xf-post-title__text">
-                                    @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
-                                        <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
-                                    @endif
                                     {{ $item->title }}
                                 </strong>
                                 <div class="xf-item-icon-box">
@@ -200,12 +200,11 @@
                                 @if ($item->display === $item::DISPLAY_SECRET)
                                     <div class="xf-secret-icon"></div>
                                 @endif
-                                <strong class="xf-post-title__text">
-                                    @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
-                                        <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
-                                    @endif
-                                    {{ $item->title }}
-                                </strong>
+
+                                @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
+                                    <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
+                                @endif
+                                <strong class="xf-post-title__text">{{ $item->title }}</strong>
                                 <div class="xf-item-icon-box">
                                     <ul class="xf-item-icon-list xf-list">
                                         @if ($item->data->file_count > 0)
