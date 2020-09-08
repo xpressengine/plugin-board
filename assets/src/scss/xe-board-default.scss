@@ -51,6 +51,7 @@
 @media (max-width: 992px) {
   .xf-board-list {
     line-height: 1.5;
+
     .xf-board-item {
       padding: 20px 0;
 
@@ -189,7 +190,7 @@
   .xf-board-body {
     .xf-board-list {
       overflow-x: auto;
-      min-width: 992px;
+      min-width: 100%;
       padding-bottom: 72px;
 
       .xf-board-item {
