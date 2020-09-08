@@ -1,13 +1,43 @@
+.xf-board-list {
+  line-height: 1.5;
+}
+
 .xf-board-list .xf-board-item {
   border-bottom: 1px solid #e0e0e0;
+  line-height: 1.5;
+}
+
+.xf-board-list .xf-board-item.xf-board-notice {
+  line-height: 1.5;
+}
+
+.xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner {
+  line-height: 1.5;
+}
+
+.xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title {
+  line-height: 1.5;
+}
+
+.xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title .xf-board-item__link {
+  line-height: 1.5;
 }
 
 .xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title .xf-board-item__link:visited .xf-item-inner__text {
   color: #767676;
 }
 
+.xf-board-list .xf-board-item .xf-board-item-inner {
+  line-height: 1.5;
+}
+
+.xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title {
+  line-height: 1.5;
+}
+
 .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link {
   width: 100%;
+  line-height: 1.5;
 }
 
 .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link:visited .xf-item-inner__text {
@@ -15,6 +45,9 @@
 }
 
 @media (max-width: 992px) {
+  .xf-board-list {
+    line-height: 1.5;
+  }
   .xf-board-list .xf-board-item {
     padding: 20px 0;
   }

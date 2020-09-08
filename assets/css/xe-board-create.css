@@ -4,31 +4,37 @@
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::-webkit-input-placeholder {
   color: #767676;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::-moz-placeholder {
   color: #767676;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input:-ms-input-placeholder {
   color: #767676;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::-ms-input-placeholder {
   color: #767676;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::placeholder {
   color: #767676;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-col01,
@@ -47,6 +53,7 @@
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .new-select {
   height: 61px;
   border-bottom: 1px solid #e0e0e0;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .xe-dropdown__button-box .xe-dropdown__button-text {
@@ -57,6 +64,7 @@
   opacity: 0.7;
   color: #141414;
   text-align: left;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .xe-dropdown__button-box .xe-dropdown__button-text:after {
@@ -69,6 +77,11 @@
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .xe-dropdown--menu {
   width: 100%;
   margin-top: -1px;
+  line-height: 1.5;
+}
+
+.xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-title-input-box {
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-title-input-box .xe-list-board-body--header-title-input {
@@ -77,11 +90,17 @@
   border-bottom: 1px solid #e0e0e0;
   padding: 18px 15px;
   height: 61px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-editor-box {
   width: 100%;
   margin-top: -1px;
+  line-height: 1.5;
+}
+
+.xf-board-body .xf-board-writing-form .xf-input-nomember-box {
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-input-nomember-box .xf-nonmember-input {
@@ -89,17 +108,24 @@
   border-bottom: 1px solid #e0e0e0;
   padding: 15px;
   width: 100%;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box {
   margin-top: 20px;
   padding: 0 15px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box .xf-write-check-list {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  line-height: 1.5;
+}
+
+.xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item {
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item:not(:last-child) {
@@ -108,6 +134,7 @@
 
 .xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item .xf-check-item__input {
   border: 1px solid #c0c0c0;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item .xf-check-item__label {
@@ -119,6 +146,7 @@
 
 .xf-board-body .xf-write-btn-box {
   margin-top: 22px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn {
@@ -135,6 +163,7 @@
   display: flex;
   border: 1px solid #e0e0e0;
   height: 50px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link.xf-board-draft__text {
@@ -160,6 +189,7 @@
       -ms-flex-pack: center;
           justify-content: center;
   padding: 0 11px;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link .xf-more-btn:after {
@@ -171,6 +201,7 @@
   display: none;
   border-top: 1px solid #e0e0e0;
   text-align: center;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn .xf-board-write-btn {
@@ -180,6 +211,10 @@
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn.open {
   display: block;
+}
+
+.xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn {
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn .xf-board-write-btn {
@@ -197,12 +232,14 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn {
   border: 1px solid #141414;
   background-color: #141414;
   color: #fff;
+  line-height: 1.5;
 }
 
 @media (min-width: 400px) {
@@ -216,21 +253,26 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn {
     margin: 0 10px 0 0;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn:last-child {
     margin: 0;
   }
   .xf-board-body .xf-write-btn-box .xf-board-write-btn {
     min-width: 110px;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box {
     position: relative;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn {
     height: 44px;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link {
     display: -webkit-box;
@@ -242,12 +284,15 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link.xf-board-draft__text {
     padding: 10.5px;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link .xf-more-btn {
     height: 100%;
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn {
     height: 44px;
@@ -259,14 +304,28 @@
     border-right: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
     width: 100%;
+    line-height: 1.5;
+  }
+  .xf-board-body .xf-write-btn-box .xf-write-btn {
+    line-height: 1.5;
+  }
+  .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn {
+    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn .xf-board-write-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn {
+    line-height: 1.5;
     height: 44px;
     padding: 9px;
   }
 }
 
 @media (min-width: 992px) {
+  .xf-board-body {
+    line-height: 1.5;
+  }
+  .xf-board-body .xf-board-writing-form {
+    line-height: 1.5;
+  }
   .xf-board-body .xf-board-writing-form .xf-row {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -274,6 +333,7 @@
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     margin: 0 0 32px 0;
+    line-height: 1.5;
   }
   .xf-board-body .xf-board-writing-form .xf-col01 {
     width: 10%;
