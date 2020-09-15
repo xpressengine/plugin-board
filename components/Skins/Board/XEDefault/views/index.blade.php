@@ -114,7 +114,7 @@
                                 @if ($item->data->title_head !== null)
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
-                                {{ $item->title }}
+                                <span class="xf-item__title-text">{{ $item->title }}</span>
                             </span>
                             <div class="xf-item-icon-box">
                                 @if($item->comment_count > 0)
@@ -250,7 +250,7 @@
                                     <span
                                         class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
-                                {{ $item->title }}
+                                <span class="xf-item__title-text">{{ $item->title }}</span>
                             </span>
                             <div class="xf-item-icon-box">
                                 @if($item->comment_count > 0)

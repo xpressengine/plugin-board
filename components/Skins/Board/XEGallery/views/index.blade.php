@@ -63,9 +63,7 @@
                                 @if ($item->data->title_head !== null)
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
-                                <strong class="xf-post-title__text">
-                                    {{ $item->title }}
-                                </strong>
+                                <strong class="xf-post-title__text">{{ $item->title }}</strong>
                                 <div class="xf-item-icon-box">
                                     <ul class="xf-item-icon-list xf-list">
                                         @if ($item->data->file_count > 0)

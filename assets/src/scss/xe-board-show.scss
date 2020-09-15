@@ -21,7 +21,6 @@
           line-height: 24px;
           color: #767676;
           display: inline-block;
-          line-height: 1.5;
         }
       }
     }
@@ -132,9 +131,8 @@
 
         .xf-assent-item {
           position: relative;
-          padding: 5px 10px 8px 10px;
+          padding: 8px 10px;
           min-width: 55px;
-          margin-top: -4px;
 
           &:not(:last-child) {
             &:after {
@@ -150,14 +148,17 @@
             }
           }
 
+          .xf-assent-item-inner {
+            display: flex;
+            align-items: center;
+          }
+
           .xf-assent__link {
-            display: inline-block;
-            pading: 5px;
             color: #181818;
             font-size: 13px;
-            display: inline-block;
-            height: 18px;
+            display: inline-flex;
             vertical-align: middle;
+            height: 18px;
 
             &.voted {
               .xf-assent-icon {
@@ -197,7 +198,6 @@
             .xf-assent-text {
               color: #181818;
               font-size: 13px;
-              display: inline-block;
               height: 18px;
               vertical-align: middle;
             }

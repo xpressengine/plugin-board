@@ -11,14 +11,15 @@
   font-weight: 400;
 }
 
-* {
-  outline: none;
-  vertical-align: middle;
-}
-
 .xf-section-board {
   font-family: 'Inter', 'Noto Sans KR', sans-serif !important;
   font-weight: 400;
+
+  & * {
+    line-height: 1.5;
+    outline: none;
+    vertical-align: middle;
+  }
 }
 
 .blind {
@@ -9100,7 +9101,6 @@
 .xf-board-header,
 .xf-board-body,
 .xf-board-footer {
-  line-height: 1.5;
   position: relative;
 }
 
@@ -9108,7 +9108,6 @@
   padding: 28px 0;
   word-break: keep-all;
   vertical-align: middle;
-  line-height: 1.5;
 }
 
 @media (min-width: 992px) {
@@ -9122,15 +9121,12 @@
   display: flex;
   align-items: center;
   vertical-align: middle;
-  line-height: 1.5;
   width: 100%;
-  line-height: 1.5;
 
   .xf-board-title-box {
     flex: 1;
     display: flex;
     align-items: center;
-    line-height: 1.5;
   }
 
   .xf-write-btn {
@@ -9141,7 +9137,6 @@
     background-size: 20px 20px;
     width: 20px;
     height: 20px;
-    line-height: 1.5;
   }
 }
 
@@ -9209,7 +9204,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1.5;
 
   &.xf-notice-label {
     background-color: #2684ff;
@@ -9228,14 +9222,12 @@
   background-color: #2684ff;
   width: 48px;
   height: 28px;
-  line-height: 1.5;
 
   .xf-notice__text {
     font-weight: 500;
     color: #fff;
     font-size: 13px;
     letter-spacing: -0.2px;
-    line-height: 1.5;
   }
 }
 
@@ -9249,12 +9241,10 @@
   background-repeat: no-repeat;
   background-size: 16px 16px;
   background-position: center;
-  line-height: 1.5;
 }
 
 // 말머리
 .xf-title-head {
-  line-height: 1.5;
   font-weight: 500;
 }
 
@@ -9262,11 +9252,9 @@
 .xf-board-search-box {
   position: relative;
   margin-bottom: 16px;
-  line-height: 1.5;
 
   .xf-search-input-box {
     border: 1px solid #e0e0e0;
-    line-height: 1.5;
 
     .xf-search-input {
       border: 0;
@@ -9279,7 +9267,6 @@
       &::placeholder {
         letter-spacing: -0.6px;
         color: #aeaeae;
-        line-height: 1.5;
       }
     }
   }
@@ -9290,7 +9277,6 @@
     right: 0;
     width: 20px;
     height: 20px;
-    line-height: 1.5;
 
     .xf-search-btn {
       background-image: url("../img/search.svg");
@@ -9300,7 +9286,6 @@
       width: 20px;
       height: 20px;
       display: block;
-      line-height: 1.5;
     }
   }
 }
@@ -9309,7 +9294,6 @@
   .xf-board-search-box {
     .xf-search-btn-box {
       right: 10px;
-      line-height: 1.5;
     }
   }
 }
@@ -9319,7 +9303,6 @@
 .xe-board-dropdown-box {
   display: flex;
   margin-bottom: 12px;
-  line-height: 1.5;
 
   .xe-board-dropdown,
   .xf-board-dropdown {
@@ -9329,7 +9312,6 @@
       display: inline-flex;
       align-items: center;
       margin-right: 10px;
-      line-height: 1.5;
 
       &:after {
         content: '';
@@ -9338,19 +9320,17 @@
         height: 10px;
         background-color: #e0e0e0;
         margin-left: 7px;
-        line-height: 1.5;
       }
     }
     .new-select .xe-dropdown--menu {
       right: 0;
-      line-height: 1.5;
     }
   }
 }
 
 .open .xe-dropdown-menu {
   min-width: auto;
-  line-height: 1.5;
+  top: 80%;
 }
 
 @media (max-width: 768px) {
@@ -9359,14 +9339,6 @@
     flex: 1;
     display: flex;
     justify-content: flex-end;
-    line-height: 1.5;
-
-    .xf-board-dropdown {
-      &:last-child {
-        flex: 1;
-        line-height: 1.5;
-      }
-    }
   }
 }
 
@@ -9375,19 +9347,16 @@
     display: flex;
     align-items: center;
     margin-bottom: 0;
-    line-height: 1.5;
   }
 
   .xf-board-search-box {
     width: 345px;
     margin-bottom: 0;
-    line-height: 1.5;
 
     .xf-search-input-box {
       border-top: none;
       border-left: none;
       border-right: none;
-      line-height: 1.5;
     }
   }
 
@@ -9396,13 +9365,11 @@
     flex: 1;
     justify-content: flex-end;
     margin-bottom: 0;
-    line-height: 1.5;
   }
 }
 
 .xf-item-icon-box {
   display: inline-flex;
-  line-height: 1.5;
 
   // 댓글
   .xf-comment_count {
@@ -9418,7 +9385,6 @@
     max-width: 40px;
     display: flex;
     align-items: center;
-    line-height: 1.5;
 
     .xf-item-icon {
       display: inline-block;
@@ -9427,16 +9393,12 @@
       background-size: 16px 16px;
       background-repeat: no-repeat;
       background-position: center center;
-      line-height: 1.5;
-
       &.xf-attached-file {
         background-image: url("../img/paperclip.svg");
-        line-height: 1.5;
       }
 
       &.xf-new {
         background-image: url("../img/new-icon.svg");
-        line-height: 1.5;
       }
     }
   }
@@ -9447,7 +9409,6 @@
   margin: 0 auto;
   text-align: center;
   padding: 100px 0;
-  line-height: 1.5;
 
   .xf-board__text {
     font-size: 15px;
@@ -9468,13 +9429,11 @@
   font-size: 14px;
   letter-spacing: -0.4px;
   padding: 0;
-  line-height: 1.5;
 
   &.xf-btn-flex {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    line-height: 1.5;
   }
 
   &.xf-extra-small {
@@ -9483,12 +9442,10 @@
     background-color: #f4f5f7;
     border: 1px solid #f4f5f7;
     min-height: 36px;
-    line-height: 1.5;
 
     &:hover {
       background-color: #ebecf0;
       border: 1px solid #ebecf0;
-      line-height: 1.5;
     }
   }
 
@@ -9497,7 +9454,6 @@
     min-width: 80px;
     border: 1px solid #e0e0e0;
     min-height: 36px;
-    line-height: 1.5;
 
     &:hover {
       background-color: #f4f5f7;
@@ -9512,7 +9468,6 @@
     border: 1px solid #141414;
     transition: all 0.2s;
     font-size: 13px;
-    line-height: 1.5;
 
     &:hover {
       background-color: #141414;
@@ -9526,27 +9481,22 @@
     background-color: #2684ff;
     border-color: #2684ff;
     color: #fff;
-    line-height: 1.5;
   }
 }
 
 // 하단 버튼
 .xf-board-management-btn-box {
   display: flex;
-  line-height: 1.5;
 
   .xf-management-btn {
     flex: 1;
   }
 
   .xf-community-btn {
-    line-height: 1.5;
-
     .xf-my-posts-btn.active {
       color: #ffffff;
       background-color: #2684ff;
       border-color: #2684ff;
-      line-height: 1.5;
     }
   }
 }
@@ -9554,7 +9504,10 @@
 // 프로필
 .xf-post-info {
   display: flex;
-  line-height: 1.5;
+
+  .open .xe-dropdown-menu {
+    top: 20px;
+  }
 }
 
 .xf-item__writer-link {
@@ -9562,12 +9515,10 @@
   align-items: center;
   color: #767676;
   width: 100%;
-  line-height: 1.5;
 
   .xf-writer-profile-box {
     width: 28px;
     height: 28px;
-    line-height: 1.5;
 
     .xf-writer-profile-img {
       width: 28px;
@@ -9577,7 +9528,6 @@
       background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;
-      line-height: 1.5;
     }
   }
 
@@ -9604,22 +9554,21 @@
 .xf-info-list {
   display: flex;
   flex-wrap: wrap;
-  line-height: 1.5;
 
   .xf-info-item {
     line-height: 1;
     display: flex;
     align-items: center;
-    margin-left: 7px;
+    margin-right: 7px;
 
-    &:not(:first-child):before {
+
+    &:not(:last-child):after {
       content: '';
       display: block;
       height: 8px;
       width: 1px;
       background-color: #9c9c9c;
-      margin-right: 8px;
-      line-height: 1.5;
+      margin-left: 8px;
     }
 
     &:before {
@@ -9629,7 +9578,6 @@
     .xf-info-item__text {
       font-size: 12px;
       color: #9c9c9c;
-      line-height: 1.5;
     }
   }
 }
@@ -9667,7 +9615,6 @@
 .xf-assent-box {
   .xf-assent-list {
     display: flex;
-    line-height: 1.5;
 
     .xf-assent-item {
       display: flex;
@@ -9688,7 +9635,6 @@
         width: 16px;
         height: 16px;
         margin-right: 3px;
-        line-height: 1.5;
 
         &.xf-assent {
           background-image: url("../img/heart.svg");
@@ -9703,7 +9649,6 @@
       .xf-assent-text {
         color: #181818;
         font-size: 13px;
-        line-height: 1.5;
       }
     }
   }
@@ -9713,11 +9658,9 @@
 .xf-thumbnail-box {
   overflow: hidden;
   border: 1px solid #e0e0e0;
-  line-height: 1.5;
 
   .xf-thumbnail-img {
     transition: transform 0.2s ease;
-    line-height: 1.5;
 
     &:hover {
       transform: scale(1.15);

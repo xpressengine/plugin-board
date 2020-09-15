@@ -156,33 +156,36 @@
                         <ul class="xf-assent-list xf-list">
                             @if ($config->get('assent') === true)
                                 <li class="xf-assent-item">
-                                    <a href="#"
-                                       data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}"
-                                       class="xf-assent__link xf-a bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif">
-                                        <div class="xf-assent xf-assent-icon"></div>
-                                    </a>
-
-                                    <a href="#"
-                                       data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}"
-                                       class="xf-assent__link xf-a bd_like_num" data-id="{{$item->id}}">
-                                        <div class="xf-assent-text">{{ number_format($item->assent_count) }}</div>
-                                    </a>
+                                    <div class="xf-assent-item-inner">
+                                        <a href="#"
+                                           data-url="{{ $urlHandler->get('vote', ['option' => 'assent', 'id' => $item->id]) }}"
+                                           class="xf-assent__link xf-a bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'assent') === true) voted @endif">
+                                            <div class="xf-assent xf-assent-icon"></div>
+                                        </a>
+                                        <a href="#"
+                                           data-url="{{ $urlHandler->get('votedUsers', ['option' => 'assent', 'id' => $item->id]) }}"
+                                           class="xf-assent__link xf-a bd_like_num" data-id="{{$item->id}}">
+                                            <div class="xf-assent-text">{{ number_format($item->assent_count) }}</div>
+                                        </a>
+                                    </div>
                                 </li>
                             @endif
 
                             @if ($config->get('dissent') === true)
                                 <li class="xf-assent-item">
-                                    <a href="#"
-                                       data-url="{{ $urlHandler->get('vote', ['option' => 'dissent', 'id' => $item->id]) }}"
-                                       class="xf-assent__link xf-a bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'dissent') === true) voted @endif">
-                                        <div class="xf-dissent xf-assent-icon"></div>
-                                    </a>
+                                    <div class="xf-assent-item-inner">
+                                        <a href="#"
+                                           data-url="{{ $urlHandler->get('vote', ['option' => 'dissent', 'id' => $item->id]) }}"
+                                           class="xf-assent__link xf-a bd_ico bd_like @if($handler->hasVote($item, Auth::user(), 'dissent') === true) voted @endif">
+                                            <div class="xf-dissent xf-assent-icon"></div>
+                                        </a>
 
-                                    <a href="#"
-                                       data-url="{{ $urlHandler->get('votedUsers', ['option' => 'dissent', 'id' => $item->id]) }}"
-                                       class="xf-assent__link xf-a bd_like_num bd_hate_num" data-id="{{$item->id}}">
-                                        <div class="xf-assent-text">{{ number_format($item->dissent_count) }}</div>
-                                    </a>
+                                        <a href="#"
+                                           data-url="{{ $urlHandler->get('votedUsers', ['option' => 'dissent', 'id' => $item->id]) }}"
+                                           class="xf-assent__link xf-a bd_like_num bd_hate_num" data-id="{{$item->id}}">
+                                            <div class="xf-assent-text">{{ number_format($item->dissent_count) }}</div>
+                                        </a>
+                                    </div>
                                 </li>
                             @endif
                         </ul>
