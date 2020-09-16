@@ -205,7 +205,7 @@ class BoardService
             );
         }
         
-        return $query->take(4)->orderByDesc('head')->get();
+        return $query->take(8)->orderByDesc('head')->get();
     }
 
     /**
