@@ -60,7 +60,7 @@
                                 @if ($item->display === $item::DISPLAY_SECRET)
                                     <div class="xf-secret-icon"></div>
                                 @endif
-                                @if ($item->data->title_head !== null)
+                                @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
                                 <strong class="xf-post-title__text">{{ $item->title }}</strong>
@@ -199,7 +199,7 @@
                                     <div class="xf-secret-icon"></div>
                                 @endif
 
-                                @if ($item->data->title_head !== null)
+                                @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
                                 <strong class="xf-post-title__text">{{ $item->title }}</strong>
