@@ -61,18 +61,18 @@
                         @endif
                     @endif
                     <ul class="xf-list xf-info-list">
-                        @if (array_get($skinConfig, 'visibleShowReadCount', 'on') === 'on')
-                            <li class="xf-info-item">
-                                <span class="xf-info-item__text">{{ xe_trans('board::read_count') }}</span>
-                                <span class="xf-info-item__text">{{ number_format($item->read_count) }}</span>
-                            </li>
-                        @endif
                         @if (array_get($skinConfig, 'visibleShowCreatedAt', 'on') === 'on')
                             <li class="xf-info-item">
                                 <span class="xf-info-item__text">{{ $item->created_at->format('Y.m.d') }}</span>
                             </li>
                         @endif
-                        <li class="xf-info-item xf-pc-display-fl">
+                        @if (array_get($skinConfig, 'visibleShowReadCount', 'on') === 'on')
+                            <li class="xf-info-item">
+                                <span class="xf-info-item__text xf-mr04">{{ xe_trans('board::read_count') }}</span>
+                                <span class="xf-info-item__text">{{ number_format($item->read_count) }}</span>
+                            </li>
+                        @endif
+                        <li class="xf-info-item">
                             <span
                                 class="xf-info-item__text">{{ xe_trans('board::comment_count') }} {{ number_format($item->comment_count) }}</span>
                         </li>

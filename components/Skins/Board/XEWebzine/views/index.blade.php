@@ -122,9 +122,14 @@
                                 <span class="xf-writer__nickname">{{ $item->writer }}</span>
                             @endif
                             <ul class="xf-list xf-info-list">
+                                <li class="xf-info-item">
+                                    <span class="xf-info-item__text xf-mr04"">{{ xe_trans('board::comment_count') }}</span>
+                                    <span class="xf-info-item__text">{{ number_format($item->comment_count) }}</span>
+                                </li>
+
                                 @if (in_array('read_count', $skinConfig['listColumns']) === true)
                                     <li class="xf-info-item">
-                                        <span class="xf-info-item__text">{{ xe_trans('board::read_count') }}</span>
+                                        <span class="xf-info-item__text xf-mr04"">{{ xe_trans('board::read_count') }}</span>
                                         <span class="xf-info-item__text">{{ number_format($item->read_count) }}</span>
                                     </li>
                                 @endif
