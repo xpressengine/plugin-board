@@ -46,21 +46,30 @@
         align-items: center;
 
         .xf-function-item {
+          line-height: 1;
+
           &:not(:last-child) {
             margin-right: 20px;
+          }
+
+          .xe-share {
+            display: block;
+            background-image: url("../img/share.svg");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 18px 18px;
+            height: 18px;
+            width: 18px;
+
+            img {
+              display: none;
+            }
           }
 
           .xf-function-icon {
             width: 18px;
             height: 18px;
             cursor: pointer;
-
-            &.xf-share {
-              background-image: url("../img/share.svg");
-              background-position: center center;
-              background-repeat: no-repeat;
-              background-size: 18px 18px;
-            }
 
             &.xf-bookmark {
               background-image: url("../img/bookmark.svg");
@@ -132,7 +141,7 @@
         .xf-assent-item {
           position: relative;
           padding: 8px 10px;
-          min-width: 55px;
+          min-width: 50px;
 
           &:not(:last-child) {
             &:after {
@@ -151,12 +160,12 @@
           .xf-assent-item-inner {
             display: flex;
             align-items: center;
+            justify-content: center;
           }
 
           .xf-assent__link {
             color: #181818;
             font-size: 13px;
-            display: inline-flex;
             vertical-align: middle;
             height: 18px;
 
@@ -244,21 +253,30 @@
         align-items: center;
 
         .xf-function-item {
+          line-height: 1;
+
           &:not(:last-child) {
             margin-right: 20px;
+          }
+
+          .xe-share {
+            display: block;
+            background-image: url("../img/share.svg");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 18px 18px;
+            height: 18px;
+            width: 18px;
+
+            img {
+              display: none;
+            }
           }
 
           .xf-function-icon {
             width: 18px;
             height: 18px;
             cursor: pointer;
-
-            &.xf-share {
-              background-image: url("../img/share.svg");
-              background-position: center center;
-              background-repeat: no-repeat;
-              background-size: 18px 18px;
-            }
 
             &.xf-bookmark {
               background-image: url("../img/bookmark.svg");

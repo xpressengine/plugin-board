@@ -4,37 +4,31 @@
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::-webkit-input-placeholder {
   color: #767676;
   font-size: 14px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::-moz-placeholder {
   color: #767676;
   font-size: 14px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input:-ms-input-placeholder {
   color: #767676;
   font-size: 14px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::-ms-input-placeholder {
   color: #767676;
   font-size: 14px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form input::placeholder {
   color: #767676;
   font-size: 14px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-col01,
@@ -53,7 +47,6 @@
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .new-select {
   height: 61px;
   border-bottom: 1px solid #e0e0e0;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .xe-dropdown__button-box .xe-dropdown__button-text {
@@ -64,7 +57,6 @@
   opacity: 0.7;
   color: #141414;
   text-align: left;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .xe-dropdown__button-box .xe-dropdown__button-text:after {
@@ -77,11 +69,6 @@
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-dropdown .xe-dropdown--menu {
   width: 100%;
   margin-top: -1px;
-  line-height: 1.5;
-}
-
-.xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-title-input-box {
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-title-box .xf-write-title-input-box .xe-list-board-body--header-title-input {
@@ -90,17 +77,11 @@
   border-bottom: 1px solid #e0e0e0;
   padding: 18px 15px;
   height: 61px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-write-editor-box {
   width: 100%;
   margin-top: -1px;
-  line-height: 1.5;
-}
-
-.xf-board-body .xf-board-writing-form .xf-input-nomember-box {
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-board-writing-form .xf-input-nomember-box .xf-nonmember-input {
@@ -108,24 +89,17 @@
   border-bottom: 1px solid #e0e0e0;
   padding: 15px;
   width: 100%;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box {
   margin-top: 20px;
   padding: 0 15px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box .xf-write-check-list {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  line-height: 1.5;
-}
-
-.xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item {
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item:not(:last-child) {
@@ -134,27 +108,27 @@
 
 .xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item .xf-check-item__input {
   border: 1px solid #c0c0c0;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-check-box .xf-write-check-list .xf-check-item .xf-check-item__label {
   font-size: 14px;
-  line-height: 25px;
   letter-spacing: -0.2px;
   color: #484848;
 }
 
 .xf-board-body .xf-write-btn-box {
   margin-top: 22px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn {
   margin: 10px 10px 0 10px;
   font-size: 14px;
-  line-height: 27px;
   letter-spacing: -0.2px;
   color: #484848;
+}
+
+.xf-board-body .xf-write-btn-box .xf-write-btn:hover {
+  background-color: #f4f5f7;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn {
@@ -163,7 +137,6 @@
   display: flex;
   border: 1px solid #e0e0e0;
   height: 50px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link.xf-board-draft__text {
@@ -173,7 +146,6 @@
   text-align: center;
   padding: 13px;
   font-size: 14px;
-  line-height: 27px;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link .xf-more-btn {
@@ -189,7 +161,6 @@
       -ms-flex-pack: center;
           justify-content: center;
   padding: 0 11px;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link .xf-more-btn:after {
@@ -201,20 +172,34 @@
   display: none;
   border-top: 1px solid #e0e0e0;
   text-align: center;
-  line-height: 1.5;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn .xf-board-write-btn {
   padding: 10px;
   width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn .xf-board-write-btn:hover {
+  background-color: #f4f5f7;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn.open {
-  display: block;
-}
-
-.xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn {
-  line-height: 1.5;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn .xf-board-write-btn {
@@ -232,14 +217,24 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  line-height: 1.5;
+}
+
+.xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn:hover, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn .xf-board-write-btn:hover {
+  background-color: #f4f5f7;
 }
 
 .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn {
   border: 1px solid #141414;
   background-color: #141414;
   color: #fff;
-  line-height: 1.5;
+}
+
+.xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn:hover {
+  background-color: #000;
+}
+
+.xf-board-body .file-attach-group .file-view {
+  border-top: 1px solid #ddd;
 }
 
 @media (min-width: 400px) {
@@ -253,26 +248,21 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn {
     margin: 0 10px 0 0;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn:last-child {
     margin: 0;
   }
   .xf-board-body .xf-write-btn-box .xf-board-write-btn {
     min-width: 110px;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box {
     position: relative;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn {
     height: 44px;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link {
     display: -webkit-box;
@@ -284,15 +274,12 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link.xf-board-draft__text {
     padding: 10.5px;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-save-btn .xf-board-btn__link .xf-more-btn {
     height: 100%;
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn {
     height: 44px;
@@ -304,28 +291,14 @@
     border-right: 1px solid #e0e0e0;
     border-bottom: 1px solid #e0e0e0;
     width: 100%;
-    line-height: 1.5;
-  }
-  .xf-board-body .xf-write-btn-box .xf-write-btn {
-    line-height: 1.5;
-  }
-  .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn {
-    line-height: 1.5;
   }
   .xf-board-body .xf-write-btn-box .xf-write-btn.xf-preview-btn .xf-board-write-btn, .xf-board-body .xf-write-btn-box .xf-write-btn.xf-submit-btn .xf-board-write-btn {
-    line-height: 1.5;
     height: 44px;
     padding: 9px;
   }
 }
 
 @media (min-width: 992px) {
-  .xf-board-body {
-    line-height: 1.5;
-  }
-  .xf-board-body .xf-board-writing-form {
-    line-height: 1.5;
-  }
   .xf-board-body .xf-board-writing-form .xf-row {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -333,34 +306,60 @@
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     margin: 0 0 32px 0;
-    line-height: 1.5;
   }
   .xf-board-body .xf-board-writing-form .xf-col01 {
     width: 10%;
   }
+  .xf-board-body .xf-board-writing-form .xf-col01.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(10% - 15px) !important;
+  }
   .xf-board-body .xf-board-writing-form .xf-col02 {
     width: 20%;
+  }
+  .xf-board-body .xf-board-writing-form .xf-col02.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(20% - 15px) !important;
   }
   .xf-board-body .xf-board-writing-form .xf-col03 {
     width: 30%;
   }
+  .xf-board-body .xf-board-writing-form .xf-col03.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(30% - 15px) !important;
+  }
   .xf-board-body .xf-board-writing-form .xf-col04 {
     width: 40%;
+  }
+  .xf-board-body .xf-board-writing-form .xf-col04.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(40% - 15px) !important;
   }
   .xf-board-body .xf-board-writing-form .xf-col05 {
     width: 50%;
   }
+  .xf-board-body .xf-board-writing-form .xf-col05.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(50% - 15px) !important;
+  }
   .xf-board-body .xf-board-writing-form .xf-col06 {
     width: 60%;
+  }
+  .xf-board-body .xf-board-writing-form .xf-col06.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(60% - 15px) !important;
   }
   .xf-board-body .xf-board-writing-form .xf-col07 {
     width: 70%;
   }
+  .xf-board-body .xf-board-writing-form .xf-col07.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(70% - 15px) !important;
+  }
   .xf-board-body .xf-board-writing-form .xf-col08 {
     width: 80%;
   }
+  .xf-board-body .xf-board-writing-form .xf-col08.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(80% - 15px);
+  }
   .xf-board-body .xf-board-writing-form .xf-col09 {
     width: 90%;
+  }
+  .xf-board-body .xf-board-writing-form .xf-col09.xf-pc-pr15 .xe-dropdown--menu {
+    width: calc(90% - 15px);
   }
   .xf-board-body .xf-board-writing-form .xf-col10 {
     width: 100%;
@@ -423,6 +422,10 @@
   }
   .xf-board-body .xf-board-writing-form .xf-write-btn-box .xf-write-btn .xf-draft-save-btn .xf-more-btn {
     height: 100%;
+  }
+  .xf-board-body .xf-board-writing-form .xf-write-btn-box .xf-write-btn.xf-draft-box .xf-draft-load-btn {
+    top: 48px;
+    height: 48px;
   }
   .xf-board-body .xf-board-writing-form .xf-write-btn-box .xf-write-btn.xf-preview-btn {
     width: 120px;

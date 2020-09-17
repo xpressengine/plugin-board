@@ -27,6 +27,12 @@
         .xf-board-item__link {
           width: 100%;
 
+          .xf-item-inner__text {
+            .xf-item__title-text {
+              font-weight: 400;
+            }
+          }
+
           &:hover {
             .xf-item__title-text {
               text-decoration: underline;

@@ -361,4 +361,19 @@
             $(this).closest('form').submit();
         });
     });
+
+
+    window.jQuery(function ($) {
+        var $listItem = $( ".xf-board-list .xf-board-item");
+
+        $listItem.mouseenter(function() {
+            $(this).find(".xf-post-title__text").css("text-decoration", "underline");
+            $(this).find(".xf-thumbnail-img").css("transform", "scale(1.15)");
+        });
+
+        $listItem.mouseleave(function() {
+            $(this).find(".xf-post-title__text").css("text-decoration", "none");
+            $(this).find(".xf-thumbnail-img").css("transform", "scale(1)");
+        });
+    })
 </script>

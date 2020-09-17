@@ -19,10 +19,6 @@
   max-height: 44px;
 }
 
-.xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-board-item__link:hover .xf-post-contents .xf-post-title .xf-post-title__text {
-  text-decoration: underline;
-}
-
 .xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-thumbnail-box {
   position: relative;
 }

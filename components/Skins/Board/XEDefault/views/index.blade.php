@@ -114,7 +114,7 @@
                                 @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
-                                <span class="xf-item__title-text">{{ $item->title }}</span>
+                                <strong class="xf-item__title-text">{{ $item->title }}</strong>
                             </span>
                             <div class="xf-item-icon-box">
                                 @if($item->comment_count > 0)
@@ -250,7 +250,7 @@
                                     <span
                                         class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
-                                <span class="xf-item__title-text">{{ $item->title }}</span>
+                                <strong class="xf-item__title-text">{{ $item->title }}</strong>
                             </span>
                             <div class="xf-item-icon-box">
                                 @if($item->comment_count > 0)

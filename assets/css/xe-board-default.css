@@ -14,6 +14,10 @@
   width: 100%;
 }
 
+.xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link .xf-item-inner__text .xf-item__title-text {
+  font-weight: 400;
+}
+
 .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link:hover .xf-item__title-text {
   text-decoration: underline;
 }

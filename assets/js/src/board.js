@@ -487,3 +487,4 @@ window.jQuery(function ($) {
     return checkedIds
   }
 })
+

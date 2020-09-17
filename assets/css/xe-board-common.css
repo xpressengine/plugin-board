@@ -8961,15 +8961,8 @@
 }
 
 .xf-section-board {
-  padding: 28px 0;
   word-break: keep-all;
   vertical-align: middle;
-}
-
-@media (min-width: 992px) {
-  .xf-section-board {
-    padding: 60px 0 40px;
-  }
 }
 
 /* 헤더 */
@@ -9191,6 +9184,7 @@
   display: -ms-flexbox;
   display: flex;
   margin-bottom: 12px;
+  cursor: pointer;
 }
 
 .xf-board-dropdown-box .xe-board-dropdown,
@@ -9413,6 +9407,9 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 .xf-board-management-btn-box .xf-management-btn {
@@ -9599,11 +9596,6 @@
   transition: -webkit-transform 0.2s ease;
   transition: transform 0.2s ease;
   transition: transform 0.2s ease, -webkit-transform 0.2s ease;
-}
-
-.xf-thumbnail-box .xf-thumbnail-img:hover {
-  -webkit-transform: scale(1.15);
-          transform: scale(1.15);
 }
 
 .xf-board-pagination-box {
