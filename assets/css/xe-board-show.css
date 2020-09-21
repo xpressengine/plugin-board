@@ -132,6 +132,11 @@
   margin-right: 8px;
 }
 
+.xf-board-show-body .xf-post-article-contents .__xe_contents_compiler {
+  vertical-align: baseline;
+  word-break: normal;
+}
+
 .xf-board-show-body .xf-board-btn-box {
   display: -webkit-box;
   display: -ms-flexbox;
