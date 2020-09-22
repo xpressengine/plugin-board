@@ -414,9 +414,7 @@ class Handler
      */
     protected function setTags(Board $board, array $args)
     {
-        if (empty($args['_hashTags']) === false) {
-            $this->tag->set($board->getKey(), $args['_hashTags'], $board['instance_id']);
-        }
+        $this->tag->set($board->getKey(), $args['_hashTags'], $board['instance_id']);
     }
 
     /**
