@@ -4,10 +4,11 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-.xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title .xf-board-item__link:hover .xf-item__title-text {
+.xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title .xf-board-item__link:hover .xf-item-inner__text {
   text-decoration: underline;
 }
 
+.xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title .xf-board-item__link:visited .xf-title-head,
 .xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title .xf-board-item__link:visited .xf-item-inner__text {
   color: #767676;
 }
@@ -16,14 +17,19 @@
   width: 100%;
 }
 
+.xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link .xf-item-inner__text {
+  vertical-align: middle;
+}
+
 .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link .xf-item-inner__text .xf-item__title-text {
   font-weight: 400;
 }
 
-.xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link:hover .xf-item__title-text {
+.xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link:hover .xf-item-inner__text {
   text-decoration: underline;
 }
 
+.xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link:visited .xf-title-head,
 .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link:visited .xf-item-inner__text {
   color: #767676;
 }
@@ -48,7 +54,7 @@
     overflow: hidden;
   }
   .xf-board-list .xf-board-item.xf-board-notice .xf-board-item-inner.xf-item__title .xf-board-item__link .xf-item-inner__text {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 24px;
     letter-spacing: -0.4px;
     color: #141414;
@@ -97,7 +103,7 @@
     max-height: 51px;
   }
   .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-item-inner__text {
-    font-size: 16px;
+    font-size: 14px;
   }
   .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__writer {
     display: inline-block;

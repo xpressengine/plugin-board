@@ -167,7 +167,6 @@
           .xf-assent-item-inner {
             display: flex;
             align-items: center;
-            justify-content: center;
           }
 
           .xf-assent__link {
@@ -199,6 +198,7 @@
 
               &.xf-assent {
                 background-image: url("../img/heart.svg");
+                margin-top: -4px;
 
                 &.on {
                   background-image: url("../img/heart-active.svg");
@@ -206,7 +206,6 @@
               }
 
               &.xf-dissent {
-                margin-top: 2px;
                 background-image: url("../img/dissent.svg");
               }
             }
@@ -448,5 +447,16 @@
         }
       }
     }
+  }
+}
+
+// 댓글
+.board_comment {
+  margin-top: 40px;
+}
+
+@media(min-width: 992px) {
+  .board_comment {
+    margin-top: 60px;
   }
 }

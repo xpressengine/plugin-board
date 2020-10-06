@@ -9,12 +9,13 @@
         &.xf-item__title {
           .xf-board-item__link {
             &:hover {
-              .xf-item__title-text {
+              .xf-item-inner__text {
                 text-decoration: underline;
               }
             }
 
             &:visited {
+              .xf-title-head,
               .xf-item-inner__text {
                 color: #767676;
               }
@@ -30,18 +31,21 @@
           width: 100%;
 
           .xf-item-inner__text {
+            vertical-align: middle;
+
             .xf-item__title-text {
               font-weight: 400;
             }
           }
 
           &:hover {
-            .xf-item__title-text {
+            .xf-item-inner__text {
               text-decoration: underline;
             }
           }
 
           &:visited {
+            .xf-title-head,
             .xf-item-inner__text {
               color: #767676;
             }
@@ -77,7 +81,7 @@
               overflow: hidden;
 
               .xf-item-inner__text {
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 24px;
                 letter-spacing: -0.4px;
                 color: #141414;
@@ -149,7 +153,7 @@
           }
 
           .xf-item-inner__text {
-            font-size: 16px;
+            font-size: 14px;
           }
         }
 

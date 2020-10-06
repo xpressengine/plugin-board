@@ -181,9 +181,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link {
@@ -214,6 +211,7 @@
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link .xf-assent-icon.xf-assent {
   background-image: url("../img/heart.svg");
+  margin-top: -4px;
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link .xf-assent-icon.xf-assent.on {
@@ -221,7 +219,6 @@
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link .xf-assent-icon.xf-dissent {
-  margin-top: 2px;
   background-image: url("../img/dissent.svg");
 }
 
@@ -454,6 +451,16 @@
     display: inline-block;
     color: #9c9c9c;
     margin-right: 5px;
+  }
+}
+
+.board_comment {
+  margin-top: 40px;
+}
+
+@media (min-width: 992px) {
+  .board_comment {
+    margin-top: 60px;
   }
 }
 
