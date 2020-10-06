@@ -1,3 +1,5 @@
+@import 'xe-board-variables';
+
 .xf-section-board {
   padding-bottom: 40px;
   line-height: 1.5;
@@ -417,7 +419,7 @@
 
       .xf-post-title {
         font-size: 30px;
-        line-size: 44px;
+        line-height: 44px;
         letter-spacing: -0.4px;
       }
     }
@@ -447,115 +449,4 @@
       }
     }
   }
-}
-
-
-/* 코멘트 */
-.comment_action_area_avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-top: 30px;
-  margin-bottom: 15px !important;
-
-  img {
-    object-fit: cover;
-    width: 28px;
-    height: 28px;
-  }
-}
-
-.xe-list-comment--body {
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 10px;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item {
-  border-bottom: 0 !important;
-  border-top: 1px solid #e0e0e0;
-}
-
-.xe-list-comment--reply-list-item {
-  margin-bottom: 28px !important;
-}
-
-.xe-list-comment--header {
-  border-bottom: none !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list {
-  padding-top: 0 !important;
-}
-
-.xe-list-comment-list--left-box {
-  padding-left: 0 !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item.xe-list-comment--reply-list-item .xe-list-comment--list-item-wrapper {
-  padding-left: 15px !important;
-}
-
-.board_comment {
-  margin-top: 60px;
-}
-
-.xe-list-comment--header-left-box {
-  .xe-list-comment--header-count-number {
-    font-weight: 500 !important;
-  }
-
-  .xe-list-comment--header-count-text {
-    font-size: 16px !important;
-    font-weight: 400 !important;
-  }
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item.xe-list-comment--reply-list-item .xe-list-comment--list-item-wrapper .xe-list-comment-list--left-box .xe-list-comment-list__user-image {
-  width: 28px;
-  height: 28px;
-}
-
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item .xe-list-comment--list-item-wrapper .xe-list-comment-list--left-box .xe-list-comment-list__user-image {
-  boarder: 1px solid #e0e0e0 !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item .xe-list-comment--list-item-wrapper > .xe-list-comment-list--right-box .xe-list-comment-list--title .xe-list-comment-list--left-box .xe-list-comment__link {
-  font-weight: 500 !important;
-  font-size: 13px !important;
-  line-height: 18px !important;
-}
-
-.xe-list-comment-list--body-text-paragraph {
-  display: none !important;
-}
-
-.xe-list-comment-list--body-text {
-  p {
-    font-size: 14px !important;
-    line-height: 22px !important;
-    color: #484848 !important;
-  }
-}
-
-.__xe_comment_reply_form {
-  padding-left: 15px !important;
-  margin: 15px 0 !important;
-}
-
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item .xe-list-comment--list-item-wrapper > .xe-list-comment-list--right-box .xe-list-comment-list--title .xe-list-comment-list--right-box .xe-list-body__edit-box .xe-list-body__edit-item:after {
-  height: 10px !important;
-  background-color: #767676 !important;
-  top: 5px !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item.xe-list-comment--reply-list-item {
-  margin-bottom: 0 !important;
-}
-
-.xe-list-comment .xe-dropdown {
-  display: inline-block !important;
-  vertical-align: middle !important;
 }

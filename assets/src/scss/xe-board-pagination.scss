@@ -1,3 +1,5 @@
+@import 'xe-board-variables';
+
 // 페이지네이션
 .xf-board-pagination-box {
   /* PC */
@@ -31,26 +33,26 @@
         }
 
         &.xf-pagination-arrow {
-          border: 1px solid #e0e0e0;
+          border: 1px solid $base-border-color;
           margin: 0 15px;
         }
 
         &.xf-pagination-number {
-          border-top: 1px solid #e0e0e0;
-          border-right: 1px solid #e0e0e0;
-          border-bottom: 1px solid #e0e0e0;
+          border-top: 1px solid $base-border-color;
+          border-right: 1px solid $base-border-color;
+          border-bottom: 1px solid $base-border-color;
 
           &:nth-child(2) {
-            border-left: 1px solid #e0e0e0;
+            border-left: 1px solid $base-border-color;
           }
 
           .xf-pagination__link {
             &:hover {
-              background: #e0e0e0;
+              background: $base-border-color;
               z-index: -1;
             }
             &:focus {
-              background: #e0e0e0;
+              background: $base-border-color;
             }
           }
 

@@ -1,3 +1,5 @@
+@charset "UTF-8";
+/* 변수 */
 .xf-board-body .xf-board-writing-form .xf-row {
   display: -webkit-box;
   display: -ms-flexbox;

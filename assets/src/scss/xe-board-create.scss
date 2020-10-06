@@ -1,3 +1,5 @@
+@import 'xe-board-variables';
+
 .xf-board-body {
   .xf-board-writing-form {
     .xf-row {
@@ -27,7 +29,7 @@
       .xf-write-dropdown {
         .new-select {
           height: 61px;
-          border-bottom: 1px solid #e0e0e0;
+          border-bottom: 1px solid $base-border-color;
         }
 
         .xe-dropdown__button-box {
@@ -58,7 +60,7 @@
         .xe-list-board-body--header-title-input {
           border: none;
           width: 100%;
-          border-bottom: 1px solid #e0e0e0;
+          border-bottom: 1px solid $base-border-color;
           padding: 18px 15px;
           height: 61px;
         }
@@ -73,7 +75,7 @@
     .xf-input-nomember-box {
       .xf-nonmember-input {
         border: none;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid $base-border-color;
         padding: 15px;
         width: 100%;
       }
@@ -122,7 +124,7 @@
       &.xf-draft-box {
         .xf-draft-save-btn {
           display: flex;
-          border: 1px solid #e0e0e0;
+          border: 1px solid $base-border-color;
           height: 50px;
 
           .xf-board-btn__link {
@@ -134,7 +136,7 @@
             }
 
             .xf-more-btn {
-              border-left: 1px solid #e0e0e0;
+              border-left: 1px solid $base-border-color;
               height: 100%;
               display: flex;
               align-items: center;
@@ -151,7 +153,7 @@
 
         .xf-draft-load-btn {
           display: none;
-          border-top: 1px solid #e0e0e0;
+          border-top: 1px solid $base-border-color;
           text-align: center;
 
           .xf-board-write-btn {
@@ -181,7 +183,7 @@
           cursor: pointer;
           width: 100%;
           background-color: #fff;
-          border: 1px solid #e0e0e0;
+          border: 1px solid $base-border-color;
           height: 50px;
           display: flex;
           align-items: center;
@@ -259,9 +261,9 @@
           top: 44px;
           left: 0;
           border-top: 0;
-          border-left: 1px solid #e0e0e0;
-          border-right: 1px solid #e0e0e0;
-          border-bottom: 1px solid #e0e0e0;
+          border-left: 1px solid $base-border-color;
+          border-right: 1px solid $base-border-color;
+          border-bottom: 1px solid $base-border-color;
           width: 100%;
         }
       }
@@ -269,7 +271,6 @@
       .xf-write-btn {
         &.xf-preview-btn,
         &.xf-submit-btn {
-
           .xf-board-write-btn {
             height: 44px;
             padding: 9px;
@@ -429,7 +430,7 @@
 
         .xf-nonmember-input {
           border: none;
-          border-bottom: 1px solid #e0e0e0;
+          border-bottom: 1px solid $base-border-color;
           padding: 10px 0;
           display: inline-block;
 

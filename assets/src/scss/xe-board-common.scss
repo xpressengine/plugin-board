@@ -1,4 +1,6 @@
+@charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+@import 'xe-board-variables';
 
 /* 폰트 */
 .inter {
@@ -8955,106 +8957,6 @@
   }
 }
 
-// 텍스트 컬러
-.base-board-primary-color {
-  color: #bc0d1a !important;
-}
-
-.base-board-second-color {
-  color: #950a14 !important;
-}
-
-.base-board-third-color {
-  color: #2684ff !important;
-}
-
-.base-board-link-color {
-  color: #0000ff !important;
-}
-
-.base-board-title-color {
-  color: #141414 !important;
-}
-
-.base-board-text-color1 {
-  color: #535353 !important;
-}
-
-.base-board-text-color2 {
-  color: #767676 !important;
-}
-
-.base-board-text-color3 {
-  color: #aeaeae !important;
-}
-
-.base-board-text-color4 {
-  color: #141414 !important;
-}
-
-.base-board-text-white {
-  color: #fff !important;
-}
-
-.base-board-text-black {
-  color: #000 !important;
-}
-
-// 배경 컬러
-.base-board-primary-bg {
-  background-color: #2684ff !important;
-}
-
-.base-board-second-bg {
-  background-color: #000 !important;
-}
-
-.base-board-third-bg {
-  background-color: #ffe900 !important;
-}
-
-.base-board-fourth-bg {
-  background-color: #303030 !important;
-}
-
-.base-board-full-bg {
-  background-color: #303030 !important;
-}
-
-.base-board-white-bg {
-  background-color: #fff !important;
-}
-
-.base-board-black-bg {
-  background-color: #000 !important;
-}
-
-// 테두리
-.base-board-primary-border {
-  border: 1px solid #2684ff !important;
-}
-
-.base-board-second-border {
-  border: 2px solid #2684ff !important;
-}
-
-.base-board-borderTop {
-  border-top: 1px solid #484848 !important;
-}
-
-.base-board-borderBottom {
-  border-bottom: 1px solid #484848 !important;
-}
-
-.base-board-borderLeft {
-  border-left: 1px solid #484848 !important;
-}
-
-.base-board-borderRight {
-  border-right: 1px solid #484848 !important;
-}
-
-
 /* 그외 */
 // full wide 섹션
 .xf-section-full-width-box {
@@ -9199,7 +9101,7 @@
   justify-content: center;
 
   &.xf-notice-label {
-    background-color: #2684ff;
+    background-color: $base-primary-color;
     color: #fff;
   }
 }
@@ -9212,7 +9114,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #2684ff;
+  background-color: $base-primary-color;
   width: 48px;
   height: 28px;
 
@@ -9247,7 +9149,7 @@
   margin-bottom: 16px;
 
   .xf-search-input-box {
-    border: 1px solid #e0e0e0;
+    border: 1px solid $base-border-color;
 
     .xf-search-input {
       border: 0;
@@ -9367,7 +9269,7 @@
 
   // 댓글
   .xf-comment_count {
-    color: #2684ff;
+    color: $base-primary-color;
     font-size: 14px;
     line-height: 21px;
     letter-spacing: -1px;
@@ -9446,7 +9348,7 @@
   &.xf-small {
     padding: 5px 15px;
     min-width: 80px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid $base-border-color;
     min-height: 36px;
 
     &:hover {
@@ -9472,8 +9374,8 @@
   &.xf-large {
     padding: 15px 20px;
     min-width: 300px;
-    background-color: #2684ff;
-    border-color: #2684ff;
+    background-color: $base-primary-color;
+    border-color: $base-primary-color;
     color: #fff;
   }
 }
@@ -9490,8 +9392,8 @@
   .xf-community-btn {
     .xf-my-posts-btn.active {
       color: #ffffff;
-      background-color: #2684ff;
-      border-color: #2684ff;
+      background-color: $base-primary-color;
+      border-color: $base-primary-color;
     }
   }
 }
@@ -9519,7 +9421,7 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      border: 1px solid #e0e0e0;
+      border: 1px solid $base-border-color;
       background-position: center center;
       background-size: cover;
       background-repeat: no-repeat;
@@ -9652,7 +9554,7 @@
 // 썸네일
 .xf-thumbnail-box {
   overflow: hidden;
-  border: 1px solid #e0e0e0;
+  border: 1px solid $base-border-color;
 
   .xf-thumbnail-img {
     transition: transform 0.2s ease;
@@ -9692,17 +9594,17 @@
         }
 
         &.xf-pagination-arrow {
-          border: 1px solid #e0e0e0;
+          border: 1px solid $base-border-color;
           margin: 0 15px;
         }
 
         &.xf-pagination-number {
-          border-top: 1px solid #e0e0e0;
-          border-right: 1px solid #e0e0e0;
-          border-bottom: 1px solid #e0e0e0;
+          border-top: 1px solid $base-border-color;
+          border-right: 1px solid $base-border-color;
+          border-bottom: 1px solid $base-border-color;
 
           &:nth-child(2) {
-            border-left: 1px solid #e0e0e0;
+            border-left: 1px solid $base-border-color;
           }
 
           .xf-pagination__link {
@@ -9751,7 +9653,7 @@
 
       .xf-pagination-item {
         &.xf-pagination-arrow {
-          border: 1px solid #e0e0e0;
+          border: 1px solid $base-border-color;
 
           .xf-pagination__disabled-link {
             color: rgba(0, 0, 0, 0.2);
