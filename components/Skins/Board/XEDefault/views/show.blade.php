@@ -137,14 +137,18 @@
                                 <strong class="xf-file-count-num bd_file_num">{{ $item->data->file_count }}</strong>
                             </a>
                             <div class="xf-attachment-name-box">
-                                @foreach ($item->files as $file)
-                                    <a href="{{ route('editor.file.download', ['instanceId' => $item->instance_id, 'id' => $file->id])}}"
-                                       class="xf-attachment-name__link xf-a">
-                                        <i class="xi-download"></i>
-                                        <span class="xf-attachment-name">{{ $file->clientname }}</span>
-                                        <span class="xf-attachment-volume">({{ bytes($file->size) }})</span>
-                                    </a>
-                                @endforeach
+                                <ul class="xf-list xf-attachment-list">
+                                    @foreach ($item->files as $file)
+                                        <li class="xf-attachment-item">
+                                            <a href="{{ route('editor.file.download', ['instanceId' => $item->instance_id, 'id' => $file->id])}}"
+                                               class="xf-attachment-name__link xf-a">
+                                                <i class="xi-download"></i>
+                                                <span class="xf-attachment-name">{{ $file->clientname }}</span>
+                                                <span class="xf-attachment-volume">({{ bytes($file->size) }})</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
                     </div>
