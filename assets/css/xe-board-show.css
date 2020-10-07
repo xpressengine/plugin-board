@@ -481,14 +481,4 @@
   }
 }
 
-.board_comment {
-  margin-top: 40px;
-}
-
-@media (min-width: 992px) {
-  .board_comment {
-    margin-top: 60px;
-  }
-}
-
 /*# sourceMappingURL=xe-board-show.css.map */
