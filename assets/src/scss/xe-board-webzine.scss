@@ -36,14 +36,18 @@
         letter-spacing: -0.2px;
         width: 70%;
 
-        .xf-post-contents {
-          .xf-post-category {
-            display: none;
-          }
+        .xf-board-item__link {
+          width: 100%;
 
-          .xf-post-title {
-            font-size: 16px;
-            max-height: 52px;
+          .xf-post-contents {
+            .xf-post-category {
+              display: none;
+            }
+
+            .xf-post-title {
+              font-size: 16px;
+              max-height: 52px;
+            }
           }
         }
 

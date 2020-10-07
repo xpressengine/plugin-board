@@ -64,16 +64,6 @@
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
                                 <strong class="xf-post-title__text">{{ $item->title }}</strong>
-                                <div class="xf-item-icon-box">
-                                    <ul class="xf-item-icon-list xf-list">
-                                        @if ($item->data->file_count > 0)
-                                            <li class="xf-item-icon xf-attached-file"></li>
-                                        @endif
-                                        @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
-                                            <li class="xf-item-icon xf-new"></li>
-                                        @endif
-                                    </ul>
-                                </div>
                             </div>
                             @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
                                 <p class="xf-post-text xf-p xf-ellipsis2">{{ $item->pure_content }}</p>
@@ -97,15 +87,10 @@
                                 </div>
                             @else
                                 <div class="xf-profile-img-box">
-                                    <a href="#" class="xf-a xf-item__writer-link"
-                                       data-toggle="xe-page-toggle-menu"
-                                       data-url="{{ route('toggleMenuPage') }}"
-                                       data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                        <div class="xf-writer-profile-box xf-mr08">
-                                            <div class="xf-writer-profile-img"
-                                                 style="background-image: url('/assets/core/user/img/default_avatar.jpg')"></div>
-                                        </div>
-                                    </a>
+                                    <div class="xf-writer-profile-box xf-mr08">
+                                        <div class="xf-writer-profile-img"
+                                             style="background-image: url('/assets/core/user/img/default_avatar.jpg')"></div>
+                                    </div>
                                 </div>
                             @endif
                         @endif
@@ -118,12 +103,19 @@
                                     <span class="xf-writer__nickname">{{ $item->writer }}</span>
                                 </a>
                             @else
-                                <span class="xf-writer__nickname">{{ $item->writer }}</span>
+                                <div class="xf-mb06">
+                                    <span class="xf-writer__nickname">{{ $item->writer }}</span>
+                                </div>
                             @endif
                             <ul class="xf-list xf-info-list">
+                                <li class="xf-info-item">
+                                    <span
+                                        class="xf-info-item__text xf-mr04">{{ xe_trans('board::comment_count') }}</span>
+                                    <span class="xf-info-item__text">{{ number_format($item->comment_count) }}</span>
+                                </li>
                                 @if (in_array('read_count', $skinConfig['listColumns']) === true)
                                     <li class="xf-info-item">
-                                        <span class="xf-info-item__text">{{ xe_trans('board::read_count') }}</span>
+                                        <span class="xf-info-item__text xf-mr04">{{ xe_trans('board::read_count') }}</span>
                                         <span class="xf-info-item__text">{{ number_format($item->read_count) }}</span>
                                     </li>
                                 @endif
@@ -140,16 +132,11 @@
                                 @if (in_array('updated_at', $skinConfig['listColumns']) === true)
                                     <li class="xf-info-item">
                                         <span
-                                            class="xf-info-item__text blind">{{ xe_trans('board::updated_at') }}</span>
+                                            class="xf-info-item__text xf-mr04">{{ xe_trans('board::updated_at') }}</span>
                                         <span
                                             class="xf-info-item__text">{{ $item->updated_at->format('Y. m. d.') }}</span>
                                     </li>
                                 @endif
-
-                                {{--                                <li class="xf-info-item">--}}
-                                {{--                                    <span class="xf-info-item__text">조회</span>--}}
-                                {{--                                    <span class="xf-info-item__text">1</span>--}}
-                                {{--                                </li>--}}
                             </ul>
                         </div>
                         <div class="xf-assent-box">
@@ -203,16 +190,6 @@
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
                                 <strong class="xf-post-title__text">{{ $item->title }}</strong>
-                                <div class="xf-item-icon-box">
-                                    <ul class="xf-item-icon-list xf-list">
-                                        @if ($item->data->file_count > 0)
-                                            <li class="xf-item-icon xf-attached-file"></li>
-                                        @endif
-                                        @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
-                                            <li class="xf-item-icon xf-new"></li>
-                                        @endif
-                                    </ul>
-                                </div>
                             </div>
                             @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
                                 <p class="xf-post-text xf-p xf-ellipsis2">{{ $item->pure_content }}</p>
@@ -235,15 +212,10 @@
                                 </div>
                             @else
                                 <div class="xf-profile-img-box">
-                                    <a href="#" class="xf-a xf-item__writer-link"
-                                       data-toggle="xe-page-toggle-menu"
-                                       data-url="{{ route('toggleMenuPage') }}"
-                                       data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>
-                                        <div class="xf-writer-profile-box xf-mr08">
-                                            <div class="xf-writer-profile-img"
-                                                 style="background-image: url('/assets/core/user/img/default_avatar.jpg')"></div>
-                                        </div>
-                                    </a>
+                                    <div class="xf-writer-profile-box xf-mr08">
+                                        <div class="xf-writer-profile-img"
+                                             style="background-image: url('/assets/core/user/img/default_avatar.jpg')"></div>
+                                    </div>
                                 </div>
                             @endif
                         @endif
@@ -256,17 +228,21 @@
                                     <span class="xf-writer__nickname">{{ $item->writer }}</span>
                                 </a>
                             @else
-                                <span class="xf-writer__nickname">{{ $item->writer }}</span>
+                                <div class="xf-mb06">
+                                    <span class="xf-writer__nickname">{{ $item->writer }}</span>
+                                </div>
                             @endif
                             <ul class="xf-list xf-info-list">
                                 <li class="xf-info-item">
-                                    <span class="xf-info-item__text xf-mr04"">{{ xe_trans('board::comment_count') }}</span>
+                                    <span
+                                        class="xf-info-item__text xf-mr04">{{ xe_trans('board::comment_count') }}</span>
                                     <span class="xf-info-item__text">{{ number_format($item->comment_count) }}</span>
                                 </li>
 
                                 @if (in_array('read_count', $skinConfig['listColumns']) === true)
                                     <li class="xf-info-item">
-                                        <span class="xf-info-item__text  xf-mr04"">{{ xe_trans('board::read_count') }}</span>
+                                        <span
+                                            class="xf-info-item__text  xf-mr04">{{ xe_trans('board::read_count') }}</span>
                                         <span class="xf-info-item__text">{{ number_format($item->read_count) }}</span>
                                     </li>
                                 @endif
@@ -283,16 +259,11 @@
                                 @if (in_array('updated_at', $skinConfig['listColumns']) === true)
                                     <li class="xf-info-item">
                                         <span
-                                            class="xf-info-item__text blind">{{ xe_trans('board::updated_at') }}</span>
+                                            class="xf-info-item__text xf-mr04">{{ xe_trans('board::updated_at') }}</span>
                                         <span
                                             class="xf-info-item__text">{{ $item->updated_at->format('Y. m. d.') }}</span>
                                     </li>
                                 @endif
-
-                                {{--                                <li class="xf-info-item">--}}
-                                {{--                                    <span class="xf-info-item__text">조회</span>--}}
-                                {{--                                    <span class="xf-info-item__text">1</span>--}}
-                                {{--                                </li>--}}
                             </ul>
                         </div>
                         <div class="xf-assent-box">
@@ -362,6 +333,15 @@
 </div>
 
 <script>
+    $searchBox = $('.xf-board-form-box .xf-search-input-box');
+    $searchInput = $('.xf-board-form-box .xf-search-input');
+
+    $searchInput.focus(function() {
+        $searchBox.css('border-color', '#141414');
+    }).focusout(function() {
+        $searchBox.css('border-color', '#e0e0e0');
+    });
+
     jQuery(function ($) {
         $('.__xe-dropdown-form input').change(function () {
             $(this).closest('form').submit();
@@ -369,14 +349,14 @@
     });
 
     window.jQuery(function ($) {
-        var $listItem = $( ".xf-board-list .xf-board-item");
+        var $listItem = $(".xf-board-list .xf-board-item");
 
-        $listItem.mouseenter(function() {
+        $listItem.mouseenter(function () {
             $(this).find(".xf-post-title__text").css("text-decoration", "underline");
             $(this).find(".xf-thumbnail-img").css("transform", "scale(1.15)");
         });
 
-        $listItem.mouseleave(function() {
+        $listItem.mouseleave(function () {
             $(this).find(".xf-post-title__text").css("text-decoration", "none");
             $(this).find(".xf-thumbnail-img").css("transform", "scale(1)");
         });

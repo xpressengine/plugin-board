@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/* 변수 */
 .xf-section-board {
   padding-bottom: 40px;
   line-height: 1.5;
@@ -17,14 +16,6 @@
 
 .xf-board-show-header .xf-post-contents .xf-post-detail-title {
   line-height: 1.5;
-}
-
-.xf-board-show-header .xf-post-contents .xf-post-detail-title:not(:last-child):after {
-  content: ' / ';
-  font-size: 13px;
-  line-height: 24px;
-  color: #767676;
-  display: inline-block;
 }
 
 .xf-board-show-header .xf-post-contents .xf-post-title {
@@ -104,7 +95,7 @@
 }
 
 .xf-board-show-body {
-  padding: 24px 0;
+  padding: 24px 15px;
 }
 
 .xf-board-show-body .xf-post-article-contents .xf-post-article-tag-box {
@@ -188,6 +179,7 @@
   font-size: 13px;
   vertical-align: middle;
   height: 18px;
+  padding: 0 2px;
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link.voted .xf-assent-icon.xf-assent {
@@ -329,6 +321,41 @@
 .xf-board-show-body .xf-board-btn-box .xf-function-icon-box .xf-function-icon-list .xe-dropdown-menu {
   left: auto;
   right: 0;
+}
+
+.xf-board-show-body .xf-assent-people-list {
+  margin-top: 15px;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li {
+  position: relative;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li.on:before {
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #2684ff;
+  content: "";
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li .bd_like_more_list_item:not(:last-child) {
+  margin-right: 5px;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li .bd_like_more_list_item img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }
 
 .xf-board-show-body .xf-board-attachment-box {

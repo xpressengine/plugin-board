@@ -116,7 +116,7 @@
       letter-spacing: -0.2px;
       color: #484848;
 
-      &:hover {
+      &.xf-preview-btn:hover {
         background-color: #f4f5f7;
       }
 
@@ -126,6 +126,10 @@
           display: flex;
           border: 1px solid $base-border-color;
           height: 50px;
+
+          &:hover {
+            background-color: #f4f5f7;
+          }
 
           .xf-board-btn__link {
             &.xf-board-draft__text {
@@ -155,7 +159,6 @@
           display: none;
           border-top: 1px solid $base-border-color;
           text-align: center;
-
           .xf-board-write-btn {
             padding: 10px;
             width: 100%;
@@ -163,15 +166,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
-            &:hover {
-              background-color: #f4f5f7;
-            }
           }
 
           &.open {
             display: flex;
             align-items: center;
+            z-index: 100;
+            background-color: #fff;
+
+            &:hover {
+              background-color: #f4f5f7;
+            }
           }
         }
       }
@@ -256,10 +261,10 @@
         }
 
         .xf-draft-load-btn {
-          height: 44px;
           position: absolute;
           top: 44px;
           left: 0;
+          height: 44px;
           border-top: 0;
           border-left: 1px solid $base-border-color;
           border-right: 1px solid $base-border-color;

@@ -1,5 +1,3 @@
-@charset "UTF-8";
-/* 변수 */
 .xf-board-body .xf-board-list {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -22,6 +20,7 @@
 }
 
 .xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-thumbnail-box {
+  border: 1px solid #e0e0e0;
   position: relative;
 }
 
@@ -68,7 +67,7 @@
 }
 
 .xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info .xf-info-list .xf-info-item {
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info .xf-detail-info .xf-info-list .xf-info-item .xf-info-item__text {
@@ -78,6 +77,13 @@
 
 .xf-board-management-btn-box {
   margin-top: 20px;
+}
+
+@media (max-width: 576px) {
+  .xf-board-body .xf-board-list .xf-board-item .xf-board-item-inner .xf-detail-box .xf-post-info {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 768px) {

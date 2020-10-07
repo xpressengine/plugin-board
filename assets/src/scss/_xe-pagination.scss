@@ -1,0 +1,122 @@
+// 페이지네이션
+.xf-board-pagination-box {
+  /* PC */
+  .xf-board-pagination-pc {
+    display: none;
+
+    .xf-pagination-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+
+      .xf-pagination-item {
+        text-align: center;
+
+        .xf-pagination__link {
+          text-decoration: none;
+          color: #484848;
+          font-size: 14px;
+          display: inline-block;
+          padding: 0 10px;
+          line-height: 36px;
+          min-width: 36px;
+          min-height: 36px;
+
+          &.xf-pagination__disabled-link {
+            color: rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        &.xf-pagination-arrow {
+          border: 1px solid $base-border-color;
+          margin: 0 15px;
+        }
+
+        &.xf-pagination-number {
+          border-top: 1px solid $base-border-color;
+          border-right: 1px solid $base-border-color;
+          border-bottom: 1px solid $base-border-color;
+
+          &:nth-child(2) {
+            border-left: 1px solid $base-border-color;
+          }
+
+          .xf-pagination__link {
+            &:hover {
+              background: #e0e0e0;
+              z-index: -1;
+            }
+
+            &:focus {
+              background: #e0e0e0;
+            }
+          }
+
+          &.xf-pagination-number__active {
+            border: 1px solid #000 !important;
+            z-index: 1;
+
+            .xf-pagination__link {
+              color: #000;
+
+              &:hover {
+                background: transparent;
+              }
+
+              &:focus {
+                background: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* 모바일 */
+  .xf-board-pagenation-mobile {
+    display: block;
+    text-align: center;
+
+    .xf-pagination-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+
+      .xf-pagination-item {
+        &.xf-pagination-arrow {
+          border: 1px solid $base-border-color;
+
+          .xf-pagination__disabled-link {
+            color: rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        &.xe-list-board__pagination-box {
+          flex: 1;
+        }
+
+        .xf-pagination-number {
+          text-decoration: none;
+          color: #484848;
+          line-height: 36px;
+          display: inline-block;
+          height: 36px;
+        }
+
+        .xf-pagination__link {
+          text-decoration: none;
+          color: #484848;
+          line-height: 36px;
+          display: inline-block;
+          width: 36px;
+          height: 36px;
+        }
+      }
+    }
+  }
+}

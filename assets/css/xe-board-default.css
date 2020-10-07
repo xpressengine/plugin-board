@@ -1,5 +1,7 @@
-@charset "UTF-8";
-/* 변수 */
+.xf-board-list * {
+  vertical-align: middle;
+}
+
 .xf-board-list .xf-board-item {
   border-bottom: 1px solid #e0e0e0;
 }
@@ -15,10 +17,6 @@
 
 .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link {
   width: 100%;
-}
-
-.xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link .xf-item-inner__text {
-  vertical-align: middle;
 }
 
 .xf-board-list .xf-board-item .xf-board-item-inner.xf-item__title .xf-board-item__link .xf-item-inner__text .xf-item__title-text {

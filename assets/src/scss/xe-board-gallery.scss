@@ -6,7 +6,6 @@
     flex-wrap: wrap;
 
     .xf-board-item {
-
       .xf-board-item-inner {
         .xf-board-item__link {
           display: inline-block;
@@ -24,6 +23,7 @@
         }
 
         .xf-thumbnail-box {
+          border: 1px solid $base-border-color;
           position: relative;
 
           .xf-thumbnail-img {
@@ -57,7 +57,7 @@
                 flex-wrap: wrap;
 
                 .xf-info-item {
-                  line-height: 1;
+                  line-height: 1.2;
 
                   .xf-info-item__text {
                     font-size: 12px;
@@ -75,6 +75,22 @@
 
 .xf-board-management-btn-box {
   margin-top: 20px;
+}
+
+@media (max-width:576px) {
+  .xf-board-body {
+    .xf-board-list {
+      .xf-board-item {
+        .xf-board-item-inner {
+          .xf-detail-box {
+            .xf-post-info {
+              flex-wrap: wrap;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -175,7 +191,6 @@
     }
   }
 }
-
 
 @media (min-width: 992px) {
   .xf-board-body {

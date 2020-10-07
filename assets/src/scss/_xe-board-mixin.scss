@@ -1,0 +1,19 @@
+@import 'xe-board-variables';
+
+@mixin profileImg {}
+
+@mixin thumbnailImg {
+  .xf-thumbnail-box {
+    overflow: hidden;
+
+    .xf-thumbnail-img {
+      transition: transform 0.2s ease;
+    }
+
+    .xf-board-item__link {
+      border: 1px solid $base-border-color;
+    }
+  }
+}
+
+@mixin detailInfo {}

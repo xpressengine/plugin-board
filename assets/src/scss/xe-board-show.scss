@@ -15,17 +15,8 @@
 
     .xf-post-detail-title {
       line-height: 1.5;
-
-      &:not(:last-child) {
-        &:after {
-          content: ' / ';
-          font-size: 13px;
-          line-height: 24px;
-          color: #767676;
-          display: inline-block;
-        }
-      }
     }
+
     .xf-post-title {
       font-size: 21px;
       line-height: 30px;
@@ -103,7 +94,7 @@
 }
 
 .xf-board-show-body {
-  padding: 24px 0;
+  padding: 24px 15px;
 
   .xf-post-article-contents {
     .xf-post-article-tag-box {
@@ -174,6 +165,7 @@
             font-size: 13px;
             vertical-align: middle;
             height: 18px;
+            padding: 0 2px;
 
             &.voted {
               .xf-assent-icon {
@@ -307,6 +299,43 @@
         .xe-dropdown-menu {
           left: auto;
           right: 0;
+        }
+      }
+    }
+  }
+
+  .xf-assent-people-list {
+    margin-top: 15px;
+
+    .bd_like_more_list {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      li {
+        position: relative;
+
+        &.on:before {
+          position: absolute;
+          top: 0;
+          left: 1px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: $base-primary-color;
+          content: "";
+        }
+
+        .bd_like_more_list_item {
+          &:not(:last-child) {
+            margin-right: 5px;
+          }
+
+          img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+          }
         }
       }
     }
