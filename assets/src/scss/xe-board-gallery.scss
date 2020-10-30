@@ -1,4 +1,5 @@
 @import 'xe-board-variables';
+@import 'xe-board-mixin';
 
 .xf-board-body {
   .xf-board-list {
@@ -22,18 +23,20 @@
           }
         }
 
+        @include thumbnailImg($paddingTop: 56.25%);
         .xf-thumbnail-box {
           border: 1px solid $base-border-color;
-          position: relative;
-
-          .xf-thumbnail-img {
-            background-image: url("/assets/core/common/img/default_image_1200x800.jpg");
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            padding-top: 56.25%;
-          }
         }
+
+        //.xf-thumbnail-box {
+        //  border: 1px solid $base-border-color;
+        //  position: relative;
+        //
+        //  .xf-thumbnail-img {
+        //    background-image: url("/assets/core/common/img/default_image_1200x800.jpg");
+        //    padding-top: 56.25%;
+        //  }
+        //}
 
         .xf-detail-box {
           letter-spacing: -0.2px;
@@ -41,31 +44,7 @@
           .xf-post-info {
             display: flex;
 
-            .xf-detail-info {
-              flex: 1;
-
-              .xf-item__writer-link {
-                display: flex;
-
-                .xf-writer__nickname {
-                  word-break: break-all;
-                }
-              }
-
-              .xf-info-list {
-                display: flex;
-                flex-wrap: wrap;
-
-                .xf-info-item {
-                  line-height: 1.5;
-
-                  .xf-info-item__text {
-                    font-size: 12px;
-                    color: #9c9c9c;
-                  }
-                }
-              }
-            }
+            @include detailInfo;
           }
         }
       }

@@ -314,6 +314,7 @@
 
       li {
         position: relative;
+        display: inline-block;
 
         &.on:before {
           position: absolute;
@@ -323,7 +324,7 @@
           height: 8px;
           border-radius: 50%;
           background-color: $base-primary-color;
-          content: "";
+          content: '';
         }
 
         .bd_like_more_list_item {

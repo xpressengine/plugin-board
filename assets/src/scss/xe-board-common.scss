@@ -9296,13 +9296,11 @@
 // 댓글
 .xf-comment_count {
   color: $base-primary-color;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -1px;
   font-weight: 500;
+  display: inline-block;
 }
 
-// 아이콘
+  // 아이콘
 .xf-item-icon {
   vertical-align: middle;
 }
@@ -9577,15 +9575,16 @@
 }
 
 // 썸네일
-.xf-thumbnail-box {
-  overflow: hidden;
+//.xf-thumbnail-box {
+//  overflow: hidden;
+//
+//  .xf-thumbnail-img {
+//    transition: transform 0.2s ease;
+//  }
+//
+//  .xf-board-item__link {
+//    border: 1px solid $base-border-color;
+//    overflow: hidden;
+//  }
+//}
 
-  .xf-thumbnail-img {
-    transition: transform 0.2s ease;
-  }
-
-  .xf-board-item__link {
-    border: 1px solid $base-border-color;
-    overflow: hidden;
-  }
-}

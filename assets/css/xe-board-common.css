@@ -9335,10 +9335,8 @@
 
 .xf-comment_count {
   color: #2684ff;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -1px;
   font-weight: 500;
+  display: inline-block;
 }
 
 .xf-item-icon {
@@ -9622,22 +9620,6 @@
 .xf-assent-box .xf-assent-list .xf-assent-item .xf-assent-text {
   color: #181818;
   font-size: 13px;
-}
-
-.xf-thumbnail-box {
-  overflow: hidden;
-}
-
-.xf-thumbnail-box .xf-thumbnail-img {
-  -webkit-transition: -webkit-transform 0.2s ease;
-  transition: -webkit-transform 0.2s ease;
-  transition: transform 0.2s ease;
-  transition: transform 0.2s ease, -webkit-transform 0.2s ease;
-}
-
-.xf-thumbnail-box .xf-board-item__link {
-  border: 1px solid #e0e0e0;
-  overflow: hidden;
 }
 
 /*# sourceMappingURL=xe-board-common.css.map */

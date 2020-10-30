@@ -190,6 +190,9 @@
                                     <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
                                 @endif
                                 <strong class="xf-post-title__text">{{ $item->title }}</strong>
+                                @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
+                                    <img src="/plugins/board/assets/img/new-icon.svg" class="xf-item-icon xf-new xf-ml03" alt="새글">
+                                @endif
                             </div>
                             @if ($item->display !== $item::DISPLAY_SECRET && array_get($skinConfig, 'visibleIndexGalleryDescription', 'on') === 'on')
                                 <p class="xf-post-text xf-p xf-ellipsis2">{{ $item->pure_content }}</p>

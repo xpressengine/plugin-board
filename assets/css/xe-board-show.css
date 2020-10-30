@@ -335,6 +335,7 @@
 
 .xf-board-show-body .xf-assent-people-list .bd_like_more_list li {
   position: relative;
+  display: inline-block;
 }
 
 .xf-board-show-body .xf-assent-people-list .bd_like_more_list li.on:before {
@@ -345,7 +346,7 @@
   height: 8px;
   border-radius: 50%;
   background-color: #2684ff;
-  content: "";
+  content: '';
 }
 
 .xf-board-show-body .xf-assent-people-list .bd_like_more_list li .bd_like_more_list_item:not(:last-child) {
