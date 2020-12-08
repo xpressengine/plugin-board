@@ -18,14 +18,6 @@
   line-height: 1.5;
 }
 
-.xf-board-show-header .xf-post-contents .xf-post-detail-title:not(:last-child):after {
-  content: ' / ';
-  font-size: 13px;
-  line-height: 24px;
-  color: #767676;
-  display: inline-block;
-}
-
 .xf-board-show-header .xf-post-contents .xf-post-title {
   font-size: 21px;
   line-height: 30px;
@@ -103,7 +95,7 @@
 }
 
 .xf-board-show-body {
-  padding: 24px 0;
+  padding: 24px 15px;
 }
 
 .xf-board-show-body .xf-post-article-contents .xf-post-article-tag-box {
@@ -180,9 +172,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link {
@@ -190,6 +179,7 @@
   font-size: 13px;
   vertical-align: middle;
   height: 18px;
+  padding: 0 2px;
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link.voted .xf-assent-icon.xf-assent {
@@ -213,6 +203,7 @@
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link .xf-assent-icon.xf-assent {
   background-image: url("../img/heart.svg");
+  margin-top: -4px;
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link .xf-assent-icon.xf-assent.on {
@@ -220,7 +211,6 @@
 }
 
 .xf-board-show-body .xf-board-btn-box .xf-show-assent-box .xf-assent-list .xf-assent-item .xf-assent__link .xf-assent-icon.xf-dissent {
-  margin-top: 2px;
   background-image: url("../img/dissent.svg");
 }
 
@@ -333,6 +323,42 @@
   right: 0;
 }
 
+.xf-board-show-body .xf-assent-people-list {
+  margin-top: 15px;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li {
+  position: relative;
+  display: inline-block;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li.on:before {
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #2684ff;
+  content: '';
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li .bd_like_more_list_item:not(:last-child) {
+  margin-right: 5px;
+}
+
+.xf-board-show-body .xf-assent-people-list .bd_like_more_list li .bd_like_more_list_item img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
 .xf-board-show-body .xf-board-attachment-box {
   padding-bottom: 20px;
 }
@@ -432,7 +458,7 @@
   }
   .xf-board-show-header .xf-post-contents .xf-post-title {
     font-size: 30px;
-    line-size: 44px;
+    line-height: 44px;
     letter-spacing: -0.4px;
   }
   .xf-board-show-body {
@@ -454,111 +480,6 @@
     color: #9c9c9c;
     margin-right: 5px;
   }
-}
-
-/* 코멘트 */
-.comment_action_area_avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-top: 30px;
-  margin-bottom: 15px !important;
-}
-
-.comment_action_area_avatar img {
-  -o-object-fit: cover;
-     object-fit: cover;
-  width: 28px;
-  height: 28px;
-}
-
-.xe-list-comment--body {
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 10px;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item {
-  border-bottom: 0 !important;
-  border-top: 1px solid #e0e0e0;
-}
-
-.xe-list-comment--reply-list-item {
-  margin-bottom: 28px !important;
-}
-
-.xe-list-comment--header {
-  border-bottom: none !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list {
-  padding-top: 0 !important;
-}
-
-.xe-list-comment-list--left-box {
-  padding-left: 0 !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item.xe-list-comment--reply-list-item .xe-list-comment--list-item-wrapper {
-  padding-left: 15px !important;
-}
-
-.board_comment {
-  margin-top: 60px;
-}
-
-.xe-list-comment--header-left-box .xe-list-comment--header-count-number {
-  font-weight: 500 !important;
-}
-
-.xe-list-comment--header-left-box .xe-list-comment--header-count-text {
-  font-size: 16px !important;
-  font-weight: 400 !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item.xe-list-comment--reply-list-item .xe-list-comment--list-item-wrapper .xe-list-comment-list--left-box .xe-list-comment-list__user-image {
-  width: 28px;
-  height: 28px;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item .xe-list-comment--list-item-wrapper .xe-list-comment-list--left-box .xe-list-comment-list__user-image {
-  boarder: 1px solid #e0e0e0 !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item .xe-list-comment--list-item-wrapper > .xe-list-comment-list--right-box .xe-list-comment-list--title .xe-list-comment-list--left-box .xe-list-comment__link {
-  font-weight: 500 !important;
-  font-size: 13px !important;
-  line-height: 18px !important;
-}
-
-.xe-list-comment-list--body-text-paragraph {
-  display: none !important;
-}
-
-.xe-list-comment-list--body-text p {
-  font-size: 14px !important;
-  line-height: 22px !important;
-  color: #484848 !important;
-}
-
-.__xe_comment_reply_form {
-  padding-left: 15px !important;
-  margin: 15px 0 !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item .xe-list-comment--list-item-wrapper > .xe-list-comment-list--right-box .xe-list-comment-list--title .xe-list-comment-list--right-box .xe-list-body__edit-box .xe-list-body__edit-item:after {
-  height: 10px !important;
-  background-color: #767676 !important;
-  top: 5px !important;
-}
-
-.xe-list-comment .xe-list-comment--body .xe-list-comment--list .xe-list-comment--list-item.xe-list-comment--reply-list-item {
-  margin-bottom: 0 !important;
-}
-
-.xe-list-comment .xe-dropdown {
-  display: inline-block !important;
-  vertical-align: middle !important;
 }
 
 /*# sourceMappingURL=xe-board-show.css.map */

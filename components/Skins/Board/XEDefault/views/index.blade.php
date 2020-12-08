@@ -110,26 +110,20 @@
                             @if ($item->display === $item::DISPLAY_SECRET)
                                 <div class="xf-secret-icon"></div>
                             @endif
-                            <span class="xf-item-inner__text base-w500">
-                                @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
-                                    <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
-                                @endif
-                                <strong class="xf-item__title-text">{{ $item->title }}</strong>
-                            </span>
-                            <div class="xf-item-icon-box">
-                                @if($item->comment_count > 0)
-                                    <span
-                                        class="xf-comment_count xf-ml03">[{{ number_format($item->comment_count) }}]</span>
-                                @endif
-                                <ul class="xf-item-icon-list xf-list">
-                                    @if ($item->data->file_count > 0)
-                                        <li class="xf-item-icon xf-attached-file xf-ml03"></li>
-                                    @endif
-                                    @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
-                                        <li class="xf-item-icon xf-new xf-ml03"></li>
-                                    @endif
-                                </ul>
-                            </div>
+                            @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
+                                <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
+                            @endif
+                            <span class="xf-item-inner__text base-w500">{{ $item->title }}</span>
+
+                            @if($item->comment_count > 0)
+                                <span class="xf-comment_count xf-ml03">[{{ number_format($item->comment_count) }}]</span>
+                            @endif
+                            @if ($item->data->file_count > 0)
+                                <img src="/plugins/board/assets/img/paperclip.svg" class="xf-item-icon xf-attached-file xf-ml03" alt="파일 첨부">
+                            @endif
+                            @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
+                                <img src="/plugins/board/assets/img/new-icon.svg" class="xf-item-icon xf-new xf-ml03" alt="새글">
+                            @endif
                         </a>
                     </div>
                     @break
@@ -156,7 +150,7 @@
                             @if (array_get($skinConfig, 'visibleIndexDefaultProfileImage', 'on') === 'on')
                                 <div class="xf-writer-profile-box xf-pc-display-bl xf-mr08">
                                     <div class="xf-writer-profile-img"
-                                         style="background-image: url({{ $item->user->getProfileImage() }});">
+                                         style="background-image: url('/assets/core/user/img/default_avatar.jpg');">
                                             <span
                                                 class="blind">유저 이미지</span>
                                     </div>
@@ -209,7 +203,7 @@
         </li>
     @endforeach
 
-<!-- 일반 리스트 -->
+    <!-- 일반 리스트 -->
     @foreach ($paginate as $item)
         <li class="xf-board-item">
             @foreach ($skinConfig['skinListColumns'] as $columnName)
@@ -235,7 +229,7 @@
                     @if ($config->get('category') === true)
                         <div class="xf-board-item-inner xf-item__category">
                             <span class="xf-item-inner__text">
-                                {!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}
+                                 {!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}
                             </span>
                         </div>
                     @endif
@@ -245,27 +239,19 @@
                             @if ($item->display === $item::DISPLAY_SECRET)
                                 <div class="xf-secret-icon"></div>
                             @endif
-                            <span class="xf-item-inner__text">
-                                @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
-                                    <span
-                                        class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
-                                @endif
-                                <strong class="xf-item__title-text">{{ $item->title }}</strong>
-                            </span>
-                            <div class="xf-item-icon-box">
-                                @if($item->comment_count > 0)
-                                    <span
-                                        class="xf-comment_count xf-ml03">[{{ number_format($item->comment_count) }}]</span>
-                                @endif
-                                <ul class="xf-item-icon-list xf-list">
-                                    @if ($item->data->file_count > 0)
-                                        <li class="xf-item-icon xf-attached-file xf-ml03"></li>
-                                    @endif
-                                    @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
-                                        <li class="xf-item-icon xf-new xf-ml03"></li>
-                                    @endif
-                                </ul>
-                            </div>
+                            @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
+                                <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">[{{$item->data->title_head}}]</span>
+                            @endif
+                            <span class="xf-item-inner__text">{{ $item->title }}</span>
+                            @if($item->comment_count > 0)
+                                <span class="xf-comment_count xf-ml03">[{{ number_format($item->comment_count) }}]</span>
+                            @endif
+                            @if ($item->data->file_count > 0)
+                                    <img src="/plugins/board/assets/img/paperclip.svg" class="xf-item-icon xf-attached-file xf-ml03" alt="파일 첨부">
+                            @endif
+                            @if ($item->isNew($config->get('newTime')) && array_get($skinConfig, 'visibleIndexNewIcon', 'show') === 'show')
+                                <img src="/plugins/board/assets/img/new-icon.svg" class="xf-item-icon xf-new xf-ml03" alt="새글">
+                            @endif
                         </a>
                     </div>
                     @break
@@ -290,8 +276,12 @@
                             </a>
                         @else
                             @if (array_get($skinConfig, 'visibleIndexDefaultProfileImage', 'on') === 'on')
-                                <span class="xe-list-board-list__user-image xe-hidden-mobile"><span
-                                        class="blind">유저 이미지</span></span>
+                                <div class="xf-writer-profile-box xf-pc-display-bl xf-mr08">
+                                    <div class="xf-writer-profile-img"
+                                         style="background-image: url('/assets/core/user/img/default_avatar.jpg');">
+                                            <span class="blind">유저 이미지</span>
+                                    </div>
+                                </div>
                             @endif
                             <span
                                 class="xf-item-inner__text">{{ $item->writer }}</span>

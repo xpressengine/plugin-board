@@ -1,5 +1,3 @@
-@import 'xe-board-variables';
-
 // 페이지네이션
 .xf-board-pagination-box {
   /* PC */
@@ -12,7 +10,6 @@
       margin: 0;
       display: flex;
       justify-content: center;
-      margin: 0 -15px;
 
       .xf-pagination-item {
         text-align: center;
@@ -48,11 +45,12 @@
 
           .xf-pagination__link {
             &:hover {
-              background: $base-border-color;
+              background: #e0e0e0;
               z-index: -1;
             }
+
             &:focus {
-              background: $base-border-color;
+              background: #e0e0e0;
             }
           }
 
@@ -64,8 +62,9 @@
               color: #000;
 
               &:hover {
-                background: transparent ;
+                background: transparent;
               }
+
               &:focus {
                 background: transparent;
               }
@@ -90,7 +89,7 @@
 
       .xf-pagination-item {
         &.xf-pagination-arrow {
-          border: 1px solid #e0e0e0;
+          border: 1px solid $base-border-color;
 
           .xf-pagination__disabled-link {
             color: rgba(0, 0, 0, 0.2);

@@ -7,16 +7,18 @@
         @case ('title')
         <div class="xf-board-show-header">
             <div class="xf-post-contents xf-mb16">
-                @if($item->status === $item::STATUS_NOTICE)
-                    <div class="xf-post-notice xf-post-detail-title">
-                        <span classs="xf-notice__text">{{ xe_trans('xe::notice') }}</span>
-                    </div>
-                @endif
-                @if ($config->get('category') === true && $item->boardCategory !== null && array_get($skinConfig, 'visibleShowCategory', 'show') === 'show')
-                    <div class="xf-post-category">
-                        <span class="xf-post__text">{{ xe_trans($item->boardCategory->getWord()) }}</span>
-                    </div>
-                @endif
+                <div class="xf-post-sub-detail-wrap">
+                    @if($item->status === $item::STATUS_NOTICE)
+                        <div class="xf-post-notice xf-post-detail">
+                            <span classs="xf-notice__text">{{ xe_trans('xe::notice') }}</span>
+                        </div>
+                    @endif
+                    @if ($config->get('category') === true && $item->boardCategory !== null && array_get($skinConfig, 'visibleShowCategory', 'show') === 'show')
+                        <div class="xf-post-category xf-post-detail">
+                            <span class="xf-post__text">{{ xe_trans($item->boardCategory->getWord()) }}</span>
+                        </div>
+                    @endif
+                </div>
                 <div class="xf-post-title xf-post-detail-title">
                     @if ($config->get('useTitleHead') === true && $item->data->title_head !== '')
                         <span class="xf-title-head xf-title-head-{{$item->data->title_head}}">
@@ -29,7 +31,6 @@
                 </div>
             </div>
             <div class="xf-post-info">
-                {{--                    TODO    프로필 이미지 출력하는 옵션 사용하는 데 작성자가 탈퇴 했을 때 처리 방법 확인--}}
                 @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
                     <div class="xf-profile-img-box">
                         @if ($item->hasAuthor() && $config->get('anonymity') === false)
@@ -42,6 +43,13 @@
                                          style="background-image: url({{ $item->user->getProfileImage() }})"></div>
                                 </div>
                             </a>
+                        @else
+                            <div class="xf-writer-profile-box xf-pc-display-bl xf-mr08">
+                                <div class="xf-writer-profile-img"
+                                     style="background-image: url('/assets/core/user/img/default_avatar.jpg');">
+                                    <span class="blind">유저 이미지</span>
+                                </div>
+                            </div>
                         @endif
                     </div>
                 @endif
@@ -55,9 +63,9 @@
                                 <span class="xf-writer__nickname">{{ $item->writer }}</span>
                             </a>
                         @else
-                            <a href="#" class="xf-a xf-item__writer-link xf-mb06">
+                            <div class="xf-mb06">
                                 <span class="xf-writer__nickname">{{ $item->writer }}</span>
-                            </a>
+                            </div>
                         @endif
                     @endif
                     <ul class="xf-list xf-info-list">
@@ -137,14 +145,18 @@
                                 <strong class="xf-file-count-num bd_file_num">{{ $item->data->file_count }}</strong>
                             </a>
                             <div class="xf-attachment-name-box">
-                                @foreach ($item->files as $file)
-                                    <a href="{{ route('editor.file.download', ['instanceId' => $item->instance_id, 'id' => $file->id])}}"
-                                       class="xf-attachment-name__link xf-a">
-                                        <i class="xi-download"></i>
-                                        <span class="xf-attachment-name">{{ $file->clientname }}</span>
-                                        <span class="xf-attachment-volume">({{ bytes($file->size) }})</span>
-                                    </a>
-                                @endforeach
+                                <ul class="xf-list xf-attachment-list">
+                                    @foreach ($item->files as $file)
+                                        <li class="xf-attachment-item">
+                                            <a href="{{ route('editor.file.download', ['instanceId' => $item->instance_id, 'id' => $file->id])}}"
+                                               class="xf-attachment-name__link xf-a">
+                                                <i class="xi-download"></i>
+                                                <span class="xf-attachment-name">{{ $file->clientname }}</span>
+                                                <span class="xf-attachment-volume">({{ bytes($file->size) }})</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -239,6 +251,7 @@
                     </ul>
                 </div>
             </div>
+            <div class="xf-assent-people-list bd_like_more" id="bd_like_more{{$item->id}}" data-id="{{$item->id}}"></div>
         </div>
         @break
 

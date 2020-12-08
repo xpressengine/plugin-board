@@ -1,3 +1,6 @@
+@import 'xe-board-variables';
+@import 'xe-board-mixin';
+
 .xf-board-list {
   display: flex;
   flex-wrap: wrap;
@@ -9,22 +12,17 @@
     .xf-board-item-inner {
       display: flex;
 
+      @include thumbnailImg($paddingTop: 75%);
+
       .xf-thumbnail-box {
-        position: relative;
         width: 30%;
         margin-right: 15px;
         display: inline-block;
 
         .xf-board-item__link {
           width: 100%;
-          font-size: 0;
 
           .xf-thumbnail-img {
-            background-image: url("/assets/core/common/img/default_image_1200x800.jpg");
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            padding-top: 75%;
             padding-right: 1px;
           }
         }
@@ -34,54 +32,34 @@
         letter-spacing: -0.2px;
         width: 70%;
 
-        .xf-post-contents {
-          .xf-post-category {
-            display: none;
-          }
+        .xf-board-item__link {
+          width: 100%;
 
-          .xf-post-title {
-            font-size: 16px;
-            max-height: 52px;
+          .xf-post-contents {
+            .xf-post-category {
+              display: none;
+            }
+
+            .xf-post-title {
+              font-size: 16px;
+              max-height: 52px;
+            }
           }
         }
 
         .xf-post-info {
           display: flex;
 
-          .xf-detail-info {
-            flex: 1;
+          .xf-info-item {
+            margin-right: 4px;
 
-            .xf-item__writer-link {
-              display: flex;
-
-              .xf-writer__nickname {
-                word-break: break-all;
-              }
-            }
-
-            .xf-info-list {
-              display: flex;
-              flex-wrap: wrap;
-
-              .xf-info-item {
-                margin-right: 4px;
-                line-height: 1;
-
-                //&:not(:last-child):after {
-                //  content: '';
-                //  display: inline-block;
-                //  height: 8px;
-                //  width: 1px;
-                //  background-color: #9c9c9c;
-                //}
-
-                .xf-info-item__text {
-                  font-size: 12px;
-                  color: #9c9c9c;
-                }
-              }
+            .xf-info-item__text {
+              font-size: 12px;
+              color: #9c9c9c;
             }
           }
+
+          @include detailInfo;
         }
       }
     }

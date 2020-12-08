@@ -1,18 +1,25 @@
+@import 'xe-board-variables';
+
 .xf-board-list {
+  & * {
+    vertical-align: middle;
+  }
+
   .xf-board-item {
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid $base-border-color;
 
     &.xf-board-notice {
       .xf-board-item-inner {
         &.xf-item__title {
           .xf-board-item__link {
             &:hover {
-              .xf-item__title-text {
+              .xf-item-inner__text {
                 text-decoration: underline;
               }
             }
 
             &:visited {
+              .xf-title-head,
               .xf-item-inner__text {
                 color: #767676;
               }
@@ -34,12 +41,13 @@
           }
 
           &:hover {
-            .xf-item__title-text {
+            .xf-item-inner__text {
               text-decoration: underline;
             }
           }
 
           &:visited {
+            .xf-title-head,
             .xf-item-inner__text {
               color: #767676;
             }
@@ -75,7 +83,7 @@
               overflow: hidden;
 
               .xf-item-inner__text {
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 24px;
                 letter-spacing: -0.4px;
                 color: #141414;
@@ -147,7 +155,7 @@
           }
 
           .xf-item-inner__text {
-            font-size: 16px;
+            font-size: 14px;
           }
         }
 
@@ -231,8 +239,8 @@
           &.xf-item__bookmark {
             display: flex;
             align-items: center;
-            flex-basis: 35px;
-            min-width: 35px;
+            flex-basis: $base-bookmark-width;
+            min-width: $base-bookmark-width;
 
             .xf-item__bookmark-icon {
               width: 14px;
@@ -272,8 +280,8 @@
           }
 
           &.xf-item__writer {
-            flex-basis: 160px;
-            min-width: 160px;
+            flex-basis: $base-writer-width;
+            min-width: $base-writer-width;
             padding: 11px 10px;
             display: flex;
             align-items: center;
@@ -312,38 +320,38 @@
           }
 
           &.xf-item__read_count {
-            flex-basis: 100px;
-            min-width: 100px;
+            flex-basis: $base-read_count-width;
+            min-width: $base-read_count-width;
             text-align: center;
           }
 
           &.xf-item__created_at {
-            flex-basis: 110px;
-            min-width: 110px;
+            flex-basis: $base-created_at-width;
+            min-width: $base-created_at-width;
             text-align: center;
           }
 
           &.xf-item__updated_at {
-            flex-basis: 110px;
-            min-width: 110px;
+            flex-basis: $base-updated_at-width;
+            min-width: $base-updated_at-width;
             text-align: center;
           }
 
           &.xf-item__assent_count {
-            flex-basis: 100px;
-            min-width: 100px;
+            flex-basis: $base-assent_count-width;
+            min-width: $base-assent_count-width;
             text-align: center;
           }
 
           &.xf-item__dissent_count {
-            flex-basis: 100px;
-            min-width: 100px;
+            flex-basis: $base-dissent_count-width;
+            min-width: $base-dissent_count-width;
             text-align: center;
           }
 
           &.xf-item__dynamic_field {
-            flex-basis: 150px;
-            min-width: 150px;
+            flex-basis: $base-dynamic_field-width;
+            min-width: $base-dynamic_field-width;
             text-align: center;
           }
         }

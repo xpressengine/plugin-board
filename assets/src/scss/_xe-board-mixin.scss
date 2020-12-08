@@ -1,0 +1,54 @@
+@import 'xe-board-variables';
+
+@mixin profileImg {}
+
+// 웹진 & 갤러리 목록 썸네일
+@mixin thumbnailImg($paddingTop: null) {
+  .xf-thumbnail-box {
+    overflow: hidden;
+    position: relative;
+
+    .xf-thumbnail-img {
+      transition: transform 0.2s ease;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background-image: url("/assets/core/common/img/default_image_1200x800.jpg");
+      padding-top: $paddingTop;
+    }
+
+    .xf-board-item__link {
+      border: 1px solid $base-border-color;
+      overflow: hidden;
+    }
+  }
+}
+
+// 웹진 & 갤러리 목록 포스트 디테일 정보
+@mixin detailInfo {
+  .xf-detail-info {
+    flex: 1;
+
+    .xf-item__writer-link {
+      display: flex;
+
+      .xf-writer__nickname {
+        word-break: break-all;
+      }
+    }
+
+    .xf-info-list {
+      display: flex;
+      flex-wrap: wrap;
+
+      .xf-info-item {
+        line-height: 1.5;
+
+        .xf-info-item__text {
+          font-size: 12px;
+          color: #9c9c9c;
+        }
+      }
+    }
+  }
+}
