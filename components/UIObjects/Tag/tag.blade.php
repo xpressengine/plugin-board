@@ -30,7 +30,7 @@
   .ti-tag.ti-invalid[data-v-61d92e31], .ti-tag.ti-tag.ti-deletion-mark[data-v-61d92e31] {
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 3px;
-      height: 25px !important;
+    min-height: 25px !important;
   }
 
   .ti-new-tag-input-wrapper input[data-v-61d92e31]::placeholder {
