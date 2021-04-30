@@ -534,6 +534,15 @@ class BoardModuleController extends Controller
 
         $item = $service->store($request, Auth::user(), $this->config, $identifyManager);
 
+        if($request->has('redirect_url')) {
+            if($request->has('redirect_message')) {
+                return XePresenter::redirect()
+                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
+            }
+            return XePresenter::redirect()
+                ->to($request->get('redirect_url'));
+        }
+
         return XePresenter::redirect()
             ->to($this->urlHandler->getShow($item, $request->query->all()))
             ->setData(['item' => $item]);
@@ -689,6 +698,15 @@ class BoardModuleController extends Controller
 
         $item = $service->update($item, $request, Auth::user(), $this->config, $identifyManager);
 
+        if($request->has('redirect_url')) {
+            if($request->has('redirect_message')) {
+                return XePresenter::redirect()
+                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
+            }
+            return XePresenter::redirect()
+                ->to($request->get('redirect_url'));
+        }
+        
         return XePresenter::redirect()->to(
             $this->urlHandler->getShow(
                 $item,
