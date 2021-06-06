@@ -210,6 +210,10 @@
               text-shadow: 1px 1px #fff;
               border-color: #adb8c0;
             }
+
+            &:focus+label:before {
+              border-color: #2684FF;
+            }
           }
         }
       }
