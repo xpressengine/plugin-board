@@ -70,13 +70,14 @@ class NewTitleUIObject extends AbstractUIObject
             $args['titleClassName'] = 'xe-form-control title';
         }
 
+        if (empty($args['titlePlaceholder'])) {
+            $args['titlePlaceholder'] = xe_trans('board::enterTitle');
+        }
+
         $args['scriptInit'] = false;
         if (self::$loaded === false) {
             self::$loaded = true;
-
             $args['scriptInit'] = true;
-
-//            XeFrontend::js('plugins/board/components/UIObjects/NewTitle/assets/js/newTitle.js')->load();
         }
 
         return View::make('board::components/UIObjects/NewTitle/title', $args)->render();
