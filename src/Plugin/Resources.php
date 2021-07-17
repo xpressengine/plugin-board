@@ -302,6 +302,36 @@ class Resources
                 }
             }
         );
+
+        intercept(
+            DynamicFieldHandler::class . '@drop',
+            'board@commonSkin::dropDynamicField',
+            function ($func, ConfigEntity $config) {
+                $func($config);
+
+                // remove prefix name of group
+                $instanceId = str_replace('documents_', '', $config->get('group'));
+
+                /** @var \Xpressengine\Plugins\Board\ConfigHandler $configHandler */
+                $configHandler = app('xe.board.config');
+                $boardConfig = $configHandler->get($instanceId);
+
+                if ($boardConfig !== null) {
+                    $sortFormColumns = $configHandler->getSortFormColumns($boardConfig);
+                    $sortListColumns = $configHandler->getSortListColumns($boardConfig);
+
+                    $boardConfig->set('formColumns', $sortFormColumns);
+                    $boardConfig->set('sortFormColumns', $sortFormColumns);
+                    $boardConfig->set('listColumns', $sortListColumns);
+
+                    if ($dynamicFieldId = $config->get('id')) {
+                        $boardConfig->set($dynamicFieldId, null);
+                    }
+
+                    app(InstanceManager::class)->updateConfig($boardConfig->getPureAll());
+                }
+            }
+        );
     }
 
     /**
