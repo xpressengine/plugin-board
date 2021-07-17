@@ -384,9 +384,15 @@ class Handler
     protected function setFiles(Board $board, array $args)
     {
         $fileIds = [];
+
         if (empty($args['_files']) === false) {
             $this->storage->sync($board->getKey(), $args['_files']);
         }
+
+        else if (empty($args['_files']) && count($board->getFileIds()) > 0) {
+            $this->storage->sync($board->getKey(), []);
+        }
+
         return $fileIds;
     }
 
