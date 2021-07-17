@@ -33,7 +33,7 @@ class CommonSettingsSkin extends AbstractSkin
     /**
      * @var string
      */
-    protected static $skinAlias = 'board/components/Skins/Board/Settings/Common/views';
+    public static $skinAlias = 'board/components/Skins/Board/Settings/Common/views';
 
     /**
      * render
@@ -56,6 +56,14 @@ class CommonSettingsSkin extends AbstractSkin
         if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
             $view = $contentView;
         } elseif($subPath === 'global' || $subPath === 'module') {
+            if ($subPath === 'module') {
+                $this->data['_menu'] = app('xe.board.settings_module_tab_menu')->get();
+            }
+
+            else if ($subPath === 'global') {
+                $this->data['_menu'] = app('xe.board.settings_global_tab_menu')->get();
+            }
+
             // wrapped by _frame.blade.php
             $this->data['afea'] = 1;
             $view = View::make(sprintf('%s.%s._frame', static::$skinAlias, $subPath), $this->data);

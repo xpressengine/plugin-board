@@ -220,6 +220,9 @@ class Resources
             return $instance;
         });
         $app->alias(BoardService::class, 'xe.board.service');
+
+        $app->alias(SettingsModuleTabMenu::class, 'xe.board.settings_module_tab_menu');
+        $app->alias(SettingsGlobalTabMenu::class, 'xe.board.settings_global_tab_menu');
     }
 
     /**
@@ -425,5 +428,25 @@ class Resources
                 abort(500, xe_trans('comment::notAllowedComment'));
             }
         });
+    }
+
+    /**
+     * 게시판에 대한 Tab Menu 설정
+     *
+     * @return void
+     */
+    public static function setSettingsModuleTabMenu()
+    {
+        app(SettingsModuleTabMenu::class)->up();
+    }
+
+    /**
+     * 게시판에 대한 Global Menu 설정
+     *
+     * @return void
+     */
+    public static function setSettingsGlobalTabMenu()
+    {
+        app(SettingsGlobalTabMenu::class)->up();
     }
 }

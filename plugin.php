@@ -44,6 +44,9 @@ class Plugin extends AbstractPlugin
 
         Resources::listenCommentRetrievedEvent();
         Resources::listenCommentCreateEvent();
+
+        Resources::setSettingsModuleTabMenu();
+        Resources::setSettingsGlobalTabMenu();
     }
 
     /**
