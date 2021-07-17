@@ -135,7 +135,9 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function files()
     {
-        return $this->belongsToMany(File::class, 'fileables', 'fileable_id', 'file_id');
+        return $this->belongsToMany(File::class, 'fileables', 'fileable_id', 'file_id')
+            ->withPivot('created_at')
+            ->orderBy('pivot_' . 'created_at', 'asc');
     }
 
     /**
