@@ -86,7 +86,9 @@
                     @endif
 
                     @if (Auth::check() === true)
-                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"><i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span></a>
+                        <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="bd_ico bd_favorite @if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-favorite">
+                            <i class="xi-star"></i><span class="xe-sr-only">{{ trans('board::favorite') }}</span>
+                        </a>
                     @endif
 
                     {!! uio('share', [
