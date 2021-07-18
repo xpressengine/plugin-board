@@ -223,6 +223,16 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
+     * get favorites
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function favoriteUsers()
+    {
+        return $this->belongsToMany(User::class, 'board_favorites', 'target_id', 'user_id');
+    }
+
+    /**
      * get slug
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
