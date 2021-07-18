@@ -336,7 +336,12 @@
             @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'favorite')
                     @if (Auth::check() === true)
-                        <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
+                        <td class="favorite xe-hidden-xs">
+                            <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}">
+                                <i class="xi-star"></i>
+                                <span class="xe-sr-only">{{xe_trans('board::favorite')}}</span>
+                            </a>
+                        </td>
                     @endif
                 @elseif ($columnName == 'title')
                     @if ($config->get('category') == true)
@@ -450,7 +455,11 @@
             @foreach ($skinConfig['listColumns'] as $columnName)
                 @if ($columnName == 'favorite')
                     @if (Auth::check() === true)
-                        <td class="favorite xe-hidden-xs"><a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a></td>
+                        <td class="favorite xe-hidden-xs">
+                            <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="@if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}">
+                                <i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span>
+                            </a>
+                        </td>
                     @endif
                 @elseif ($columnName == 'title')
                     @if ($config->get('category') == true)

@@ -328,7 +328,10 @@
 
                         @if (in_array('favorite', $skinConfig['listColumns']) == true)
                             @if (Auth::check() === true)
-                                <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                                <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}">
+                                    <i class="xi-star"></i>
+                                    <span class="xe-sr-only">{{xe_trans('board::favorite')}}</span>
+                                </a>
                             @endif
                         @endif
 
@@ -412,7 +415,10 @@
 
                         @if (in_array('favorite', $skinConfig['listColumns']) == true)
                             @if (Auth::check() === true)
-                                <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favorite !== null) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}"><i class="xi-star"></i><span class="xe-sr-only">{{xe_trans('board::favorite')}}</span></a>
+                                <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}" class="favorite @if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-favorite"  title="{{xe_trans('board::favorite')}}">
+                                    <i class="xi-star"></i>
+                                    <span class="xe-sr-only">{{xe_trans('board::favorite')}}</span>
+                                </a>
                             @endif
                         @endif
 

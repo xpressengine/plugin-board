@@ -84,24 +84,22 @@
 
                 @switch ($columnName)
                     @case ('favorite')
-                    @if (Auth::check() === true)
-                        <div class="xf-board-item-inner xf-item__bookmark">
-                            <span class="xf-item-inner__text blind">북마크</span>
-                            <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}"
-                               class="xf-item__bookmark-icon @if ($item->favorite !== null) on @endif __xe-bd-favorite"
-                               title="{{xe_trans('board::favorite')}}">
-                                <div class="bookmark"></div>
-                            </a>
-                        </div>
-                    @endif
+                        @if (Auth::check() === true)
+                            <div class="xf-board-item-inner xf-item__bookmark">
+                                <span class="xf-item-inner__text blind">북마크</span>
+                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="xf-item__bookmark-icon @if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-favorite" title="{{xe_trans('board::favorite')}}">
+                                    <div class="bookmark"></div>
+                                </a>
+                            </div>
+                        @endif
                     @break
 
                     @case ('title')
                     @if ($config->get('category') === true)
                         <div class="xf-board-item-inner xf-item__category">
-                                    <span class="xf-item-inner__text">
-                                        {!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}
-                                    </span>
+                            <span class="xf-item-inner__text">
+                                {!! $item->boardCategory !== null ? xe_trans($item->boardCategory->categoryItem->word) : '' !!}
+                            </span>
                         </div>
                     @endif
                     <div class="xf-board-item-inner xf-item__title">
@@ -213,16 +211,14 @@
 
                 @switch ($columnName)
                     @case ('favorite')
-                    @if (Auth::check() === true)
-                        <div class="xf-board-item-inner xf-item__bookmark">
-                            <span class="xf-item-inner__text blind">북마크</span>
-                            <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}"
-                               class="xf-item__bookmark-icon @if ($item->favorite !== null) on @endif __xe-bd-favorite"
-                               title="{{xe_trans('board::favorite')}}">
-                                <div class="bookmark"></div>
-                            </a>
-                        </div>
-                    @endif
+                        @if (Auth::check() === true)
+                            <div class="xf-board-item-inner xf-item__bookmark">
+                                <span class="xf-item-inner__text blind">북마크</span>
+                                <a href="#" data-url="{{ $urlHandler->get('favorite', ['id' => $item->id]) }}" class="xf-item__bookmark-icon @if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-favorite" title="{{xe_trans('board::favorite')}}">
+                                    <div class="bookmark"></div>
+                                </a>
+                            </div>
+                        @endif
                     @break
 
                     @case ('title')
