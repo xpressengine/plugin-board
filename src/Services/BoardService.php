@@ -361,7 +361,9 @@ class BoardService
     public function getItem($id, UserInterface $user, ConfigEntity $config, $force = false)
     {
         /** @var Board $item */
-        $item = Board::division($config->get('boardId'))->find($id);
+        $item = Board::division($config->get('boardId'))->with(['favoriteUsers' => function($favoriteUserQuery) {
+            $favoriteUserQuery->where('user.id', Auth::id());
+        }])->find($id);
 
         if ($item === null) {
             throw new NotFoundDocumentException;
