@@ -97,8 +97,8 @@ class BoardService
         }
 
         // eager loading favorite list
-        $query->with(['favorite' => function ($favoriteQuery) {
-            $favoriteQuery->where('user_id', Auth::user()->getId());
+        $query->with(['favoriteUsers' => function($favoriteUserQuery) {
+            $favoriteUserQuery->where('user.id', Auth::id());
         }, 'slug', 'data', 'thumb', 'tags']);
 
         Event::fire('xe.plugin.board.notice', [$query]);
@@ -160,9 +160,9 @@ class BoardService
         $this->handler->makeOrder($query, $request, $config);
 
         // eager loading favorite list
-        $query->with(['favorite' => function ($favoriteQuery) {
-            $favoriteQuery->where('user_id', Auth::user()->getId());
-        }, 'slug', 'data', 'thumb']);
+        $query->with(['favoriteUsers' => function($favoriteUserQuery) {
+            $favoriteUserQuery->where('user.id', Auth::id());
+        }, 'slug', 'data', 'thumb', 'tags']);
 
         Event::fire('xe.plugin.board.articles', [$query]);
 
