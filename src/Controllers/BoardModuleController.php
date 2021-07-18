@@ -1119,6 +1119,38 @@ class BoardModuleController extends Controller
     }
 
     /**
+     * get favorite user list
+     *
+     * @param Request $request request
+     * @param string  $menuUrl first segment
+     * @param string  $id      document id
+     * @return mixed
+     */
+    public function favoriteUserList(Request $request, $menuUrl, $id)
+    {
+        $startId = $request->get('startId');
+        $limit = $request->get('limit', 10);
+
+        $item = Board::division($this->instanceId)->findOrFail($id);
+        $query = $item->favoriteUsers()->when($startId, function($query, $startId) {
+            $query->where('id', '<', $startId);
+        });
+
+        $favoriteUsers = $query->orderBy('id', 'desc')->take($limit)->get();
+        $nextStartId = count($favoriteUsers) == $limit ? $favoriteUsers->last()->id : 0;
+
+        $favoriteUsers->each(function($favoriteUser) {
+            $favoriteUser->addVisible(['profileImage']);
+        });
+
+        return XePresenter::makeApi([
+            'item' => $item,
+            'list' => $favoriteUsers,
+            'nextStartId' => $nextStartId,
+        ]);
+    }
+
+    /**
      * is manager
      *
      * @return bool

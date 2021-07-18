@@ -203,6 +203,10 @@ class BoardModule extends AbstractModule
             ]);
 
             Route::post('/favorite/{id}', ['as' => 'favorite', 'uses' => 'BoardModuleController@favorite']);
+            Route::get('/favorite/userList/{id}', [
+                'as' => 'favoriteUsers',
+                'uses' => 'BoardModuleController@favoriteUserList'
+            ]);
 
             Route::get('/hasSlug', ['as' => 'hasSlug', 'uses' => 'BoardModuleController@hasSlug']);
             Route::get('/{slug}', ['as' => 'slug', 'uses' => 'BoardModuleController@slug']);
