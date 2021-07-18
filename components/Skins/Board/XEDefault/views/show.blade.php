@@ -99,7 +99,7 @@
                         @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                             <li class="xf-function-item">
                                 <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}"
-                                   class="xf-board-btn xf-bookmark xf-function-icon @if($item->favorite !== null) on @endif __xe-bd-bookmark">
+                                   class="xf-board-btn xf-bookmark xf-function-icon @if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-bookmark">
                                 </a>
                             </li>
                         @endif
@@ -236,7 +236,7 @@
                         @if (Auth::check() === true && array_get($skinConfig, 'visibleShowFavorite', 'show') === 'show')
                             <li class="xf-function-item">
                                 <a href="#" data-url="{{$urlHandler->get('favorite', ['id' => $item->id])}}"
-                                   class="xe-list-board-body__link xf-board-btn xf-bookmark xf-function-icon @if($item->favorite !== null) on @endif __xe-bd-bookmark">
+                                   class="xe-list-board-body__link xf-board-btn xf-bookmark xf-function-icon @if($item->favoriteUsers->contains(Auth::id())) on @endif __xe-bd-bookmark">
                                 </a>
                             </li>
                         @endif
