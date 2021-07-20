@@ -270,6 +270,83 @@ class BoardModuleController extends Controller
     }
 
     /**
+     * show
+     *
+     * @param BoardService           $service         board service
+     * @param Request                $request         request
+     * @param BoardPermissionHandler $boardPermission board permission handler
+     * @param string                 $menuUrl         first segment
+     * @param string                 $id              document id
+     * @return mixed
+     */
+    public function showModalByItemId(
+        BoardService $service,
+        Request $request,
+        BoardPermissionHandler $boardPermission,
+        $menuUrl,
+        $id
+    ) {
+        $user = Auth::user();
+
+        try {
+            $item = $service->getItem($id, $user, $this->config, $this->isManager());
+        } catch (GuestWrittenSecretDocumentException $e) {
+            return xe_redirect()->to($this->urlHandler->get('guest.id', [
+                'id' => $id,
+                'referrer' => app('url')->current(),
+            ]));
+        }
+
+        $identifyManager = app('xe.board.identify');
+        if ($service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
+            && Gate::denies(
+                BoardPermissionHandler::ACTION_READ,
+                new Instance($boardPermission->name($this->instanceId))
+            )
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        // if use consultation option Guest cannot create article
+        if ($this->config->get('useConsultation') === true
+            && $service->hasItemPerm($item, $user, $identifyManager, $this->isManager()) == false
+        ) {
+            throw new AccessDeniedHttpException;
+        }
+
+        // 글 조회수 증가
+        if ($item->display == Board::DISPLAY_VISIBLE) {
+            $this->handler->incrementReadCount($item, Auth::user());
+        }
+
+        $fieldTypes = $service->getFieldTypes($this->config);
+        $categories = $service->getCategoryItemsTree($this->config);
+        $searchOptions = $service->getSearchOptions($request);
+
+        $dynamicFieldsById = [];
+        foreach ($fieldTypes as $fieldType) {
+            $dynamicFieldsById[$fieldType->get('id')] = $fieldType;
+        }
+
+        $thumb = $this->handler->getThumb($item->id);
+
+        $item->setCanonical($this->urlHandler->getShow($item));
+
+        $titleHeadItems = $service->getTitleHeadItems($this->config);
+
+        return api_render('showModal', [
+            'item' => $item,
+            'thumb' => $thumb,
+            'currentItem' => $item,
+            'categories' => $categories,
+            'fieldTypes' => $fieldTypes,
+            'dynamicFieldsById' => $dynamicFieldsById,
+            'searchOptions' => $searchOptions,
+            'titleHeadItems' => $titleHeadItems,
+        ]);
+    }
+
+    /**
      * print
      *
      * @param BoardService           $service         board service
@@ -706,7 +783,7 @@ class BoardModuleController extends Controller
             return XePresenter::redirect()
                 ->to($request->get('redirect_url'));
         }
-        
+
         return XePresenter::redirect()->to(
             $this->urlHandler->getShow(
                 $item,

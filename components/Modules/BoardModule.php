@@ -164,6 +164,7 @@ class BoardModule extends AbstractModule
         Route::instance(self::getId(), function () {
             Route::get('/', ['as' => 'index', 'uses' => 'BoardModuleController@index']);
             Route::get('/show/{id}', ['as' => 'show', 'uses' => 'BoardModuleController@showByItemId']);
+            Route::get('/show/modal/{id}', ['as' => 'showModal', 'uses' => 'BoardModuleController@showModalByItemId']);
 	        Route::get('/num/{serialNumber}', ['as' => 'num', 'uses' => 'BoardModuleController@num']);
             Route::get('/print/{id}', ['as' => 'print', 'uses' => 'BoardModuleController@print']);
 
