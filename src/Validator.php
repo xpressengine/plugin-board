@@ -127,6 +127,10 @@ class Validator
         // add dynamic field rule
         /** @var \Xpressengine\Config\ConfigEntity $dynamicFieldConfig */
         foreach ($this->configHandler->getDynamicFields($config) as $dynamicFieldConfig) {
+            if ($dynamicFieldConfig->get('use') !== true) {
+                continue;
+            }
+
             $group = $dynamicFieldConfig->get('group');
             $id = $dynamicFieldConfig->get('id');
             $dynamicField = $this->dynamicField->get($group, $id);
