@@ -148,9 +148,10 @@ class InstanceManager
      * 게시판 설정 변경
      *
      * @param array $params parameters
+     * @param array $unsetKeys unset keys
      * @return ConfigEntity
      */
-    public function updateConfig(array $params)
+    public function updateConfig(array $params, array $unsetKeys = [])
     {
         if (empty($params['boardId']) === true) {
             throw new RequiredBoardIdException;
@@ -163,9 +164,20 @@ class InstanceManager
 
         $configHandler = $this->document->getConfigHandler();
         $documentConfig = $configHandler->get($params['boardId']);
+
         foreach ($params as $key => $value) {
             $documentConfig->set($key, $value);
             $config->set($key, $value);
+        }
+
+        foreach ($unsetKeys as $unsetKey) {
+            if ($documentConfig->offsetExists($unsetKey)) {
+                $documentConfig->set($unsetKey, null);
+            }
+
+            if ($config->offsetExists($unsetKey)) {
+                $config->set($unsetKey, null);
+            }
         }
 
         $this->conn->beginTransaction();
