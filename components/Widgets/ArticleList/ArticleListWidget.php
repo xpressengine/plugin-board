@@ -113,7 +113,7 @@ class ArticleListWidget extends AbstractWidget
         if (count($boardIds) && count($categoryIds)) {
             $query = $model->where(function ($query) use ($boardIds, $categoryIds) {
                 $query->whereIn('instance_id', $boardIds)
-                    ->orWhereHas('boardCategory', function ($query) use ($categoryIds) {
+                    ->whereHas('boardCategory', function ($query) use ($categoryIds) {
                         $query->whereIn('item_id', $categoryIds);
                     });
             });
@@ -189,7 +189,9 @@ class ArticleListWidget extends AbstractWidget
                 'widgetConfig' => $widgetConfig,
                 'urlHandler' => $urlHandler,
                 'title' => $title,
-                'more' => $more
+                'more' => $more,
+                'boardIds' => $boardIds,
+                'categoryIds' => $categoryIds,
             ]
         );
     }
