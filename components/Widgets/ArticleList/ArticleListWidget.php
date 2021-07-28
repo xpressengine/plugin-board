@@ -21,7 +21,6 @@ use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Models\Board;
-use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Widget\AbstractWidget;
 
 /**
@@ -165,6 +164,8 @@ class ArticleListWidget extends AbstractWidget
             $query = $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
         } elseif ($orderType == 'recentlyUpdated') {
             $query = $query->orderBy(Board::UPDATED_AT, 'desc')->orderBy('head', 'desc');
+        } elseif ($orderType == 'random') {
+            $query = $query->inRandomOrder();
         }
 
         if ($take) {
