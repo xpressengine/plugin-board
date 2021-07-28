@@ -56,7 +56,16 @@
     $(function(){
         $('[name="@title"]').prev().html('타이틀');
         $('select[name=board_id]').change(function(e){
-            if($(this).val().length>1){
+            var $ids = $(this).val();
+            var cnt = 0;
+
+            $ids.forEach(function (val) {
+                if (val.indexOf('category.') != 0) {
+                    // 메뉴아이템이 있으면 카운트
+                    cnt++;
+                }
+            })
+            if(cnt>1){
                 $('[name=more]').prop('checked',false);
                 $('[name=more]').prop('disabled',true);
             }else{

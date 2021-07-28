@@ -12,9 +12,14 @@
                 @php
                     $instanceId = $menuItem->id;
                     $urlMore = instance_route('index', [], $instanceId);
-                    if (starts_with($widgetConfig['board_id'], 'category.')) {
-                        $categoryId = str_after($widgetConfig['board_id'], 'category.');
+                    if (count($categoryIds)) {
+                        $categoryId = array_first($categoryIds);
                         $urlMore = instance_route('index', ['category_item_id' => $categoryId], $instanceId);
+                    } else {
+                        if (starts_with($widgetConfig['board_id'], 'category.')) {
+                            $categoryId = str_after($widgetConfig['board_id'], 'category.');
+                            $urlMore = instance_route('index', ['category_item_id' => $categoryId], $instanceId);
+                        }
                     }
                 @endphp
                 <a href="{{ $urlMore }}" class="xe-widget__more-link more-link">
