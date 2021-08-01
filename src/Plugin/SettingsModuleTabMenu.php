@@ -63,6 +63,7 @@ final class SettingsModuleTabMenu
             'boardExternalLink' => $this->getBoardExternalLink(),
             'docsExternalLink' => $this->getDocsExternalLink(),
             'commentExternalLink' => $this->getCommentExternalLink(),
+            'categoryExternalLink' => $this->getCategoryExternalLink(),
         ];
     }
 
@@ -255,6 +256,29 @@ final class SettingsModuleTabMenu
 
                 if ($boardConfig->get('comment')) {
                     return route('manage.comment.setting', ['targetInstanceId' => $boardId]);
+                }
+
+                return null;
+            }
+        ];
+    }
+
+    public function getCategoryExternalLink()
+    {
+        return [
+            'title' => '분류(카테고리) 관리하기',
+            'ordering' => 11,
+            'external_link' => true,
+            'link_func' => function ($boardId) {
+                /** @var ConfigHandler $boardConfigHandler */
+                $boardConfigHandler = app(ConfigHandler::class);
+                $boardConfig = $boardConfigHandler->get($boardId);
+
+                $category = $boardConfig->get('category');
+                $categoryId = $boardConfig->get('categoryId');
+
+                if ($category && $categoryId) {
+                    return route('manage.category.show', $categoryId);
                 }
 
                 return null;
