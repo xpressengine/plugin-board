@@ -60,6 +60,7 @@ final class SettingsModuleTabMenu
             'dynamicField'  => $this->getDynamicFieldMenu(),
             'settingsExternalLink' => $this->getSettingExternalLink(),
             'boardExternalLink' => $this->getBoardExternalLink(),
+            'docsExternalLink' => $this->getDocsExternalLink()
         ];
     }
 
@@ -203,6 +204,18 @@ final class SettingsModuleTabMenu
                 }
 
                 return null;
+            }
+        ];
+    }
+
+    public function getDocsExternalLink()
+    {
+        return [
+            'title' => '게시물 관리하기',
+            'ordering' => 9,
+            'external_link' => true,
+            'link_func' => function($boardId) {
+                return route('settings.board.board.docs.index', ['search_board' => $boardId]);
             }
         ];
     }
