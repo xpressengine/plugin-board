@@ -121,8 +121,6 @@ class BoardSettingsController extends Controller
 
         $toggleMenuSection = new ToggleMenuSection(BoardModule::getId());
 
-        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
-
         return $this->presenter->make('global.config', [
             'config' => $config,
             'perms' => $perms,
@@ -212,7 +210,7 @@ class BoardSettingsController extends Controller
 
         $sortListColumns = $this->configHandler->getSortListColumns($config);
         $sortFormColumns = $this->configHandler->getSortFormColumns($config);
-        
+
         $dynamicFields = [];
         $fieldTypes = $this->configHandler->getDynamicFields($config);
         foreach ($fieldTypes as $fieldType) {
