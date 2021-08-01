@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\Board\Plugin;
 
 use XeRegister;
+use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\UrlHandler as BoardUrlHandler;
 
 /**
@@ -50,24 +51,16 @@ final class SettingsModuleTabMenu
     private function getMenus()
     {
         return [
-            $this->getConfigTabMenuKey()        => $this->getConfigTabMenuOption(),
-            $this->getPermissionTabMenuKey()    => $this->getPermissionTabMenuOption(),
-            $this->getToggleMenuTabMenuKey()    => $this->getToggleMenuTabMenuOption(),
-            $this->getSkinTabMenuKey()          => $this->getSkinTabMenuOption(),
-            $this->getEditorTabMenuKey()        => $this->getEditorTabMenuOption(),
-            $this->getColumnsTabMenuKey()       => $this->getColumnsTabMenuOption(),
-            $this->getDynamicFieldTabMenuKey()  => $this->getDynamicFieldTabMenuOption(),
+            'config' => $this->getConfigMenu(),
+            'permission' => $this->getPermissionMenu(),
+            'toggleMenu' => $this->getToggleMenu(),
+            'skin' => $this->getSkinMenu(),
+            'editor' => $this->getEditorMenu(),
+            'columns' => $this->getColumnsMenu(),
+            'dynamicField'  => $this->getDynamicFieldMenu(),
+            'settingsExternalLink' => $this->getSettingExternalLink(),
+            'boardExternalLink' => $this->getBoardExternalLink(),
         ];
-    }
-
-    /**
-     * 게시판 상세 설정 키
-     *
-     * @return string
-     */
-    private function getConfigTabMenuKey()
-    {
-        return 'config';
     }
 
     /**
@@ -75,25 +68,15 @@ final class SettingsModuleTabMenu
      *
      * @return array
      */
-    private function getConfigTabMenuOption()
+    private function getConfigMenu()
     {
         return [
             'title' => xe_trans('board::boardDetailConfigures'),
             'ordering' => 0,
             'link_func' => function ($boardId) {
-                return $this->boardUrlHandler->managerUrl($this->getConfigTabMenuKey(), compact('boardId'));
+                return $this->boardUrlHandler->managerUrl('config', compact('boardId'));
             }
         ];
-    }
-
-    /**
-     * 게시판 권한 키
-     *
-     * @return string
-     */
-    private function getPermissionTabMenuKey()
-    {
-        return 'permission';
     }
 
     /**
@@ -101,25 +84,15 @@ final class SettingsModuleTabMenu
      *
      * @return array
      */
-    private function getPermissionTabMenuOption()
+    private function getPermissionMenu()
     {
         return [
             'title' => xe_trans('xe::permission'),
             'ordering' => 1,
             'link_func' => function ($boardId) {
-                return $this->boardUrlHandler->managerUrl($this->getPermissionTabMenuKey(), compact('boardId'));
+                return $this->boardUrlHandler->managerUrl('permission', compact('boardId'));
             }
         ];
-    }
-
-    /**
-     * 게시판 토글 메뉴 키
-     *
-     * @return string
-     */
-    private function getToggleMenuTabMenuKey()
-    {
-        return 'toggleMenu';
     }
 
     /**
@@ -127,25 +100,15 @@ final class SettingsModuleTabMenu
      *
      * @return array
      */
-    private function getToggleMenuTabMenuOption()
+    private function getToggleMenu()
     {
         return [
             'title' => xe_trans('xe::toggleMenu'),
             'ordering' => 2,
             'link_func' => function ($boardId) {
-                return $this->boardUrlHandler->managerUrl($this->getToggleMenuTabMenuKey(), compact('boardId'));
+                return $this->boardUrlHandler->managerUrl('toggleMenu', compact('boardId'));
             }
         ];
-    }
-
-    /**
-     * 게시판 스킨 키
-     *
-     * @return string
-     */
-    private function getSkinTabMenuKey()
-    {
-        return 'skin';
     }
 
     /**
@@ -153,25 +116,15 @@ final class SettingsModuleTabMenu
      *
      * @return array
      */
-    private function getSkinTabMenuOption()
+    private function getSkinMenu()
     {
         return [
             'title' => xe_trans('xe::skin'),
             'ordering' => 3,
             'link_func' => function ($boardId) {
-                return $this->boardUrlHandler->managerUrl($this->getSkinTabMenuKey(), compact('boardId'));
+                return $this->boardUrlHandler->managerUrl('skin', compact('boardId'));
             }
         ];
-    }
-
-    /**
-     * 게시판 에디터 키
-     *
-     * @return string
-     */
-    private function getEditorTabMenuKey()
-    {
-        return 'editor';
     }
 
     /**
@@ -179,13 +132,13 @@ final class SettingsModuleTabMenu
      *
      * @return array
      */
-    private function getEditorTabMenuOption()
+    private function getEditorMenu()
     {
         return [
             'title' => xe_trans('xe::editor'),
             'ordering' => 4,
             'link_func' => function ($boardId) {
-                return $this->boardUrlHandler->managerUrl($this->getEditorTabMenuKey(), compact('boardId'));
+                return $this->boardUrlHandler->managerUrl('editor', compact('boardId'));
             }
         ];
     }
@@ -193,37 +146,17 @@ final class SettingsModuleTabMenu
     /**
      * 게시판 출력 순서 옵션
      *
-     * @return string
-     */
-    private function getColumnsTabMenuKey()
-    {
-        return 'columns';
-    }
-
-    /**
-     * 게시판 출력 순서 옵션
-     *
      * @return array
      */
-    private function getColumnsTabMenuOption()
+    private function getColumnsMenu()
     {
         return [
             'title' => xe_trans('board::outputOrder'),
             'ordering' => 5,
             'link_func' => function ($boardId) {
-                return $this->boardUrlHandler->managerUrl($this->getColumnsTabMenuKey(), compact('boardId'));
+                return $this->boardUrlHandler->managerUrl('columns', compact('boardId'));
             }
         ];
-    }
-
-    /**
-     * 확장 필드
-     *
-     * @return string
-     */
-    private function getDynamicFieldTabMenuKey()
-    {
-        return 'dynamicField';
     }
 
     /**
@@ -231,13 +164,45 @@ final class SettingsModuleTabMenu
      *
      * @return array
      */
-    private function getDynamicFieldTabMenuOption()
+    private function getDynamicFieldMenu()
     {
         return [
             'title' => xe_trans('xe::dynamicField'),
             'ordering' => 6,
             'link_func' => function ($boardId) {
-                return $this->boardUrlHandler->managerUrl($this->getDynamicFieldTabMenuKey(), compact('boardId'));
+                return $this->boardUrlHandler->managerUrl('dynamicField', compact('boardId'));
+            }
+        ];
+    }
+
+    private function getSettingExternalLink()
+    {
+        return [
+            'title' => '메뉴 설정 페이지 열기',
+            'ordering' => 7,
+            'external_link' => true,
+            'link_func' => function($boardId) {
+                if ($menuItem = MenuItem::find($boardId)) {
+                    return route('settings.menu.edit.item', [$menuItem->menu_id, $menuItem->id]);
+                }
+
+                return null;
+            }
+        ];
+    }
+
+    public function getBoardExternalLink()
+    {
+        return [
+            'title' => '게시판 페이지 열기',
+            'ordering' => 8,
+            'external_link' => true,
+            'link_func' => function($boardId) {
+                if ($menuItem = MenuItem::find($boardId)) {
+                    return \URL::to($menuItem->getAttribute('url'));
+                }
+
+                return null;
             }
         ];
     }
