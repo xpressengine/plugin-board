@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Components\Skins\Board\Settings\Common;
 
+use Xpressengine\Plugins\Board\Plugin\SettingsModuleTabMenu;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Skin\AbstractSkin;
 use View;
@@ -57,7 +58,7 @@ class CommonSettingsSkin extends AbstractSkin
             $view = $contentView;
         } elseif($subPath === 'global' || $subPath === 'module') {
             if ($subPath === 'module') {
-                $this->data['_menu'] = app('xe.board.settings_module_tab_menu')->get();
+                $this->setModuleData();
             }
 
             else if ($subPath === 'global') {
@@ -73,5 +74,17 @@ class CommonSettingsSkin extends AbstractSkin
         }
 
         return $view;
+    }
+
+    private function setModuleData()
+    {
+        /** @var SettingsModuleTabMenu $settingsModuleTabMenu */
+        $settingsModuleTabMenu = app('xe.board.settings_module_tab_menu');
+
+        if (!array_key_exists('config', $this->data)) {
+            $this->data['config'] = $this->data['configHandler']->get($this->data['boardId']);
+        }
+
+        $this->data['_menu'] = $settingsModuleTabMenu->get();
     }
 }
