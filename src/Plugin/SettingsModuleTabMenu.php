@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\Board\Plugin;
 
 use XeRegister;
 use Xpressengine\Menu\Models\MenuItem;
+use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\UrlHandler as BoardUrlHandler;
 
 /**
@@ -57,10 +58,11 @@ final class SettingsModuleTabMenu
             'skin' => $this->getSkinMenu(),
             'editor' => $this->getEditorMenu(),
             'columns' => $this->getColumnsMenu(),
-            'dynamicField'  => $this->getDynamicFieldMenu(),
+            'dynamicField' => $this->getDynamicFieldMenu(),
             'settingsExternalLink' => $this->getSettingExternalLink(),
             'boardExternalLink' => $this->getBoardExternalLink(),
-            'docsExternalLink' => $this->getDocsExternalLink()
+            'docsExternalLink' => $this->getDocsExternalLink(),
+            'commentExternalLink' => $this->getCommentExternalLink(),
         ];
     }
 
@@ -176,13 +178,18 @@ final class SettingsModuleTabMenu
         ];
     }
 
+    /**
+     * 메뉴 설정 페이지 열기
+     *
+     * @return array
+     */
     private function getSettingExternalLink()
     {
         return [
             'title' => '메뉴 설정 페이지 열기',
             'ordering' => 7,
             'external_link' => true,
-            'link_func' => function($boardId) {
+            'link_func' => function ($boardId) {
                 if ($menuItem = MenuItem::find($boardId)) {
                     return route('settings.menu.edit.item', [$menuItem->menu_id, $menuItem->id]);
                 }
@@ -192,13 +199,18 @@ final class SettingsModuleTabMenu
         ];
     }
 
+    /**
+     * 게시판 페이지 열기
+     *
+     * @return array
+     */
     public function getBoardExternalLink()
     {
         return [
             'title' => '게시판 페이지 열기',
             'ordering' => 8,
             'external_link' => true,
-            'link_func' => function($boardId) {
+            'link_func' => function ($boardId) {
                 if ($menuItem = MenuItem::find($boardId)) {
                     return \URL::to($menuItem->getAttribute('url'));
                 }
@@ -208,14 +220,44 @@ final class SettingsModuleTabMenu
         ];
     }
 
+    /**
+     * 게시물 관리하기
+     *
+     * @return array
+     */
     public function getDocsExternalLink()
     {
         return [
             'title' => '게시물 관리하기',
             'ordering' => 9,
             'external_link' => true,
-            'link_func' => function($boardId) {
+            'link_func' => function ($boardId) {
                 return route('settings.board.board.docs.index', ['search_board' => $boardId]);
+            }
+        ];
+    }
+
+    /**
+     * 댓글 관리하기
+     *
+     * @return array
+     */
+    public function getCommentExternalLink()
+    {
+        return [
+            'title' => '댓글 관리하기',
+            'ordering' => 10,
+            'external_link' => true,
+            'link_func' => function ($boardId) {
+                /** @var ConfigHandler $boardConfigHandler */
+                $boardConfigHandler = app(ConfigHandler::class);
+                $boardConfig = $boardConfigHandler->get($boardId);
+
+                if ($boardConfig->get('comment')) {
+                    return route('manage.comment.setting', ['targetInstanceId' => $boardId]);
+                }
+
+                return null;
             }
         ];
     }
