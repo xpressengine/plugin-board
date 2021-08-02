@@ -39,4 +39,9 @@ class BoardFavorite extends DynamicModel
     protected $primaryKey = 'favorite_id';
 
     protected $fillable = ['target_id', 'user_id'];
+
+    public function board()
+    {
+        return $this->hasOne(Board::class,'id','target_id');
+    }
 }
