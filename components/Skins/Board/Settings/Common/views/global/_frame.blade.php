@@ -10,7 +10,13 @@
 <ul class="nav nav-tabs">
     @foreach($_menu as $key => $menuItem)
         <li @if($_active === $key) class="active" @endif>
-            <a href="{{ $menuItem['link_func']() }}">{{ $menuItem['title'] }}</a>
+            <a href="{{ $menuItem['link_func']() }}" @if (\Illuminate\Support\Arr::get($menuItem, 'external_link', false)) target="_blank" @endif>
+                {{ $menuItem['title'] }}
+
+                @if (\Illuminate\Support\Arr::get($menuItem, 'external_link', false))
+                    <i class="xi-external-link"></i>
+                @endif
+            </a>
         </li>
     @endforeach
 </ul>

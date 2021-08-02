@@ -50,21 +50,11 @@ final class SettingsGlobalTabMenu
     private function getMenus()
     {
         return [
-            $this->getConfigTabMenuKey() => $this->getConfigTabMenuOption(),
-            $this->getPermissionTabMenuKey() => $this->getPermissionTabMenuOption(),
-            $this->getToggleMenuTabMenuKey() => $this->getToggleMenuTabMenuOption(),
+            'config' => $this->getConfigMenu(),
+            'permission' => $this->getPermissionMenu(),
+            'toggleMenu' => $this->getToggleMenu(),
+            'docsExternalLink' => $this->getDocsExternalLink(),
         ];
-    }
-
-
-    /**
-     * 게시판 상세 설정 키
-     *
-     * @return string
-     */
-    private function getConfigTabMenuKey()
-    {
-        return 'config';
     }
 
     /**
@@ -72,51 +62,31 @@ final class SettingsGlobalTabMenu
      *
      * @return array
      */
-    private function getConfigTabMenuOption()
+    private function getConfigMenu()
     {
         return [
             'title' => xe_trans('board::boardDetailConfigures'),
             'ordering' => 0,
             'link_func' => function () {
-                return $this->boardUrlHandler->managerUrl(sprintf('global.%s', $this->getConfigTabMenuKey()));
+                return $this->boardUrlHandler->managerUrl(sprintf('global.%s', 'config'));
             }
         ];
     }
-
-    /**
-     * 게시판 권한 설정 키
-     *
-     * @return string
-     */
-    private function getPermissionTabMenuKey()
-    {
-        return 'permission';
-    }
-
+    
     /**
      * 게시판 권한 설정 옵션
      *
      * @return array
      */
-    private function getPermissionTabMenuOption()
+    private function getPermissionMenu()
     {
         return [
             'title' => xe_trans('xe::permission'),
             'ordering' => 1,
             'link_func' => function () {
-                return $this->boardUrlHandler->managerUrl(sprintf('global.%s', $this->getPermissionTabMenuKey()));
+                return $this->boardUrlHandler->managerUrl(sprintf('global.%s', 'permission'));
             }
         ];
-    }
-
-    /**
-     * 게시판 토글 메뉴 설정 키
-     *
-     * @return string
-     */
-    private function getToggleMenuTabMenuKey()
-    {
-        return 'toggleMenu';
     }
 
     /**
@@ -124,13 +94,30 @@ final class SettingsGlobalTabMenu
      *
      * @return array
      */
-    private function getToggleMenuTabMenuOption()
+    private function getToggleMenu()
     {
         return [
             'title' => xe_trans('xe::toggleMenu'),
-            'ordering' => 1,
+            'ordering' => 2,
             'link_func' => function () {
-                return $this->boardUrlHandler->managerUrl(sprintf('global.%s', $this->getToggleMenuTabMenuKey()));
+                return $this->boardUrlHandler->managerUrl(sprintf('global.%s', 'toggleMenu'));
+            }
+        ];
+    }
+
+    /**
+     * 게시물 관리하기
+     *
+     * @return array
+     */
+    public function getDocsExternalLink()
+    {
+        return [
+            'title' => '게시물 관리하기',
+            'ordering' => 3,
+            'external_link' => true,
+            'link_func' => function() {
+                return route('settings.board.board.docs.index');
             }
         ];
     }
