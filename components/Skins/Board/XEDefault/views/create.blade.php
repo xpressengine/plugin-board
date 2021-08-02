@@ -5,6 +5,8 @@
 {{ XeFrontend::js('assets/core/common/js/draft.js')->appendTo('head')->load() }}
 {{ XeFrontend::css('assets/core/common/css/draft.css')->load() }}
 
+@inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
+
 @if($config->get('useTag') === true)
     {{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 @endif
@@ -122,6 +124,20 @@
                                checked="checked">
                         <label class="xf-check-item__label"
                                for="xf-check-item__comment">{{xe_trans('board::allowComment')}}</label>
+                    </li>
+                @endif
+
+                {{-- anonymity --}}
+                @if ($anonymityHandler->isChoose($config->get('anonymity')))
+                    <li class="xf-check-item">
+                        <input
+                            type="checkbox"
+                            class="xf-check-item__input"
+                            id="xf-check-item__anonymity"
+                            name="allow_anonymity"
+                            value="1"
+                        >
+                        <label class="xf-check-item__label" for="xf-check-item__anonymity">익명</label>
                     </li>
                 @endif
 

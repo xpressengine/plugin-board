@@ -18,11 +18,8 @@ use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Counter\Counter;
 use Xpressengine\Database\Eloquent\Builder;
 use Xpressengine\Document\DocumentHandler;
-use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
-use Xpressengine\Media\Models\Image;
 use Xpressengine\Media\Models\Media;
-use Xpressengine\Media\Repositories\ImageRepository;
 use Xpressengine\Plugins\Board\Exceptions\AlreadyExistFavoriteHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundFavoriteHttpException;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -38,7 +35,6 @@ use Xpressengine\Tag\Tag;
 use Xpressengine\Tag\TagHandler;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\UserInterface;
-use Xpressengine\Storage\File as FileModel;
 use Xpressengine\Plugins\Comment\Handler as CommentHandler;
 
 /**
@@ -146,10 +142,12 @@ class Handler
         if (isset($args['type']) === false) {
             $args['type'] = BoardModule::getId();
         }
+
         $args['user_id'] = $user->getId();
         if ($args['user_id'] === null) {
             $args['user_id'] = '';
         }
+
         if (empty($args['writer'])) {
             $args['writer'] = $user->getDisplayName();
         }
@@ -157,11 +155,10 @@ class Handler
             $args['certify_key'] = '';
         }
 
-        if ($config->get('anonymity') === true) {
-            $args['writer'] = $config->get('anonymityName');
-            $args['user_type'] = Board::USER_TYPE_ANONYMITY;
-        }
+        // anonymity
+        AnonymityHandler::make()->procWhenAdd($args, $config);
 
+        // guest
         if ($user instanceof Guest) {
             $args['user_type'] = Board::USER_TYPE_GUEST;
         }
@@ -200,10 +197,12 @@ class Handler
         if (empty($args['allow_comment']) || ($args['allow_comment'] !== '1' && $args['allow_comment'] !== 1)) {
             $allowComment = 0;
         }
+
         $useAlarm = 1;
         if (empty($args['use_alarm']) || ($args['use_alarm'] !== '1' && $args['use_alarm'] !== 1)) {
             $useAlarm = 0;
         }
+
         $fileCount = count(\XeStorage::fetchByFileable($board->id));
         $titleHead = '';
         if (isset($args['title_head'])) {
@@ -453,6 +452,9 @@ class Handler
     public function put(Board $board, array $args, ConfigEntity $config)
     {
         $board->getConnection()->beginTransaction();
+
+        // anonymity
+        AnonymityHandler::make()->procWhenPut($args, $board, $config);
 
         $attributes = $board->getAttributes();
         foreach ($args as $name => $value) {
@@ -815,7 +817,7 @@ class Handler
         if ($request->get('writer') != null && $request->get('writer') !== '') {
             $query = $query->where('writer', $request->get('writer'));
         }
-        
+
         if ($request->get('user_id') !== null && $request->get('user_id') !== '') {
             $query = $query->where('user_id', $request->get('user_id'));
         }

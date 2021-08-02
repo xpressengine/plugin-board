@@ -65,7 +65,7 @@ class ConfigHandler
         'assent' => true,
         'dissent' => false,
         'category' => false,
-        'anonymity' => false,
+        'anonymity' => 'disuse',
         'anonymityName' => 'Anonymity',
         'managerEmail' => '',
         'division' => false,

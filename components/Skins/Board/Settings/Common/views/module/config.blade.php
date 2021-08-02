@@ -1,3 +1,5 @@
+@inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
+
 @section('page_title')
     <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
 @endsection
@@ -193,9 +195,11 @@
                                                         </label>
                                                     </div>
                                                 </div>
+
                                                 <select id="" name="anonymity" class="form-control" @if($config->getPure('anonymity') === null) disabled="disabled" @endif>
-                                                    <option value="true" {!! $config->get('anonymity') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
-                                                    <option value="false" {!! $config->get('anonymity') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    <option value="use" {!! $anonymityHandler->isUse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >항상 사용</option>
+                                                    <option value="choose" {!! $anonymityHandler->isChoose($config->get('anonymity')) ? 'selected="selected"' : '' !!} >임의 사용</option>
+                                                    <option value="disuse" {!! $anonymityHandler->isDisuse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -486,7 +490,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="panel">
                                 <div class="panel-body">
                                     <div class="row">
@@ -496,7 +500,7 @@
                                                     <label>목록 출력 설정</label>
                                                 </div>
                                             </div>
-                                            
+
                                             @foreach ($sortListColumns as $column)
                                                 <div class="checkbox-inline">
                                                     <label>
@@ -597,10 +601,10 @@
                 $(ui.item.context).css("display", "table-row");
             }
         }).disableSelection();
-        
+
         $('#board_manage_form').bind('submit', function (e) {
             var $form = $(this)
-            
+
             $('.__board-sort-lists').each(function () {
                 if ($(this).prop('checked') === true) {
                     $form.append($('<input type="hidden" name="listColumns[]">').val($(this).val()))

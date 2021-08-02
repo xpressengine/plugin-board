@@ -1,3 +1,5 @@
+@inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
+
 @section('page_title')
     <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
     @endsection
@@ -135,8 +137,9 @@
                                                         <label>{{xe_trans('board::anonymityUse')}} <small>{{ xe_trans('board::anonymityUseDescription') }}</small></label>
                                                     </div>
                                                     <select id="" name="anonymity" class="form-control">
-                                                        <option value="true" {!! $config->get('anonymity') == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
-                                                        <option value="false" {!! $config->get('anonymity') == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                        <option value="use" {!! $anonymityHandler->isUse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >항상 사용</option>
+                                                        <option value="choose" {!! $anonymityHandler->isChoose($config->get('anonymity')) ? 'selected="selected"' : '' !!} >임의 사용</option>
+                                                        <option value="disuse" {!! $anonymityHandler->isDisuse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>
                                             </div>

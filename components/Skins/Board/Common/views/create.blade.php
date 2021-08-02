@@ -3,6 +3,8 @@
 {{ XeFrontend::js('assets/core/common/js/draft.js')->appendTo('head')->load() }}
 {{ XeFrontend::css('assets/core/common/css/draft.css')->load() }}
 
+@inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
+
 @if($config->get('useTag') === true)
 {{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 @endif
@@ -44,7 +46,7 @@
                 ]) !!}
             </div>
         </div>
-        @elseif($columnName === 'content')           
+        @elseif($columnName === 'content')
         <div class="write_body">
             <div class="write_form_editor">
                 {!! editor($config->get('boardId'), [
@@ -103,6 +105,22 @@
                         <input type="checkbox" name="allow_comment" value="1" checked="checked">
                         <span class="xe-input-helper"></span>
                         <span class="xe-label-text">{{xe_trans('board::allowComment')}}</span>
+                    </label>
+                    @endif
+
+                    {{-- anonymity --}}
+                    @if ($anonymityHandler->isChoose($config->get('anonymity')))
+                    <label class="xe-label">
+                        <input
+                            type="checkbox"
+                            class="xf-check-item__input"
+                            id="xf-check-item__anonymity"
+                            name="allow_anonymity"
+                            value="1"
+                        >
+
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text">익명</span>
                     </label>
                     @endif
 

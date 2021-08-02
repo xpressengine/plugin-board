@@ -39,12 +39,12 @@ return [
         'en' => 'Board detail configures',
     ],
     'anonymityUse' => [
-        'ko' => '익명글 사용',
-        'en' => 'Anonymity Use',
+        'ko' => '익명 기능',
+        'en' => 'Anonymity Feature',
     ],
     'anonymityUseDescription' => [
-        'ko' => '게시판을 익명 게시판으로 사용합니다.',
-        'en' => 'Use the board as an anonymous board.'
+        'ko' => '게시판 내 익명 기능을 설정합니다.',
+        'en' => 'Set up the anonymous feature in the board.'
     ],
     'anonymityName' => [
         'ko' => '익명 이름',
