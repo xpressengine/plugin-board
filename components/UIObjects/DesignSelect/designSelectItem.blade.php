@@ -8,7 +8,7 @@
             <li @if($selectedItemValue == (string)$item['value']) class="on" @endif>
                 <a href="#" data-value="{{$item['value']}}">{{ xe_trans($item['text']) }}</a>
                 @if (DesignSelectUIObject::hasChildren($item))
-                    {!! DesignSelectUIObject::renderList(DesignSelectUIObject::getChildren($item), $selectedItemValue) !!}
+                    {!! DesignSelectUIObject::renderList(DesignSelectUIObject::getChildren($item), $selectedItemValue, $disabled ?? false) !!}
                 @endif
             </li>
         @endforeach

@@ -144,11 +144,12 @@ class DesignSelectUIObject extends AbstractUIObject
         return [];
     }
 
-    public static function renderList ($items, $value = null)
+    public static function renderList ($items, $value = null, $disabled = false)
     {
         $args = [
             'items' => $items,
-            'selectedItemValue' => $value
+            'selectedItemValue' => $value,
+            'disabled' => $disabled,
         ];
 
         return View::make('board::components/UIObjects/DesignSelect/designSelectItem', $args)->render();

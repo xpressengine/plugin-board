@@ -21,9 +21,10 @@
         });
     </script>
 @endif
+
 <div class="xe-dropdown __xe-dropdown-form">
-    <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-valid-name="{{ xe_trans($label) }}" />
-    <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false">{{ $value != $default ? xe_trans($text) : xe_trans($label) }}</button>
+    <input type="hidden" name="{{ $name }}" value="{{ $value }}" data-valid-name="{{ xe_trans($label) }}" @if($disabled ?? false) disabled @endif />
+    <button class="xe-btn" type="button" data-toggle="xe-dropdown" aria-expanded="false" @if($disabled ?? false) disabled @endif>{{ $value != $default ? xe_trans($text) : xe_trans($label) }}</button>
     <ul class="xe-dropdown-menu" data-name="{{ $name }}">
         <li @if($value == (string)$default) class="on" @endif>
             <a href="#">{{ xe_trans($label) }}</a>
