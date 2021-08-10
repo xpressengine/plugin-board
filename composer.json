@@ -172,6 +172,11 @@
           "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\PrintItem",
           "name": "인쇄",
           "description": "선택한 문서를 인쇄합니다."
+        },
+        "user/toggleMenu/board@wroteItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Users\\WroteItem",
+          "name": "작성 글 보기",
+          "description": "사용자(유저)가 작성한 글을 확인합니다."
         }
       },
       "screenshots" : [
