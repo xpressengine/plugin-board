@@ -193,7 +193,7 @@
                 </div>
             </div>
             <div class="xf-preview-btn xf-write-btn">
-                <button class="xf-board-write-btn __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
+                <button type="button" class="xf-board-write-btn __xe_btn_preview">{{ xe_trans('xe::preview') }}</button>
             </div>
             <div class="xf-submit-btn xf-write-btn">
                 <button type="submit" class="xf-board-write-btn __xe_btn_submit">{{ xe_trans('xe::submit') }}</button>
