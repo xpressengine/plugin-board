@@ -130,20 +130,6 @@
                     </li>
                 @endif
 
-                @if ($anonymityHandler->isChoose($config->get('anonymity')))
-                    <li class="xf-check-item">
-                        <input
-                            type="checkbox"
-                            class="xf-check-item__input"
-                            id="xf-check-item__anonymity"
-                            name="allow_anonymity"
-                            value="1"
-                            @if ($anonymityHandler->isAllowChecked($item, $config)) checked @endif
-                        >
-                        <label class="xf-check-item__label" for="xf-check-item__anonymity">익명</label>
-                    </li>
-                @endif
-
                 @if (Auth::check() === true)
                     <li class="xf-check-item">
                         <input type="checkbox" class="xf-check-item__input"

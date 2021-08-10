@@ -11,7 +11,7 @@
 
                 <div class="more_info">
                     <!-- [D] 클릭시 클래스 on 적용 -->
-                    @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                    @if ($item->hasAuthor() && $item->isNotAnonymity())
                         <a href="{{ sprintf('/@%s', $item->getUserId()) }}" class="mb_autohr"
                            data-toggle="xe-page-toggle-menu"
                            data-url="{{ route('toggleMenuPage') }}"

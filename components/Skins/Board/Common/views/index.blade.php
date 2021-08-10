@@ -365,7 +365,7 @@
                         </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -405,7 +405,7 @@
                 @endif
                 <div class="more_info">
                     @if (in_array('writer', $skinConfig['listColumns']))
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#" class="mb_author"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -482,7 +482,7 @@
                     </td>
                 @elseif ($columnName == 'writer')
                     <td class="author xe-hidden-xs">
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -518,7 +518,7 @@
                 @endif
                 <div class="more_info">
                     @if (in_array('writer', $skinConfig['listColumns']))
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#" class="mb_author"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"

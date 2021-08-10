@@ -18,7 +18,7 @@
                     <div class="xe-list-board-body__title-post-info">
                         <div class="xe-list-board-body--left-box">
                             <div class="xe-list-board-list__writer">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                @if ($item->hasAuthor() && $item->isNotAnonymity())
                                     @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
                                         <span class="xe-list-board-list__user-image xe-hidden-mobile" style="background: url({{ $item->user->getProfileImage() }}); background-size: 28px;"><span class="blind">유저 이미지</span></span>
                                     @endif

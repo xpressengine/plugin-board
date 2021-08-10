@@ -127,7 +127,7 @@
                     @break
                     @case ('writer')
                     <div class="xf-board-item-inner xf-item__writer xf-item-detail">
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#" class="mb_author xf-a xf-item__writer-link"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -253,7 +253,7 @@
                     @break
                     @case ('writer')
                     <div class="xf-board-item-inner xf-item__writer xf-item-detail">
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#" class="mb_author xf-a xf-item__writer-link"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"

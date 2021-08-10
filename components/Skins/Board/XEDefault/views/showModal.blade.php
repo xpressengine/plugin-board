@@ -33,7 +33,7 @@
             <div class="xf-post-info">
                 @if (array_get($skinConfig, 'visibleShowProfileImage', 'on') === 'on')
                     <div class="xf-profile-img-box">
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#" class="xf-a xf-item__writer-link"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"
@@ -55,7 +55,7 @@
                 @endif
                 <div class="xf-detail-info">
                     @if (array_get($skinConfig, 'visibleShowDisplayName', 'on') === 'on')
-                        @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                        @if ($item->hasAuthor() && $item->isNotAnonymity())
                             <a href="#" class="xf-a xf-item__writer-link xf-mb06"
                                data-toggle="xe-page-toggle-menu"
                                data-url="{{ route('toggleMenuPage') }}"

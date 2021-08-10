@@ -100,23 +100,6 @@
                     </label>
                     @endif
 
-                    {{-- anonymity --}}
-                    @if ($anonymityHandler->isChoose($config->get('anonymity')))
-                    <label class="xe-label">
-                        <input
-                            type="checkbox"
-                            class="xf-check-item__input"
-                            id="xf-check-item__anonymity"
-                            name="allow_anonymity"
-                            value="1"
-                            @if ($anonymityHandler->isAllowChecked($item, $config)) checked @endif
-                        >
-
-                        <span class="xe-input-helper"></span>
-                        <span class="xe-label-text">익명</span>
-                    </label>
-                    @endif
-
                     @if (Auth::check() === true)
                     <label class="xe-label">
                         <input type="checkbox" name="use_alarm" value="1" @if($item->boardData->use_alarm == 1) checked="checked" @endif>

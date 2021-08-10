@@ -197,9 +197,9 @@
                                                 </div>
 
                                                 <select id="" name="anonymity" class="form-control" @if($config->getPure('anonymity') === null) disabled="disabled" @endif>
-                                                    <option value="use" {!! $anonymityHandler->isUse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >항상 사용</option>
-                                                    <option value="choose" {!! $anonymityHandler->isChoose($config->get('anonymity')) ? 'selected="selected"' : '' !!} >임의 사용</option>
-                                                    <option value="disuse" {!! $anonymityHandler->isDisuse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    <option value="use" {!! $anonymityHandler->isActivatedUse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="choose" {!! $anonymityHandler->isActivatedChoose($config->get('anonymity')) ? 'selected="selected"' : '' !!} >임의 사용</option>
+                                                    <option value="disuse" {!! $anonymityHandler->isActivatedDisuse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -338,7 +338,7 @@
 
                         @if (in_array('writer', $skinConfig['listColumns']) == true)
                             <span class="autohr_area">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                                @if ($item->hasAuthor() && $item->isNotAnonymity($config))
                                     <a href="#" class="mb_autohr"
                                     data-toggle="xe-page-toggle-menu"
                                     data-url="{{ route('toggleMenuPage') }}"
@@ -421,8 +421,12 @@
 
                         @if (in_array('writer', $skinConfig['listColumns']) == true)
                             <span class="autohr_area">
-                                @if ($item->hasAuthor() && $config->get('anonymity') === false)
-                                    <a href="#" class="mb_autohr" data-toggle="xe-page-toggle-menu" data-url="{{ route('toggleMenuPage') }}" data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'>{!! $item->writer !!}</a>
+                                @if ($item->hasAuthor() && $item->isNotAnonymity($config))
+                                    <a href="#" class="mb_autohr"
+                                       data-toggle="xe-page-toggle-menu"
+                                       data-url="{{ route('toggleMenuPage') }}"
+                                       data-data='{!! json_encode(['id'=>$item->getUserId(), 'type'=>'user']) !!}'
+                                    >{!! $item->writer !!}</a>
                                 @else
                                     <a class="mb_autohr">{!! $item->writer !!}</a>
                                 @endif

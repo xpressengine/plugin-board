@@ -108,8 +108,8 @@
                     </label>
                     @endif
 
-                    {{-- anonymity --}}
-                    @if ($anonymityHandler->isChoose($config->get('anonymity')))
+                    {{-- anonymity (익명) --}}
+                    @if ($anonymityHandler->isActivatedChoose($config->get('anonymity')))
                     <label class="xe-label">
                         <input
                             type="checkbox"

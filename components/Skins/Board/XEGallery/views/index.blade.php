@@ -73,7 +73,7 @@
                     <div class="xf-post-info">
 
                         @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexGalleryProfileImage', 'on') === 'on')
-                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                            @if ($item->hasAuthor() && $item->isNotAnonymity())
                                 <div class="xf-profile-img-box">
                                     <a href="#" class="xf-a xf-item__writer-link"
                                        data-toggle="xe-page-toggle-menu"
@@ -95,7 +95,7 @@
                             @endif
                         @endif
                         <div class="xf-detail-info">
-                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                            @if ($item->hasAuthor() && $item->isNotAnonymity())
                                 <a href="#" class="xf-a xf-item__writer-link xf-mb06"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"
@@ -201,7 +201,7 @@
                     </a>
                     <div class="xf-post-info">
                         @if (in_array('writer', $skinConfig['listColumns']) === true && array_get($skinConfig, 'visibleIndexGalleryProfileImage', 'on') === 'on')
-                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                            @if ($item->hasAuthor() && $item->isNotAnonymity())
                                 <div class="xf-profile-img-box">
                                     <a href="#" class="xf-a xf-item__writer-link"
                                        data-toggle="xe-page-toggle-menu"
@@ -223,7 +223,7 @@
                             @endif
                         @endif
                         <div class="xf-detail-info">
-                            @if ($item->hasAuthor() && $config->get('anonymity') === false)
+                            @if ($item->hasAuthor() && $item->isNotAnonymity())
                                 <a href="#" class="xf-a xf-item__writer-link xf-mb06"
                                    data-toggle="xe-page-toggle-menu"
                                    data-url="{{ route('toggleMenuPage') }}"

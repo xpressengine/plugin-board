@@ -13,11 +13,13 @@
  */
 namespace Xpressengine\Plugins\Board\Models;
 
+use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Media;
+use Xpressengine\Plugins\Board\AnonymityHandler;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Plugins\Comment\Models\Comment;
@@ -317,6 +319,26 @@ class Board extends Document implements CommentUsable, SeoUsable
     public function hasAuthor()
     {
         return $this->user !== null;
+    }
+
+    /**
+     * is anonymity
+     *
+     * @return bool
+     */
+    public function isAnonymity()
+    {
+        return $this->user_type === Board::USER_TYPE_ANONYMITY;
+    }
+
+    /**
+     * is not anonymity
+     *
+     * @return bool
+     */
+    public function isNotAnonymity()
+    {
+        return $this->isAnonymity() === false;
     }
 
     /**

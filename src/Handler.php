@@ -453,9 +453,6 @@ class Handler
     {
         $board->getConnection()->beginTransaction();
 
-        // anonymity
-        AnonymityHandler::make()->procWhenPut($args, $board, $config);
-
         $attributes = $board->getAttributes();
         foreach ($args as $name => $value) {
             if (array_key_exists($name, $attributes)) {

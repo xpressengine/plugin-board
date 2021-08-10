@@ -28,7 +28,7 @@ class AnonymityHandler
         $anonymity = $config->get('anonymity');
         $allow = Arr::has($args, 'allow_anonymity');
 
-        if ($this->isUse($anonymity) || ($allow && $this->isChoose($anonymity))) {
+        if ($this->isActivatedUse($anonymity) || ($allow && $this->isActivatedChoose($anonymity))) {
             $args['writer'] = $config->get('anonymityName');
             $args['user_type'] = Board::USER_TYPE_ANONYMITY;
         }
@@ -40,12 +40,13 @@ class AnonymityHandler
      * @param array $args
      * @param Board $board
      * @param ConfigEntity $config
+     * @depreciated
      */
     public function procWhenPut(array &$args, Board $board, ConfigEntity $config)
     {
         $anonymity = $config->get('anonymity');
 
-        if ($this->isChoose($anonymity)) {
+        if ($this->isActivatedChoose($anonymity)) {
             $allow = Arr::has($args, 'allow_anonymity');
             $isGuest = $board->user_type  === Board::USER_TYPE_GUEST;
 
@@ -64,7 +65,7 @@ class AnonymityHandler
      *
      * @return bool
      */
-    public function isUse($anonymity)
+    public function isActivatedUse($anonymity)
     {
         return $anonymity === true || $anonymity === 'use';
     }
@@ -74,9 +75,9 @@ class AnonymityHandler
      *
      * @return bool
      */
-    public function isDisuse($anonymity)
+    public function isActivatedDisuse($anonymity)
     {
-        return $anonymity == false || $anonymity == 'disuse';
+        return $anonymity == false || $anonymity === 'disuse';
     }
 
     /**
@@ -84,20 +85,8 @@ class AnonymityHandler
      *
      * @return bool
      */
-    public function isChoose($anonymity)
+    public function isActivatedChoose($anonymity)
     {
         return $anonymity === 'choose';
-    }
-
-    /**
-     * @param Board $board
-     * @param ConfigEntity $configEntity
-     *
-     * @return bool
-     */
-    public function isAllowChecked(Board $board , ConfigEntity $configEntity)
-    {
-        return $board->user_type === Board::USER_TYPE_ANONYMITY
-            || ($board->user_type === Board::USER_TYPE_GUEST && $board->writer === $configEntity->get('anonymityName'));
     }
 }
