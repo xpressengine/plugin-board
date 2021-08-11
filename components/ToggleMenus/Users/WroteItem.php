@@ -17,7 +17,7 @@ class WroteItem extends UserToggleMenu
     {
         $this->setBoardInstanceId();
     }
-    
+
     protected function setBoardInstanceId()
     {
         $menuItem = null;
@@ -27,8 +27,7 @@ class WroteItem extends UserToggleMenu
 
         if (empty($moduleUrl)) {
             $menuItem = app('xe.menu')->items()->query()->where('type', 'board@board')->where('id', app('xe.site')->getHomeInstanceId())->first();
-        }
-        else {
+        } else {
             $menuItem = app('xe.menu')->items()->query()->where('type', 'board@board')->where('url', $moduleUrl)->first();
         }
 
@@ -42,7 +41,7 @@ class WroteItem extends UserToggleMenu
      */
     public function getText(): string
     {
-        return '작성 글 보기';
+        return '작성글 보기';
     }
 
     /**
@@ -65,7 +64,7 @@ class WroteItem extends UserToggleMenu
     /**
      * @return bool
      */
-    public function allows() : bool
+    public function allows(): bool
     {
         return $this->boardInstanceId !== null;
     }
