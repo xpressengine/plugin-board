@@ -137,7 +137,7 @@
                             name="allow_anonymity"
                             value="1"
                         >
-                        <label class="xf-check-item__label" for="xf-check-item__anonymity">익명</label>
+                        <label class="xf-check-item__label" for="xf-check-item__anonymity">{{xe_trans('board::anonymity')}}</label>
                     </li>
                 @endif
 

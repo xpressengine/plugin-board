@@ -120,7 +120,7 @@
                         >
 
                         <span class="xe-input-helper"></span>
-                        <span class="xe-label-text">익명</span>
+                        <span class="xe-label-text">{{xe_trans('board::anonymity')}}</span>
                     </label>
                     @endif
 

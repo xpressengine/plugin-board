@@ -5,6 +5,10 @@ return [
         'ko' => '휴지통으로 이동시킵니다. 계속하시겠습니까?',
         'en' => 'Move to trash. Do you want to continue?',
     ],
+    'chooseByUser' => [
+        'ko' => '사용자 선택',
+        'en' => 'choose by user',
+    ],
     'board' => [
         'ko' => '게시판',
         'en' => 'Board',
@@ -40,6 +44,10 @@ return [
     'boardDetailConfigures' => [
         'ko' => '게시판 상세 설정',
         'en' => 'Board detail configures',
+    ],
+    'anonymity' => [
+        'ko' => '익명',
+        'en' => 'anonymity'
     ],
     'anonymityUse' => [
         'ko' => '익명 기능',
