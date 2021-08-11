@@ -113,7 +113,7 @@ use Xpressengine\Plugins\Board\Models\Board;
                                     <td><input type="checkbox" name="id[]" class="__xe_checkbox" value="{{ $document->id }}"></td>
                                     <td><a href="{{ url($urls[$document->instance_id] . '/show/' . $document->id) }}" target="_blank"><strong>[{{ $titles[$document->instance_id] }}]</strong> {{ strip_tags(html_entity_decode($document->title)) }}<i class="xi-external-link"></i></a></td>
                                     <td>
-                                        @if ($document->user !== null)
+                                        @if ($document->hasAuthor() && $document->isNotAnonymity())
                                             <a href="#"
                                                data-toggle="xe-page-toggle-menu"
                                                data-url="{{ route('toggleMenuPage') }}"
