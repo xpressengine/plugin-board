@@ -192,6 +192,11 @@
           "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\UpdateItem",
           "name": "수정 토글 메뉴",
           "description": "토글 클릭 시 게시글 수정 페이지로 이동시킵니다."
+        },
+        "module/board@board/toggleMenu/board@adminSearchingIpItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\Admin\\SearchingIpItem",
+          "name": "IP 토글 메뉴",
+          "description": "관리자용, 선택된 글과 동일한 IP로 작성된 글을 확인합니다."
         }
       },
       "screenshots" : [

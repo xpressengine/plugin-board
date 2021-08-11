@@ -895,6 +895,11 @@ class BoardSettingsController extends Controller
                 ->where('user_type', Board::USER_TYPE_USER);
         }
 
+        //작성자 ID 검색
+        if ($request->get('search_target') == 'ip') {
+            $query = $query->where('ipaddress', 'like', sprintf('%%%s%%', $request->get('search_keyword')));
+        }
+
         //필터 검색
         if ($state = $request->get('search_state')) {
             list($searchField, $searchValue) = explode('|', $state);

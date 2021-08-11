@@ -77,6 +77,7 @@ use Xpressengine\Plugins\Board\Models\Board;
                                             <li @if(Request::get('search_target') == 'pure_content') class="active" @endif><a href="#" value="pure_content">{{xe_trans('board::content')}}</a></li>
                                             <li @if(Request::get('search_target') == 'writer') class="active" @endif><a href="#" value="writer">{{xe_trans('board::writer')}}</a></li>
                                             <li @if(Request::get('search_target') == 'writeId') class="active" @endif><a href="#" value="writerId">{{ xe_trans('board::writerId') }}</a></li>
+                                            <li @if(Request::get('search_target') == 'ip') class="active" @endif><a href="#" value="ip">{{ xe_trans('board::ip') }}</a></li>
                                         </ul>
                                     </div>
                                     <div class="search-input-group">
