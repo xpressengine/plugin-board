@@ -891,7 +891,8 @@ class BoardSettingsController extends Controller
                     ->orWhere('login_id', 'like', '%' . $writerId . '%');
             })->get();
 
-            $query = $query->whereIn('user_id', $writers->pluck('id')->toArray());
+            $query = $query->whereIn('user_id', $writers->pluck('id')->toArray())
+                ->where('user_type', Board::USER_TYPE_USER);
         }
 
         //필터 검색
