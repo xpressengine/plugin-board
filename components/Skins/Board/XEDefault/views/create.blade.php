@@ -128,7 +128,7 @@
                 @endif
 
                 {{-- anonymity --}}
-                @if ($anonymityHandler->isChoose($config->get('anonymity')))
+                @if ($anonymityHandler->isActivatedChoose($config->get('anonymity')))
                     <li class="xf-check-item">
                         <input
                             type="checkbox"
