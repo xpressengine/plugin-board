@@ -25,6 +25,7 @@ use App\Http\Sections\SkinSection;
 use Xpressengine\Captcha\CaptchaManager;
 use Xpressengine\Captcha\Exceptions\ConfigurationNotExistsException;
 use Xpressengine\Category\CategoryHandler;
+use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
@@ -882,18 +883,15 @@ class BoardSettingsController extends Controller
 
         //작성자 ID 검색
         if ($request->get('search_target') == 'writerId') {
-            $writers = \XeUser::where(
-                'email',
-                'like',
-                '%' . $request->get('search_keyword') . '%'
-            )->selectRaw('id')->get();
+            $writerId = $request->get('search_keyword');
 
-            $writerIds = [];
-            foreach ($writers as $writer) {
-                $writerIds[] = $writer['id'];
-            }
+            $writers = \XeUser::where(function($query) use($writerId) {
+                return $query
+                    ->where('email', 'like', '%' . $writerId . '%')
+                    ->orWhere('login_id', 'like', '%' . $writerId . '%');
+            })->get();
 
-            $query = $query->whereIn('user_id', $writerIds);
+            $query = $query->whereIn('user_id', $writers->pluck('id')->toArray());
         }
 
         //필터 검색
