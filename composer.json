@@ -165,18 +165,33 @@
         },
         "module/board@board/toggleMenu/xpressengine@trashItem": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\TrashItem",
-          "name": "휴지통",
+          "name": "휴지통 토글 메뉴",
           "description": "선택한 문서를 휴지통으로 보냅니다."
         },
         "module/board@board/toggleMenu/xpressengine@printItem": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\PrintItem",
-          "name": "인쇄",
+          "name": "인쇄 토글 메뉴",
           "description": "선택한 문서를 인쇄합니다."
         },
         "user/toggleMenu/board@wroteItem": {
           "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Users\\WroteItem",
-          "name": "작성 글 보기",
+          "name": "작성 글 보기 토글 메뉴",
           "description": "사용자(유저)가 작성한 글을 확인합니다."
+        },
+        "user/toggleMenu/board@adminWroteItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Users\\Admin\\WroteItem",
+          "name": "작성 글 추적 토글 메뉴",
+          "description": "관리자용, 사용자(유저)가 작성한 글을 확인합니다."
+        },
+        "module/board@board/toggleMenu/board@deleteItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\DeleteItem",
+          "name": "삭제 토글 메뉴",
+          "description": "토글 클릭 시 게시글을 삭제합니다."
+        },
+        "module/board@board/toggleMenu/board@updateItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\UpdateItem",
+          "name": "수정 토글 메뉴",
+          "description": "토글 클릭 시 게시글 수정 페이지로 이동시킵니다."
         }
       },
       "screenshots" : [

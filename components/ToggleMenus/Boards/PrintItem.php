@@ -31,12 +31,17 @@ use Xpressengine\Permission\Instance;
  */
 class PrintItem extends AbstractToggleMenu
 {
+    public static function getTitle(): string
+    {
+        return xe_trans('board::print');
+    }
+
     /**
      * get text
      *
      * @return string
      */
-    public function getText()
+    public function getText(): string
     {
         return xe_trans('board::print');
     }
@@ -46,7 +51,7 @@ class PrintItem extends AbstractToggleMenu
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return static::MENUTYPE_RAW;
     }
@@ -56,10 +61,9 @@ class PrintItem extends AbstractToggleMenu
      *
      * @return string
      */
-    public function getAction()
+    public function getAction(): string
     {
         $doc = Board::find($this->identifier);
-
         $url = app('xe.board.url')->get('print', ['id' => $this->identifier], $doc->instance_id);
 
         return '<a href="'.$url.'" target="_blank">'.$this->getText().'</a>';

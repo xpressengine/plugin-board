@@ -13,11 +13,8 @@
  */
 namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards;
 
-use Gate;
 use Xpressengine\Plugins\Board\Models\Board;
-use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
-use Xpressengine\Permission\Instance;
 
 /**
  * TrashItem
@@ -34,79 +31,42 @@ use Xpressengine\Permission\Instance;
  */
 class TrashItem extends AbstractToggleMenu
 {
-    /**
-     * check permission
-     *
-     * @return bool
-     */
-    public function allows()
+    public static function getTitle(): string
     {
-        $doc = Board::find($this->identifier);
+        return xe_trans('xe::trash');
+    }
+
+    public function __construct()
+    {
+        \XeFrontend::translation(['board::msgTrashConfirm']);
+    }
+
+    public function allows(): bool
+    {
         $configHandler = app('xe.board.config');
         $boardPermission = app('xe.board.permission');
 
-        $config = $configHandler->get($doc->instance_id);
-        $isManger = false;
-        if ($config !== null) {
-
-            if (Gate::allows(
-                BoardPermissionHandler::ACTION_MANAGE,
-                new Instance($boardPermission->name($doc->instance_id))
-            )) {
-                $isManger = true;
-            };
-        }
-
-        return $isManger;
+        $config = $configHandler->get($this->instanceId);
+        return $config !== null ? $boardPermission->checkManageAction($this->instanceId) : false;
     }
 
-    /**
-     * get text
-     *
-     * @return string
-     */
-    public function getText()
+    public function getText(): string
     {
         return xe_trans('xe::moveToTrash');
     }
 
-    /**
-     * get type
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return static::MENUTYPE_EXEC;
     }
 
-    /**
-     * get action url
-     *
-     * @return string
-     */
-    public function getAction()
+    public function getAction(): string
     {
-        $doc = Board::find($this->identifier);
-
-        $url = app('xe.board.url')->get('trash', ['id' => $this->identifier], $doc->instance_id);
-
-        return 'var url = "' . $url . '" + window.location.search;
-            XE.ajax(url, {
-                type: "post",
-                dataType: "json",
-                data: {
-                    id: "' . $this->identifier . '"
-                },
-                success: function (data) {
-                    location.replace(data.links.href);
-                }
-            });';
+        $url = app('xe.board.url')->get('trash', ['id' => $this->identifier], $this->instanceId);
+        return sprintf('BoardToggleMenu.trash(event, "%s", "%s")', $url, $this->identifier);
     }
 
     /**
-     * get script
-     *
      * @return null
      */
     public function getScript()

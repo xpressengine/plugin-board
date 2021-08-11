@@ -20,6 +20,8 @@ use Xpressengine\Permission\PermissionSupport;
 use Xpressengine\Permission\Registered;
 use Xpressengine\Permission\Action;
 use Xpressengine\User\Rating;
+use Xpressengine\Permission\Instance;
+
 
 /**
  * BoardPermissionHandler
@@ -261,5 +263,17 @@ class BoardPermissionHandler
     public function getActions()
     {
         return $this->actions;
+    }
+
+    /**
+     * @param string $instanceId
+     * @return bool
+     */
+    public function checkManageAction(string $instanceId) : bool
+    {
+        return \Gate::allows(
+            BoardPermissionHandler::ACTION_MANAGE,
+            new Instance($this->name($instanceId))
+        );
     }
 }

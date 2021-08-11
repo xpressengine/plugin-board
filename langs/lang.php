@@ -1,7 +1,10 @@
 <?php
 
 return [
-
+    'msgTrashConfirm' => [
+        'ko' => '휴지통으로 이동시킵니다. 계속하시겠습니까?',
+        'en' => 'Move to trash. Do you want to continue?',
+    ],
     'board' => [
         'ko' => '게시판',
         'en' => 'Board',
