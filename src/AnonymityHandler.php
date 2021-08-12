@@ -11,7 +11,7 @@ class AnonymityHandler
     /**
      * @return static
      */
-    public static function make()
+    public static function make(): AnonymityHandler
     {
         return app(static::class);
     }
@@ -65,7 +65,7 @@ class AnonymityHandler
      *
      * @return bool
      */
-    public function isActivatedUse($anonymity)
+    public function isActivatedUse($anonymity): bool
     {
         return $anonymity === true || $anonymity === 'use';
     }
@@ -75,7 +75,7 @@ class AnonymityHandler
      *
      * @return bool
      */
-    public function isActivatedDisuse($anonymity)
+    public function isActivatedDisuse($anonymity): bool
     {
         return $anonymity == false || $anonymity === 'disuse';
     }
@@ -85,7 +85,7 @@ class AnonymityHandler
      *
      * @return bool
      */
-    public function isActivatedChoose($anonymity)
+    public function isActivatedChoose($anonymity): bool
     {
         return $anonymity === 'choose';
     }
