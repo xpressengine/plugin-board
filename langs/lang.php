@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'categoryManage' => [
+        'ko' => '카테고리 관리',
+        'en' => 'category manage'
+    ],
     'ip' => [
         'ko' => 'IP',
         'en' => 'IP',

@@ -2,20 +2,19 @@
 
 @section('page_title')
     <h2>
-        글로벌 설정 - {{ $_menu[$_active]['title'] }}
+        글로벌 설정 - {{ xe_trans($_menu[$_active]->getTitle()) }}
     </h2>
 @stop
 
-{{-- $_active 는 SettingsSkin 에서 처리됨 --}}
 <ul class="nav nav-tabs">
-    @foreach($_menu as $key => $menuItem)
+    @foreach($_menu as $key => $menu)
         <li @if($_active === $key) class="active" @endif>
-            <a href="{{ $menuItem['link_func']() }}" @if (\Illuminate\Support\Arr::get($menuItem, 'external_link', false)) target="_blank" @endif>
-                {{ $menuItem['title'] }}
-
-                @if (\Illuminate\Support\Arr::get($menuItem, 'external_link', false))
-                    <i class="xi-external-link"></i>
+            <a href="{{ $menu->getLinkFunction()() }}" @if ($menu->getIsExternalLink()) target="_blank" @endif>
+                @if ($menu->getIcon())
+                    <i class="{{ $menu->getIcon() }}"></i>
                 @endif
+
+                {{ xe_trans($menu->getTitle()) }}
             </a>
         </li>
     @endforeach

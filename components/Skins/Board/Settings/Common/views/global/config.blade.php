@@ -7,7 +7,7 @@
     @section('page_description')
     @endsection
 
-            <!-- Main content -->
+    <!-- Main content -->
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">
@@ -138,7 +138,7 @@
                                                     </div>
                                                     <select id="" name="anonymity" class="form-control">
                                                         <option value="use" {!! $anonymityHandler->isActivatedUse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
-                                                        <option value="choose" {!! $anonymityHandler->isActivatedChoose($config->get('anonymity')) ? 'selected="selected"' : '' !!} >임의 사용</option>
+                                                        <option value="choose" {!! $anonymityHandler->isActivatedChoose($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('board::chooseByUser')}}</option>
                                                         <option value="disuse" {!! $anonymityHandler->isActivatedDisuse($config->get('anonymity')) ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>

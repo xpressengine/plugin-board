@@ -39,6 +39,7 @@ use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\CopyItem;
 use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\FacebookItem;
 use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\LineItem;
 use Xpressengine\Plugins\Board\Components\ToggleMenus\Shares\TwitterItem;
+use Xpressengine\Plugins\Board\TabMenuHandler;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Plugins\Board\Commands\BoardSkinMake;
@@ -222,8 +223,7 @@ class Resources
         });
         $app->alias(BoardService::class, 'xe.board.service');
 
-        $app->alias(SettingsModuleTabMenu::class, 'xe.board.settings_module_tab_menu');
-        $app->alias(SettingsGlobalTabMenu::class, 'xe.board.settings_global_tab_menu');
+        TabMenuHandler::boot();
     }
 
     /**
@@ -434,22 +434,22 @@ class Resources
     }
 
     /**
-     * 게시판에 대한 Tab Menu 설정
+     * boot Instance board's Tab menus
      *
      * @return void
      */
-    public static function setSettingsModuleTabMenu()
+    public static function bootInstanceTabMenus()
     {
-        app(SettingsModuleTabMenu::class)->up();
+        Settings\InstanceTabMenus::boot();
     }
 
     /**
-     * 게시판에 대한 Global Menu 설정
+     * boot global board's Tab Mnues
      *
      * @return void
      */
-    public static function setSettingsGlobalTabMenu()
+    public static function bootGlobalTabMenus()
     {
-        app(SettingsGlobalTabMenu::class)->up();
+        Settings\GlobalTabMenus::boot();
     }
 }

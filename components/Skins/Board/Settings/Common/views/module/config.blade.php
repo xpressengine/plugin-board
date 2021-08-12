@@ -83,7 +83,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') == false) disabled="disabled" @endif>{{xe_trans('xe::categoryManage')}}</button>
+                                                        <button type="button" class="btn btn-default pull-right" data-href="{{ route('manage.category.show', ['id' => '']) }}" @if($config->get('category') == false) disabled="disabled" @endif>{{xe_trans('board::categoryManage')}}</button>
                                                     </div>
                                                 </div>
                                             </div>
