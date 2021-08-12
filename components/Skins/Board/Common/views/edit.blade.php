@@ -3,8 +3,6 @@
 {{ XeFrontend::js('assets/core/common/js/draft.js')->appendTo('head')->load() }}
 {{ XeFrontend::css('assets/core/common/css/draft.css')->load() }}
 
-@inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
-
 @if($config->get('useTag') === true)
 {{ XeFrontend::js('plugins/board/assets/js/BoardTags.js')->appendTo('body')->load() }}
 @endif
