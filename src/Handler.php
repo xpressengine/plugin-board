@@ -932,9 +932,15 @@ class Handler
             $this->readCounter->add($board->id, $user);
         }
 
-        $board->read_count = $this->readCounter->getPoint($board->id);
-        $board->timestamps = false;
-        $board->save();
+        $readCount = $this->readCounter->getPoint($board->id);
+
+        $tempBoard = new Board;
+        $tempBoard->timestamps = false;
+        $tempBoard->where('id', $board->id)->update([
+            'read_count' => $readCount
+        ]);
+
+        $board->read_count = $readCount;
     }
 
     /**
