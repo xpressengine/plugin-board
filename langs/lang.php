@@ -1,6 +1,22 @@
 <?php
 
 return [
+    'ip' => [
+        'ko' => 'IP',
+        'en' => 'IP',
+    ],
+    'trackIP' => [
+        'ko' => 'IP 추적',
+        'en' => 'track IP',
+    ],
+    'trackWrote' => [
+        'ko' => '작성글 추적',
+        'en' => 'track wrote',
+    ],
+    'searchWrote' => [
+        'ko' => '작성글 보기',
+        'en' => 'search wrote',
+    ],
     'msgTrashConfirm' => [
         'ko' => '휴지통으로 이동시킵니다. 계속하시겠습니까?',
         'en' => 'Move to trash. Do you want to continue?',

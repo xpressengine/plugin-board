@@ -14,9 +14,17 @@ class SearchingIpItem extends UserToggleMenu
     /**
      * @return string
      */
+    public static function getTitle(): string
+    {
+        return xe_trans('board::trackIP');
+    }
+
+    /**
+     * @return string
+     */
     public function getText(): string
     {
-        return 'IP 추적';
+        return xe_trans('board::trackIP');
     }
 
     /**

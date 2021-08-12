@@ -7,6 +7,14 @@ use Xpressengine\User\Models\User;
 
 class WroteItem extends UserToggleMenu
 {
+    /**
+     * @return string
+     */
+    public static function getTitle(): string
+    {
+        return xe_trans('board::trackWrote');
+    }
+
     /** @var string */
     protected static $id = 'user/toggleMenu/board@adminWroteItem';
 
@@ -15,7 +23,7 @@ class WroteItem extends UserToggleMenu
      */
     public function getText(): string
     {
-        return '작성글 추적';
+        return xe_trans('board::trackWrote');
     }
 
     /**

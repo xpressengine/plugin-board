@@ -13,6 +13,14 @@ class WroteItem extends UserToggleMenu
     /** @var string */
     private $boardInstanceId;
 
+    /**
+     * @return string
+     */
+    public static function getTitle(): string
+    {
+        return xe_trans('board::searchWrote');
+    }
+
     public function __construct()
     {
         $this->setBoardInstanceId();
@@ -41,7 +49,7 @@ class WroteItem extends UserToggleMenu
      */
     public function getText(): string
     {
-        return '작성글 보기';
+        return xe_trans('board::searchWrote');
     }
 
     /**
