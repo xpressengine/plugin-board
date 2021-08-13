@@ -14,6 +14,8 @@
 namespace Xpressengine\Plugins\Board\Controllers;
 
 use App\Http\Sections\EditorSection;
+use Illuminate\Support\Arr;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use XeDB;
 use Redirect;
 use XePresenter;
@@ -25,7 +27,6 @@ use App\Http\Sections\SkinSection;
 use Xpressengine\Captcha\CaptchaManager;
 use Xpressengine\Captcha\Exceptions\ConfigurationNotExistsException;
 use Xpressengine\Category\CategoryHandler;
-use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
@@ -34,6 +35,9 @@ use Xpressengine\Plugins\Board\Exceptions\NotFoundConfigHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\InstanceManager;
 use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\Plugin\Settings\GlobalTabMenus;
+use Xpressengine\Plugins\Board\Plugin\Settings\InstanceTabMenus;
+use Xpressengine\Plugins\Board\TabMenu;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Comment\Exceptions\InvalidArgumentException;
@@ -41,7 +45,6 @@ use Xpressengine\Routing\InstanceRouteHandler;
 use Xpressengine\Routing\RouteRepository;
 use Xpressengine\User\Models\Guest;
 use Xpressengine\User\Models\User;
-use Xpressengine\Plugins\Comment\ManageSection as CommentSection;
 
 /**
  * BoardSettingsController
@@ -199,6 +202,30 @@ class BoardSettingsController extends Controller
     }
 
     /**
+     * edit global another
+     *
+     * @param string $target
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
+    public function editGlobal(string $target)
+    {
+        /** @var TabMenu $menu */
+        $menu = Arr::get(GlobalTabMenus::all(), $target);
+
+        if (!($menu instanceof TabMenu) || is_null($menu->getContent())) {
+            throw new NotFoundHttpException();
+        }
+
+        $tabContent = $menu->getContent();
+        $tabContent = $tabContent instanceof \Closure ? $tabContent() : $tabContent;
+
+        return $this->presenter->make('global._frame', [
+            '_active' => $target,
+            'content' => $tabContent,
+        ]);
+    }
+
+    /**
      * edit
      *
      * @param CaptchaManager $captcha Captcha manager
@@ -283,6 +310,7 @@ class BoardSettingsController extends Controller
         return redirect()->to($this->urlHandler->managerUrl('config', ['boardId' => $boardId]));
     }
 
+
     /**
      * store category
      *
@@ -350,6 +378,32 @@ class BoardSettingsController extends Controller
         $boardPermission->set($request, $boardId);
 
         return redirect()->to($this->urlHandler->managerUrl('permission', ['boardId' => $boardId]));
+    }
+
+    /**
+     * edit instance(module)'s another
+     *
+     * @param $target
+     * @param $boardId
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
+    public function edit($target, $boardId)
+    {
+        /** @var TabMenu $menu */
+        $menu = Arr::get(InstanceTabMenus::all(), $target);
+
+        if (!($menu instanceof TabMenu) || is_null($menu->getContent())) {
+            throw new NotFoundHttpException();
+        }
+
+        $tabContent = $menu->getContent();
+        $tabContent = $tabContent instanceof \Closure ? $tabContent($boardId) : $tabContent;
+
+        return $this->presenter->make('module._frame', [
+            '_active' => $target,
+            'content' => $tabContent,
+            'boardId' => $boardId,
+        ]);
     }
 
     /**

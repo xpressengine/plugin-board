@@ -21,6 +21,9 @@ class TabMenu
     /** @var \Closure */
     private $linkFunction;
 
+    /** @var \Closure|mixed */
+    private $content;
+
     /** @var boolean */
     private $isExternalLink = false;
 
@@ -106,6 +109,16 @@ class TabMenu
     public function setLinkFunction(\Closure $function): TabMenu
     {
         $this->linkFunction = $function;
+        return $this;
+    }
+
+    public function getContent() {
+        return $this->content;
+    }
+
+    public function setContent($content): TabMenu
+    {
+        $this->content = $content;
         return $this;
     }
 

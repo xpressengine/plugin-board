@@ -91,26 +91,12 @@ class BoardModule extends AbstractModule
         Route::settings(self::getId(), function () {
             // global
             Route::get('/', ['as' => 'settings.board.board.index', 'uses' => 'BoardSettingsController@index']);
-            Route::get(
-                '/global/config',
-                ['as' => 'settings.board.board.global.config', 'uses' => 'BoardSettingsController@editGlobalConfig']
-            );
-            Route::post(
-                '/global/config/update',
-                ['as' => 'settings.board.board.global.config.update', 'uses' => 'BoardSettingsController@updateGlobalConfig']
-            );
-            Route::get(
-                '/global/permission',
-                ['as' => 'settings.board.board.global.permission', 'uses' => 'BoardSettingsController@editGlobalPermission']
-            );
-            Route::post(
-                '/global/permission/update',
-                ['as' => 'settings.board.board.global.permission.update', 'uses' => 'BoardSettingsController@updateGlobalPermission']
-            );
-            Route::get(
-                '/global/toggleMenu',
-                ['as' => 'settings.board.board.global.toggleMenu', 'uses' => 'BoardSettingsController@editGlobalToggleMenu']
-            );
+            Route::get('/global/config', ['as' => 'settings.board.board.global.config', 'uses' => 'BoardSettingsController@editGlobalConfig']);
+            Route::post('/global/config/update', ['as' => 'settings.board.board.global.config.update', 'uses' => 'BoardSettingsController@updateGlobalConfig']);
+            Route::get('/global/permission', ['as' => 'settings.board.board.global.permission', 'uses' => 'BoardSettingsController@editGlobalPermission']);
+            Route::post('/global/permission/update', ['as' => 'settings.board.board.global.permission.update', 'uses' => 'BoardSettingsController@updateGlobalPermission']);
+            Route::get('/global/toggleMenu', ['as' => 'settings.board.board.global.toggleMenu', 'uses' => 'BoardSettingsController@editGlobalToggleMenu']);
+            Route::get('/global/{target}', ['as' => 'settings.board.board.global.edit', 'uses' => 'BoardSettingsController@editGlobal']);
 
             // module
             Route::get('config/{boardId}', ['as' => 'settings.board.board.config', 'uses' => 'BoardSettingsController@editConfig']);
@@ -123,12 +109,14 @@ class BoardModule extends AbstractModule
                 'permission/update/{boardId}',
                 ['as' => 'settings.board.board.permission.update', 'uses' => 'BoardSettingsController@updatePermission']
             );
+
             Route::get('skin/edit/{boardId}', ['as' => 'settings.board.board.skin', 'uses' => 'BoardSettingsController@editSkin']);
             Route::get('editor/edit/{boardId}', ['as' => 'settings.board.board.editor', 'uses' => 'BoardSettingsController@editEditor']);
             Route::get('columns/edit/{boardId}', ['as' => 'settings.board.board.columns', 'uses' => 'BoardSettingsController@editColumns']);
             Route::post('columns/update/{boardId}', ['as' => 'settings.board.board.columns.update', 'uses' => 'BoardSettingsController@updateColumns']);
             Route::get('dynamicField/edit/{boardId}', ['as' => 'settings.board.board.dynamicField', 'uses' => 'BoardSettingsController@editDynamicField']);
             Route::get('toggleMenu/edit/{boardId}', ['as' => 'settings.board.board.toggleMenu', 'uses' => 'BoardSettingsController@editToggleMenu']);
+            Route::get('{target}/edit/{boardId}', ['as' => 'settings.board.board.edit', 'uses' => 'BoardSettingsController@edit']);
 
             Route::post('storeCategory/', [
                 'as' => 'settings.board.board.storeCategory', 'uses' => 'BoardSettingsController@storeCategory'

@@ -13,12 +13,13 @@
  */
 namespace Xpressengine\Plugins\Board\Components\Skins\Board\Settings\Common;
 
+use View;
+use XePresenter;
+use Illuminate\Support\Arr;
 use Xpressengine\Plugins\Board\Plugin\Settings\GlobalTabMenus;
 use Xpressengine\Plugins\Board\Plugin\Settings\InstanceTabMenus;
 use Xpressengine\Presenter\Presenter;
 use Xpressengine\Skin\AbstractSkin;
-use View;
-use XePresenter;
 
 /**
  * SettingsSkin
@@ -44,40 +45,86 @@ class CommonSettingsSkin extends AbstractSkin
      */
     public function render()
     {
-        $contentView = View::make(
-            sprintf('%s.%s', static::$skinAlias, $this->view),
-            $this->data
-        );
-
-        $parts = pathinfo($contentView->getPath());
-        $names = explode('/', $parts['dirname']);
-        $subPath =array_pop($names);
-        $active = substr($parts['filename'], 0, stripos($parts['filename'], '.'));
-        $this->data['_active'] = $active;
+        $info = explode('.', $this->view);
+        $type = Arr::get($info, 0);
 
         if (XePresenter::getRenderType() == Presenter::RENDER_CONTENT) {
-            $view = $contentView;
-        } elseif($subPath === 'global' || $subPath === 'module') {
-            if ($subPath === 'module') {
-                if (!array_key_exists('config', $this->data)) {
-                    $this->data['config'] = $this->data['configHandler']->get($this->data['boardId']);
-                }
-
-                $this->data['_menu'] =  InstanceTabMenus::all();
-            }
-
-            else if ($subPath === 'global') {
-                $this->data['_menu'] =  GlobalTabMenus::all();
-            }
-
-            // wrapped by _frame.blade.php
-            $this->data['afea'] = 1;
-            $view = View::make(sprintf('%s.%s._frame', static::$skinAlias, $subPath), $this->data);
-            $view->content = $contentView->render();
-        } else {
-            $view = $contentView;
+            return View::make(sprintf('%s.%s', static::$skinAlias, $this->view), $this->data);
         }
 
+        if (is_string($type) && $this->isSupportFrame($type)) {
+            return $this->getContentWithFrame($info);
+        }
+
+        return View::make(sprintf('%s.%s', static::$skinAlias, $this->view), $this->data);
+    }
+
+    /**
+     * get content with frame
+     *
+     * @param array $info
+     * @return mixed
+     */
+    private function getContentWithFrame(array $info)
+    {
+        $type = Arr::get($info, 0);
+        $action = Arr::get($info, 1);
+
+        $this->data['afea'] = 1;
+        $this->data['_menu'] = $this->isModuleFrame($type) ? InstanceTabMenus::all() : GlobalTabMenus::all();
+
+        if (!array_has($this->data, '_active')) {
+            $this->data['_active'] = $action;
+        }
+
+        if ($this->isModuleFrame($type)) {
+            if (!array_key_exists('config', $this->data)) {
+                $this->data['config'] = $this->data['configHandler']->get($this->data['boardId']);
+            }
+        }
+
+        $contentView = array_get($this->data, 'content', View::make(
+            sprintf('%s.%s', static::$skinAlias, $this->view),
+            $this->data
+        ));
+
+        $view = View::make(sprintf('%s.%s._frame', static::$skinAlias, $type), $this->data);
+        $view->content = $contentView->render();
+
         return $view;
+    }
+
+    /**
+     * is support frame
+     *
+     * @param string|null $type
+     * @return bool
+     */
+    private function isSupportFrame(string $type): bool
+    {
+        return $this->isModuleFrame($type)
+            || $this->isGlobalFrame($type);
+    }
+
+    /**
+     * is using module frame
+     *
+     * @param string $type
+     * @return bool
+     */
+    private function isModuleFrame(string $type): bool
+    {
+        return $type === 'module';
+    }
+
+    /**
+     * is using global frame
+     *
+     * @param string $type
+     * @return bool
+     */
+    private function isGlobalFrame(string $type): bool
+    {
+        return $type === 'global';
     }
 }

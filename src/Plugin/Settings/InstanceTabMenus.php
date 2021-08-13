@@ -22,6 +22,8 @@ abstract class InstanceTabMenus
         static::add(static::getEditorMenu());
         static::add(static::getColumnsMenu());
         static::add(static::getDynamicFieldMenu());
+
+        // External Links
         static::add(static::getSettingExternalLink());
         static::add(static::getBoardExternalLink());
         static::add(static::getDocsExternalLink());

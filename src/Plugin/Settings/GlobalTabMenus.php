@@ -19,6 +19,8 @@ abstract class GlobalTabMenus
         static::add(static::getConfigMenu());
         static::add(static::getPermissionMenu());
         static::add(static::getToggleMenu());
+
+        // External Links
         static::add(static::getDocsExternalLink());
     }
 
