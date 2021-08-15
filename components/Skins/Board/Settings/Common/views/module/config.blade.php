@@ -388,6 +388,25 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">
+                                                    <label>{{xe_trans('board::noticePost')}}</label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="noticePost" @if($config->getPure('noticePost') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="noticePost" class="form-control" @if($config->getPure('noticePost') === null) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('noticePost', true) == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('noticePost', true) == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
                                                     <label>{{xe_trans('board::useApprove')}}</label>
                                                     <div class="checkbox pull-right">
                                                         <label>
@@ -401,9 +420,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <div class="clearfix">

@@ -390,6 +390,10 @@ return [
         'ko' => '비밀글 입니다.',
         'en' => 'This post is secret state.',
     ],
+    'noticePost' => [
+        'ko' => '공지글',
+        'en' => 'Notice post',
+    ],
     'enterTitle' => [
         'ko' => '제목을 입력하세요.',
         'en' => 'Please enter a title.',

@@ -138,7 +138,8 @@
                     </li>
                 @endif
 
-                @if ($isManager === true)
+                {{-- notice --}}
+                @if ($isManager === true && $config->get('noticePost', true))
                     <li class="xf-check-item">
                         <input type="checkbox" class="xf-check-item__input"
                                id="xf-check-item__notice" name="status"

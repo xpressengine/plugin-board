@@ -114,7 +114,8 @@
                     </label>
                     @endif
 
-                    @if($isManager === true)
+                    {{-- notice --}}
+                    @if ($isManager === true && $config->get('noticePost', true))
                     <label class="xe-label">
                         <input type="checkbox" name="status" value="{{$item::STATUS_NOTICE}}" @if($item->status == $item::STATUS_NOTICE) checked="checked" @endif>
                         <span class="xe-input-helper"></span>

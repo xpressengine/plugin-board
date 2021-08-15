@@ -140,7 +140,8 @@
                     </label>
                     @endif
 
-                    @if($isManager === true)
+                    {{-- notice --}}
+                    @if ($isManager === true && $config->get('noticePost', true))
                     <label class="xe-label">
                         <input type="checkbox" name="status" value="{{\Xpressengine\Document\Models\Document::STATUS_NOTICE}}">
                         <span class="xe-input-helper"></span>
