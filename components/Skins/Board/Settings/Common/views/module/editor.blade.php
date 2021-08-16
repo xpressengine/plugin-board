@@ -1,5 +1,5 @@
 @section('page_title')
-    <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
+    <h2>{{xe_trans($_activeMenu->getTitle())}}</h2>
     @endsection
 
     @section('page_description')@endsection
@@ -11,7 +11,7 @@
                 <div class="panel">
                     <div class="panel-heading">
                         <div class="pull-left">
-                            <h3 class="panel-title">{{xe_trans('xe::editor')}}</h3>
+                            <h3 class="panel-title">{{ xe_trans('xe::editor') }}</h3>
                         </div>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse in">

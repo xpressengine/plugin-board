@@ -1,19 +1,20 @@
 @inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
 
-@section('page_title')
-    <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
-@endsection
+    @section('page_title')
+        <h2>{{xe_trans($_activeMenu->getTitle())}}</h2>
+    @endsection
 
-@section('page_description')@endsection
+    @section('page_description')
+    @endsection
 
-<!-- Main content -->
+    <!-- Main content -->
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">
                 <div class="panel">
                     <div class="panel-heading">
                         <div class="pull-left">
-                            <h3 class="panel-title">{{xe_trans('board::boardDetailConfigures')}}</h3>
+                            <h3 class="panel-title">{{xe_trans($_activeMenu->getTitle())}}</h3>
                             <small><a href="{{$urlHandler->managerUrl('global.config')}}" target="_blank">{{xe_trans('xe::moveToParentSettingPage')}}</a></small>
                         </div>
                     </div>

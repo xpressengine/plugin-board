@@ -71,10 +71,14 @@ class CommonSettingsSkin extends AbstractSkin
         $action = Arr::get($info, 1);
 
         $this->data['afea'] = 1;
-        $this->data['_menu'] = $this->isModuleFrame($type) ? InstanceTabMenus::all() : GlobalTabMenus::all();
+        $this->data['_menus'] = $this->isModuleFrame($type) ? InstanceTabMenus::all() : GlobalTabMenus::all();
 
         if (!array_has($this->data, '_active')) {
             $this->data['_active'] = $action;
+        }
+
+        if (array_has($this->data, '_active')) {
+            $this->data['_activeMenu'] = $this->data['_menus'][$action];
         }
 
         if ($this->isModuleFrame($type)) {

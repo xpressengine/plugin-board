@@ -3,13 +3,13 @@
 
 @section('page_title')
     <h2>
-        {{ $config->get('board_name') }} - {{ xe_trans($_menu[$_active]->getTitle()) }}
+        {{ $config->get('board_name') }} - {{ xe_trans($_activeMenu->getTitle()) }}
     </h2>
 @stop
 
 {{-- $_active 는 SettingsSkin 에서 처리됨 --}}
 <ul class="nav nav-tabs">
-    @foreach($_menu as $key => $menu)
+    @foreach($_menus as $key => $menu)
         @continue($menu->getLinkFunction()($boardId) === null)
 
         <li @if($_active === $key) class="active" @endif>

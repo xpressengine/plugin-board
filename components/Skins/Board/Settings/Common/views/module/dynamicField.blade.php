@@ -1,10 +1,10 @@
-@section('page_title')
-    <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
+    @section('page_title')
+        <h2>{{xe_trans($_activeMenu->getTitle())}}</h2>
     @endsection
 
     @section('page_description')@endsection
 
-            <!-- Main content -->
+    <!-- Main content -->
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">
