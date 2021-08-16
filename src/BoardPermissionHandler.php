@@ -276,4 +276,16 @@ class BoardPermissionHandler
             new Instance($this->name($instanceId))
         );
     }
+
+    /**
+     * @param string $instanceId
+     * @return bool
+     */
+    public function checkCreateAction(string $instanceId) : bool
+    {
+        return \Gate::allows(
+            BoardPermissionHandler::ACTION_CREATE,
+            new Instance($this->name($instanceId))
+        );
+    }
 }

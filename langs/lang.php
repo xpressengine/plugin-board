@@ -1,9 +1,17 @@
 <?php
 
 return [
+    'cantReplyNotice' => [
+        'ko' => '공지에 답글을 등록할 수 없습니다.',
+        'en' => "can't reply to notice."
+    ],
     'categoryManage' => [
         'ko' => '카테고리 관리',
         'en' => 'category manage'
+    ],
+    'reply' => [
+        'ko' => '답글',
+        'en' => 'reply',
     ],
     'ip' => [
         'ko' => 'IP',

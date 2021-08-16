@@ -24,20 +24,17 @@ use Auth;
 use Gate;
 use Event;
 use App\Http\Controllers\Controller;
-use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Counter\Exceptions\GuestNotSupportException;
-use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
-use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
+use Xpressengine\Plugins\Board\Exceptions\CantReplyNoticeException;
 use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
-use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
@@ -49,6 +46,7 @@ use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
+use Xpressengine\Support\Exceptions\HttpXpressengineException;
 use Xpressengine\Support\Purifier;
 use Xpressengine\Support\PurifierModules\Html5;
 use Xpressengine\Editor\PurifierModules\EditorContent;
@@ -516,16 +514,23 @@ class BoardModuleController extends Controller
         Validator $validator,
         BoardPermissionHandler $boardPermission
     ) {
-        if (Gate::denies(
-            BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId))
-        )) {
+        if (! $boardPermission->checkCreateAction($this->instanceId)) {
             throw new AccessDeniedHttpException;
         }
 
         // if use consultation option Guest cannot create article
         if ($this->config->get('useConsultation') === true && Auth::check() === false) {
             throw new AccessDeniedHttpException;
+        }
+
+        // check validated parent's board
+        $parentBoard = null;
+        if ($parentId = $request->get('parent_id')) {
+            $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
+
+            if ($parentBoard->isNotice()) {
+                throw new CantReplyNoticeException;
+            }
         }
 
         $categories = $service->getCategoryItemsTree($this->config);
@@ -548,6 +553,7 @@ class BoardModuleController extends Controller
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
             'titleHeadItems' => $titleHeadItems,
+            'parentBoard' => $parentBoard
         ]);
     }
 
@@ -568,16 +574,22 @@ class BoardModuleController extends Controller
         BoardPermissionHandler $boardPermission,
         IdentifyManager $identifyManager
     ) {
-        if (Gate::denies(
-            BoardPermissionHandler::ACTION_CREATE,
-            new Instance($boardPermission->name($this->instanceId))
-        )) {
+        if (! $boardPermission->checkCreateAction($this->instanceId)) {
             throw new AccessDeniedHttpException;
         }
 
         // if use consultation option Guest cannot create article
         if ($this->config->get('useConsultation') === true && Auth::check() === false) {
             throw new AccessDeniedHttpException;
+        }
+
+        // check validated parent's board
+        if ($parentId = $request->get('parent_id')) {
+            $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
+
+            if ($parentBoard->isNotice()) {
+                throw new CantReplyNoticeException;
+            }
         }
 
         $purifier = new Purifier();
@@ -763,9 +775,15 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        // 공지 등록 권한 확인
-        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager() === false) {
-            throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
+        // 공지 등록 확인
+        if ($request->get('status') == Board::STATUS_NOTICE) {
+            if ($this->isManager() === false) {
+                throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
+            }
+
+            else if ($item->hasParentDoc()) {
+                throw new CantReplyNoticeException;
+            }
         }
 
         // 비밀글 등록 설정 확인

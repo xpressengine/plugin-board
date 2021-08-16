@@ -197,6 +197,11 @@
           "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\Admin\\SearchingIpItem",
           "name": "IP 토글 메뉴",
           "description": "관리자용, 선택된 글과 동일한 IP로 작성된 글을 확인합니다."
+        },
+        "module/board@board/toggleMenu/board@ReplyItem": {
+          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\ReplyItem",
+          "name": "답글 토글 메뉴",
+          "description": "토글 클릭 시 게시글에 대한 답글을 작성할 수 있습니다."
         }
       },
       "screenshots" : [

@@ -18,6 +18,10 @@
     <input type="hidden" name="head" value="{{$head}}"/>
     <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}"/>
 
+    @if ($parentBoard !== null)
+        <input type="hidden" name="parent_id" value="{{ $parentBoard->id }}" />
+    @endif
+
     @foreach ($skinConfig['formColumns'] as $columnName)
         @switch ($columnName)
             @case ('title')
@@ -54,8 +58,8 @@
                                     @elseif ($config->get('category') === true || $config->get('useTitleHead') == true) xf-col07
                                     @else xf-col10 @endif">
                     {!! uio('newTitleWithSlug', [
-                        'title' => Request::old('title'),
-                        'slug' => Request::old('slug'),
+                        'title' => Request::old('title', $parentBoard ? sprintf("Re: %s", $parentBoard->title) : null),
+                        'slug' => Request::old('slug', $parentBoard ? sprintf("Re: %s", $parentBoard->title) : null),
                         'titleClassName' => 'bd_input',
                         'config' => $config
                     ]) !!}
@@ -152,7 +156,7 @@
                 @endif
 
                 {{-- notice --}}
-                @if ($isManager === true && $config->get('noticePost', true))
+                @if ($isManager === true && $config->get('noticePost', true) && is_null($parentBoard))
                     <li class="xf-check-item">
                         <input type="checkbox" class="xf-check-item__input"
                                id="xf-check-item__notice" name="status"
