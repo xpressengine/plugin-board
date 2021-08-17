@@ -8,6 +8,8 @@
 
 <ul class="nav nav-tabs">
     @foreach($_menus as $key => $menu)
+        @continue($menu->getLinkFunction()() == null)
+
         <li @if($_active === $key) class="active" @endif>
             <a href="{{ $menu->getLinkFunction()() }}" @if ($menu->getIsExternalLink()) target="_blank" @endif>
                 @if ($menu->getIcon())
