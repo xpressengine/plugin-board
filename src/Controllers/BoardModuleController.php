@@ -31,6 +31,7 @@ use Xpressengine\Http\Request;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CantReplyNoticeException;
+use Xpressengine\Plugins\Board\Exceptions\DisabledReplyException;
 use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
@@ -46,7 +47,6 @@ use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\Support\Exceptions\AccessDeniedHttpException;
-use Xpressengine\Support\Exceptions\HttpXpressengineException;
 use Xpressengine\Support\Purifier;
 use Xpressengine\Support\PurifierModules\Html5;
 use Xpressengine\Editor\PurifierModules\EditorContent;
@@ -526,6 +526,10 @@ class BoardModuleController extends Controller
         // check validated parent's board
         $parentBoard = null;
         if ($parentId = $request->get('parent_id')) {
+            if ($this->config->get('replyPost', false) === false) {
+                throw new DisabledReplyException;
+            }
+
             $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
 
             if ($parentBoard->isNotice()) {
@@ -585,6 +589,10 @@ class BoardModuleController extends Controller
 
         // check validated parent's board
         if ($parentId = $request->get('parent_id')) {
+            if ($this->config->get('replyPost', false) === false) {
+                throw new DisabledReplyException;
+            }
+
             $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
 
             if ($parentBoard->isNotice()) {

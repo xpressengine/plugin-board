@@ -13,6 +13,10 @@ return [
         'ko' => '답글',
         'en' => 'reply',
     ],
+    'disabledReply' => [
+        'ko' => '답글 기능이 비활성화되어 있습니다.',
+        'en' => 'reply is disabled.'
+    ],
     'ip' => [
         'ko' => 'IP',
         'en' => 'IP',
