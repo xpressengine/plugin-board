@@ -75,6 +75,7 @@ class ConfigHandler extends AbstractConfigHandler
         'newCommentNotice' => false,
         'secretPost' => true,
         'noticePost' => true,
+        'replyPost' => false,
         'useApprove' => false,
     ];
 
@@ -102,6 +103,11 @@ class ConfigHandler extends AbstractConfigHandler
     const DEFAULT_SELECTED_FORM_COLUMNS = [
         'title', 'content',
     ];
+
+    public static function make(): ConfigHandler
+    {
+        return app(self::class);
+    }
 
     /**
      * create instance

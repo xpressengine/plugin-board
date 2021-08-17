@@ -47,6 +47,10 @@ class ReplyItem extends AbstractToggleMenu
         $boardPermission = app('xe.board.permission');
 
         $config = $configHandler->get($this->instanceId);
-        return $config !== null ? $boardPermission->checkCreateAction($this->instanceId) : false;
+        if (is_null($config)) {
+            return false;
+        }
+
+        return $config->get('replyPost', false) ? $boardPermission->checkCreateAction($this->instanceId) : false;
     }
 }
