@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'cantNotReplyOwnBoard' => [
+        'ko' => '자신이 작성한 게시물에 답글을 작성할 수 없습니다.',
+        'en' => 'can not reply to board you have created.'
+    ],
     'wroteReply' => [
         'ko' => '답변을 작성했습니다.',
         'en' => 'wrote a reply'
@@ -12,6 +16,14 @@ return [
     'deletedReply' => [
         'ko' => '답변을 삭제했습니다.',
         'en' => 'deleted a reply'
+    ],
+    'blockAuthorSelf' => [
+        'ko' => '자신이 작성한 게시물에 답글 차단',
+        'en' => 'block author self'
+    ],
+    'blockAuthorSelfDescription' => [
+        'ko' => '자신의 게시물에 답글을 작성할 수 없습니다.',
+        'en' => 'block replying to your own posts.'
     ],
     'protectPost' => [
         'ko' => '글 보호',

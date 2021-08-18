@@ -69,6 +69,26 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>
+                                                        {{ xe_trans('board::blockAuthorSelf') }}
+                                                        <small>{{ xe_trans('board::blockAuthorSelfDescription') }}</small>
+                                                    </label>
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="blockAuthorSelf" @if($config->getPure('blockAuthorSelf') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="blockAuthorSelf" class="form-control" @if($config->getPure('blockAuthorSelf') === null) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('blockAuthorSelf', false) == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('blockAuthorSelf', false) == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

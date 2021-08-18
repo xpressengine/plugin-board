@@ -58,6 +58,21 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>
+                                                        {{ xe_trans('board::blockAuthorSelf') }}
+                                                        <small>{{ xe_trans('board::blockAuthorSelfDescription') }}</small>
+                                                    </label>
+                                                </div>
+                                                <select id="" name="blockAuthorSelf" class="form-control">
+                                                    <option value="true" {!! $config->get('blockAuthorSelf', false) == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('blockAuthorSelf', false) == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

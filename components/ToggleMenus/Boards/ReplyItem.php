@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards;
 
 use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\ReplyConfigHandler;
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
 
 class ReplyItem extends AbstractToggleMenu
@@ -46,11 +47,23 @@ class ReplyItem extends AbstractToggleMenu
         $configHandler = app('xe.board.config');
         $boardPermission = app('xe.board.permission');
 
+        // board's config
         $config = $configHandler->get($this->instanceId);
         if (is_null($config)) {
             return false;
         }
 
-        return $config->get('replyPost', false) ? $boardPermission->checkCreateAction($this->instanceId) : false;
+        // board reply's config
+        $replyConfig = $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($this->instanceId) : null;
+        if (is_null($replyConfig)) {
+            return false;
+        }
+
+        // block author self
+        if ($replyConfig->get('blockAuthorSelf', false) && $board->user_id == auth()->id()) {
+            return false;
+        }
+
+        return $boardPermission->checkCreateAction($this->instanceId);
     }
 }

@@ -9,13 +9,13 @@ use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Routing\InstanceConfig;
+use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
-use Xpressengine\Plugins\Board\Exceptions\{
-    CanNotDeleteHasReplyException,
+use Xpressengine\Plugins\Board\Exceptions\{CanNotDeleteHasReplyException,
     CanNotReplyNoticeException,
     CanNotUpdatedHasReplyException,
-    DisabledReplyException
-};
+    CantNotReplyOwnBoardException,
+    DisabledReplyException};
 use Xpressengine\Plugins\Board\{
     BoardPermissionHandler,
     Components\Modules\BoardModule,
@@ -54,13 +54,24 @@ abstract class ReplyIntercepts
     {
         $function = function ($function, Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager) {
             if ($parentId = $request->get('parent_id')) {
-                if ($config->get('replyPost', false) === false) {
+                $replyConfig = $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($config->get('boardId')) : null;
+
+                if (is_null($replyConfig)) {
                     throw new DisabledReplyException;
                 }
 
                 $parent = Board::findOrFail($parentId);
+                
+                // 공지에는 답글을 작성할 수 없습니다.
                 if ($parent->isNotice()) {
                     throw new CanNotReplyNoticeException;
+                }
+
+                // 자신이 작성한 게시물에 답글을 작성할 수 없습니다.
+                if ($replyConfig->get('blockAuthorSelf', false) === true) {
+                    if ($user instanceof User && $user->getId() === $parent->user_id) {
+                        throw new CantNotReplyOwnBoardException;
+                    }
                 }
 
                 // set redirect url
