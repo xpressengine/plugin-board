@@ -37,6 +37,7 @@ use Xpressengine\Plugins\Board\InstanceManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Plugin\Settings\GlobalTabMenus;
 use Xpressengine\Plugins\Board\Plugin\Settings\InstanceTabMenus;
+use Xpressengine\Plugins\Board\ReplyConfigHandler;
 use Xpressengine\Plugins\Board\TabMenu;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
@@ -58,47 +59,43 @@ use Xpressengine\User\Models\User;
  */
 class BoardSettingsController extends Controller
 {
-    /**
-     * @var Handler
-     */
+    /** @var Handler */
     protected $handler;
 
-    /**
-     * @var ConfigHandler
-     */
+    /** @var ReplyConfigHandler */
+    protected $replyConfigHandler;
+
+    /** @var ConfigHandler */
     protected $configHandler;
 
-    /**
-     * @var \Xpressengine\Presenter\Presenter
-     */
+    /** @var \Xpressengine\Presenter\Presenter */
     protected $presenter;
 
-    /**
-     * @var UrlHandler
-     */
+    /** @var UrlHandler */
     protected $urlHandler;
 
-    /**
-     * @var InstanceManager
-     */
+    /** @var InstanceManager */
     protected $instanceManager;
 
     /**
      * create instance
      *
-     * @param Handler         $handler         handler
-     * @param ConfigHandler   $configHandler   board config handler
-     * @param UrlHandler      $urlHandler      url handler
-     * @param InstanceManager $instanceManager board instance manager
+     * @param Handler               $handler         handler
+     * @param ConfigHandler         $configHandler   board config handler
+     * @param ReplyConfigHandler    $replyConfigHandler  board reply config handler
+     * @param UrlHandler            $urlHandler      url handler
+     * @param InstanceManager       $instanceManager board instance manager
      */
     public function __construct(
         Handler $handler,
         ConfigHandler $configHandler,
+        ReplyConfigHandler $replyConfigHandler,
         UrlHandler $urlHandler,
         InstanceManager $instanceManager
     ) {
         $this->handler = $handler;
         $this->configHandler = $configHandler;
+        $this->replyConfigHandler = $replyConfigHandler;
         $this->urlHandler = $urlHandler;
         $this->instanceManager =  $instanceManager;
 
@@ -155,7 +152,37 @@ class BoardSettingsController extends Controller
         $params = $config->getPureAll();
         $this->configHandler->putDefault($params);
 
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
         return redirect()->to($this->urlHandler->managerUrl('global.config'));
+    }
+
+    /**
+     * edit global reply's config
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
+    public function editGlobalReply()
+    {
+        $config = $this->replyConfigHandler->getDefault();
+
+        return $this->presenter->make('global.reply', [
+            'config' => $config
+        ]);
+    }
+
+    /**
+     * update global reply's config
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateGlobalReply(Request $request)
+    {
+        $changedValues = $request->only($this->replyConfigHandler->getDefaultKeys());
+        $this->replyConfigHandler->putDefault($changedValues);
+
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
+        return redirect()->to($this->urlHandler->managerUrl('global.reply'));
     }
 
     /**
@@ -232,7 +259,7 @@ class BoardSettingsController extends Controller
      * @param string         $boardId board instance id
      * @return \Xpressengine\Presenter\Presentable
      */
-    public function editConfig(CaptchaManager $captcha, $boardId)
+    public function editConfig(CaptchaManager $captcha, string $boardId)
     {
         $config = $this->configHandler->get($boardId);
 
@@ -256,13 +283,13 @@ class BoardSettingsController extends Controller
     }
 
     /**
-     * update
+     * update config
      *
      * @param Request $request request
      * @param string  $boardId board instance id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateConfig(Request $request, $boardId)
+    public function updateConfig(Request $request, string $boardId)
     {
         if ($request->get('useCaptcha') === 'true' && !app('xe.captcha')->available()) {
             throw new ConfigurationNotExistsException();
@@ -293,23 +320,57 @@ class BoardSettingsController extends Controller
         $unsetKeys = [];
 
         foreach ($config->getPureAll() as $key => $value) {
+            $excepts = ['listColumns','formColumns','sortListColumns','sortFormColumns'];
+
             // 기본 설정이 아닌 항목 예외 처리
-            if (in_array($key, [
-                    'listColumns','formColumns','sortListColumns','sortFormColumns'
-                ]) == true) {
+            if (in_array($key, $excepts) === true) {
                 continue;
             }
+
             if ($config->getParent()->get($key) !== null && isset($inputs[$key]) === false) {
-                unset($config[$key]);
                 $unsetKeys[] = $key;
             }
         }
 
         $this->instanceManager->updateConfig($config->getPureAll(), $unsetKeys);
 
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
         return redirect()->to($this->urlHandler->managerUrl('config', ['boardId' => $boardId]));
     }
 
+    /**
+     * edit reply config
+     *
+     * @param string $boardId
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
+    public function editReply(string $boardId)
+    {
+        $config = $this->replyConfigHandler->get($boardId);
+
+        return $this->presenter->make('module.reply', [
+            'config' => $config,
+            'boardId' => $boardId,
+        ]);
+    }
+
+    /**
+     * update Reply Config
+     *
+     * @param Request $request
+     * @param string $boardId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateReply(Request $request, string $boardId)
+    {
+        $changedValue = $request->only($this->replyConfigHandler->getDefaultKeys());
+        $changedValue['boardId'] = $boardId;
+
+        $this->replyConfigHandler->put($changedValue);
+
+        Session::flash('alert', ['type' => 'success', 'message' => xe_trans('xe::processed')]);
+        return redirect()->to($this->urlHandler->managerUrl('reply', ['boardId' => $boardId]));
+    }
 
     /**
      * store category

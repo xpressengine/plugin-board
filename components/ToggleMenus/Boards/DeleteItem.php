@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards;
 
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Plugin as BoardPlugin;
+use Xpressengine\Plugins\Board\ReplyConfigHandler;
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
 
 class DeleteItem extends AbstractToggleMenu
@@ -46,14 +47,19 @@ class DeleteItem extends AbstractToggleMenu
     {
         $board = Board::findOrFail($this->identifier);
 
-        if ($board->getAttribute('user_id') === auth()->id()) {
+        if (app('xe.board.permission')->checkManageAction($this->instanceId)) {
             return true;
         }
 
-        $configHandler = app('xe.board.config');
-        $boardPermission = app('xe.board.permission');
+        $config = app('xe.board.config')->get($this->instanceId);
+        $replyConfig = $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($this->instanceId) : null;
 
-        $config = $configHandler->get($this->instanceId);
-        return $config !== null ? $boardPermission->checkManageAction($this->instanceId) : false;
+        if ($replyConfig !== null && $replyConfig->get('protectDeleted', false) === true) {
+            if ($board->existsReplies()) {
+                return false;
+            }
+        }
+
+        return $board->user_id === auth()->id();
     }
 }

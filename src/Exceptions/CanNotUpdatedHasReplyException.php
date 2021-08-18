@@ -5,12 +5,12 @@ namespace Xpressengine\Plugins\Board\Exceptions;
 use Illuminate\Http\Response;
 use Xpressengine\Plugins\Board\HttpBoardException;
 
-class CantReplyNoticeException extends HttpBoardException
+class CanNotUpdatedHasReplyException extends HttpBoardException
 {
     /**
      * @var string
      */
-    protected $message = 'board::cantReplyNotice';
+    protected $message = 'board::canNotUpdatedHasReply';
 
     /**
      * @var int

@@ -210,15 +210,21 @@
                                class="xf-edit__link xf-a">목록</a>
                         </li>
                         @if($isManager === true || $item->user_id === Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
-                            <li class="xf-edit-item">
-                                <a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}"
-                                   class="xf-edit__link xf-a">수정</a>
-                            </li>
-                            <li class="xf-edit-item">
-                                <a href="#"
-                                   data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}"
-                                   class="xf-edit__link xf-a bd_delete">삭제</a>
-                            </li>
+                            @if($isManager === true || ($replyConfig !== null && $replyConfig->get('protectUpdated') && $item->existsReplies()) === false)
+                                <li class="xf-edit-item">
+                                    <a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}" class="xf-edit__link xf-a">
+                                        {{ xe_trans('xe::modify') }}
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($isManager === true || ($replyConfig !== null && $replyConfig->get('protectDeleted') && $item->existsReplies()) === false)
+                                <li class="xf-edit-item">
+                                    <a href="#" data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}" class="xf-edit__link xf-a bd_delete">
+                                        {{ xe_trans('xe::delete') }}
+                                    </a>
+                                </li>
+                            @endif
                         @endif
                     </ul>
                 </div>

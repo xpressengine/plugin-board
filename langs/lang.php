@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'protectPost' => [
+        'ko' => '글 보호',
+        'en' => 'protect post',
+    ],
+    'protectPostReplies' => [
+        'ko' => '답글이 달린 글은 수정 또는 삭제할 수 없도록 합니다.',
+        'en' => 'Posts with replies cannot be edited or deleted.',
+    ],
     'cantReplyNotice' => [
         'ko' => '공지에 답글을 등록할 수 없습니다.',
         'en' => "can't reply to notice."

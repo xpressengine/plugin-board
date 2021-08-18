@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Models;
 
+use Illuminate\Support\Collection;
 use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Media\MediaManager;
@@ -222,6 +223,36 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
+     * replies
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Board::class, 'parent_id', 'id');
+    }
+
+    /**
+     * get replies
+     *
+     * @return Collection
+     */
+    public function getReplies(): Collection
+    {
+        return $this->getAttribute('replies');
+    }
+
+    /**
+     * exists replies
+     *
+     * @return bool
+     */
+    public function existsReplies(): bool
+    {
+        return $this->getReplies()->count() > 0;
+    }
+
+    /**
      * get favorites
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -250,7 +281,6 @@ class Board extends Document implements CommentUsable, SeoUsable
     {
         return $this->belongsTo(BoardGalleryThumb::class, 'id', 'target_id');
     }
-
 
     /**
      * get slug
@@ -309,7 +339,7 @@ class Board extends Document implements CommentUsable, SeoUsable
     }
 
     /**
-     * has user
+     * has author
      *
      * @return bool
      */

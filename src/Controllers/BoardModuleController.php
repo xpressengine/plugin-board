@@ -30,7 +30,7 @@ use Xpressengine\Counter\Exceptions\GuestNotSupportException;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
-use Xpressengine\Plugins\Board\Exceptions\CantReplyNoticeException;
+use Xpressengine\Plugins\Board\Exceptions\CanNotReplyNoticeException;
 use Xpressengine\Plugins\Board\Exceptions\DisabledReplyException;
 use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
@@ -42,6 +42,7 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
+use Xpressengine\Plugins\Board\ReplyConfigHandler;
 use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
@@ -247,10 +248,12 @@ class BoardModuleController extends Controller
         }
 
         $thumb = $this->handler->getThumb($item->id);
-
         $item->setCanonical($this->urlHandler->getShow($item));
-
         $titleHeadItems = $service->getTitleHeadItems($this->config);
+
+        if ($this->config->get('replyPost', false) === true) {
+            $item->load('replies');
+        }
 
         return XePresenter::make('show', [
             'item' => $item,
@@ -264,6 +267,7 @@ class BoardModuleController extends Controller
             'searchOptions' => $searchOptions,
             'boardMoreItems' => $boardMoreItems,
             'titleHeadItems' => $titleHeadItems,
+            'replyConfig' => $this->config->get('replyPost', false) ? ReplyConfigHandler::make()->get($this->instanceId) : null,
         ]);
     }
 
@@ -533,7 +537,7 @@ class BoardModuleController extends Controller
             $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
 
             if ($parentBoard->isNotice()) {
-                throw new CantReplyNoticeException;
+                throw new CanNotReplyNoticeException;
             }
         }
 
@@ -585,19 +589,6 @@ class BoardModuleController extends Controller
         // if use consultation option Guest cannot create article
         if ($this->config->get('useConsultation') === true && Auth::check() === false) {
             throw new AccessDeniedHttpException;
-        }
-
-        // check validated parent's board
-        if ($parentId = $request->get('parent_id')) {
-            if ($this->config->get('replyPost', false) === false) {
-                throw new DisabledReplyException;
-            }
-
-            $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
-
-            if ($parentBoard->isNotice()) {
-                throw new CantReplyNoticeException;
-            }
         }
 
         $purifier = new Purifier();
@@ -787,10 +778,6 @@ class BoardModuleController extends Controller
         if ($request->get('status') == Board::STATUS_NOTICE) {
             if ($this->isManager() === false) {
                 throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
-            }
-
-            else if ($item->hasParentDoc()) {
-                throw new CantReplyNoticeException;
             }
         }
 
