@@ -3,6 +3,7 @@
 namespace Xpressengine\Plugins\Board\Plugin\Intercepts;
 
 use Event;
+use Illuminate\Support\Arr;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
@@ -17,12 +18,14 @@ use Xpressengine\Plugins\Board\Exceptions\{
 };
 use Xpressengine\Plugins\Board\{
     BoardPermissionHandler,
+    Components\Modules\BoardModule,
     ConfigHandler,
     Handler as BoardHandler,
     Plugin as BoardPlugin,
     IdentifyManager,
     ReplyConfigHandler,
-    Services\BoardService
+    Services\BoardService,
+    UrlHandler as BoardUrlHandler
 };
 
 abstract class ReplyIntercepts
@@ -55,8 +58,18 @@ abstract class ReplyIntercepts
                     throw new DisabledReplyException;
                 }
 
-                if (Board::findOrFail($parentId)->isNotice()) {
+                $parent = Board::findOrFail($parentId);
+                if ($parent->isNotice()) {
                     throw new CanNotReplyNoticeException;
+                }
+
+                // set redirect url
+                $routeAction = $request->route()->getAction();
+                if (Arr::get($routeAction, 'module') === BoardModule::getId() && Arr::get($routeAction, 'as') === 'store') {
+                    $request->merge([
+                        'redirect_url' => app(BoardUrlHandler::class)->getShow($parent, $request->query->all()),
+                        'redirect_message' => xe_trans('board::wroteReply')
+                    ]);
                 }
             }
 
@@ -81,6 +94,20 @@ abstract class ReplyIntercepts
                 throw new CanNotReplyNoticeException;
             }
 
+            if ($item->hasParentDoc()) {
+                $parent = Board::findOrFail($item->parent_id);
+
+                // set redirect url
+                $routeAction = $request->route()->getAction();
+
+                if (Arr::get($routeAction, 'module') === BoardModule::getId() && Arr::get($routeAction, 'as') === 'update') {
+                    $request->merge([
+                        'redirect_url' => app(BoardUrlHandler::class)->getShow($parent, $request->query->all()),
+                        'redirect_message' => xe_trans('board::updatedReply')
+                    ]);
+                }
+            }
+
             return $function($item, $request, $user, $config, $identifyManager);
         };
 
@@ -97,36 +124,37 @@ abstract class ReplyIntercepts
      */
     public static function interceptProtectDeleted()
     {
-        $function = function ($function, Board $item, ConfigEntity $config) {
+        $function = function ($function, Board $item, ConfigEntity $config, IdentifyManager $identifyManager) {
             $instanceId = $item->instance_id;
-            $permissionHandler = app(BoardPermissionHandler::class);
+            $replyConfig = $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($instanceId) : null;
 
-            if ($permissionHandler->checkManageAction($instanceId)) {
-                return $function($item, $config);
+            if ($replyConfig !== null && $item->hasParentDoc()) {
+               $parent = Board::findOrFail($item->parent_id);
+
+               // set redirect url
+                $routeAction = request()->route()->getAction();
+
+                if (Arr::get($routeAction, 'module') === BoardModule::getId() && Arr::get($routeAction, 'as') === 'destroy') {
+                    request()->merge([
+                        'redirect_url' => app(BoardUrlHandler::class)->getShow($parent, request()->query->all()),
+                        'redirect_message' => xe_trans('board::deletedReply')
+                    ]);
+                }
             }
 
-           $replyConfig = $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($instanceId) : null;
+            if (! app(BoardPermissionHandler::class)->checkManageAction($instanceId)) {
+                if ($replyConfig !== null && $replyConfig->get('protectDeleted', false) && $item->existsReplies()) {
+                    throw new CanNotDeleteHasReplyException;
+                }
+            }
 
-           if ($replyConfig !== null && $replyConfig->get('protectDeleted', false)) {
-               if ($item->existsReplies()) {
-                   throw new CanNotDeleteHasReplyException;
-               }
-           }
-
-            return $function($item, $config);
+           return $function($item, $config, $identifyManager);
         };
 
-        // remove
+        // destroy
         intercept(
-            sprintf('%s@remove', BoardHandler::class),
-            sprintf('%s::reply__removedLimit', BoardPlugin::getId()),
-            $function
-        );
-
-        // trash
-        intercept(
-            sprintf('%s@trash', BoardHandler::class),
-            sprintf('%s::reply__trashedLimit', BoardPlugin::getId()),
+            sprintf('%s@destroy', BoardService::class),
+            sprintf('%s::reply__protectDestroyed', BoardPlugin::getId()),
             $function
         );
     }

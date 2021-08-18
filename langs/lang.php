@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'wroteReply' => [
+        'ko' => '답변을 작성했습니다.',
+        'en' => 'wrote a reply'
+    ],
+    'updatedReply' => [
+        'ko' => '답변을 수정했습니다.',
+        'en' => 'updated a reply'
+    ],
+    'deletedReply' => [
+        'ko' => '답변을 삭제했습니다.',
+        'en' => 'deleted a reply'
+    ],
     'protectPost' => [
         'ko' => '글 보호',
         'en' => 'protect post',
