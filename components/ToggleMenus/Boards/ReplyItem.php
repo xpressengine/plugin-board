@@ -39,7 +39,7 @@ class ReplyItem extends AbstractToggleMenu
     {
         $board = Board::findOrFail($this->identifier);
 
-        if ($board->isNotice()) {
+        if ($board->isNotice()|| $board->hasParentDoc()) {
             return false;
         }
 
