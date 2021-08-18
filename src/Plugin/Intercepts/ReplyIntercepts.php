@@ -11,7 +11,8 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\User\Models\User;
 use Xpressengine\User\UserInterface;
-use Xpressengine\Plugins\Board\Exceptions\{CanNotDeleteHasReplyException,
+use Xpressengine\Plugins\Board\Exceptions\{AlreadyRegisteredReplyException,
+    CanNotDeleteHasReplyException,
     CanNotReplyNoticeException,
     CanNotUpdatedHasReplyException,
     CantNotReplyOwnBoardException,
@@ -60,11 +61,23 @@ abstract class ReplyIntercepts
                     throw new DisabledReplyException;
                 }
 
-                $parent = Board::findOrFail($parentId);
-                
+                /** @var Board $parent */
+                $parent = Board::with('replies')->findOrFail($parentId);
+
                 // 공지에는 답글을 작성할 수 없습니다.
                 if ($parent->isNotice()) {
                     throw new CanNotReplyNoticeException;
+                }
+
+                //  답변 작성은 한 게시물 당 한 번으로 제한합니다.
+                if ($replyConfig->get('limitedOneTime', false) === true) {
+                    $replyBoard = $parent->getReplies()->first(function ($replyBoard) use ($user) {
+                        return $user instanceof User && $replyBoard->user_id === $user->getId();
+                    });
+
+                    if ($replyBoard !== null) {
+                        throw new AlreadyRegisteredReplyException();
+                    }
                 }
 
                 // 자신이 작성한 게시물에 답글을 작성할 수 없습니다.

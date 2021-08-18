@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'limitedOneTime' => [
+        'ko' => '답변은 한 번으로 제한',
+        'en' => 'The answer is limited to one time.'
+    ],
+    'alreadyRegisteredReply' => [
+        'ko' => '이미 등록한 답변이 있습니다.',
+        'en' => 'There is already a registered answer.'
+    ],
     'cantNotReplyOwnBoard' => [
         'ko' => '자신이 작성한 게시물에 답글을 작성할 수 없습니다.',
         'en' => 'can not reply to board you have created.'

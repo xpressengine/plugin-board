@@ -18,6 +18,7 @@ class ReplyConfigHandler extends AbstractConfigHandler
         'protectUpdated' => false,      // 답글이 있으면 수정할 수 없도록 합니다. (if, true)
         'protectDeleted' => false,      // 답글이 있으면 삭제할 수 없도록 합니다. (if, true)
         'blockAuthorSelf' => false,     // 작성자 스스로 답글을 작성하지 못하도록 합니다. (if, true)
+        'limitedOneTime' => false,      // 답변 작성은 한 게시물 당 한 번으로 제한합니다. (if, true)
     ];
 
     public static function boot()

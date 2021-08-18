@@ -38,7 +38,8 @@ class ReplyItem extends AbstractToggleMenu
 
     public function allows(): bool
     {
-        $board = Board::findOrFail($this->identifier);
+        /** @var Board $board */
+        $board = Board::with('replies')->findOrFail($this->identifier);
 
         if ($board->isNotice()|| $board->hasParentDoc()) {
             return false;
@@ -59,9 +60,20 @@ class ReplyItem extends AbstractToggleMenu
             return false;
         }
 
-        // block author self
+        // 자신이 작성한 게시물에 답글을 작성할 수 없습니다.
         if ($replyConfig->get('blockAuthorSelf', false) && $board->user_id == auth()->id()) {
             return false;
+        }
+
+        // 이미 작성된 답글이 있는 경우.
+        if ($replyConfig->get('limitedOneTime', false)) {
+            $replyBoard = $board->getReplies()->first(function($replyBoard) {
+                return $replyBoard->user_id === auth()->id();
+            });
+
+            if ($replyBoard !== null) {
+                return false;
+            }
         }
 
         return $boardPermission->checkCreateAction($this->instanceId);
