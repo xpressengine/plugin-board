@@ -2,10 +2,12 @@
 
 namespace Xpressengine\Plugins\Board\Plugin\Intercepts;
 
+use Event;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Routing\InstanceConfig;
 use Xpressengine\User\UserInterface;
 use Xpressengine\Plugins\Board\Exceptions\{
     CanNotDeleteHasReplyException,
@@ -15,6 +17,7 @@ use Xpressengine\Plugins\Board\Exceptions\{
 };
 use Xpressengine\Plugins\Board\{
     BoardPermissionHandler,
+    ConfigHandler,
     Handler as BoardHandler,
     Plugin as BoardPlugin,
     IdentifyManager,
@@ -24,6 +27,23 @@ use Xpressengine\Plugins\Board\{
 
 abstract class ReplyIntercepts
 {
+    /**
+     * listen reply articles
+     */
+    public static function listenReplyArticles()
+    {
+        Event::listen('xe.plugin.board.articles', function ($query) {
+            $instanceConfig = InstanceConfig::instance();
+            $instanceId = $instanceConfig->getInstanceId();
+
+            $boardConfig = app(ConfigHandler::class)->get($instanceId);
+
+            $query->when($boardConfig && $boardConfig->get('replyPost', false) === true, function($query) {
+                $query->where('parent_id', '')->with('replies');
+            });
+        });
+    }
+
     /**
      * intercept validate stored
      */

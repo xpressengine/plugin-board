@@ -395,6 +395,7 @@ class Resources
      */
     public static function interceptReply()
     {
+        Plugin\Intercepts\ReplyIntercepts::listenReplyArticles();
         Plugin\Intercepts\ReplyIntercepts::interceptValidateStored();
         Plugin\Intercepts\ReplyIntercepts::interceptValidateUpdated();
         Plugin\Intercepts\ReplyIntercepts::interceptProtectDeleted();
