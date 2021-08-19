@@ -30,6 +30,7 @@ use Xpressengine\Counter\Exceptions\GuestNotSupportException;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\Exceptions\AlreadyAdoptedException;
 use Xpressengine\Plugins\Board\Exceptions\CanNotReplyNoticeException;
 use Xpressengine\Plugins\Board\Exceptions\DisabledReplyException;
 use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
@@ -1248,6 +1249,91 @@ class BoardModuleController extends Controller
             'list' => $favoriteUsers,
             'nextStartId' => $nextStartId,
         ]);
+    }
+
+    /**
+     * adopt (채택하다)
+     *
+     * @param Request $request
+     * @param string $menuUrl
+     * @param string $id
+     * @return mixed
+     */
+    public function adopt(Request $request, string $menuUrl, string $id)
+    {
+        $item = Board::division($this->instanceId)->findOrFail($id);
+        $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId);
+
+        if (is_null($replyConfig)) {
+            throw new DisabledReplyException; // 답글을 사용하지 않는 상태인 경우.
+        }
+
+        /** @var Board $parentBoard */
+        $parentBoard = $item->hasParentDoc() ? Board::with('replies', 'data')->findOrFail($item->parent_id) : null;
+
+        if ($parentBoard->hasAdopted() === true) {
+            throw new AlreadyAdoptedException; // 이미 채택된 답글이 있습니다.
+        }
+
+        $parentBoard->getAttribute('data')->adopt_id = $item->id;
+        $parentBoard->getAttribute('data')->adopt_at = now();
+        $parentBoard->getAttribute('data')->save();
+
+        if($request->has('redirect_url')) {
+            if($request->has('redirect_message')) {
+                return XePresenter::redirect()
+                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
+            }
+            return XePresenter::redirect()
+                ->to($request->get('redirect_url'));
+        }
+
+        return XePresenter::redirect()
+            ->to($this->urlHandler->getShow($parentBoard, $request->query->all()))
+            ->setData(['item' => $parentBoard]);
+    }
+
+    /**
+     * Un Adopt (채택을 취소합니다.)
+     *
+     * @param Request $request
+     * @param string $menuUrl
+     * @param string $id
+     * @return mixed
+     */
+    public function unAdopt(Request $request, string $menuUrl, string $id)
+    {
+        /** @var Board $item */
+        $item = Board::division($this->instanceId)->findOrFail($id);
+        $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId);
+
+        if (is_null($replyConfig)) {
+            throw new DisabledReplyException; // 답글을 사용하지 않는 상태인 경우.
+        }
+
+        /** @var Board $parentBoard */
+        $parentBoard = $item->hasParentDoc() ? Board::with('replies', 'data')->findOrFail($item->parent_id) : null;
+
+        if ($item->isAdopted($parentBoard) === false) {
+            throw new \LogicException('This is not an adopted reply.');
+        }
+
+        $parentBoard->getAttribute('data')->adopt_id = null;
+        $parentBoard->getAttribute('data')->adopt_at = null;
+        $parentBoard->getAttribute('data')->save();
+
+        if($request->has('redirect_url')) {
+            if($request->has('redirect_message')) {
+                return XePresenter::redirect()
+                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
+            }
+            return XePresenter::redirect()
+                ->to($request->get('redirect_url'));
+        }
+
+        return XePresenter::redirect()
+            ->to($this->urlHandler->getShow($parentBoard, $request->query->all()))
+            ->setData(['item' => $parentBoard]);
     }
 
     /**

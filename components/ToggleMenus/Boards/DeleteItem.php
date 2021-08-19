@@ -45,17 +45,15 @@ class DeleteItem extends AbstractToggleMenu
 
     public function allows(): bool
     {
+        /** @var Board $board */
         $board = Board::findOrFail($this->identifier);
 
         if (app('xe.board.permission')->checkManageAction($this->instanceId)) {
             return true;
         }
 
-        $config = app('xe.board.config')->get($this->instanceId);
-        $replyConfig = $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($this->instanceId) : null;
-
-        if ($replyConfig !== null && $replyConfig->get('protectDeleted', false) === true) {
-            if ($board->existsReplies()) {
+        if ($replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId)) {
+            if (($replyConfig->get('protectDeleted', false) && $board->existsReplies()) || $board->isAdopted()) {
                 return false;
             }
         }

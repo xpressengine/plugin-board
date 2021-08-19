@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'canNotDeletedAdopted' => [
+        'ko' => '채택된 답변은 삭제할 수 없습니다',
+        'en' => 'Adopted articles cannot be deleted.'
+    ],
+    'canNotUpdatedAdopted' => [
+        'ko' => '채택된 답변은 수정할 수 없습니다',
+        'en' => 'Adopted articles cannot be modified.'
+    ],
+    'alreadyAdopted' => [
+        'ko' => '이미 채택된 답변이 있습니다.',
+        'en' => ' already adopted'
+    ],
     'limitedOneTime' => [
         'ko' => '답변은 한 번으로 제한',
         'en' => 'The answer is limited to one time.'

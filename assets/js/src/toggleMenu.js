@@ -33,6 +33,34 @@ var BoardToggleMenu = {
         }
       });
     }
+  },
+  adopt: function(e, url) {
+    e.preventDefault();
+
+    url = url + window.location.search;
+
+    XE.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      success: function (data) {
+        location.replace(data.links.href);
+      }
+    });
+  },
+  unAdopt: function(e, url) {
+    e.preventDefault();
+
+    url = url + window.location.search;
+
+    XE.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      success: function (data) {
+        location.replace(data.links.href);
+      }
+    });
   }
 };
 

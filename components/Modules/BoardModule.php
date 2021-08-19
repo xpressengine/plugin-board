@@ -172,6 +172,9 @@ class BoardModule extends AbstractModule
 
             Route::delete('/destroy/{id}', ['as' => 'destroy', 'uses' => 'BoardModuleController@destroy']);
 
+            Route::post('/adopt/{id}', ['as' => 'adopt', 'uses' => 'BoardModuleController@adopt']);
+            Route::post('/unAdopt/{id}', ['as' => 'unAdopt', 'uses' => 'BoardModuleController@unAdopt']);
+
             Route::get('/guest/id/{id}', ['as' => 'guest.id', 'uses' => 'BoardModuleController@guestId']);
             Route::post('/guest/certify/{id}', [
                 'as' => 'guest.certify', 'uses' => 'BoardModuleController@guestCertify'

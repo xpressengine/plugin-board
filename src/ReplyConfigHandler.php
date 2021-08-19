@@ -34,4 +34,15 @@ class ReplyConfigHandler extends AbstractConfigHandler
     {
         return app(self::class);
     }
+
+    public function getByBoardConfig(string $boardId)
+    {
+        $config = app('xe.board.config')->get($boardId);
+
+        if (is_null($config)) {
+            return null;
+        }
+
+        return $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($boardId) : null;
+    }
 }

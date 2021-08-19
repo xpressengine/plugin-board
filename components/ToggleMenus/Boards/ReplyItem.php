@@ -39,43 +39,26 @@ class ReplyItem extends AbstractToggleMenu
     public function allows(): bool
     {
         /** @var Board $board */
-        $board = Board::with('replies')->findOrFail($this->identifier);
+        $board = Board::with('replies', 'data')->findOrFail($this->identifier);
 
-        if ($board->isNotice()|| $board->hasParentDoc()) {
+        if ($board->isNotice() || $board->hasParentDoc() || $board->hasAdopted()) {
             return false;
         }
 
-        $configHandler = app('xe.board.config');
-        $boardPermission = app('xe.board.permission');
+        if ($replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId)) {
+            if (($replyConfig->get('blockAuthorSelf', false) && $board->user_id == auth()->id())) {
+                return false;
+            }
 
-        // board's config
-        $config = $configHandler->get($this->instanceId);
-        if (is_null($config)) {
-            return false;
-        }
-
-        // board reply's config
-        $replyConfig = $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($this->instanceId) : null;
-        if (is_null($replyConfig)) {
-            return false;
-        }
-
-        // 자신이 작성한 게시물에 답글을 작성할 수 없습니다.
-        if ($replyConfig->get('blockAuthorSelf', false) && $board->user_id == auth()->id()) {
-            return false;
-        }
-
-        // 이미 작성된 답글이 있는 경우.
-        if ($replyConfig->get('limitedOneTime', false)) {
             $replyBoard = $board->getReplies()->first(function($replyBoard) {
                 return $replyBoard->user_id === auth()->id();
             });
 
-            if ($replyBoard !== null) {
+            if ($replyConfig->get('limitedOneTime', false) && $replyBoard !== null) {
                 return false;
             }
         }
 
-        return $boardPermission->checkCreateAction($this->instanceId);
+        return app('xe.board.permission')->checkCreateAction($this->instanceId);
     }
 }
