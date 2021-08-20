@@ -1018,6 +1018,16 @@ class BoardModuleController extends Controller
 
         $this->handler->trash($item, $this->config);
 
+        if($request->has('redirect_url')) {
+            if($request->has('redirect_message')) {
+                return XePresenter::redirect()
+                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
+            }
+
+            return XePresenter::redirect()
+                ->to($request->get('redirect_url'));
+        }
+
         return xe_redirect()->to(
             $this->urlHandler->get('index', $request->query->all())
         )->setData([
