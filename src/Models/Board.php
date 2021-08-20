@@ -414,7 +414,16 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function findParentDoc()
     {
-        return $this->hasParentDoc() ? Board::with('replies', 'data')->find($this->parent_id) : null;
+        if ($this->hasParentDoc()) {
+            /** @var Board $parentDoc */
+            $parentDoc = Board::division($this->instance_id)->find($this->parent_id);
+
+            if ($parentDoc instanceof Board) {
+                return $parentDoc->load('replies', 'data');
+            }
+        }
+
+        return null;
     }
 
     /**

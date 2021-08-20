@@ -535,7 +535,9 @@ class BoardModuleController extends Controller
                 throw new DisabledReplyException;
             }
 
-            $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
+            $parentBoard = Board::division($this->config->get('boardId'))
+                ->where('instance_id', $this->instanceId)
+                ->findOrFail($parentId);
 
             if ($parentBoard->isNotice()) {
                 throw new CanNotReplyNoticeException;
