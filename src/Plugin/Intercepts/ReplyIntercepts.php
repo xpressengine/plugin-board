@@ -58,9 +58,9 @@ abstract class ReplyIntercepts
     }
 
     /**
-     * intercept validate stored
+     * intercept stored
      */
-    public static function interceptValidateStored()
+    public static function interceptStored()
     {
         $function = function ($function, Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager) {
             $parentId = $request->get('parent_id');
@@ -120,9 +120,9 @@ abstract class ReplyIntercepts
     }
 
     /**
-     * intercept validate updated
+     * intercept updated
      */
-    public static function interceptValidateUpdated()
+    public static function interceptUpdated()
     {
         $function = function ($function, Board $item, Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager) {
             $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($item->instance_id);
@@ -169,9 +169,9 @@ abstract class ReplyIntercepts
     }
 
     /**
-     * intercept protect deleted
+     * intercept deleted
      */
-    public static function interceptProtectDeleted()
+    public static function interceptDeleted()
     {
         $function = function ($function, Board $item, ConfigEntity $config) {
             $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($item->instance_id);
