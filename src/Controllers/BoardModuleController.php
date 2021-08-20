@@ -1292,6 +1292,7 @@ class BoardModuleController extends Controller
 
         return XePresenter::redirect()
             ->to($this->urlHandler->getShow($parentBoard, $request->query->all()))
+            ->with('alert', ['type' => 'success', 'message' => xe_trans('board::adopted')])
             ->setData(['item' => $parentBoard]);
     }
 
@@ -1335,6 +1336,7 @@ class BoardModuleController extends Controller
 
         return XePresenter::redirect()
             ->to($this->urlHandler->getShow($parentBoard, $request->query->all()))
+            ->with('alert', ['type' => 'success', 'message' => xe_trans('board::unAdopted')])
             ->setData(['item' => $parentBoard]);
     }
 

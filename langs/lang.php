@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'adopted' => [
+        'ko' => '답변을 채택합니다.',
+        'en' => 'Adopted reply'
+    ],
+    'unAdopted' => [
+        'ko' => '답변에 대한 채택을 취소를 합니다.',
+        'en' => 'unAdopted reply'
+    ],
     'canNotDeletedAdopted' => [
         'ko' => '채택된 답변은 삭제할 수 없습니다',
         'en' => 'Adopted articles cannot be deleted.'
