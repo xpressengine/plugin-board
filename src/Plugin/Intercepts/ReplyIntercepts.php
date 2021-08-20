@@ -125,26 +125,35 @@ abstract class ReplyIntercepts
     public static function interceptValidateUpdated()
     {
         $function = function ($function, Board $item, Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager) {
-            if ($item->hasParentDoc()) {
-                if ($request->get('status') == Document::STATUS_NOTICE) {
-                    throw new CanNotReplyNoticeException;
+            $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($item->instance_id);
+            $isManager = app(BoardPermissionHandler::class)->checkManageAction($item->instance_id);
+
+            if ($replyConfig !== null) {
+                if($parentBoard = $item->findParentDoc()) {
+                    if ($request->get('status') == Document::STATUS_NOTICE) {
+                        throw new CanNotReplyNoticeException;   // 답글은 공지사항으로 설정할 수 없습니다.
+                    }
+
+                    if ($item->isAdopted($parentBoard)) {
+                        if ($isManager === false) {
+                            throw new CanNotUpdatedAdoptedException; // 채택된 글은 수정할 수 없습니다.
+                        }
+                    }
+
+                    // set redirect url
+                    $routeAction = $request->route()->getAction();
+                    if (Arr::get($routeAction, 'module') === BoardModule::getId() && Arr::get($routeAction, 'as') === 'update') {
+                        $request->merge([
+                            'redirect_url' => app(BoardUrlHandler::class)->getShow($parentBoard, $request->query->all()),
+                            'redirect_message' => xe_trans('board::updatedReply')
+                        ]);
+                    }
                 }
 
-                /** @var Board $parentBoard */
-                $parentBoard = Board::with('data')->findOrFail($item->parent_id);
-
-                if ($item->isAdopted($parentBoard) === true) {
-                    throw new CanNotUpdatedAdoptedException; // 채택된 글은 수정할 수 없습니다.
-                }
-
-                // set redirect url
-                $routeAction = $request->route()->getAction();
-
-                if (Arr::get($routeAction, 'module') === BoardModule::getId() && Arr::get($routeAction, 'as') === 'update') {
-                    $request->merge([
-                        'redirect_url' => app(BoardUrlHandler::class)->getShow($parentBoard, $request->query->all()),
-                        'redirect_message' => xe_trans('board::updatedReply')
-                    ]);
+                else if ($item->existsReplies() === true) {
+                    if ($replyConfig->get('protectUpdated', false) === true && $isManager === false) {
+                        throw new CanNotUpdatedHasReplyException; // 답글이 적힌 글은 수정할 수 없습니다.
+                    }
                 }
             }
 
@@ -154,7 +163,7 @@ abstract class ReplyIntercepts
         // update
         intercept(
             sprintf('%s@update', BoardService::class),
-            sprintf('%s::reply__validateUpdated', BoardPlugin::getId()),
+            sprintf('%s::reply__updated', BoardPlugin::getId()),
             $function
         );
     }
@@ -214,33 +223,6 @@ abstract class ReplyIntercepts
             sprintf('%s@remove', BoardHandler::class),
             sprintf('%s::reply__removed', BoardPlugin::getId()),
             $function
-        );
-    }
-
-    /**
-     * intercept protect updated
-     */
-    public static function interceptProtectUpdated()
-    {
-        // put
-        intercept(
-            sprintf('%s@put', BoardHandler::class),
-            sprintf('%s::reply__putLimit', BoardPlugin::getId()),
-            function ($function, Board $board, array $args, ConfigEntity $config) {
-                if (app(BoardPermissionHandler::class)->checkManageAction($board->instance_id)) {
-                    return $function($board, $args, $config);
-                }
-
-                $replyConfig =  ReplyConfigHandler::make()->getByBoardConfig($board->instance_id);
-
-                if ($replyConfig !== null && $replyConfig->get('protectUpdated', false)) {
-                    if ($board->existsReplies()) {
-                        throw new CanNotUpdatedHasReplyException;
-                    }
-                }
-
-                return $function($board, $args, $config);
-            }
         );
     }
 }

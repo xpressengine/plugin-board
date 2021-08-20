@@ -399,7 +399,6 @@ class Resources
         Plugin\Intercepts\ReplyIntercepts::interceptValidateStored();
         Plugin\Intercepts\ReplyIntercepts::interceptValidateUpdated();
         Plugin\Intercepts\ReplyIntercepts::interceptProtectDeleted();
-        Plugin\Intercepts\ReplyIntercepts::interceptProtectUpdated();
     }
 
     /**
