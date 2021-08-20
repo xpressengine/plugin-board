@@ -357,10 +357,10 @@ class Board extends Document implements CommentUsable, SeoUsable
     public function isAdopted(Board $parent = null): bool
     {
         if (is_null($parent)) {
-            $parent = $this->hasParentDoc() ? Board::with('data', 'replies')->find($this->parent_id) : null;
+            $parent = $this->hasParentDoc() ? Board::with('data')->find($this->parent_id) : null;
         }
 
-        return ($parent->getAttribute('data')->adopt_id ?? null) == $this->id;
+        return ($parent ? $parent->getAttribute('data')->adopt_id : null) == $this->id;
     }
 
     /**
