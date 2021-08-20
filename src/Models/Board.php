@@ -384,7 +384,7 @@ class Board extends Document implements CommentUsable, SeoUsable
      */
     public function replies(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Board::class, 'parent_id', 'id');
+        return $this->hasMany(Board::class, 'parent_id', 'id')->visible();
     }
 
     /**
