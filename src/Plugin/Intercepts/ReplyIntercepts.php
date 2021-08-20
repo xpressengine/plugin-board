@@ -25,7 +25,6 @@ use Xpressengine\Plugins\Board\Exceptions\{
 use Xpressengine\Plugins\Board\{
     BoardPermissionHandler,
     Components\Modules\BoardModule,
-    ConfigHandler,
     Handler as BoardHandler,
     Plugin as BoardPlugin,
     IdentifyManager,
@@ -165,48 +164,55 @@ abstract class ReplyIntercepts
      */
     public static function interceptProtectDeleted()
     {
-        $function = function ($function, Board $item, ConfigEntity $config, IdentifyManager $identifyManager) {
-            /** @var Board $parentBoard */
-            $parentBoard = null;
+        $function = function ($function, Board $item, ConfigEntity $config) {
             $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($item->instance_id);
+            $isManager = app(BoardPermissionHandler::class)->checkManageAction($item->instance_id);
 
-            if ($replyConfig !== null && $item->hasParentDoc()) {
-                $parentBoard = Board::with('data')->findOrFail($item->parent_id);
+            if ($replyConfig !== null) {
+                if ($parentBoard = $item->findParentDoc()) {
+                    // set redirect url
+                    $routeAction = request()->route()->getAction();
 
-                // set redirect url
-                $routeAction = request()->route()->getAction();
+                    if (Arr::get($routeAction, 'module') === BoardModule::getId() && in_array(Arr::get($routeAction, 'as'), ['destroy', 'trash'])) {
+                        request()->merge([
+                            'redirect_url' => app(BoardUrlHandler::class)->getShow($parentBoard, request()->query->all()),
+                            'redirect_message' => xe_trans('board::deletedReply')
+                        ]);
+                    }
 
-                if (Arr::get($routeAction, 'module') === BoardModule::getId() && Arr::get($routeAction, 'as') === 'destroy') {
-                    request()->merge([
-                        'redirect_url' => app(BoardUrlHandler::class)->getShow($parentBoard, request()->query->all()),
-                        'redirect_message' => xe_trans('board::deletedReply')
-                    ]);
+                    // 채택된 질문을 삭제하는 경우..
+                    if ($item->isAdopted($parentBoard)) {
+                        if ($isManager === false) {
+                            throw new CanNotDeletedAdoptedException; // 채택된 글은 삭제할 수 없습니다.
+                        }
+
+                        $parentBoard->getAttribute('data')->adopt_id = null;
+                        $parentBoard->getAttribute('data')->adopt_at = null;
+                        $parentBoard->getAttribute('data')->save();
+                    }
+                }
+
+                else if ($item->existsReplies() === true) {
+                    if ($replyConfig->get('protectDeleted', false) === true && $isManager === false) {
+                        throw new CanNotDeleteHasReplyException; // 답글이 적힌 글은 삭제할 수 없습니다.
+                    }
                 }
             }
 
-            if ($replyConfig !== null && app(BoardPermissionHandler::class)->checkManageAction($item->instance_id) === false) {
-                if ($replyConfig->get('protectDeleted', false) && $item->existsReplies()) {
-                    throw new CanNotDeleteHasReplyException; // 답글이 적힌 글은 삭제할 수 없습니다.
-                }
-
-                if ($parentBoard !== null && $item->isAdopted($parentBoard)) {
-                    throw new CanNotDeletedAdoptedException; // 채택된 글은 삭제할 수 없습니다.
-                }
-            }
-
-            if ($parentBoard !== null && $item->isAdopted($parentBoard)) {
-                $parentBoard->getAttribute('data')->adopt_id = null;
-                $parentBoard->getAttribute('data')->adopt_at = null;
-                $parentBoard->getAttribute('data')->save();
-            }
-
-           return $function($item, $config, $identifyManager);
+            return $function($item, $config);
         };
 
-        // destroy
+        // trash
         intercept(
-            sprintf('%s@destroy', BoardService::class),
-            sprintf('%s::reply__protectDestroyed', BoardPlugin::getId()),
+            sprintf('%s@trash', BoardHandler::class),
+            sprintf('%s::reply__trashed', BoardPlugin::getId()),
+            $function
+        );
+
+        // remove
+        intercept(
+            sprintf('%s@remove', BoardHandler::class),
+            sprintf('%s::reply__removed', BoardPlugin::getId()),
             $function
         );
     }
