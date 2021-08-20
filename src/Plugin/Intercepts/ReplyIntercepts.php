@@ -43,12 +43,17 @@ abstract class ReplyIntercepts
     {
         Event::listen('xe.plugin.board.articles', function ($query) {
             $instanceConfig = InstanceConfig::instance();
-            $instanceId = $instanceConfig->getInstanceId();
+            $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($instanceConfig->getInstanceId());
 
-            $boardConfig = app(ConfigHandler::class)->get($instanceId);
-
-            $query->when($boardConfig && $boardConfig->get('replyPost', false) === true, function($query) {
+            $query->when($replyConfig, function($query) {
                 $query->where('parent_id', '')->with('replies');
+
+                // 답변완료된 게시물만 보기. (has_adopted)
+                $query->when(\request()->has('has_adopted'), function($query) {
+                    $query->whereHas('data', function($dataQuery) {
+                        $dataQuery->whereNotNull('adopt_id');
+                    });
+                });
             });
         });
     }
