@@ -886,20 +886,35 @@ class Handler
     public function makeOrder(Builder $query, Request $request, ConfigEntity $config)
     {
         $orderType = $request->get('order_type', '');
+
         if ($orderType === '' && $config->get('orderType') != null) {
             $orderType = $config->get('orderType', '');
         }
 
-        if ($orderType == '') {
-            $query->orderBy('head', 'desc');
-        } elseif ($orderType == 'assent_count') {
-            $query->orderBy('assent_count', 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recently_created') {
-            $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recently_updated') {
-            $query->orderBy(Board::UPDATED_AT, 'desc')->orderBy('head', 'desc');
-        }
+        $query->when($orderType, function ($query, $orderType) {
+            switch ($orderType) {
+                case 'assent_count':
+                    $query->orderBy('assent_count', 'desc');
+                    break;
 
+                case 'recently_created':
+                    $query->orderBy(Board::CREATED_AT, 'desc');
+                    break;
+
+                case 'recently_updated':
+                    $query->orderBy(Board::UPDATED_AT, 'desc');
+                    break;
+
+                case 'read_count':
+                    $query->orderBy('read_count', 'desc');
+                    break;
+
+                default:
+                    break;
+            }
+        });
+
+        $query->orderBy('head', 'desc');
         $query->getProxyManager()->orders($query->getQuery(), $request->all());
 
         return $query;
