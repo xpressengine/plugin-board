@@ -43,7 +43,7 @@ class UnAdoptItem extends AbstractToggleMenu
         /** @var Board $board */
         $board = Board::findOrFail($this->identifier);
 
-        $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId);
+        $replyConfig = ReplyConfigHandler::make()->getActivated($this->instanceId);
         $parentBoard = $board->findParentDoc();
 
         if (is_null($replyConfig) || is_null($parentBoard)) {

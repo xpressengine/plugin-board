@@ -4,6 +4,7 @@ namespace Xpressengine\Plugins\Board;
 
 use XeDocument;
 use XeDynamicField;
+use Xpressengine\Config\ConfigEntity;
 
 class ReplyConfigHandler extends AbstractConfigHandler
 {
@@ -21,6 +22,9 @@ class ReplyConfigHandler extends AbstractConfigHandler
         'limitedOneTime' => false,      // 답변 작성은 한 게시물 당 한 번으로 제한합니다. (if, true)
     ];
 
+    /**
+     * boot reply config handler
+     */
     public static function boot()
     {
         app()->singleton(ReplyConfigHandler::class, function() {
@@ -30,19 +34,79 @@ class ReplyConfigHandler extends AbstractConfigHandler
         app()->alias(ConfigHandler::class, 'xe.board.reply.config');
     }
 
+    /**
+     * make reply config handler
+     *
+     * @return ReplyConfigHandler
+     */
     public static function make(): ReplyConfigHandler
     {
         return app(self::class);
     }
 
-    public function getByBoardConfig(string $boardId)
+    /**
+     * get config entity
+     *
+     * @param string $boardId
+     * @return ConfigEntity
+     */
+    public function get(string $boardId): ConfigEntity
     {
-        $config = app('xe.board.config')->get($boardId);
+        $name = $this->name($boardId);
+        $config = $this->configManager->get($name);
 
-        if (is_null($config)) {
-            return null;
+        if (! ($config instanceof ConfigEntity)) {
+            if (!$this->existsDefault()) {
+                $this->getDefault();
+            }
+
+            return $this->configManager->add($name, []);
         }
 
-        return $config->get('replyPost', false) ? ReplyConfigHandler::make()->get($boardId) : null;
+        return $config;
+    }
+
+    /**
+     * get activated reply configs
+     *
+     * @return array
+     */
+    public function getActivateds(): array
+    {
+        $configs = [];
+        $boardConfigs = app('xe.board.config')->gets();
+
+        foreach ($boardConfigs as $boardConfig) {
+            if ($boardConfig->get('replyPost', false) === true) {
+                array_push($configs, ReplyConfigHandler::make()->get($boardConfig->get('boardId')));
+            }
+        }
+
+        return $configs;
+    }
+
+    /**
+     * get activated ids
+     *
+     * @return array
+     */
+    public function getActivatedIds(): array
+    {
+        return array_map(
+            function($activated) { return $activated->get('boardId'); },
+            $this->getActivateds()
+        );
+    }
+
+    /**
+     * get activated reply configs
+     *
+     * @param string $boardId
+     * @return \Xpressengine\Config\ConfigEntity|null
+     */
+    public function getActivated(string $boardId)
+    {
+        $config = app('xe.board.config')->get($boardId);
+        return ($config !== null && $config->get('replyPost', false)) ? ReplyConfigHandler::make()->get($boardId) : null;
     }
 }

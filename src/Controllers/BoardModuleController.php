@@ -1274,7 +1274,7 @@ class BoardModuleController extends Controller
     public function adopt(Request $request, string $menuUrl, string $id)
     {
         $item = Board::division($this->instanceId)->findOrFail($id);
-        $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId);
+        $replyConfig = ReplyConfigHandler::make()->getActivated($this->instanceId);
 
         if (is_null($replyConfig)) {
             throw new DisabledReplyException; // 답글을 사용하지 않는 상태인 경우.
@@ -1318,7 +1318,7 @@ class BoardModuleController extends Controller
     {
         /** @var Board $item */
         $item = Board::division($this->instanceId)->findOrFail($id);
-        $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId);
+        $replyConfig = ReplyConfigHandler::make()->getActivated($this->instanceId);
 
         if (is_null($replyConfig)) {
             throw new DisabledReplyException; // 답글을 사용하지 않는 상태인 경우.

@@ -52,7 +52,7 @@ class DeleteItem extends AbstractToggleMenu
             return true;
         }
 
-        if ($replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId)) {
+        if ($replyConfig = ReplyConfigHandler::make()->getActivated($this->instanceId)) {
             if (($replyConfig->get('protectDeleted', false) && $board->existsReplies()) || $board->isAdopted()) {
                 return false;
             }

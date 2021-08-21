@@ -41,17 +41,35 @@ abstract class ReplyIntercepts
     public static function listenReplyArticles()
     {
         Event::listen('xe.plugin.board.articles', function ($query) {
-            $instanceConfig = InstanceConfig::instance();
-            $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($instanceConfig->getInstanceId());
+            $instanceId = null;
+
+            foreach ($query->getQuery()->wheres as $where) {
+                $column = Arr::get($where, 'column');
+                $value = Arr::get($where, 'value');
+
+                if ($column === 'instance_id' && $value !== null) {
+                    $instanceId = $value;
+                    break;
+                }
+            }
+
+            if (is_null($instanceId)) {
+                $instanceId = InstanceConfig::instance() ? InstanceConfig::instance()->getInstanceId() : null;
+            }
+
+            $replyConfig = ReplyConfigHandler::make()->getActivated($instanceId);
 
             $query->when($replyConfig, function($query) {
                 $query->where('parent_id', '')->with('replies');
 
                 // 답변완료된 게시물만 보기. (has_adopted)
                 $query->when(\request()->has('has_adopted'), function($query) {
-                    $query->whereHas('data', function($dataQuery) {
-                        $dataQuery->whereNotNull('adopt_id');
-                    });
+                    $query->whereHas('data', function($dataQuery) { $dataQuery->whereNotNull('adopt_id'); });
+                });
+
+                // 답변이 완료가 안된 게시물만 보기. (has_not_adopted)
+                $query->when(\request()->has('has_not_adopted'), function($query) {
+                    $query->whereHas('data', function($dataQuery) { $dataQuery->whereNull('adopt_id'); });
                 });
             });
         });
@@ -69,7 +87,7 @@ abstract class ReplyIntercepts
                 return $function($request, $user, $config, $identifyManager);
             }
 
-            $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($config->get('boardId'));
+            $replyConfig = ReplyConfigHandler::make()->getActivated($config->get('boardId'));
             if (is_null($replyConfig)) {
                 throw new DisabledReplyException; // 답글을 사용하지 않는 상태인 경우.
             }
@@ -125,7 +143,7 @@ abstract class ReplyIntercepts
     public static function interceptUpdated()
     {
         $function = function ($function, Board $item, Request $request, UserInterface $user, ConfigEntity $config, IdentifyManager $identifyManager) {
-            $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($item->instance_id);
+            $replyConfig = ReplyConfigHandler::make()->getActivated($item->instance_id);
             $isManager = app(BoardPermissionHandler::class)->checkManageAction($item->instance_id);
 
             if ($replyConfig !== null) {
@@ -174,7 +192,7 @@ abstract class ReplyIntercepts
     public static function interceptDeleted()
     {
         $function = function ($function, Board $item, ConfigEntity $config) {
-            $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($item->instance_id);
+            $replyConfig = ReplyConfigHandler::make()->getActivated($item->instance_id);
             $isManager = app(BoardPermissionHandler::class)->checkManageAction($item->instance_id);
 
             if ($replyConfig !== null) {

@@ -45,7 +45,7 @@ class ReplyItem extends AbstractToggleMenu
             return false;
         }
 
-        if ($replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId)) {
+        if ($replyConfig = ReplyConfigHandler::make()->getActivated($this->instanceId)) {
             if (($replyConfig->get('blockAuthorSelf', false) && $board->user_id == auth()->id())) {
                 return false;
             }

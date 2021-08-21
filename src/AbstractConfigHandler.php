@@ -80,20 +80,13 @@ abstract class AbstractConfigHandler
         return $parent === null ? [] : $this->configManager->children($parent);
     }
 
-    public function get(string $boardId): ConfigEntity
+    /**
+     * @param string $boardId
+     * @return ConfigEntity|null
+     */
+    public function get(string $boardId)
     {
-        $name = $this->name($boardId);
-        $config = $this->configManager->get($name);
-
-        if (! ($config instanceof ConfigEntity)) {
-            if (!$this->existsDefault()) {
-                $this->getDefault();
-            }
-
-            return $this->configManager->add($name, []);
-        }
-
-        return $config;
+       return $this->configManager->get($this->name($boardId));
     }
 
     protected function name(string $boardId): string

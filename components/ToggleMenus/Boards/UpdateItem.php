@@ -46,7 +46,7 @@ class UpdateItem extends AbstractToggleMenu
             return true;
         }
 
-        if ($replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId)) {
+        if ($replyConfig = ReplyConfigHandler::make()->getActivated($this->instanceId)) {
             if (($replyConfig->get('protectUpdated', false) && $board->existsReplies()) || $board->isAdopted()) {
                 return false;
             }
