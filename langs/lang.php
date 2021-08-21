@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'alreadyExistsInstance' => [
+        'ko' => '이미 존재하는 인스턴스입니다.',
+        'en' => 'already Exists Instance'
+    ],
     'adopted' => [
         'ko' => '답변을 채택합니다.',
         'en' => 'Adopted reply'

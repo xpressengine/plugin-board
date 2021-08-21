@@ -13,6 +13,7 @@
  */
 namespace Xpressengine\Plugins\Board\Exceptions;
 
+use Illuminate\Http\Response;
 use Xpressengine\Plugins\Board\BoardException;
 
 /**
@@ -27,4 +28,13 @@ use Xpressengine\Plugins\Board\BoardException;
  */
 class AlreadyExistsInstanceException extends BoardException
 {
+    /**
+     * @var string
+     */
+    protected $message = 'board::alreadyExistsInstance';
+
+    /**
+     * @var int
+     */
+    protected $statusCode = Response::HTTP_NOT_ACCEPTABLE;
 }
