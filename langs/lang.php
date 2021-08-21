@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'random' => [
+        'ko' => '무작위',
+        'en' => 'random'
+    ],
     'alreadyExistsInstance' => [
         'ko' => '이미 존재하는 인스턴스입니다.',
         'en' => 'already Exists Instance'

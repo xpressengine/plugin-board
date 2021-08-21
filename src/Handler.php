@@ -909,6 +909,10 @@ class Handler
                     $query->orderBy('read_count', 'desc');
                     break;
 
+                case 'random':
+                    $query->inRandomOrder();
+                    break;
+
                 default:
                     break;
             }
