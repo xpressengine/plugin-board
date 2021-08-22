@@ -4,7 +4,7 @@
         <option value="recently_created" @if(array_get($args, 'order_type') == 'recently_created') selected="selected" @endif >{{ xe_trans('board::recentlyCreated') }}</option>
         <option value="recently_updated" @if(array_get($args, 'order_type') == 'recently_updated') selected="selected" @endif >{{ xe_trans('board::recentlyUpdated') }}</option>
         <option value="assent_count" @if(array_get($args, 'order_type') == 'assent_count') selected="selected" @endif >{{xe_trans('board::assentOrder')}}</option>
-        <option value="assent_count" @if(array_get($args, 'order_type') == 'read_count') selected="selected" @endif >{{xe_trans('board::read_count')}}</option>
+        <option value="read_count" @if(array_get($args, 'order_type') == 'read_count') selected="selected" @endif >{{xe_trans('board::read_count')}}</option>
         <option value="random" @if(array_get($args, 'order_type') == 'random') selected="selected" @endif >{{xe_trans('board::random')}}</option>
     </select>
 </div>
