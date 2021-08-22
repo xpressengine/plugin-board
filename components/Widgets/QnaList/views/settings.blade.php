@@ -35,8 +35,8 @@
 <div class="form-group">
     <label>더보기</label>
     <select name="using_more" class="form-control">
-        <option value="using_more" @if(\Illuminate\Support\Arr::get($args, 'using_more', 'true') === 'true') selected="selected" @endif>사용</option>
-        <option value="using_more" @if(\Illuminate\Support\Arr::get($args, 'using_more', 'true') === 'false') selected="selected" @endif>사용안함</option>
+        <option value="true" @if(\Illuminate\Support\Arr::get($args, 'using_more', 'true') === 'true') selected="selected" @endif>사용</option>
+        <option value="false" @if(\Illuminate\Support\Arr::get($args, 'using_more', 'true') === 'false') selected="selected" @endif>사용안함</option>
     </select>
 </div>
 
