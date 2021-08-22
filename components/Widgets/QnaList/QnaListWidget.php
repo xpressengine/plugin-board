@@ -35,9 +35,11 @@ class QnaListWidget extends AbstractWidget
         $moreUrl = Arr::get($widgetConfig, 'using_more') !== 'true' ? null : app(UrlHandler::class)->get('index', $boardRequest->all(), $boardId);
 
         return $this->renderSkin([
+            'boardConfig' => $boardConfig,
             'widgetConfig' => $widgetConfig,
             'boards' => $boards,
             'moreUrl' => $moreUrl,
+            'urlHandler' => app(UrlHandler::class),
         ]);
     }
 
