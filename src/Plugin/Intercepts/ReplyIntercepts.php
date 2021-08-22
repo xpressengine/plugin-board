@@ -40,7 +40,7 @@ abstract class ReplyIntercepts
      */
     public static function listenReplyArticles()
     {
-        Event::listen('xe.plugin.board.articles', function ($query) {
+        Event::listen('xe.plugin.board.articles', function ($query, $request) {
             $instanceId = null;
 
             foreach ($query->getQuery()->wheres as $where) {
@@ -59,16 +59,16 @@ abstract class ReplyIntercepts
 
             $replyConfig = ReplyConfigHandler::make()->getActivated($instanceId);
 
-            $query->when($replyConfig, function($query) {
+            $query->when($replyConfig, function($query) use($request) {
                 $query->where('parent_id', '')->with('replies');
 
                 // 답변완료된 게시물만 보기. (has_adopted)
-                $query->when(\request()->has('has_adopted'), function($query) {
+                $query->when($request->has('has_adopted'), function($query) {
                     $query->whereHas('data', function($dataQuery) { $dataQuery->whereNotNull('adopt_id'); });
                 });
 
                 // 답변이 완료가 안된 게시물만 보기. (has_not_adopted)
-                $query->when(\request()->has('has_not_adopted'), function($query) {
+                $query->when($request->has('has_not_adopted'), function($query) {
                     $query->whereHas('data', function($dataQuery) { $dataQuery->whereNull('adopt_id'); });
                 });
             });
