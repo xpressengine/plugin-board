@@ -59,7 +59,7 @@ class QnaListWidget extends AbstractWidget
             $key = $adoptFilter === 'only_unAdopted' ? 'has_not_adopted' : $key;
 
             if ($key !== null) {
-                $request->merge([$key => '']);
+                $request->merge([$key => 'true']);
             }
         }
 
