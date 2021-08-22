@@ -58,7 +58,23 @@ abstract class ReplyIntercepts
             }
 
             $replyConfig = ReplyConfigHandler::make()->getActivated($instanceId);
+        
+            // 최근에 작성된 게시물
+            $query->when($request->get('created_at'), function ($query, $createdAt) {
+                if (is_array($createdAt) === false) {
+                    return false;
+                }
 
+                $query->when(Arr::get($createdAt, 'start'), function($query, $startRangeAt) {
+                    $query->where('created_at', '>=', $startRangeAt);
+                });
+
+                $query->when(Arr::get($createdAt, 'end'), function($query, $endRangeAt) {
+                    $query->where('created_at', '<=', $endRangeAt);
+                });
+            });
+
+            // 답변여부에 따른 분류
             $query->when($replyConfig, function($query) use($request) {
                 $query->where('parent_id', '')->with('replies');
 

@@ -15,6 +15,11 @@
 </div>
 
 <div class="form-group">
+    <label>최근 몇일</label>
+    <input type="number" name="recent_date" class="form-control" value="{{ array_get($args, 'recent_date') }}" />
+</div>
+
+<div class="form-group">
     <label>채택 여부에 따른 필터링</label>
     <select name="adopt_filter" class="form-control">
         <option value="" @if(\Illuminate\Support\Arr::get($args, 'adopt_filter', '')) selected="selected" @endif>사용안함</option>

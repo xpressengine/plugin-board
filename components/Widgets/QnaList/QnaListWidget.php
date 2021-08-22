@@ -2,6 +2,7 @@
 
 namespace Xpressengine\Plugins\Board\Components\Widgets\QnaList;
 
+use Carbon\Carbon;
 use View;
 use Illuminate\Support\Arr;
 use Xpressengine\Config\ConfigEntity;
@@ -24,6 +25,8 @@ class QnaListWidget extends AbstractWidget
      */
     public function render(): string
     {
+        /** @var UrlHandler $urlHandler */
+        $urlHandler = app(UrlHandler::class);
         $widgetConfig = $this->setting();
         $boardId = Arr::get($widgetConfig, 'board_id');
         $boardMenuItem = MenuItem::where('type', 'board@board')->findOrFail($boardId);
@@ -31,15 +34,28 @@ class QnaListWidget extends AbstractWidget
         $boardRequest = $this->getBoardRequest($widgetConfig);
         $boardConfig = $this->getBoardConfig($boardMenuItem, Arr::get($widgetConfig, 'take'));
 
+        $recentDate = Arr::get($widgetConfig, 'recent_date', 0);
+
+        if ($recentDate !== 0) {
+            $current = Carbon::now();
+
+            $boardRequest->merge([
+                'created_at' => [
+                    'start' => $current->copy()->addDay(-1 * $recentDate)->startOfDay()->toString(),
+                    'end' => $current->copy()->addDay($recentDate)->endOfDay()->toString()
+                ]
+            ]);
+        }
+
         $boards = app(BoardService::class)->getItems($boardRequest, $boardConfig)->getCollection();
-        $moreUrl = Arr::get($widgetConfig, 'using_more') !== 'true' ? null : app(UrlHandler::class)->get('index', $boardRequest->all(), $boardId);
+        $moreUrl = Arr::get($widgetConfig, 'using_more') !== 'true' ? null : $urlHandler->get('index', $boardRequest->all(), $boardId);
 
         return $this->renderSkin([
             'boardConfig' => $boardConfig,
             'widgetConfig' => $widgetConfig,
             'boards' => $boards,
             'moreUrl' => $moreUrl,
-            'urlHandler' => app(UrlHandler::class),
+            'urlHandler' => $urlHandler,
         ]);
     }
 
