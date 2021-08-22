@@ -935,6 +935,7 @@ class Handler
             ['value' => 'assent_count', 'text' => 'board::assentOrder'],
             ['value' => 'recently_created', 'text' => 'board::recentlyCreated'],
             ['value' => 'recently_updated', 'text' => 'board::recentlyUpdated'],
+            ['value' => 'read_count', 'text' => 'board::read_count']
         ];
     }
 
