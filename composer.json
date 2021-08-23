@@ -1,246 +1,260 @@
 {
-  "name": "xpressengine-plugin/board",
-  "description": "XpressEngine's plugin for bundle (XE)",
-  "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
-  "version": "1.0.14",
-  "support": {
-    "email": "developers@xpressengine.com"
-  },
-  "authors": [
-    {
-      "name": "XE Developers",
-      "email": "developers@xpressengine.com",
-      "homepage": "https://www.xpressengine.com",
-      "role": "Developer"
-    }
-  ],
-  "license": "LGPL-3.0-or-later",
-  "type": "xpressengine-plugin",
-  "extra": {
-    "xpressengine": {
-      "title": "게시판",
-      "icon": "icon.png",
-      "component": {
-        "module/board@board": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Modules\\BoardModule",
-          "name": "Board",
-          "description": "XE Board 모듈",
-          "screenshot" : [
-            "/plugins/board/assets/img/screenshots/menuType1.png"
-          ]
-        },
-        "module/board@board/skin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Common\\CommonSkin",
-          "name": "게시판 기본 스킨",
-          "description": "게시판 기본 스킨.",
-          "screenshot" : [
-            "/plugins/board/assets/img/screenshots/default_skin.png"
-          ]
-        },
-        "module/board@board/skin/board@gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Gallery\\GallerySkin",
-          "name": "게시판 갤러리 스킨",
-          "description": "게시판 갤러리 스킨.",
-          "screenshot" : [
-            "/plugins/board/assets/img/screenshots/gallery_skin.png"
-          ]
-        },
-        "module/board@board/skin/board@blog": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Blog\\BlogSkin",
-          "name": "게시판 블로그 스킨",
-          "description": "게시판 블로그 스킨.",
-          "screenshot" : [
-            "/plugins/board/assets/img/screenshots/blog_skin.png"
-          ]
-        },
-        "module/board@board/skin/board@xe_default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEDefault\\XEDefault",
-          "name": "XE 기본형 스킨",
-          "description": "XE 기본형 스킨",
-          "screenshot" : [
-            "/plugins/board/assets/img/screenshots/xe-default.jpg"
-          ]
-        },
-        "module/board@board/skin/board@xe_gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEGallery\\XEGallery",
-          "name": "XE 갤러리형 스킨",
-          "description": "XE 갤러리형 스킨",
-          "screenshot" : [
-            "/plugins/board/assets/img/screenshots/xe-gallery.jpg"
-          ]
-        },
-        "module/board@board/skin/board@xe_webzine": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEWebzine\\XEWebzine",
-          "name": "XE 웹진형 스킨",
-          "description": "XE 웹진형 스킨",
-          "screenshot" : [
-            "/plugins/board/assets/img/screenshots/xe-webzine.jpg"
-          ]
-        },
-        "uiobject/board@new_select": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\NewSelect\\NewSelectUIObject",
-          "name": "New select UIO",
-          "description": "신규 Select UIObject"
-        },
-        "uiobject/board@new_title": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\NewTitle\\NewTitleUIObject",
-          "name": "New title UIO",
-          "description": "신규 Title UIObject"
-        },
-        "widget/board@list": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
-          "name": "게시물 리스트 위젯",
-          "description": "게시물 리스트 보여주는 위젯"
-        },
-        "widget/board@list/skin/board@basicList": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicListSkin",
-          "name": "Basic 목록 스킨",
-          "description": "Basic 목록 스킨"
-        },
-        "widget/board@list/skin/board@basicCard": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicCardSkin",
-          "name": "Basic 카드(갤러리) 스킨",
-          "description": "Basic 카드(갤러리) 스킨"
-        },
-        "widget/board@list/skin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Common\\CommonSkin",
-          "name": "기본 게시물 위젯 스킨",
-          "description": "게시물 리스트 위젯용 기본 스킨"
-        },
-        "widget/board@list/skin/board@gallery": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Gallery\\GallerySkin",
-          "name": "갤러리형 게시물 위젯 스킨",
-          "description": "갤러리형 게시물 리스트 위젯용 스킨"
-        },
-        "module/board@board/settingsSkin/board@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Settings\\Common\\CommonSettingsSkin",
-          "name": "게시판 관리자 기본 스킨",
-          "description": "게시판 관리자 기본스킨",
-          "screenshot" : []
-        },
-        "fieldType/xpressengine@Category/fieldSkin/xpressengine@default": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\DynamicFields\\Category\\Skins\\DesignSelect\\DesignSelectSkin",
-          "name": "Category Design select",
-          "description": ""
-        },
-        "uiobject/board@select": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\DesignSelect\\DesignSelectUIObject",
-          "name": "Design select",
-          "description": "디자인 셀렉트"
-        },
-        "uiobject/board@tag": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Tag\\TagUIObject",
-          "name": "Tag",
-          "description": "tag UIObject"
-        },
-        "uiobject/board@share": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Share\\ShareUIObject",
-          "name": "Share",
-          "description": "share"
-        },
-        "uiobject/board@title": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Title\\TitleUIObject",
-          "name": "Title",
-          "description": "title"
-        },
-        "uiobject/board@share/toggleMenu/board@facebook": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\FacebookItem",
-          "name": "Facebook share toggle menu",
-          "description": ""
-        },
-        "uiobject/board@share/toggleMenu/board@line": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\LineItem",
-          "name": "Line share toggle menu",
-          "description": ""
-        },
-        "uiobject/board@share/toggleMenu/board@twitter": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\TwitterItem",
-          "name": "Twitter share toggle menu",
-          "description": ""
-        },
-        "uiobject/board@share/toggleMenu/board@copy": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\CopyItem",
-          "name": "Copy url share toggle menu",
-          "description": ""
-        },
-        "module/board@board/toggleMenu/xpressengine@trashItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\TrashItem",
-          "name": "휴지통 토글 메뉴",
-          "description": "선택한 문서를 휴지통으로 보냅니다."
-        },
-        "module/board@board/toggleMenu/xpressengine@printItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\PrintItem",
-          "name": "인쇄 토글 메뉴",
-          "description": "선택한 문서를 인쇄합니다."
-        },
-        "user/toggleMenu/board@wroteItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Users\\WroteItem",
-          "name": "작성 글 보기 토글 메뉴",
-          "description": "사용자(유저)가 작성한 글을 확인합니다."
-        },
-        "user/toggleMenu/board@adminWroteItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Users\\Admin\\WroteItem",
-          "name": "작성 글 추적 토글 메뉴",
-          "description": "관리자용, 사용자(유저)가 작성한 글을 확인합니다."
-        },
-        "module/board@board/toggleMenu/board@deleteItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\DeleteItem",
-          "name": "삭제 토글 메뉴",
-          "description": "토글 클릭 시 게시글을 삭제합니다."
-        },
-        "module/board@board/toggleMenu/board@updateItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\UpdateItem",
-          "name": "수정 토글 메뉴",
-          "description": "토글 클릭 시 게시글 수정 페이지로 이동시킵니다."
-        },
-        "module/board@board/toggleMenu/board@adminSearchingIpItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\Admin\\SearchingIpItem",
-          "name": "IP 토글 메뉴",
-          "description": "관리자용, 선택된 글과 동일한 IP로 작성된 글을 확인합니다."
-        },
-        "module/board@board/toggleMenu/board@ReplyItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\ReplyItem",
-          "name": "답글 토글 메뉴",
-          "description": "토글 클릭 시 게시글에 대한 답글을 작성할 수 있습니다."
-        },
-        "module/board@board/toggleMenu/board@adoptItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\AdoptItem",
-          "name": "채택 토글 메뉴",
-          "description": "토글 클릭 시 답글 하나를 채택 상태로 만들 수 있습니다."
-        },
-        "module/board@board/toggleMenu/board@unAdoptItem": {
-          "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\UnAdoptItem",
-          "name": "채택 취소 토글 메뉴",
-          "description": "토글 클릭 시 답글 하나를 채택을 취소 상태로 만들 수 있습니다."
-        },
-        "widget/board@qnalist": {
-          "name": "QnA 게시물 리스트 위젯",
-          "description": "QnA 게시물 리스트 위젯",
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\QnaList\\QnaListWidget"
-        },
-        "widget/board@qnalist/skin/board@basicQnaList": {
-          "name": "Basic QnA 게시물 리스트 스킨",
-          "description": "QnA 게시물 리스트 위젯에 대한 Basic 스킨",
-          "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\QnaList\\Skins\\Basic\\BasicQnaListSkin"
-        }
-      },
-      "screenshots" : [
-        "/plugins/board/assets/img/screenshots/plugin1.png"
-      ]
-    }
-  },
-  "require": {
-    "xpressengine/xpressengine": "~3.0.2",
-    "xpressengine-plugin/ckeditor": "*",
-    "xpressengine-plugin/comment": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "Xpressengine\\Plugins\\Board\\": "src/",
-      "Xpressengine\\Plugins\\Board\\Components\\": "components/"
+    "name": "xpressengine-plugin/board",
+    "description": "XpressEngine's plugin for bundle (XE)",
+    "keywords": [
+        "xpressengine bundle",
+        "XE board",
+        "Xpressengine3 board"
+    ],
+    "version": "1.0.14",
+    "support": {
+        "email": "developers@xpressengine.com"
     },
-    "files": [
-      "src/helpers.php"
-    ]
-  }
+    "authors": [
+        {
+            "name": "XE Developers",
+            "email": "developers@xpressengine.com",
+            "homepage": "https://www.xpressengine.com",
+            "role": "Developer"
+        }
+    ],
+    "license": "LGPL-3.0-or-later",
+    "type": "xpressengine-plugin",
+    "extra": {
+        "xpressengine": {
+            "title": "게시판",
+            "icon": "icon.png",
+            "component": {
+                "module/board@board": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Modules\\BoardModule",
+                    "name": "Board",
+                    "description": "XE Board 모듈",
+                    "screenshot": [
+                        "/plugins/board/assets/img/screenshots/menuType1.png"
+                    ]
+                },
+                "module/board@board/skin/board@default": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Common\\CommonSkin",
+                    "name": "게시판 기본 스킨",
+                    "description": "게시판 기본 스킨.",
+                    "screenshot": [
+                        "/plugins/board/assets/img/screenshots/default_skin.png"
+                    ]
+                },
+                "module/board@board/skin/board@gallery": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Gallery\\GallerySkin",
+                    "name": "게시판 갤러리 스킨",
+                    "description": "게시판 갤러리 스킨.",
+                    "screenshot": [
+                        "/plugins/board/assets/img/screenshots/gallery_skin.png"
+                    ]
+                },
+                "module/board@board/skin/board@blog": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Blog\\BlogSkin",
+                    "name": "게시판 블로그 스킨",
+                    "description": "게시판 블로그 스킨.",
+                    "screenshot": [
+                        "/plugins/board/assets/img/screenshots/blog_skin.png"
+                    ]
+                },
+                "module/board@board/skin/board@xe_default": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEDefault\\XEDefault",
+                    "name": "XE 기본형 스킨",
+                    "description": "XE 기본형 스킨",
+                    "screenshot": [
+                        "/plugins/board/assets/img/screenshots/xe-default.jpg"
+                    ]
+                },
+                "module/board@board/skin/board@xe_gallery": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEGallery\\XEGallery",
+                    "name": "XE 갤러리형 스킨",
+                    "description": "XE 갤러리형 스킨",
+                    "screenshot": [
+                        "/plugins/board/assets/img/screenshots/xe-gallery.jpg"
+                    ]
+                },
+                "module/board@board/skin/board@xe_webzine": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\XEWebzine\\XEWebzine",
+                    "name": "XE 웹진형 스킨",
+                    "description": "XE 웹진형 스킨",
+                    "screenshot": [
+                        "/plugins/board/assets/img/screenshots/xe-webzine.jpg"
+                    ]
+                },
+                "uiobject/board@new_select": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\NewSelect\\NewSelectUIObject",
+                    "name": "New select UIO",
+                    "description": "신규 Select UIObject"
+                },
+                "uiobject/board@new_title": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\NewTitle\\NewTitleUIObject",
+                    "name": "New title UIO",
+                    "description": "신규 Title UIObject"
+                },
+                "widget/board@list": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\ArticleListWidget",
+                    "name": "게시물 리스트 위젯",
+                    "description": "게시물 리스트 보여주는 위젯"
+                },
+                "widget/board@list/skin/board@basicList": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicListSkin",
+                    "name": "Basic 목록 스킨",
+                    "description": "Basic 목록 스킨"
+                },
+                "widget/board@list/skin/board@basicCard": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Basic\\BasicCardSkin",
+                    "name": "Basic 카드(갤러리) 스킨",
+                    "description": "Basic 카드(갤러리) 스킨"
+                },
+                "widget/board@list/skin/board@default": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Common\\CommonSkin",
+                    "name": "기본 게시물 위젯 스킨",
+                    "description": "게시물 리스트 위젯용 기본 스킨"
+                },
+                "widget/board@list/skin/board@gallery": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\ArticleList\\Skins\\Gallery\\GallerySkin",
+                    "name": "갤러리형 게시물 위젯 스킨",
+                    "description": "갤러리형 게시물 리스트 위젯용 스킨"
+                },
+                "module/board@board/settingsSkin/board@default": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Skins\\Board\\Settings\\Common\\CommonSettingsSkin",
+                    "name": "게시판 관리자 기본 스킨",
+                    "description": "게시판 관리자 기본스킨",
+                    "screenshot": []
+                },
+                "fieldType/xpressengine@Category/fieldSkin/xpressengine@default": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\DynamicFields\\Category\\Skins\\DesignSelect\\DesignSelectSkin",
+                    "name": "Category Design select",
+                    "description": ""
+                },
+                "uiobject/board@select": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\DesignSelect\\DesignSelectUIObject",
+                    "name": "Design select",
+                    "description": "디자인 셀렉트"
+                },
+                "uiobject/board@tag": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Tag\\TagUIObject",
+                    "name": "Tag",
+                    "description": "tag UIObject"
+                },
+                "uiobject/board@share": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Share\\ShareUIObject",
+                    "name": "Share",
+                    "description": "share"
+                },
+                "uiobject/board@title": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\UIObjects\\Title\\TitleUIObject",
+                    "name": "Title",
+                    "description": "title"
+                },
+                "uiobject/board@share/toggleMenu/board@facebook": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\FacebookItem",
+                    "name": "Facebook share toggle menu",
+                    "description": ""
+                },
+                "uiobject/board@share/toggleMenu/board@line": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\LineItem",
+                    "name": "Line share toggle menu",
+                    "description": ""
+                },
+                "uiobject/board@share/toggleMenu/board@twitter": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\TwitterItem",
+                    "name": "Twitter share toggle menu",
+                    "description": ""
+                },
+                "uiobject/board@share/toggleMenu/board@copy": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Shares\\CopyItem",
+                    "name": "Copy url share toggle menu",
+                    "description": ""
+                },
+                "module/board@board/toggleMenu/xpressengine@trashItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\TrashItem",
+                    "name": "휴지통 토글 메뉴",
+                    "description": "선택한 문서를 휴지통으로 보냅니다."
+                },
+                "module/board@board/toggleMenu/xpressengine@printItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\PrintItem",
+                    "name": "인쇄 토글 메뉴",
+                    "description": "선택한 문서를 인쇄합니다."
+                },
+                "user/toggleMenu/board@wroteItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Users\\WroteItem",
+                    "name": "작성 글 보기 토글 메뉴",
+                    "description": "사용자(유저)가 작성한 글을 확인합니다."
+                },
+                "user/toggleMenu/board@adminWroteItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Users\\Admin\\WroteItem",
+                    "name": "작성 글 추적 토글 메뉴",
+                    "description": "관리자용, 사용자(유저)가 작성한 글을 확인합니다."
+                },
+                "module/board@board/toggleMenu/board@deleteItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\DeleteItem",
+                    "name": "삭제 토글 메뉴",
+                    "description": "토글 클릭 시 게시글을 삭제합니다."
+                },
+                "module/board@board/toggleMenu/board@updateItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\UpdateItem",
+                    "name": "수정 토글 메뉴",
+                    "description": "토글 클릭 시 게시글 수정 페이지로 이동시킵니다."
+                },
+                "module/board@board/toggleMenu/board@adminSearchingIpItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\Admin\\SearchingIpItem",
+                    "name": "IP 토글 메뉴",
+                    "description": "관리자용, 선택된 글과 동일한 IP로 작성된 글을 확인합니다."
+                },
+                "module/board@board/toggleMenu/board@ReplyItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\ReplyItem",
+                    "name": "답글 토글 메뉴",
+                    "description": "토글 클릭 시 게시글에 대한 답글을 작성할 수 있습니다."
+                },
+                "module/board@board/toggleMenu/board@adoptItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\AdoptItem",
+                    "name": "채택 토글 메뉴",
+                    "description": "토글 클릭 시 답글 하나를 채택 상태로 만들 수 있습니다."
+                },
+                "module/board@board/toggleMenu/board@unAdoptItem": {
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\ToggleMenus\\Boards\\UnAdoptItem",
+                    "name": "채택 취소 토글 메뉴",
+                    "description": "토글 클릭 시 답글 하나를 채택을 취소 상태로 만들 수 있습니다."
+                },
+                "widget/board@qnalist": {
+                    "name": "QnA 게시물 리스트 위젯",
+                    "description": "QnA 게시물 리스트 위젯",
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\QnaList\\QnaListWidget"
+                },
+                "widget/board@qnalist/skin/board@basicQnaList": {
+                    "name": "Basic QnA 게시물 리스트 스킨",
+                    "description": "QnA 게시물 리스트 위젯에 대한 Basic 스킨",
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\QnaList\\Skins\\Basic\\BasicQnaListSkin"
+                },
+                "widget/board@searching": {
+                    "name": "게시물 검색 위젯",
+                    "description": "게시물 검색 위젯",
+                    "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\Searching\\SearchingWidget"
+                },
+                "widget/board@searching/skin/board@basicSearching": {
+                  "name": "Basic 게시물 검색 스킨",
+                  "description": "게시물 검색 Basic 스킨",
+                  "class": "Xpressengine\\Plugins\\Board\\Components\\Widgets\\Searching\\Skins\\Basic\\BasicSearchingSkin"
+                }
+            },
+            "screenshots": [
+                "/plugins/board/assets/img/screenshots/plugin1.png"
+            ]
+        }
+    },
+    "require": {
+        "xpressengine/xpressengine": "~3.0.2",
+        "xpressengine-plugin/ckeditor": "*",
+        "xpressengine-plugin/comment": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Xpressengine\\Plugins\\Board\\": "src/",
+            "Xpressengine\\Plugins\\Board\\Components\\": "components/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    }
 }
