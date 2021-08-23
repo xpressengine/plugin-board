@@ -16,7 +16,7 @@ class QnaListWidget extends AbstractWidget
 {
     use SupportInfoTrait;
 
-    protected static $path = 'board/src/Widgets/QnaList';
+    protected static $path = 'board/components/Widgets/QnaList';
 
    /**
      * render
