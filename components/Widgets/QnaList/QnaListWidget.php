@@ -34,7 +34,7 @@ class QnaListWidget extends AbstractWidget
         $boardRequest = $this->getBoardRequest($widgetConfig);
         $boardConfig = $this->getBoardConfig($boardMenuItem, Arr::get($widgetConfig, 'take'));
 
-        $recentDate = Arr::get($widgetConfig, 'recent_date', 0);
+        $recentDate = intval(Arr::get($widgetConfig, 'recent_date', 0));
 
         if ($recentDate !== 0) {
             $current = Carbon::now();
