@@ -606,19 +606,14 @@ class BoardModuleController extends Controller
         }
 
         $item = $service->store($request, Auth::user(), $this->config, $identifyManager);
+        $redirectUrl = $this->getCustomRedirectUrl($request);
 
-        if($request->has('redirect_url')) {
-            if($request->has('redirect_message')) {
-                return XePresenter::redirect()
-                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
-            }
-            return XePresenter::redirect()
-                ->to($request->get('redirect_url'));
+        if (is_null($redirectUrl)) {
+            $to = $this->urlHandler->getShow($item, $request->query->all());
+            $redirectUrl = XePresenter::redirect()->to($to)->setData(['item' => $item]);
         }
 
-        return XePresenter::redirect()
-            ->to($this->urlHandler->getShow($item, $request->query->all()))
-            ->setData(['item' => $item]);
+        return $redirectUrl;
     }
 
     /**
@@ -772,22 +767,14 @@ class BoardModuleController extends Controller
         }
 
         $item = $service->update($item, $request, Auth::user(), $this->config, $identifyManager);
+        $redirectUrl = $this->getCustomRedirectUrl($request);
 
-        if($request->has('redirect_url')) {
-            if($request->has('redirect_message')) {
-                return XePresenter::redirect()
-                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
-            }
-            return XePresenter::redirect()
-                ->to($request->get('redirect_url'));
+        if (is_null($redirectUrl)) {
+            $to = $this->urlHandler->getShow($item,$request->query->all());
+            $redirectUrl = XePresenter::redirect()->to($to)->setData(['item' => $item]);
         }
 
-        return XePresenter::redirect()->to(
-            $this->urlHandler->getShow(
-                $item,
-                $request->query->all()
-            )
-        )->setData(['item' => $item]);
+        return $redirectUrl;
     }
 
     /**
@@ -961,19 +948,13 @@ class BoardModuleController extends Controller
 
         $service->destroy($item, $this->config, $identifyManager);
 
-        if($request->has('redirect_url')) {
-            if($request->has('redirect_message')) {
-                return XePresenter::redirect()
-                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
-            }
-
-            return XePresenter::redirect()
-                ->to($request->get('redirect_url'));
+        $redirectUrl = $this->getCustomRedirectUrl($request);
+        if (is_null($redirectUrl)) {
+            $to = $this->urlHandler->get('index', $request->query->all());
+            $redirectUrl = xe_redirect()->to($to)->setData(['item' => $item]);
         }
 
-        return xe_redirect()->to(
-            $this->urlHandler->get('index', $request->query->all())
-        )->setData(['item' => $item]);
+        return $redirectUrl;
     }
 
     /**
@@ -997,14 +978,15 @@ class BoardModuleController extends Controller
 
         // use page resolver
         $items = $service->getItems($request, $this->config, $id);
-
         $this->handler->trash($item, $this->config);
 
-        return xe_redirect()->to(
-            $this->urlHandler->get('index', $request->query->all())
-        )->setData([
-            'item' => $item,
-        ]);
+        $redirectUrl = $this->getCustomRedirectUrl($request);
+        if (is_null($redirectUrl)) {
+            $to = $this->urlHandler->get('index', $request->query->all());
+            $redirectUrl = xe_redirect()->to($to)->setData(['item' => $item]);
+        }
+
+        return $redirectUrl;
     }
 
     /**
@@ -1265,5 +1247,24 @@ class BoardModuleController extends Controller
         $title = strip_tags(html_entity_decode($title));
 
         return $title;
+    }
+
+    /**
+     * get custom redirect url
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    private function getCustomRedirectUrl(Request $request)
+    {
+        if ($request->has('redirect_url') === true) {
+            if ($request->has('redirect_message') === true) {
+                \Session::flash('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
+            }
+
+            return XePresenter::redirect()->to($request->get('redirect_url'));
+        }
+
+        return null;
     }
 }
