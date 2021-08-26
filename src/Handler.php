@@ -890,16 +890,30 @@ class Handler
             $orderType = $config->get('orderType', '');
         }
 
-        if ($orderType == '') {
-            $query->orderBy('head', 'desc');
-        } elseif ($orderType == 'assent_count') {
-            $query->orderBy('assent_count', 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recently_created') {
-            $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recently_updated') {
-            $query->orderBy(Board::UPDATED_AT, 'desc')->orderBy('head', 'desc');
-        }
+        $query->when($orderType, function ($query, $orderType) {
+            switch ($orderType) {
+                case 'assent_count':    // 좋아요 수
+                    $query->orderBy('assent_count', 'desc');
+                    break;
 
+                case 'recently_created': // 최근 생성순
+                    $query->orderBy(Board::CREATED_AT, 'desc');
+                    break;
+
+                case 'recently_updated': // 최근 수정순
+                    $query->orderBy(Board::UPDATED_AT, 'desc');
+                    break;
+
+                case 'read_count':  // 조회수
+                    $query->orderBy('read_count', 'desc');
+                    break;
+
+                default:
+                    break;
+            }
+        });
+
+        $query->orderBy('head', 'desc');
         $query->getProxyManager()->orders($query->getQuery(), $request->all());
 
         return $query;
@@ -916,6 +930,7 @@ class Handler
             ['value' => 'assent_count', 'text' => 'board::assentOrder'],
             ['value' => 'recently_created', 'text' => 'board::recentlyCreated'],
             ['value' => 'recently_updated', 'text' => 'board::recentlyUpdated'],
+            ['value' => 'read_count', 'text' => 'board::read_count']
         ];
     }
 
