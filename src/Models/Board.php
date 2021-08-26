@@ -13,11 +13,13 @@
  */
 namespace Xpressengine\Plugins\Board\Models;
 
-use Illuminate\Support\Collection;
+use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Counter\Models\CounterLog;
 use Xpressengine\Document\Models\Document;
+use Xpressengine\Http\Request;
 use Xpressengine\Media\MediaManager;
 use Xpressengine\Media\Models\Media;
+use Xpressengine\Plugins\Board\AnonymityHandler;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Comment\CommentUsable;
 use Xpressengine\Plugins\Comment\Models\Comment;
@@ -252,6 +254,7 @@ class Board extends Document implements CommentUsable, SeoUsable
         return $this->belongsTo(BoardGalleryThumb::class, 'id', 'target_id');
     }
 
+
     /**
      * get slug
      *
@@ -346,85 +349,6 @@ class Board extends Document implements CommentUsable, SeoUsable
     public function isNotice(): bool
     {
         return $this->status == static::STATUS_NOTICE;
-    }
-
-    /**
-     * is adopted
-     *
-     * @param Board $parent
-     * @return bool
-     */
-    public function isAdopted(Board $parent = null): bool
-    {
-        if (is_null($parent)) {
-            $parent = $this->hasParentDoc() ? Board::with('data', 'replies')->find($this->parent_id) : null;
-        }
-
-        return ($parent->getAttribute('data')->adopt_id ?? null) == $this->id;
-    }
-
-    /**
-     * has adopted
-     *
-     * @return bool
-     */
-    public function hasAdopted(): bool
-    {
-        $adoptedId = $this->getAttribute('data')->adopt_id ?? null;
-
-        return $this->getReplies()->contains(function(Board $reply) use($adoptedId) {
-            return $reply->id == $adoptedId;
-        });
-    }
-
-    /**
-     * replies
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function replies(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Board::class, 'parent_id', 'id');
-    }
-
-    /**
-     * get replies
-     *
-     * @return Collection
-     */
-    public function getReplies(): Collection
-    {
-        return $this->getAttribute('replies');
-    }
-
-    /**
-     * exists replies
-     *
-     * @return bool
-     */
-    public function existsReplies(): bool
-    {
-        return $this->getReplies()->count() > 0;
-    }
-
-    /**
-     * find parent doc
-     *
-     * @return Board|null
-     */
-    public function findParentDoc()
-    {
-        return $this->hasParentDoc() ? Board::with('replies', 'data')->find($this->parent_id) : null;
-    }
-
-    /**
-     * has parent doc
-     *
-     * @return bool
-     */
-    public function hasParentDoc(): bool
-    {
-        return $this->parent_id !== '';
     }
 
     /**

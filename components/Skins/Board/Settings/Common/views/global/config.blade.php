@@ -1,7 +1,7 @@
 @inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
 
     @section('page_title')
-        <h2>{{xe_trans($_activeMenu->getTitle())}}</h2>
+    <h2>{{xe_trans($_activeMenu->getTitle())}}</h2>
     @endsection
 
     @section('page_description')
@@ -283,20 +283,6 @@
                                                     <select id="" name="noticePost" class="form-control">
                                                         <option value="true" {!! $config->get('noticePost', true) == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
                                                         <option value="false" {!! $config->get('noticePost', true) == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <div class="clearfix">
-                                                        <label>{{xe_trans('board::reply')}} </label>
-                                                    </div>
-                                                    <select id="" name="replyPost" class="form-control">
-                                                        <option value="true" {!! $config->get('replyPost', false) == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
-                                                        <option value="false" {!! $config->get('replyPost', false) == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                     </select>
                                                 </div>
                                             </div>

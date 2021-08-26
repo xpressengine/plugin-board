@@ -22,7 +22,6 @@ abstract class InstanceTabMenus
         static::add(static::getEditorMenu());
         static::add(static::getColumnsMenu());
         static::add(static::getDynamicFieldMenu());
-        static::add(static::getReplyMenu());
 
         // External Links
         static::add(static::getSettingExternalLink());
@@ -159,28 +158,6 @@ abstract class InstanceTabMenus
             ->setOrderNumber(6)
             ->setLinkFunction(function ($boardId) {
                 return app(BoardUrlHandler::class)->managerUrl('dynamicField', compact('boardId'));
-            });
-    }
-
-    /**
-     * get Reply's Tab Menu
-     *
-     * @return TabMenu
-     */
-    private static function getReplyMenu(): TabMenu
-    {
-        return TabMenu::make()
-            ->setId('reply')
-            ->setTitle('board::reply')
-            ->setOrderNumber(6)
-            ->setLinkFunction(function ($boardId) {
-                $config = ConfigHandler::make()->get($boardId);
-
-                if ($config->get('replyPost', false) === false) {
-                    return null;
-                }
-
-                return app(BoardUrlHandler::class)->managerUrl('reply', compact('boardId'));
             });
     }
 

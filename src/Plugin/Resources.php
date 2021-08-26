@@ -31,7 +31,6 @@ use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardCategory;
 use Xpressengine\Plugins\Board\Plugin;
 use Xpressengine\Plugins\Board\RecycleBin;
-use Xpressengine\Plugins\Board\ReplyConfigHandler;
 use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\Components\UIObjects\Title\TitleUIObject;
@@ -89,17 +88,11 @@ class Resources
         $configManager = app('xe.config');
         $dynamicFieldHandler = app('xe.dynamicField');
         $documentHandler = app('xe.document');
-
-        // config handler
         $configHandler = new ConfigHandler(
             $configManager,
             $dynamicFieldHandler->getConfigHandler(),
             $documentHandler->getConfigHandler()
         );
-        $configHandler->getDefault();
-
-        // reply handler
-        $configHandler = new ReplyConfigHandler($configManager);
         $configHandler->getDefault();
 
         // create default permission
@@ -386,20 +379,6 @@ class Resources
                 return $result;
             }
         );
-    }
-
-    /**
-     * register reply intercept
-     *
-     * @return void
-     */
-    public static function interceptReply()
-    {
-        Plugin\Intercepts\ReplyIntercepts::listenReplyArticles();
-        Plugin\Intercepts\ReplyIntercepts::interceptValidateStored();
-        Plugin\Intercepts\ReplyIntercepts::interceptValidateUpdated();
-        Plugin\Intercepts\ReplyIntercepts::interceptProtectDeleted();
-        Plugin\Intercepts\ReplyIntercepts::interceptProtectUpdated();
     }
 
     /**

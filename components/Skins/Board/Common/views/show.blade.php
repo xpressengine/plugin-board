@@ -98,20 +98,10 @@
                 </div>
 
                 <div class="bd_function_r">
-                    <a href="{{ $urlHandler->get('index', array_merge(Request::except('parent_id'))) }}" class="bd_ico bd_list"><i class="xi-list"></i><span class="xe-sr-only">{{xe_trans('xe::list')}}</span></a>
-
+                    <a href="{{ $urlHandler->get('index', array_merge(Request::all())) }}" class="bd_ico bd_list"><i class="xi-list"></i><span class="xe-sr-only">{{xe_trans('xe::list')}}</span></a>
                     @if($isManager == true || $item->user_id == Auth::user()->getId() || $item->user_type === $item::USER_TYPE_GUEST)
-                       @if($isManager === true || ($replyConfig !== null && $replyConfig->get('protectUpdated') && $item->existsReplies()) === false)
-                            <a href="{{ $urlHandler->get('edit', array_merge(Request::except('parent_id'), ['id' => $item->id])) }}" class="bd_ico bd_modify">
-                                <i class="xi-eraser"></i><span class="xe-sr-only">{{ xe_trans('xe::update') }}</span>
-                            </a>
-                       @endif
-
-                       @if($isManager === true || ($replyConfig !== null && $replyConfig->get('protectDeleted') && $item->existsReplies()) === false)
-                           <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Request::except('parent_id'), ['id' => $item->id])) }}">
-                               <i class="xi-trash"></i><span class="xe-sr-only">{{ xe_trans('xe::delete') }}</span>
-                           </a>
-                       @endif
+                        <a href="{{ $urlHandler->get('edit', array_merge(Request::all(), ['id' => $item->id])) }}" class="bd_ico bd_modify"><i class="xi-eraser"></i><span class="xe-sr-only">{{ xe_trans('xe::update') }}</span></a>
+                        <a href="#" class="bd_ico bd_delete" data-url="{{ $urlHandler->get('destroy', array_merge(Request::all(), ['id' => $item->id])) }}"><i class="xi-trash"></i><span class="xe-sr-only">{{ xe_trans('xe::delete') }}</span></a>
                     @endif
                     <div class="bd_more_area">
                         <!-- [D] 클릭시 클래스 on 적용 -->
@@ -130,9 +120,6 @@
     </div>
     @endif
     <!-- // 댓글 -->
-
-{{--    {{ dd($childItems->all()) }}--}}
-
 <!--bottomViewContent-->
 {!! xe_trans($config->get('bottomViewContent', '')) !!}
 

@@ -36,19 +36,13 @@ class ConfigHandler extends AbstractConfigHandler
      */
     const CONFIG_NAME = 'module/board@board';
 
-    /**
-     * @var DynamicFieldConfigHandler
-     */
+    /** @var DynamicFieldConfigHandler */
     protected $dynamicField;
 
-    /**
-     * @var DocumentConfigHandler
-     */
+    /** @var DocumentConfigHandler */
     protected $document;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $defaultConfig = [
         'boardId' => null,
         'boardName' => null,
@@ -75,35 +69,34 @@ class ConfigHandler extends AbstractConfigHandler
         'newCommentNotice' => false,
         'secretPost' => true,
         'noticePost' => true,
-        'replyPost' => false,
         'useApprove' => false,
     ];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     const DEFAULT_LIST_COLUMNS = [
         'favorite', 'title', 'writer', 'assent_count', 'read_count', 'created_at', 'updated_at', 'dissent_count',
     ];
 
+    /** @var array */
     const DEFAULT_SELECTED_LIST_COLUMNS = [
         'favorite', 'title', 'writer',  'assent_count', 'read_count', 'created_at',
     ];
 
-    /**
-     * @var array
-     */
+    /** @var array  */
     const DEFAULT_FORM_COLUMNS = [
         'title', 'content',
     ];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     const DEFAULT_SELECTED_FORM_COLUMNS = [
         'title', 'content',
     ];
 
+    /**
+     * make board's config handler
+     *
+     * @return ConfigHandler
+     */
     public static function make(): ConfigHandler
     {
         return app(self::class);

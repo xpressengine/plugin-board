@@ -24,26 +24,26 @@ use Auth;
 use Gate;
 use Event;
 use App\Http\Controllers\Controller;
+use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Counter\Exceptions\GuestNotSupportException;
+use Xpressengine\Document\Models\Document;
 use Xpressengine\Http\Request;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\ConfigHandler;
-use Xpressengine\Plugins\Board\Exceptions\AlreadyAdoptedException;
-use Xpressengine\Plugins\Board\Exceptions\CanNotReplyNoticeException;
-use Xpressengine\Plugins\Board\Exceptions\DisabledReplyException;
+use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
 use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\HaveNoWritePermissionHttpException;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundDocumentException;
 use Xpressengine\Plugins\Board\Exceptions\NotMatchedCertifyKeyException;
+use Xpressengine\Plugins\Board\Exceptions\SecretDocumentHttpException;
 use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\IdentifyManager;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Models\BoardSlug;
-use Xpressengine\Plugins\Board\ReplyConfigHandler;
 use Xpressengine\Plugins\Board\Services\BoardService;
 use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Plugins\Board\Validator;
@@ -249,12 +249,10 @@ class BoardModuleController extends Controller
         }
 
         $thumb = $this->handler->getThumb($item->id);
-        $item->setCanonical($this->urlHandler->getShow($item));
-        $titleHeadItems = $service->getTitleHeadItems($this->config);
 
-        if ($this->config->get('replyPost', false) === true) {
-            $item->load('replies');
-        }
+        $item->setCanonical($this->urlHandler->getShow($item));
+
+        $titleHeadItems = $service->getTitleHeadItems($this->config);
 
         return XePresenter::make('show', [
             'item' => $item,
@@ -268,7 +266,6 @@ class BoardModuleController extends Controller
             'searchOptions' => $searchOptions,
             'boardMoreItems' => $boardMoreItems,
             'titleHeadItems' => $titleHeadItems,
-            'replyConfig' => $this->config->get('replyPost', false) ? ReplyConfigHandler::make()->get($this->instanceId) : null,
         ]);
     }
 
@@ -528,20 +525,6 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        // check validated parent's board
-        $parentBoard = null;
-        if ($parentId = $request->get('parent_id')) {
-            if ($this->config->get('replyPost', false) === false) {
-                throw new DisabledReplyException;
-            }
-
-            $parentBoard = Board::where('instance_id', $this->instanceId)->findOrFail($parentId);
-
-            if ($parentBoard->isNotice()) {
-                throw new CanNotReplyNoticeException;
-            }
-        }
-
         $categories = $service->getCategoryItemsTree($this->config);
         $rules = $validator->getCreateRule(Auth::user(), $this->config);
         $fieldTypes = $service->getFieldTypes($this->config);
@@ -562,7 +545,6 @@ class BoardModuleController extends Controller
             'fieldTypes' => $fieldTypes,
             'dynamicFieldsById' => $dynamicFieldsById,
             'titleHeadItems' => $titleHeadItems,
-            'parentBoard' => $parentBoard
         ]);
     }
 
@@ -611,9 +593,11 @@ class BoardModuleController extends Controller
         // 유효성 체크
         $this->validate($request, $validator->getCreateRule(Auth::user(), $this->config));
 
-        // 공지 등록 권한 확인
-        if ($request->get('status') == Board::STATUS_NOTICE && $this->isManager() === false) {
-            throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
+        // 공지 등록 확인
+        if ($request->get('status') == Board::STATUS_NOTICE) {
+            if ($this->isManager() === false) {
+                throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
+            }
         }
 
         // 비밀글 등록 설정 확인
@@ -775,7 +759,7 @@ class BoardModuleController extends Controller
             throw new AccessDeniedHttpException;
         }
 
-        // 공지 등록 확인
+        // 공지 등록 권한 확인
         if ($request->get('status') == Board::STATUS_NOTICE) {
             if ($this->isManager() === false) {
                 throw new HaveNoWritePermissionHttpException(['name' => xe_trans('xe::notice')]);
@@ -1249,91 +1233,6 @@ class BoardModuleController extends Controller
             'list' => $favoriteUsers,
             'nextStartId' => $nextStartId,
         ]);
-    }
-
-    /**
-     * adopt (채택하다)
-     *
-     * @param Request $request
-     * @param string $menuUrl
-     * @param string $id
-     * @return mixed
-     */
-    public function adopt(Request $request, string $menuUrl, string $id)
-    {
-        $item = Board::division($this->instanceId)->findOrFail($id);
-        $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId);
-
-        if (is_null($replyConfig)) {
-            throw new DisabledReplyException; // 답글을 사용하지 않는 상태인 경우.
-        }
-
-        /** @var Board $parentBoard */
-        $parentBoard = $item->hasParentDoc() ? Board::with('replies', 'data')->findOrFail($item->parent_id) : null;
-
-        if ($parentBoard->hasAdopted() === true) {
-            throw new AlreadyAdoptedException; // 이미 채택된 답글이 있습니다.
-        }
-
-        $parentBoard->getAttribute('data')->adopt_id = $item->id;
-        $parentBoard->getAttribute('data')->adopt_at = now();
-        $parentBoard->getAttribute('data')->save();
-
-        if($request->has('redirect_url')) {
-            if($request->has('redirect_message')) {
-                return XePresenter::redirect()
-                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
-            }
-            return XePresenter::redirect()
-                ->to($request->get('redirect_url'));
-        }
-
-        return XePresenter::redirect()
-            ->to($this->urlHandler->getShow($parentBoard, $request->query->all()))
-            ->setData(['item' => $parentBoard]);
-    }
-
-    /**
-     * Un Adopt (채택을 취소합니다.)
-     *
-     * @param Request $request
-     * @param string $menuUrl
-     * @param string $id
-     * @return mixed
-     */
-    public function unAdopt(Request $request, string $menuUrl, string $id)
-    {
-        /** @var Board $item */
-        $item = Board::division($this->instanceId)->findOrFail($id);
-        $replyConfig = ReplyConfigHandler::make()->getByBoardConfig($this->instanceId);
-
-        if (is_null($replyConfig)) {
-            throw new DisabledReplyException; // 답글을 사용하지 않는 상태인 경우.
-        }
-
-        /** @var Board $parentBoard */
-        $parentBoard = $item->hasParentDoc() ? Board::with('replies', 'data')->findOrFail($item->parent_id) : null;
-
-        if ($item->isAdopted($parentBoard) === false) {
-            throw new \LogicException('This is not an adopted reply.');
-        }
-
-        $parentBoard->getAttribute('data')->adopt_id = null;
-        $parentBoard->getAttribute('data')->adopt_at = null;
-        $parentBoard->getAttribute('data')->save();
-
-        if($request->has('redirect_url')) {
-            if($request->has('redirect_message')) {
-                return XePresenter::redirect()
-                    ->to($request->get('redirect_url'))->with('alert', ['type' => 'success', 'message' => $request->get('redirect_message')]);
-            }
-            return XePresenter::redirect()
-                ->to($request->get('redirect_url'));
-        }
-
-        return XePresenter::redirect()
-            ->to($this->urlHandler->getShow($parentBoard, $request->query->all()))
-            ->setData(['item' => $parentBoard]);
     }
 
     /**

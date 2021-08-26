@@ -1,73 +1,9 @@
 <?php
 
 return [
-    'canNotDeletedAdopted' => [
-        'ko' => '채택된 답변은 삭제할 수 없습니다',
-        'en' => 'Adopted articles cannot be deleted.'
-    ],
-    'canNotUpdatedAdopted' => [
-        'ko' => '채택된 답변은 수정할 수 없습니다',
-        'en' => 'Adopted articles cannot be modified.'
-    ],
-    'alreadyAdopted' => [
-        'ko' => '이미 채택된 답변이 있습니다.',
-        'en' => ' already adopted'
-    ],
-    'limitedOneTime' => [
-        'ko' => '답변은 한 번으로 제한',
-        'en' => 'The answer is limited to one time.'
-    ],
-    'alreadyRegisteredReply' => [
-        'ko' => '이미 등록한 답변이 있습니다.',
-        'en' => 'There is already a registered answer.'
-    ],
-    'cantNotReplyOwnBoard' => [
-        'ko' => '자신이 작성한 게시물에 답글을 작성할 수 없습니다.',
-        'en' => 'can not reply to board you have created.'
-    ],
-    'wroteReply' => [
-        'ko' => '답변을 작성했습니다.',
-        'en' => 'wrote a reply'
-    ],
-    'updatedReply' => [
-        'ko' => '답변을 수정했습니다.',
-        'en' => 'updated a reply'
-    ],
-    'deletedReply' => [
-        'ko' => '답변을 삭제했습니다.',
-        'en' => 'deleted a reply'
-    ],
-    'blockAuthorSelf' => [
-        'ko' => '자신이 작성한 게시물에 답글 차단',
-        'en' => 'block author self'
-    ],
-    'blockAuthorSelfDescription' => [
-        'ko' => '자신의 게시물에 답글을 작성할 수 없습니다.',
-        'en' => 'block replying to your own posts.'
-    ],
-    'protectPost' => [
-        'ko' => '글 보호',
-        'en' => 'protect post',
-    ],
-    'protectPostReplies' => [
-        'ko' => '답글이 달린 글은 수정 또는 삭제할 수 없도록 합니다.',
-        'en' => 'Posts with replies cannot be edited or deleted.',
-    ],
-    'cantReplyNotice' => [
-        'ko' => '공지에 답글을 등록할 수 없습니다.',
-        'en' => "can't reply to notice."
-    ],
     'categoryManage' => [
         'ko' => '카테고리 관리',
         'en' => 'category manage'
-    ],
-    'reply' => [
-        'ko' => '답글',
-        'en' => 'reply',
-    ],
-    'disabledReply' => [
-        'ko' => '답글 기능이 비활성화되어 있습니다.',
-        'en' => 'reply is disabled.'
     ],
     'ip' => [
         'ko' => 'IP',

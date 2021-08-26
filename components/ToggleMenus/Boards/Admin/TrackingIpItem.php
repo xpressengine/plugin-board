@@ -1,6 +1,6 @@
 <?php
 /**
- * UpdateItem
+ * TrackingIpItem
  *
  * PHP version 7
  *
@@ -11,13 +11,14 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
-namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards;
+namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards\Admin;
 
+use App\ToggleMenus\User\UserToggleMenu;
 use Xpressengine\Plugins\Board\Models\Board;
-use Xpressengine\ToggleMenu\AbstractToggleMenu;
+use Xpressengine\User\Models\User;
 
 /**
- * UpdateItem
+ * TrackingIpItem
  *
  * @category    Board
  * @package     Xpressengine\Plugins\Board
@@ -26,33 +27,33 @@ use Xpressengine\ToggleMenu\AbstractToggleMenu;
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
-class UpdateItem extends AbstractToggleMenu
+class TrackingIpItem extends UserToggleMenu
 {
     /** @var string */
-    protected static $id = 'module/board@board/toggleMenu/board@updateItem';
+    protected static $id = 'module/board@board/toggleMenu/board@adminTrackingIpItem';
 
     /**
-     * Updated Toggle Item's title
+     * Tracking IP Item's title
      *
      * @return string
      */
     public static function getTitle(): string
     {
-        return xe_trans('xe::update');
+        return xe_trans('board::trackIP');
     }
 
     /**
-     * Updated Toggle Item's Text
+     * Tracking IP Item's text
      *
      * @return string
      */
     public function getText(): string
     {
-        return xe_trans('xe::update');
+        return xe_trans('board::trackIP');
     }
 
     /**
-     * Updated Toggle Item's type
+     * Tracking IP Item's type
      *
      * @return string
      */
@@ -62,20 +63,24 @@ class UpdateItem extends AbstractToggleMenu
     }
 
     /**
-     * Updated Toggle Item's action
+     * Tracking IP Item's action
      *
      * @return string
      */
     public function getAction(): string
     {
-        $params = array_merge(request()->all(), ['id' => $this->identifier]);
-        return instance_route('edit', $params, $this->instanceId);
+        $board = Board::findOrFail($this->identifier);
+
+        return route('settings.board.board.docs.index', [
+            'search_target' => 'ip',
+            'search_keyword' => $board->getAttribute('ipaddress'),
+        ]);
     }
 
     /**
-     * Updated Toggle Item's script
+     * Tracking IP Item's script
      *
-     * @return null
+     * @return string|null
      */
     public function getScript()
     {
@@ -83,19 +88,13 @@ class UpdateItem extends AbstractToggleMenu
     }
 
     /**
-     * Updated Toggle Item's allows
+     * Tracking IP Item's allows
      *
      * @return bool
      */
     public function allows(): bool
     {
-        /** @var Board $board */
-        $board = Board::findOrFail($this->identifier);
-
-        if (app('xe.board.permission')->checkManageAction($this->instanceId)) {
-            return true;
-        }
-
-        return $board->user_id === auth()->id();
+        $user = auth()->user();
+        return $user instanceof User ? $user->isAdmin() : false;
     }
 }

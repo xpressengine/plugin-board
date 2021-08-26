@@ -12,12 +12,8 @@
 <div class="board_write">
     <form method="post" id="board_form" class="__board_form" action="{{ $urlHandler->get('store') }}" enctype="multipart/form-data" data-rule="board" data-rule-alert-type="toast" data-instance_id="{{$instanceId}}" data-url-preview="{{ $urlHandler->get('preview') }}">
         <input type="hidden" name="_token" value="{{{ Session::token() }}}" />
-        <input type="hidden" name="head" value="{{ $head }}" />
+        <input type="hidden" name="head" value="{{$head}}" />
         <input type="hidden" name="queryString" value="{{ http_build_query(Request::except('parent_id')) }}" />
-
-        @if ($parentBoard !== null)
-        <input type="hidden" name="parent_id" value="{{ $parentBoard->id }}" />
-        @endif
 
         @foreach ($skinConfig['formColumns'] as $columnName)
         @if($columnName === 'title')
@@ -43,8 +39,8 @@
             </div>
             <div class="write_title">
                 {!! uio('titleWithSlug', [
-                'title' => Request::old('title', $parentBoard ? sprintf("Re: %s", $parentBoard->title) : null),
-                'slug' => Request::old('slug', $parentBoard ? sprintf("Re: %s", $parentBoard->title) : null),
+                'title' => Request::old('title'),
+                'slug' => Request::old('slug'),
                 'titleClassName' => 'bd_input',
                 'config' => $config
                 ]) !!}
@@ -145,12 +141,12 @@
                     @endif
 
                     {{-- notice --}}
-                    @if ($isManager === true && $config->get('noticePost', true) && is_null($parentBoard))
-                        <label class="xe-label">
-                            <input type="checkbox" name="status" value="{{\Xpressengine\Document\Models\Document::STATUS_NOTICE}}">
-                            <span class="xe-input-helper"></span>
-                            <span class="xe-label-text">{{xe_trans('xe::notice')}}</span>
-                        </label>
+                    @if ($isManager === true && $config->get('noticePost', true))
+                    <label class="xe-label">
+                        <input type="checkbox" name="status" value="{{\Xpressengine\Document\Models\Document::STATUS_NOTICE}}">
+                        <span class="xe-input-helper"></span>
+                        <span class="xe-label-text">{{xe_trans('xe::notice')}}</span>
+                    </label>
                     @endif
                 </div>
             </div>

@@ -39,10 +39,8 @@ class Plugin extends AbstractPlugin
         Resources::registerRecycleBin();
         Resources::registerCommands();
         Resources::setDefaultSkin();
-
         Resources::interceptDynamicField();
         Resources::interceptDeleteCategory();
-        Resources::interceptReply();
 
         Resources::listenCommentRetrievedEvent();
         Resources::listenCommentCreateEvent();

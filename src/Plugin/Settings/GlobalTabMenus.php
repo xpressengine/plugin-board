@@ -3,7 +3,6 @@
 namespace Xpressengine\Plugins\Board\Plugin\Settings;
 
 use XeRegister;
-use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\TabMenu;
 use Xpressengine\Plugins\Board\TabMenuHandler;
 use Xpressengine\Plugins\Board\UrlHandler as BoardUrlHandler;
@@ -20,7 +19,6 @@ abstract class GlobalTabMenus
         static::add(static::getConfigMenu());
         static::add(static::getPermissionMenu());
         static::add(static::getToggleMenu());
-        static::add(static::getReplyMenu());
 
         // External Links
         static::add(static::getDocsExternalLink());
@@ -89,22 +87,6 @@ abstract class GlobalTabMenus
             ->setOrderNumber(2)
             ->setLinkFunction(function () {
                 return app(BoardUrlHandler::class)->managerUrl(sprintf('global.%s', 'toggleMenu'));
-            });
-    }
-
-    /**
-     * get Reply's Tab Menu
-     *
-     * @return TabMenu
-     */
-    private static function getReplyMenu(): TabMenu
-    {
-        return TabMenu::make()
-            ->setId('reply')
-            ->setTitle('board::reply')
-            ->setOrderNumber(2)
-            ->setLinkFunction(function () {
-                return app(BoardUrlHandler::class)->managerUrl('global.reply');
             });
     }
 

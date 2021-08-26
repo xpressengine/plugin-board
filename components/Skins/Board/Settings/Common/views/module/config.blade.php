@@ -1,20 +1,19 @@
 @inject('anonymityHandler', 'Xpressengine\Plugins\Board\AnonymityHandler')
 
-    @section('page_title')
-        <h2>{{xe_trans($_activeMenu->getTitle())}}</h2>
-    @endsection
+@section('page_title')
+    <h2>{{xe_trans('board::boardDetailConfigures')}}</h2>
+@endsection
 
-    @section('page_description')
-    @endsection
+@section('page_description')@endsection
 
-    <!-- Main content -->
+<!-- Main content -->
     <div class="row">
         <div class="col-sm-12">
             <div class="panel-group">
                 <div class="panel">
                     <div class="panel-heading">
                         <div class="pull-left">
-                            <h3 class="panel-title">{{xe_trans($_activeMenu->getTitle())}}</h3>
+                            <h3 class="panel-title">{{xe_trans('board::boardDetailConfigures')}}</h3>
                             <small><a href="{{$urlHandler->managerUrl('global.config')}}" target="_blank">{{xe_trans('xe::moveToParentSettingPage')}}</a></small>
                         </div>
                     </div>
@@ -399,25 +398,6 @@
                                                 <select id="" name="noticePost" class="form-control" @if($config->getPure('noticePost') === null) disabled="disabled" @endif>
                                                     <option value="true" {!! $config->get('noticePost', true) == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
                                                     <option value="false" {!! $config->get('noticePost', true) == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <div class="clearfix">
-                                                    <label>{{xe_trans('board::reply')}}</label>
-                                                    <div class="checkbox pull-right">
-                                                        <label>
-                                                            <input type="checkbox" class="inheritCheck" data-target="replyPost" @if($config->getPure('replyPost') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <select id="" name="replyPost" class="form-control" @if($config->getPure('replyPost') === null) disabled="disabled" @endif>
-                                                    <option value="true" {!! $config->get('replyPost', false) == true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
-                                                    <option value="false" {!! $config->get('replyPost', false) == false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
                                                 </select>
                                             </div>
                                         </div>

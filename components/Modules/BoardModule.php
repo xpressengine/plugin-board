@@ -96,8 +96,6 @@ class BoardModule extends AbstractModule
             Route::get('/global/permission', ['as' => 'settings.board.board.global.permission', 'uses' => 'BoardSettingsController@editGlobalPermission']);
             Route::post('/global/permission/update', ['as' => 'settings.board.board.global.permission.update', 'uses' => 'BoardSettingsController@updateGlobalPermission']);
             Route::get('/global/toggleMenu', ['as' => 'settings.board.board.global.toggleMenu', 'uses' => 'BoardSettingsController@editGlobalToggleMenu']);
-            Route::get('/global/reply', ['as' => 'settings.board.board.global.reply', 'uses' => 'BoardSettingsController@editGlobalReply']);
-            Route::post('/global/reply/update', ['as' => 'settings.board.board.global.reply.update', 'uses' => 'BoardSettingsController@updateGlobalReply']);
             Route::get('/global/{target}', ['as' => 'settings.board.board.global.edit', 'uses' => 'BoardSettingsController@editGlobal']);
 
             // module
@@ -118,8 +116,6 @@ class BoardModule extends AbstractModule
             Route::post('columns/update/{boardId}', ['as' => 'settings.board.board.columns.update', 'uses' => 'BoardSettingsController@updateColumns']);
             Route::get('dynamicField/edit/{boardId}', ['as' => 'settings.board.board.dynamicField', 'uses' => 'BoardSettingsController@editDynamicField']);
             Route::get('toggleMenu/edit/{boardId}', ['as' => 'settings.board.board.toggleMenu', 'uses' => 'BoardSettingsController@editToggleMenu']);
-            Route::get('reply/edit/{boardId}', ['as' => 'settings.board.board.reply', 'uses' => 'BoardSettingsController@editReply']);
-            Route::post('reply/update/{boardId}', ['as' => 'settings.board.board.reply.update', 'uses' => 'BoardSettingsController@updateReply']);
             Route::get('{target}/edit/{boardId}', ['as' => 'settings.board.board.edit', 'uses' => 'BoardSettingsController@edit']);
 
             Route::post('storeCategory/', [
@@ -171,9 +167,6 @@ class BoardModule extends AbstractModule
             Route::post('/update', ['as' => 'update', 'uses' => 'BoardModuleController@update']);
 
             Route::delete('/destroy/{id}', ['as' => 'destroy', 'uses' => 'BoardModuleController@destroy']);
-
-            Route::post('/adopt/{id}', ['as' => 'adopt', 'uses' => 'BoardModuleController@adopt']);
-            Route::post('/unAdopt/{id}', ['as' => 'unAdopt', 'uses' => 'BoardModuleController@unAdopt']);
 
             Route::get('/guest/id/{id}', ['as' => 'guest.id', 'uses' => 'BoardModuleController@guestId']);
             Route::post('/guest/certify/{id}', [

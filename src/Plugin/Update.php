@@ -104,7 +104,7 @@ class Update
         }
 
         // ver 1.0.15
-        if (static::hasUseTitleHeadConfig() === false || static::checkAdoptColumns() === false) {
+        if (static::hasUseTitleHeadConfig() === false) {
             return false;
         }
 
@@ -208,9 +208,8 @@ class Update
         }
 
         // ver 1.0.15
-        if (static::hasUseTitleHeadConfig() === false || static::checkAdoptColumns() === false) {
+        if (static::hasUseTitleHeadConfig() === false) {
             static::updateUseTitleHeadConfig();
-            static::updateAdoptColumns();
         }
     }
 
@@ -476,31 +475,6 @@ class Update
         if (Schema::hasColumn('board_data', 'title_head') == false) {
             Schema::table('board_data', function (Blueprint $table) {
                 $table->string('title_head', 255)->default('')->comment('title head is specific tag of title')->after('file_count');
-            });
-        }
-    }
-
-    /**
-     * check adopt columns
-     *
-     * @return mixed
-     */
-    protected static function checkAdoptColumns(): bool
-    {
-        return Schema::hasColumns('board_data', ['adopt_id', 'adopt_at']);
-    }
-
-    /**
-     * update adopt columns
-     *
-     * @return void
-     */
-    protected static function updateAdoptColumns()
-    {
-        if (self::checkAdoptColumns() === false) {
-            Schema::table('board_data', function (Blueprint $table) {
-                $table->string('adopt_id', 36)->nullable()->comment("adopt id")->after('title_head');
-                $table->timestamp('adopt_at')->nullable()->comment("adopt at")->after('adopt_id');
             });
         }
     }
