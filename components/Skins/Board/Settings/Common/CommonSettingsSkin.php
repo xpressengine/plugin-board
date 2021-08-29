@@ -78,6 +78,7 @@ class CommonSettingsSkin extends AbstractSkin
         }
 
         if (array_has($this->data, '_active')) {
+            $action = $this->data['_active'];
             $this->data['_activeMenu'] = $this->data['_menus'][$action];
         }
 
