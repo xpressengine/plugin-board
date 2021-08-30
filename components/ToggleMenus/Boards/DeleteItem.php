@@ -13,9 +13,10 @@
  */
 namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards;
 
+use Xpressengine\Plugins\Board\Checkers\CheckerItem;
+use Xpressengine\Plugins\Board\Checkers\Logics\IsOwnerLogic;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Plugin as BoardPlugin;
-use Xpressengine\Plugins\Board\UrlHandler as BoardUrlHandler;
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
 
 /**
@@ -33,6 +34,22 @@ class DeleteItem extends AbstractToggleMenu
     /** @var string */
     protected static $id = 'module/board@board/toggleMenu/board@deleteItem';
 
+    /** @var string */
+    private static $allowsEvent = 'xe.plugin.board.toggleMenu.deleteItem.allows';
+
+    /** @var CheckerItem */
+    private $checkerItem;
+
+    /**
+     * get allows event
+     *
+     * @return string
+     */
+    public static function getAllowsEvent(): string
+    {
+        return static::$allowsEvent;
+    }
+
     /**
      * Delete Toggle Item's title
      *
@@ -41,6 +58,14 @@ class DeleteItem extends AbstractToggleMenu
     public static function getTitle(): string
     {
         return xe_trans('xe::delete');
+    }
+
+    /**
+     * Delete Item constructor.
+     */
+    public function __construct()
+    {
+        $this->checkerItem = new CheckerItem();
     }
 
     /**
@@ -95,13 +120,22 @@ class DeleteItem extends AbstractToggleMenu
      */
     public function allows(): bool
     {
-        /** @var Board $board */
-        $board = Board::findOrFail($this->identifier);
-
-        if (app('xe.board.permission')->checkManageAction($this->instanceId)) {
+        if (app('xe.board.permission')->checkManageAction($this->instanceId) === true) {
             return true;
         }
 
-        return $board->user_id === auth()->id();
+        try {
+            /** @var Board $board */
+            $board = Board::findOrFail($this->identifier);
+
+            \Event::fire(self::$allowsEvent, [$board, &$this->checkerItem]);
+            $this->checkerItem = new IsOwnerLogic($this->checkerItem);
+
+            return $this->checkerItem->operation($board, \Auth::user());
+        }
+
+        catch (\Exception $exception) {
+            return false;
+        }
     }
 }
