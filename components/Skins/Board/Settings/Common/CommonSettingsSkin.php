@@ -68,19 +68,16 @@ class CommonSettingsSkin extends AbstractSkin
     private function getContentWithFrame(array $info)
     {
         $type = Arr::get($info, 0);
-        $action = Arr::get($info, 1);
+        $action =  Arr::get($this->data, '_active', Arr::get($info, 1));
 
         $this->data['afea'] = 1;
         $this->data['_menus'] = $this->isModuleFrame($type) ? InstanceTabMenus::all() : GlobalTabMenus::all();
 
-        if (!array_has($this->data, '_active')) {
+        if (array_has($this->data, '_active') === false) {
             $this->data['_active'] = $action;
         }
 
-        if (array_has($this->data, '_active')) {
-            $action = $this->data['_active'];
-            $this->data['_activeMenu'] = $this->data['_menus'][$action];
-        }
+        $this->data['_activeMenu'] = $this->data['_menus'][$action];
 
         if ($this->isModuleFrame($type)) {
             if (!array_key_exists('config', $this->data)) {
@@ -88,7 +85,7 @@ class CommonSettingsSkin extends AbstractSkin
             }
         }
 
-        $contentView = array_get($this->data, 'content', View::make(
+        $contentView = $this->data['_activeMenu']->getContent($this->data, View::make(
             sprintf('%s.%s', static::$skinAlias, $this->view),
             $this->data
         ));
