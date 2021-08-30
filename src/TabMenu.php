@@ -21,8 +21,8 @@ class TabMenu
     /** @var \Closure */
     private $linkFunction;
 
-    /** @var \Closure|mixed */
-    private $content;
+    /** @var \Closure */
+    private $contentFunction;
 
     /** @var boolean */
     private $isExternalLink = false;
@@ -112,13 +112,22 @@ class TabMenu
         return $this;
     }
 
-    public function getContent() {
-        return $this->content;
+    public function getContent(array $data, $default = null) {
+        if (is_null($this->contentFunction)) {
+            return $default;
+        }
+
+        return ($this->contentFunction)($data);
     }
 
-    public function setContent($content): TabMenu
+    public function isSetContent() :bool
     {
-        $this->content = $content;
+        return $this->contentFunction !== null;
+    }
+
+    public function setContent(\Closure $contentFunction): TabMenu
+    {
+        $this->contentFunction = $contentFunction;
         return $this;
     }
 

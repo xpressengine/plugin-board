@@ -212,16 +212,12 @@ class BoardSettingsController extends Controller
         /** @var TabMenu $menu */
         $menu = Arr::get(GlobalTabMenus::all(), $target);
 
-        if (!($menu instanceof TabMenu) || is_null($menu->getContent())) {
-            throw new NotFoundHttpException();
+        if (($menu instanceof TabMenu) === false || $menu->isSetContent() === false) {
+            throw new NotFoundHttpException;
         }
-
-        $tabContent = $menu->getContent();
-        $tabContent = $tabContent instanceof \Closure ? $tabContent() : $tabContent;
 
         return $this->presenter->make('global._frame', [
             '_active' => $target,
-            'content' => $tabContent,
         ]);
     }
 
@@ -392,16 +388,12 @@ class BoardSettingsController extends Controller
         /** @var TabMenu $menu */
         $menu = Arr::get(InstanceTabMenus::all(), $target);
 
-        if (!($menu instanceof TabMenu) || is_null($menu->getContent())) {
+        if (($menu instanceof TabMenu) === false || $menu->isSetContent() === false) {
             throw new NotFoundHttpException();
         }
 
-        $tabContent = $menu->getContent();
-        $tabContent = $tabContent instanceof \Closure ? $tabContent($boardId) : $tabContent;
-
         return $this->presenter->make('module._frame', [
             '_active' => $target,
-            'content' => $tabContent,
             'boardId' => $boardId,
         ]);
     }
