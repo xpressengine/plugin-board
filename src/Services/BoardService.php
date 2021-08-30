@@ -101,7 +101,7 @@ class BoardService
             $favoriteUserQuery->where('user.id', Auth::id());
         }, 'slug', 'data', 'thumb', 'tags']);
 
-        Event::fire('xe.plugin.board.notice', [$query]);
+        Event::fire('xe.plugin.board.notice', [$query, $request]);
 
         return $query->get();
     }
@@ -164,7 +164,7 @@ class BoardService
             $favoriteUserQuery->where('user.id', Auth::id());
         }, 'slug', 'data', 'thumb', 'tags']);
 
-        Event::fire('xe.plugin.board.articles', [$query]);
+        Event::fire('xe.plugin.board.articles', [$query, $request]);
 
         if ($id !== null) {
             $item = Board::division($config->get('boardId'))->find($id);
