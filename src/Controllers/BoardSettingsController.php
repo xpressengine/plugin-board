@@ -203,6 +203,20 @@ class BoardSettingsController extends Controller
     }
 
     /**
+     * global board share menu
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
+    public function editGlobalShareMenu()
+    {
+        $shareMenuSection = new ToggleMenuSection(ShareUIObject::getId());
+
+        return $this->presenter->make('global.shareMenu', [
+            'shareMenuSection' => $shareMenuSection,
+        ]);
+    }
+
+    /**
      * edit global another
      *
      * @param string $target

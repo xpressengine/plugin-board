@@ -19,6 +19,7 @@ abstract class GlobalTabMenus
         static::add(static::getConfigMenu());
         static::add(static::getPermissionMenu());
         static::add(static::getToggleMenu());
+        static::add(static::getShareMenu());
 
         // External Links
         static::add(static::getDocsExternalLink());
@@ -85,7 +86,23 @@ abstract class GlobalTabMenus
             ->setId('toggleMenu')
             ->setTitle('xe::toggleMenu')
             ->setOrderNumber(2)
-            ->setLinkFunction(function () {
+            ->setLinkFunction(function() {
+                return app(BoardUrlHandler::class)->managerUrl(sprintf('global.%s', 'toggleMenu'));
+            });
+    }
+
+    /**
+     * get share menu's tab menu
+     *
+     * @return TabMenu
+     */
+    private static function getShareMenu(): TabMenu
+    {
+        return TabMenu::make()
+            ->setId('shareMenu')
+            ->setTitle('board::shareMenu')
+            ->setOrderNumber(2)
+            ->setLinkFunction(function() {
                 return app(BoardUrlHandler::class)->managerUrl(sprintf('global.%s', 'toggleMenu'));
             });
     }
