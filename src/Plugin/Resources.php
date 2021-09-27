@@ -20,6 +20,7 @@ use Xpressengine\DynamicField\DynamicFieldHandler;
 use Xpressengine\Permission\Instance;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Commands\ArticleList;
+use Xpressengine\Plugins\Board\Commands\GalleryBoardSkinMake;
 use Xpressengine\Plugins\Board\Components\Skins\Board\XEDefault\XEDefault;
 use Xpressengine\Plugins\Board\Components\UIObjects\NewTitle\NewTitleUIObject;
 use Xpressengine\Plugins\Board\ConfigHandler;
@@ -261,6 +262,7 @@ class Resources
     {
         $commands = [
             BoardSkinMake::class,
+            GalleryBoardSkinMake::class,
             ArticleList\CommonSkinMake::class,
             ArticleList\GallerySkinMake::class,
         ];
