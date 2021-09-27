@@ -18,6 +18,7 @@ abstract class InstanceTabMenus
         static::add(static::getConfigMenu());
         static::add(static::getPermissionMenu());
         static::add(static::getToggleMenu());
+        static::add(Static::getShareMenu());
         static::add(static::getSkinMenu());
         static::add(static::getEditorMenu());
         static::add(static::getColumnsMenu());
@@ -82,7 +83,7 @@ abstract class InstanceTabMenus
     }
 
     /**
-     * get toggle's tab menu
+     * get toggle menu's tab menu
      *
      * @return TabMenu
      */
@@ -92,8 +93,24 @@ abstract class InstanceTabMenus
             ->setId('toggleMenu')
             ->setTitle('xe::toggleMenu')
             ->setOrderNumber(2)
-            ->setLinkFunction(function ($boardId) {
+            ->setLinkFunction(function($boardId) {
                 return app(BoardUrlHandler::class)->managerUrl('toggleMenu', compact('boardId'));
+            });
+    }
+
+    /**
+     * get share menu's tab menu
+     *
+     * @return TabMenu
+     */
+    private static function getShareMenu(): TabMenu
+    {
+        return TabMenu::make()
+            ->setId('shareMenu')
+            ->setTitle('board::shareMenu')
+            ->setOrderNumber(2)
+            ->setLinkFunction(function($boardId) {
+                return app(BoardUrlHandler::class)->managerUrl('shareMenu', compact('boardId'));
             });
     }
 
