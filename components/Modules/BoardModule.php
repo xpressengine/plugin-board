@@ -96,6 +96,7 @@ class BoardModule extends AbstractModule
             Route::get('/global/permission', ['as' => 'settings.board.board.global.permission', 'uses' => 'BoardSettingsController@editGlobalPermission']);
             Route::post('/global/permission/update', ['as' => 'settings.board.board.global.permission.update', 'uses' => 'BoardSettingsController@updateGlobalPermission']);
             Route::get('/global/toggleMenu', ['as' => 'settings.board.board.global.toggleMenu', 'uses' => 'BoardSettingsController@editGlobalToggleMenu']);
+            Route::get('/global/shareMenu', ['as' => 'settings.board.board.global.shareMenu', 'uses' => 'BoardSettingsController@editGlobalShareMenu']);
             Route::get('/global/{target}', ['as' => 'settings.board.board.global.edit', 'uses' => 'BoardSettingsController@editGlobal']);
 
             // module
