@@ -116,6 +116,7 @@ class BoardModule extends AbstractModule
             Route::post('columns/update/{boardId}', ['as' => 'settings.board.board.columns.update', 'uses' => 'BoardSettingsController@updateColumns']);
             Route::get('dynamicField/edit/{boardId}', ['as' => 'settings.board.board.dynamicField', 'uses' => 'BoardSettingsController@editDynamicField']);
             Route::get('toggleMenu/edit/{boardId}', ['as' => 'settings.board.board.toggleMenu', 'uses' => 'BoardSettingsController@editToggleMenu']);
+            Route::get('shareMenu/edit/{boardId}', ['as' => 'settings.board.board.shareMenu', 'uses' => 'BoardSettingsController@editShareMenu']);
             Route::get('{target}/edit/{boardId}', ['as' => 'settings.board.board.edit', 'uses' => 'BoardSettingsController@edit']);
 
             Route::post('storeCategory/', [
