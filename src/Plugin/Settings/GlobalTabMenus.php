@@ -103,7 +103,7 @@ abstract class GlobalTabMenus
             ->setTitle('board::shareMenu')
             ->setOrderNumber(2)
             ->setLinkFunction(function() {
-                return app(BoardUrlHandler::class)->managerUrl(sprintf('global.%s', 'toggleMenu'));
+                return app(BoardUrlHandler::class)->managerUrl(sprintf('global.%s', 'shareMenu'));
             });
     }
 
