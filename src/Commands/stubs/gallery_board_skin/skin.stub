@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DummyNamespace;
+
+use Illuminate\Support\Arr;
+use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\Components\Skins\Board\Gallery\GallerySkin;
+
+/**
+ * Class DummyClass
+ *
+ * @package DummyNamespace
+ */
+class DummyClass extends GallerySkin
+{
+    /**
+     * 스킨 디렉토리 경로
+     *
+     * @var string
+     */
+    protected static $path = 'DummyPluginId/DummySkinDirname';
+}
