@@ -14,6 +14,7 @@
 namespace Xpressengine\Plugins\Board\Components\ToggleMenus\Boards;
 
 use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\Plugin as BoardPlugin;
 use Xpressengine\ToggleMenu\AbstractToggleMenu;
 
 /**
@@ -71,6 +72,6 @@ class TrashItem extends AbstractToggleMenu
      */
     public function getScript()
     {
-        return null;
+        return BoardPlugin::asset('assets/js/src/toggleMenu.js');
     }
 }
