@@ -5,6 +5,14 @@ return [
         'ko' => '카테고리 관리',
         'en' => 'category manage'
     ],
+    'copyClipboard' => [
+        'ko' => '주소가 복사되었습니다.',
+        'en' => 'copy clipboard'
+    ],
+    'shareMenu' => [
+        'ko' => '공유 토글 메뉴',
+        'en' => 'share toggle menu'
+    ],
     'ip' => [
         'ko' => 'IP',
         'en' => 'IP',

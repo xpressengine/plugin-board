@@ -9,7 +9,7 @@
             $anchor = $target.closest('a')
           if ($anchor.data('type') == 'copy') {
             BoardShare.copyToClipboard($anchor.data('url'))
-            XE.toast('info', 'Complete')
+            XE.toast('info', XE.Lang.trans('board::copyClipboard'))
           } else {
             window.open($anchor.data('url'))
           }

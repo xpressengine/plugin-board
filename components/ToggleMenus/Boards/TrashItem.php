@@ -72,6 +72,7 @@ class TrashItem extends AbstractToggleMenu
      */
     public function getScript()
     {
+        \XeFrontend::translation(['board::msgTrashConfirm']);
         return BoardPlugin::asset('assets/js/src/toggleMenu.js');
     }
 }

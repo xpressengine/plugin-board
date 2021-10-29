@@ -30,6 +30,7 @@ use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Http\Request;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Plugins\Board\BoardPermissionHandler;
+use Xpressengine\Plugins\Board\Components\UIObjects\Share\ShareUIObject;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\NotFoundConfigHttpException;
 use Xpressengine\Plugins\Board\Handler;
@@ -198,6 +199,20 @@ class BoardSettingsController extends Controller
 
         return $this->presenter->make('global.toggleMenu', [
             'toggleMenuSection' => $toggleMenuSection,
+        ]);
+    }
+
+    /**
+     * global board share menu
+     *
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
+    public function editGlobalShareMenu()
+    {
+        $shareMenuSection = new ToggleMenuSection(ShareUIObject::getId());
+
+        return $this->presenter->make('global.shareMenu', [
+            'shareMenuSection' => $shareMenuSection,
         ]);
     }
 
@@ -521,6 +536,22 @@ class BoardSettingsController extends Controller
         return $this->presenter->make('module.toggleMenu', [
             'boardId' => $boardId,
             'toggleMenuSection' => $toggleMenuSection,
+        ]);
+    }
+
+    /**
+     * edit share menu
+     *
+     * @param $boardId
+     * @return mixed|\Xpressengine\Presenter\Presentable
+     */
+    public function editShareMenu(string $boardId)
+    {
+        $shareMenuSection = new ToggleMenuSection(ShareUIObject::getId(), $boardId);
+
+        return $this->presenter->make('module.shareMenu', [
+            'boardId' => $boardId,
+            'shareMenuSection' => $shareMenuSection,
         ]);
     }
 

@@ -96,6 +96,7 @@ class BoardModule extends AbstractModule
             Route::get('/global/permission', ['as' => 'settings.board.board.global.permission', 'uses' => 'BoardSettingsController@editGlobalPermission']);
             Route::post('/global/permission/update', ['as' => 'settings.board.board.global.permission.update', 'uses' => 'BoardSettingsController@updateGlobalPermission']);
             Route::get('/global/toggleMenu', ['as' => 'settings.board.board.global.toggleMenu', 'uses' => 'BoardSettingsController@editGlobalToggleMenu']);
+            Route::get('/global/shareMenu', ['as' => 'settings.board.board.global.shareMenu', 'uses' => 'BoardSettingsController@editGlobalShareMenu']);
             Route::get('/global/{target}', ['as' => 'settings.board.board.global.edit', 'uses' => 'BoardSettingsController@editGlobal']);
 
             // module
@@ -116,6 +117,7 @@ class BoardModule extends AbstractModule
             Route::post('columns/update/{boardId}', ['as' => 'settings.board.board.columns.update', 'uses' => 'BoardSettingsController@updateColumns']);
             Route::get('dynamicField/edit/{boardId}', ['as' => 'settings.board.board.dynamicField', 'uses' => 'BoardSettingsController@editDynamicField']);
             Route::get('toggleMenu/edit/{boardId}', ['as' => 'settings.board.board.toggleMenu', 'uses' => 'BoardSettingsController@editToggleMenu']);
+            Route::get('shareMenu/edit/{boardId}', ['as' => 'settings.board.board.shareMenu', 'uses' => 'BoardSettingsController@editShareMenu']);
             Route::get('{target}/edit/{boardId}', ['as' => 'settings.board.board.edit', 'uses' => 'BoardSettingsController@edit']);
 
             Route::post('storeCategory/', [

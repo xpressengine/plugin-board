@@ -74,6 +74,8 @@ class ShareUIObject extends AbstractUIObject
     {
         if (self::$loaded === false) {
             self::$loaded = true;
+
+            expose_trans('board::copyClipboard');
             XeFrontend::js('/plugins/board/components/UIObjects/Share/assets/share.js')->load();
         }
 
