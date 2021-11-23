@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+use Xpressengine\Plugins\Board\Components\Skins\Board\XEWebzine\XEWebzine;
+
+class DummyClass extends XEWebzine
+{
+    protected static $path = 'DummyPluginId/DummySkinDirname';
+}

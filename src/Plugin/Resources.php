@@ -22,6 +22,7 @@ use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\Commands\ArticleList;
 use Xpressengine\Plugins\Board\Commands\GalleryBoardSkinMake;
 use Xpressengine\Plugins\Board\Commands\XeGalleryBoardSkinMake;
+use Xpressengine\Plugins\Board\Commands\XeWebzineBoardSkinMake;
 use Xpressengine\Plugins\Board\Components\Skins\Board\XEDefault\XEDefault;
 use Xpressengine\Plugins\Board\Components\UIObjects\NewTitle\NewTitleUIObject;
 use Xpressengine\Plugins\Board\ConfigHandler;
@@ -265,6 +266,7 @@ class Resources
             BoardSkinMake::class,
             GalleryBoardSkinMake::class,
             XeGalleryBoardSkinMake::class,
+            XeWebzineBoardSkinMake::class,
             ArticleList\CommonSkinMake::class,
             ArticleList\GallerySkinMake::class,
         ];
