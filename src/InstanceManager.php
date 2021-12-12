@@ -209,7 +209,12 @@ class InstanceManager
 
         // get document config
         $this->document->destroyInstance($boardId);
-        $this->commentHandler->drop($this->commentHandler->getInstanceId($boardId));
+
+        $commentInstanceId = $this->commentHandler->getInstanceId($boardId);
+
+        if ($commentInstanceId !== null) {
+            $this->commentHandler->drop($commentInstanceId);
+        }
 
         // remove board config
         $this->configHandler->remove($config);

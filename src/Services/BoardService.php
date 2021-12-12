@@ -204,6 +204,8 @@ class BoardService
                 sprintf('%s.%s', 'board_category', 'target_id')
             );
         }
+
+        Event::fire('xe.plugin.board.moreItems', [$query, $config]);
         
         return $query->take(8)->orderByDesc('head')->get();
     }
