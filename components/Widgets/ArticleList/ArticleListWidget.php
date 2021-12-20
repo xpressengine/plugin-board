@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList;
 
 use Carbon\Carbon;
 use View;
+use XEHub\XePlugin\XehubCustomDevelop\Models\Certificate;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
 use Xpressengine\Menu\Models\MenuItem;
@@ -117,7 +118,13 @@ class ArticleListWidget extends AbstractWidget
                     });
             });
         } elseif (count($boardIds)) {
-            $query = $model->whereIn('instance_id', $boardIds);
+            $query = $model->newQuery();
+
+            if (count($boardIds) === 1) {
+                $query = Board::division($boardIds[0]);
+            }
+
+            $query->whereIn('instance_id', $boardIds);
         } elseif (count($categoryIds)) {
             $query = $model->whereHas('boardCategory', function ($query) use ($categoryIds) {
                 $query->whereIn('item_id', $categoryIds);
