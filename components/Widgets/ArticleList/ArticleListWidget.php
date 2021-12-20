@@ -121,7 +121,7 @@ class ArticleListWidget extends AbstractWidget
             $query = $model->newQuery();
 
             if (count($boardIds) === 1) {
-                $query = Board::division($boardIds[0]);
+                $query = Board::division($boardIds[0])->newQuery();
             }
 
             $query->whereIn('instance_id', $boardIds);
