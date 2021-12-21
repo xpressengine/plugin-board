@@ -162,7 +162,7 @@ class BoardService
         // eager loading favorite list
         $query->with(['favoriteUsers' => function($favoriteUserQuery) {
             $favoriteUserQuery->where('user.id', Auth::id());
-        }, 'slug', 'data', 'thumb', 'tags']);
+        }, 'slug', 'data', 'thumb', 'tags', 'user']);
 
         Event::fire('xe.plugin.board.articles', [$query, $request]);
 
@@ -204,6 +204,8 @@ class BoardService
                 sprintf('%s.%s', 'board_category', 'target_id')
             );
         }
+
+        $query->with(['slug']);
 
         Event::fire('xe.plugin.board.moreItems', [$query, $config]);
         
