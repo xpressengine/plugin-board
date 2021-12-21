@@ -231,32 +231,30 @@ class BoardService
     {
         $boardInstanceId = $config->get('boardId');
 
-        $query = Board::division($boardInstanceId)
-            ->newQuery()
-            ->visible()
-            ->orderBy('head', 'desc')
-            ->with(['slug'])
-            ->where([
-                ['instance_id', '=', $boardInstanceId],
-                ['id', '<>', $currentItemId],
-            ])
-            ->when(
-                $config->has('category') === true,
-                function ($query) {
-                    $fromTable =$query->getQuery()->from;
+        $query = Board::division($boardInstanceId)->newQuery();
 
-                    $query->leftJoin(
-                        'board_category',
-                        sprintf('%s.%s', $fromTable, 'id'),
-                        '=',
-                        sprintf('%s.%s', '', 'target_id')
-                    );
-                }
-            );
+        $query->visible()->with(['slug']);
+
+        $query->where('instance_id', '=', $boardInstanceId);
+        $query->where('id', '<>', $currentItemId);
+
+        $query->when(
+            $config->has('category') === true,
+            function ($query) {
+                $fromTable = $query->getQuery()->from;
+
+                $query->leftJoin(
+                    'board_category',
+                    sprintf('%s.%s', $fromTable, 'id'),
+                    '=',
+                    sprintf('%s.%s', '', 'target_id')
+                );
+            }
+        );
 
         Event::fire('xe.plugin.board.moreItems', [$query, $config]);
-        
-        return $query->take(8)->get();
+
+        return $query->take(8)->orderBy('head', 'desc')->get();
     }
 
     /**
