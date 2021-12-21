@@ -205,6 +205,8 @@ class BoardService
             );
         }
 
+        $query->with(['slug']);
+
         Event::fire('xe.plugin.board.moreItems', [$query, $config]);
         
         return $query->take(8)->orderByDesc('head')->get();
