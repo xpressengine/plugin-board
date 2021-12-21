@@ -82,24 +82,34 @@ class BoardService
      */
     public function getNoticeItems(Request $request, ConfigEntity $config, $userId)
     {
-        $model = Board::division($config->get('boardId'));
-        $query = $model->where('instance_id', $config->get('boardId'))
-            ->notice()->orderBy('head', 'desc');
+        $boardInstanceId = $config->get('boardId');
 
-        if ($request->has('favorite') === true) {
-            $query->leftJoin(
-                'board_favorites',
-                sprintf('%s.%s', $query->getQuery()->from, 'id'),
-                '=',
-                sprintf('%s.%s', 'board_favorites', 'target_id')
-            );
-            $query->where('board_favorites.user_id', $userId);
-        }
+        $query = Board::division($boardInstanceId)
+            ->newQuery()
+            ->where('instance_id', $boardInstanceId)
+            ->notice()
+            ->orderBy('head', 'desc')
+            ->when(
+                $request->has('favorite') === true,
+                function ($query) use ($userId) {
+                    $fromTable =$query->getQuery()->from;
 
-        // eager loading favorite list
-        $query->with(['favoriteUsers' => function($favoriteUserQuery) {
-            $favoriteUserQuery->where('user.id', Auth::id());
-        }, 'slug', 'data', 'thumb', 'tags']);
+                    $query->leftJoin(
+                        'board_favorites',
+                        sprintf('%s.%s', $fromTable, 'id'),
+                        '=',
+                        sprintf('%s.%s', 'board_favorites', 'target_id')
+                    );
+
+                    $query->where('board_favorites.user_id', $userId);
+                }
+            )
+            ->with([
+                'slug', 'data', 'thumb', 'tags', 'user',
+                'favoriteUsers' => function($favoriteUserQuery) {
+                    $favoriteUserQuery->where('user.id', Auth::id());
+                },
+            ]);
 
         Event::fire('xe.plugin.board.notice', [$query, $request]);
 
