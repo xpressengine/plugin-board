@@ -84,37 +84,36 @@ class BoardService
     public function getNoticeItems(Request $request, ConfigEntity $config, $userId)
     {
         $boardInstanceId = $config->get('boardId');
+        $query = Board::division($boardInstanceId)->newQuery();
 
-        $query = Board::division($boardInstanceId)
-            ->newQuery()
-            ->where('instance_id', $boardInstanceId)
-            ->notice()
-            ->orderBy('head', 'desc')
-            ->when(
-                $request->has('favorite') === true,
-                function ($query) use ($userId) {
-                    $fromTable =$query->getQuery()->from;
+        $query->where('instance_id', $boardInstanceId)->notice();
 
-                    $query->leftJoin(
-                        'board_favorites',
-                        sprintf('%s.%s', $fromTable, 'id'),
-                        '=',
-                        sprintf('%s.%s', 'board_favorites', 'target_id')
-                    );
+        $query->when(
+            $request->has('favorite') === true,
+            function ($query) use ($userId) {
+                $fromTable =$query->getQuery()->from;
 
-                    $query->where('board_favorites.user_id', $userId);
-                }
-            )
-            ->with([
-                'slug', 'data', 'thumb', 'tags', 'user',
-                'favoriteUsers' => function($favoriteUserQuery) {
-                    $favoriteUserQuery->where('user.id', Auth::id());
-                },
-            ]);
+                $query->leftJoin(
+                    'board_favorites',
+                    sprintf('%s.%s', $fromTable, 'id'),
+                    '=',
+                    sprintf('%s.%s', 'board_favorites', 'target_id')
+                );
+
+                $query->where('board_favorites.user_id', $userId);
+            }
+        );
+
+        $query->with([
+            'slug', 'data', 'thumb', 'tags', 'user',
+            'favoriteUsers' => function($favoriteUserQuery) {
+                $favoriteUserQuery->where('user.id', Auth::id());
+            },
+        ]);
 
         Event::fire('xe.plugin.board.notice', [$query, $request]);
 
-        return $query->get();
+        return $query->orderBy('head', 'desc')->get();
     }
 
     /**
