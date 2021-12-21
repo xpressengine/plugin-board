@@ -24,6 +24,7 @@ use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Document\Models\Document;
 use Xpressengine\Editor\PurifierModules\EditorTool;
 use Xpressengine\Http\Request;
+use Xpressengine\Plugins\Board\BoardPermissionHandler;
 use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Exceptions\CaptchaNotVerifiedException;
 use Xpressengine\Plugins\Board\Exceptions\GuestWrittenSecretDocumentException;
@@ -126,69 +127,97 @@ class BoardService
      */
     public function getItems(Request $request, ConfigEntity $config, $id = null)
     {
-        /** @var Board $model */
-        $model = Board::division($config->get('boardId'));
-        $query = $model->where('instance_id', $config->get('boardId'));
+        /** @var BoardPermissionHandler $boardPermission */
+        $boardPermission = app('xe.board.permission');
+        $boardInstanceId = $config->get('boardId');
 
-        if ($config->get('noticeInList') === true) {
-            $query->visibleWithNotice();
-        } else {
-            $query->visible();
-        }
+        $query = Board::division($boardInstanceId)->newQuery();
+        $query->where('instance_id', $boardInstanceId);
 
-        if ($config->get('category') === true) {
-            $query->leftJoin(
-                'board_category',
-                sprintf('%s.%s', $query->getQuery()->from, 'id'),
-                '=',
-                sprintf('%s.%s', 'board_category', 'target_id')
-            );
-        }
+        $query->where(
+            function($query) use ($config) {
+                if ($config->get('noticeInList') === true) {
+                    $query->visibleWithNotice();
+                    return;
+                }
 
-        if ($request->has('favorite') === true) {
-            $query->leftJoin(
-                'board_favorites',
-                sprintf('%s.%s', $query->getQuery()->from, 'id'),
-                '=',
-                sprintf('%s.%s', 'board_favorites', 'target_id')
-            );
-            $query->where('board_favorites.user_id', Auth::user()->getId());
-        }
-
-        if ($config->get('useConsultation') === true) {
-            $boardPermission = app('xe.board.permission');
-            $isManager = Gate::allows(
-                $boardPermission::ACTION_MANAGE,
-                new Instance($boardPermission->name($config->get('boardId')))
-            ) ? true : false;
-            if ($isManager == false) {
-                $query->where('user_id', Auth::user()->getId());
+                $query->visible();
             }
-        }
+        );
+
+        $query->when(
+            $config->get('category') === true,
+            function ($query) {
+                $fromTable = $query->getQuery()->from;
+
+                $query->leftJoin(
+                    'board_category',
+                    sprintf('%s.%s', $fromTable, 'id'),
+                    '=',
+                    sprintf('%s.%s', 'board_category', 'target_id')
+                );
+            }
+        );
+
+        $query->when(
+            $config->get('favorite') === true,
+            function ($query) {
+                $fromTable = $query->getQuery()->from;
+
+                $query->leftJoin(
+                    'board_favorites',
+                    sprintf('%s.%s', $fromTable, 'id'),
+                    '=',
+                    sprintf('%s.%s', 'board_favorites', 'target_id')
+                );
+
+                $query->where('board_favorites.user_id', Auth::user()->getId());
+            }
+        );
+
+        $query->when(
+            $config->get('useConsultation') === true,
+            function ($query) use ($boardInstanceId, $boardPermission) {
+                $permissionInstance = new Instance($boardPermission->name($boardInstanceId));
+
+                $isManager = Gate::allows(
+                    $boardPermission::ACTION_MANAGE,
+                    $permissionInstance
+                );
+
+                $query->when(
+                    $isManager === false,
+                    function($query) {
+                        $query->where('user_id', Auth::user()->getId());
+                    }
+                );
+            }
+        );
+
+        $query->with([
+            'slug', 'data', 'thumb', 'tags', 'user',
+            'favoriteUsers' => function ($favoriteUserQuery) {
+                $favoriteUserQuery->where('user.id', Auth::id());
+            }
+        ]);
 
         $this->handler->makeWhere($query, $request, $config);
         $this->handler->makeOrder($query, $request, $config);
 
-        // eager loading favorite list
-        $query->with(['favoriteUsers' => function($favoriteUserQuery) {
-            $favoriteUserQuery->where('user.id', Auth::id());
-        }, 'slug', 'data', 'thumb', 'tags', 'user']);
-
         Event::fire('xe.plugin.board.articles', [$query, $request]);
 
         if ($id !== null) {
-            $item = Board::division($config->get('boardId'))->find($id);
+            $board = Board::division($boardInstanceId)->newQuery()->find($id);
+            $queryPage = $this->handler->pageResolver($query, $config, $id);
 
-            if ($item->status === Document::STATUS_NOTICE) {
-                $request->query->set('page', 1);
-            } else {
-                $request->query->set('page', $this->handler->pageResolver($query, $config, $id));
+            if ($board->status === Document::STATUS_NOTICE) {
+                $queryPage = 1;
             }
+
+            $request->query->set('page', $queryPage);
         }
 
-        $paginate = $query->paginate($config->get('perPage'))->appends($request->except('page'));
-
-        return $paginate;
+        return $query->paginate($config->get('perPage'))->appends($request->except('page'));
     }
 
     /**
