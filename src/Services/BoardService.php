@@ -195,11 +195,16 @@ class BoardService
 
         $query->with([
             'slug', 'data', 'thumb', 'tags', 'user',
-            'boardCategory', 'boardCategory.categoryItem',
             'favoriteUsers' => function ($favoriteUserQuery) {
                 $favoriteUserQuery->where('user.id', Auth::id());
             }
         ]);
+
+        if ($config->get('category') === true) {
+            $query->with([
+                'boardCategory', 'boardCategory.categoryItem'
+            ]);
+        }
 
         $this->handler->makeWhere($query, $request, $config);
         $this->handler->makeOrder($query, $request, $config);
