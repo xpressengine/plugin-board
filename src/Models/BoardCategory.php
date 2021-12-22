@@ -39,6 +39,8 @@ class BoardCategory extends DynamicModel
 
     protected $fillable = ['target_id', 'item_id'];
 
+    public $incrementing = false;
+
     /**
      * get category item
      *

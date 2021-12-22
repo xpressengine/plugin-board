@@ -195,6 +195,7 @@ class BoardService
 
         $query->with([
             'slug', 'data', 'thumb', 'tags', 'user',
+            'boardCategory', 'boardCategory.categoryItem',
             'favoriteUsers' => function ($favoriteUserQuery) {
                 $favoriteUserQuery->where('user.id', Auth::id());
             }
