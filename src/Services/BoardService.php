@@ -111,6 +111,12 @@ class BoardService
             },
         ]);
 
+        if ($config->get('category') === true) {
+            $query->with([
+                'boardCategory', 'boardCategory.categoryItem',
+            ]);
+        }
+
         Event::fire('xe.plugin.board.notice', [$query, $request]);
 
         return $query->orderBy('head', 'desc')->get();
