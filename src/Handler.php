@@ -1122,43 +1122,57 @@ class Handler
     public function pageResolver(Builder $query, ConfigEntity $config, $id)
     {
         $clone = clone $query;
+
         /** @var Board $model */
         $model = Board::division($config->get('boardId'));
         $doc = $model->find($id);
 
         $orders = $clone->getQuery()->orders;
+
         $clone->where(function ($clone) use ($orders, $doc) {
             $orderCount = count($orders);
 
+            $fromTableName = $clone->getQuery()->from;
+            $tableColumns = array_map('strtolower', \DB::getSchemaBuilder()->getColumnListing($fromTableName));
+
             for ($i=0; $i<$orderCount; $i++) {
-                $clone->Orwhere(function ($clone) use ($orders, $doc, $i) {
+                $clone->Orwhere(function ($clone) use ($orders, $doc, $i, $tableColumns) {
                     if ($i != 0) {
                         for ($j=0; $j<$i; $j++) {
                             $op = '=';
-                            if ($clone->getQuery()->getConnection()->getSchemaBuilder()->hasColumn($clone->getQuery()->from, $orders[$j]['column'])) {
+
+                            if (in_array(strtolower($orders[$j]['column']), $tableColumns) === true) {
                                 $clone->where($orders[$j]['column'], $op, $doc->{$orders[$j]['column']});
-                            } else {
+                            }
+
+                            else {
                                 $params = [
                                    $orders[$j]['column'] => [$doc->{$orders[$j]['column']}, $op]
                                 ];
+
                                 $clone->getProxyManager()->wheres($clone->getQuery(), $params);
                             }
                         }
                     }
 
-                        $op = '>=';
-                        if ($orders[$i]['direction'] == 'asc') {
-                            $op = '<=';
-                        }
+                    $op = '>=';
 
-                        if ($clone->getQuery()->getConnection()->getSchemaBuilder()->hasColumn($clone->getQuery()->from, $orders[$i]['column'])) {
-                            $clone->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
-                        } else {
-                            $params = [
-                                $orders[$i]['column'] => [$doc->{$orders[$i]['column']}, $op]
-                            ];
-                            $clone->getProxyManager()->wheres($clone->getQuery(), $params);
-                        }
+                    if ($orders[$i]['direction'] == 'asc') {
+                        $op = '<=';
+                    }
+
+
+                    if (in_array(strtolower($orders[$i]['column']), $tableColumns) === true) {
+                        $clone->where($orders[$i]['column'], $op, $doc->{$orders[$i]['column']});
+                    }
+
+                    else {
+                        $params = [
+                            $orders[$i]['column'] => [$doc->{$orders[$i]['column']}, $op]
+                        ];
+
+                        $clone->getProxyManager()->wheres($clone->getQuery(), $params);
+                    }
                 });
             }
         });
