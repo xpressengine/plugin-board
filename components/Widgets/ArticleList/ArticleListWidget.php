@@ -15,13 +15,19 @@
 namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use View;
-use XEHub\XePlugin\XehubCustomDevelop\Models\Certificate;
+use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
+use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Menu\Models\MenuItem;
+use Xpressengine\Menu\Repositories\MenuItemRepository;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
+use Xpressengine\Plugins\Board\ConfigHandler;
+use Xpressengine\Plugins\Board\Handler;
 use Xpressengine\Plugins\Board\Models\Board;
+use Xpressengine\Plugins\Board\UrlHandler;
 use Xpressengine\Widget\AbstractWidget;
 
 /**
@@ -42,6 +48,41 @@ class ArticleListWidget extends AbstractWidget
     protected static $path = 'board/components/Widgets/ArticleList';
 
     /**
+     * @var Handler;
+     */
+    protected $boardHandler;
+
+    /**
+     * @var ConfigHandler
+     */
+    protected $boardConfigHandler;
+
+    /**
+     * @var UrlHandler
+     */
+    protected $boardUrlHandler;
+
+    /**
+     * @var CategoryHandler
+     */
+    protected $categoryHandler;
+
+    /**
+     * Article Lis tWidget __construct
+     *
+     * @param array|null $config
+     */
+    public function __construct(array $config = null)
+    {
+        parent::__construct($config);
+
+        $this->boardHandler = app('xe.board.handler');
+        $this->boardConfigHandler = app('xe.board.config');
+        $this->boardUrlHandler = app('xe.board.url');
+        $this->categoryHandler = app(CategoryHandler::class);
+    }
+
+    /**
      * Get the evaluated contents of the object.
      *
      * @return string
@@ -49,98 +90,82 @@ class ArticleListWidget extends AbstractWidget
     public function render()
     {
         $widgetConfig = $this->setting();
+        $title = $widgetConfig['@attributes']['title'];
 
-        /** @var \Xpressengine\Plugins\Board\Handler $boardHandler */
-        $boardHandler = app('xe.board.handler');
-        $configHandler = app('xe.board.config');
-        $urlHandler = app('xe.board.url');
-        if (!array_has($widgetConfig, 'board_id')) {
+        // board config
+        $take = Arr::get($widgetConfig, 'take');
+        $recent_date = (int)Arr::get($widgetConfig, 'recent_date', 0);
+        $orderType = Arr::get($widgetConfig, 'order_type', '');
+        $noticeInList = array_get($widgetConfig, 'noticeInList', array_get($widgetConfig, 'notice_type', 'withOutNotice'));
+
+        // more
+        $more = array_has($widgetConfig, 'more');
+        $moreMenuItem = null;
+        $moreBoardConfig = null;
+        $urlMore = null;
+
+        if (array_has($widgetConfig, 'board_id') === false) {
             $widgetConfig['board_id']['item'] = [];
         }
 
-        //다중 선택으로 변환. 현재 셀렉트박스 muliple설정은 배열인경우 item값으로 넘어오므로 설정
-        $categorySelected = (is_array($widgetConfig['board_id'])) ?
+        $selectedCategories = (is_array($widgetConfig['board_id']) === true) ?
             $widgetConfig['board_id']['item'] :
-            (array)$widgetConfig['board_id'];
+            [$widgetConfig['board_id']];
 
-        //게시판 쿼리와 카테고리 쿼리를 각각 할 수 있도록 분리
-        $boardIds = array_filter($categorySelected, function ($item) {
-            return mb_substr($item, 0, 9) != 'category.';
-        });
+        $selectedCategories = collect($selectedCategories);
 
-        $categoryIds = array_filter($categorySelected, function ($item) {
-            return mb_substr($item, 0, 9) == 'category.';
-        });
-
-        //상위카테고리는 하위카테고리를 포함해야함
-        $categoryIds = array_map(function ($item) {
-            $item = CategoryItem::find(mb_substr($item, 9));
-            if ($item === null) {
-                return [];
+        $selectedBoardIds = $selectedCategories->filter(
+            function ($item) {
+                return starts_with($item, 'category.') === false;
             }
-
-            return $item->getDescendantTree(true)->getNodes()->pluck('id');
-        }, $categoryIds);
-
-        $categoryIds = array_flatten($categoryIds);
-
-        //기존의 버젼과 대응해야하고 더보기 링크의 기본값을 위해서 대표 게시판 아이디를 선택
-        $menuItem = MenuItem::find(($boardIds) ?
-            array_first($boardIds) :
-            Board::where('type', BoardModule::getId())->first()->instance_id);
-
-        //현재 사용하지않지만 기존버젼 대응을위해 살림
-        $boardConfig = $configHandler->get($menuItem->id);
-
-        $take = $widgetConfig['take'] ?? null;
-        $recent_date = (int)$widgetConfig['recent_date'] ?? 0;
-        $orderType = $widgetConfig['order_type'] ?? '';
-
-        //아래 설정은 위젯에서 제공함
-        $title = $widgetConfig['@attributes']['title'];
-        $more = array_has($widgetConfig, 'more');
-
-        /**
-         * config 할수 있는것
-         * 몇개, 게시판 아이디, 최근 몇일, 정렬 방법
-         *
-         * 2019.04.10 다중 선택 변환으로 division이 아닌 해당 document 테이블만 조회하도록 변경
-         */
-        $model = new Board();
-        /** @var \Xpressengine\Database\DynamicQuery $query */
-
-        //게시판, 카테고리 아이디 유무에 따라 각 쿼리를 분리
-        if (count($boardIds) && count($categoryIds)) {
-            $query = $model->where(function ($query) use ($boardIds, $categoryIds) {
-                $query->whereIn('instance_id', $boardIds)
-                    ->whereHas('boardCategory', function ($query) use ($categoryIds) {
-                        $query->whereIn('item_id', $categoryIds);
-                    });
-            });
-        } elseif (count($boardIds)) {
-            $query = $model->newQuery();
-
-            if (count($boardIds) === 1) {
-                $query = Board::division($boardIds[0])->newQuery();
-            }
-
-            $query->whereIn('instance_id', $boardIds);
-        } elseif (count($categoryIds)) {
-            $query = $model->whereHas('boardCategory', function ($query) use ($categoryIds) {
-                $query->whereIn('item_id', $categoryIds);
-            });
-        } else {
-            $query = $model->where('type', BoardModule::getId());
-        }
-
-        $query = $query->leftJoin(
-            'board_gallery_thumbs',
-            sprintf('%s.%s', $query->getQuery()->from, 'id'),
-            '=',
-            sprintf('%s.%s', 'board_gallery_thumbs', 'target_id')
         );
 
-        switch (array_get($widgetConfig, 'noticeInList', array_get($widgetConfig, 'notice_type', 'withOutNotice'))) {
+        $selectedCategoryItemIds = $selectedCategories
+            ->filter(
+                function ($item) {
+                    return starts_with($item, 'category.') === true;
+                }
+            )
+            ->transform(function (string $id) {
+                $item = CategoryItem::find(mb_substr($id, 9));
+
+                if ($item === null) {
+                    return [];
+                }
+
+                return $item->getDescendantTree(true)->getNodes()->pluck('id');
+            })
+            ->flatten();
+
+        $query = Board::query();
+
+        if ($selectedCategoryItemIds->isEmpty() === true && $selectedBoardIds->count() == 1) {
+            $query = Board::division($selectedCategoryItemIds->first())->newQuery();
+        }
+
+        $query->where('type', BoardModule::getId());
+
+        $query->where(function ($query) use ($selectedBoardIds, $selectedCategoryItemIds) {
+            $query->when(
+                $selectedBoardIds->isNotEmpty() === true,
+                function ($query) use ($selectedBoardIds) {
+                    $query->whereIn('instance_id', $selectedBoardIds);
+                }
+            );
+
+            $query->when(
+                $selectedCategoryItemIds->isNotEmpty() === true,
+                function ($query) use ($selectedCategoryItemIds) {
+                    $query->orWhereHas('boardCategory',
+                        function ($query) use ($selectedCategoryItemIds) {
+                            $query->whereIn('item_id', $selectedCategoryItemIds);
+                        }
+                    );
+                }
+            );
+        });
+
+        switch ($noticeInList) {
             case 'onlyNotice':
                 $query->notice();
                 break;
@@ -155,51 +180,131 @@ class ArticleListWidget extends AbstractWidget
                 break;
         }
 
-        //$recent_date
-        if ($recent_date !== 0) {
-            $current = Carbon::now();
-            $query = $query->where('created_at', '>=', $current->addDay(-1 * $recent_date)->toDateString() . ' 00:00:00')
-                ->where('created_at', '<=', $current->addDay($recent_date)->toDateString() . ' 23:59:59');
-        }
+        $query->when(
+            $take,
+            function ($query, $take) {
+                $query->take($take);
+            }
+        );
 
-        //$orderType
-        if ($orderType == '') {
-            $query = $query->orderBy('head', 'desc');
-        } elseif ($orderType == 'assent_count') {
-            $query = $query->orderBy('assent_count', 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recentlyCreated') {
-            $query = $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'recentlyUpdated') {
-            $query = $query->orderBy(Board::UPDATED_AT, 'desc')->orderBy('head', 'desc');
-        } elseif ($orderType == 'random') {
-            $query = $query->inRandomOrder();
-        }
+        $query->when(
+            $recent_date !== 0,
+            function ($query) use ($recent_date) {
+                $current = Carbon::now();
+                $after = $current->addDay(-1 * $recent_date)->startOfDay();
+                $before = $current->addDay($recent_date)->endOfDay();
 
-        if ($take) {
-            $query = $query->take($take);
-        }
+                $query->where(
+                    ['created_at', '>=', $after],
+                    ['created_at', '<=', $before]
+                );
+            }
+        );
 
-        $list = $query->get();
-        $list = $list->map(function ($item) use ($configHandler) {
-            $item->boardConfig = $configHandler->get($item->instance_id);
-            $item->thumb;
+        $query->when(
+            $orderType,
+            function ($query, $orderType) {
+                $query->when(
+                    $orderType === '',
+                    function ($query) {
+                        $query->orderBy('head', 'desc');
+                    }
+                );
 
+                $query->when(
+                    $orderType === 'assent_count',
+                    function ($query) {
+                        $query->orderBy('assent_count', 'desc')->orderBy('head', 'desc');
+                    }
+                );
+
+                $query->when(
+                    $orderType === 'recentlyCreated',
+                    function ($query) {
+                        $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
+                    }
+                );
+
+                $query->when(
+                    $orderType === 'recentlyUpdated',
+                    function ($query) {
+                        $query->orderBy(Board::UPDATED_AT, 'desc')->orderBy('head', 'desc');
+                    }
+                );
+
+                $query->when(
+                    $orderType === 'random',
+                    function ($query) {
+                        $query->inRandomOrder();
+                    }
+                );
+            }
+        );
+
+        $list = $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem'])->get();
+
+        $list = $list->map(function ($item) {
+            $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
             return $item;
         });
 
-//        $urlHandler = new UrlHandler($boardConfig);
+        // more 더보기 처리
+        if ($more === true) {
+            $moreMenuItemId = $selectedBoardIds->first();
+
+            if ($moreMenuItemId === null) {
+                if ($selectedCategoryItemIds->isNotEmpty() === true) {
+                    $categoryItemId = $selectedCategoryItemIds->first();
+
+                    $board = $list->first(
+                        function ($board) use ($categoryItemId) {
+                            return $board->boardCategory->item_id === $categoryItemId;
+                        }
+                    );
+
+                    $moreMenuItemId = $board->instance_id;
+                }
+
+                else {
+                    $moreMenuItemId = Board::where('type', BoardModule::getId())->first()->instance_id;
+                }
+            }
+
+            $moreMenuItem = MenuItem::find($moreMenuItemId);
+            $moreBoardConfig = $this->boardConfigHandler->get($moreMenuItem->id);
+            $moreBoardCategoryId = $moreBoardConfig->get('categoryId');
+            $moreCategoryItems = collect([]);
+
+            $urlMore = instance_route('index', [], $moreMenuItem->id);
+            $categoryItemId = $selectedCategoryItemIds->first();
+
+            if (is_null($moreBoardCategoryId) === false) {
+                $moreCategoryItems = $this->categoryHandler->items()->where('category_id', $moreBoardCategoryId)->get();
+            }
+
+            if (is_null($categoryItemId) === false) {
+                if ($moreCategoryItems->contains('id', $categoryItemId) === true) {
+                    $urlMore = instance_route('index', ['category_item_id' => $categoryItemId], $moreMenuItem->id);
+                }
+
+                else {
+                    $more = false;
+                }
+            }
+        }
 
         return $this->renderSkin(
             [
                 'list' => $list,
-                'boardConfig' => $boardConfig,
-                'menuItem' => $menuItem,
+                'boardConfig' => $moreBoardConfig,
+                'menuItem' => $moreMenuItem,
                 'widgetConfig' => $widgetConfig,
-                'urlHandler' => $urlHandler,
+                'urlHandler' => $this->boardUrlHandler,
                 'title' => $title,
                 'more' => $more,
-                'boardIds' => $boardIds,
-                'categoryIds' => $categoryIds,
+                'boardIds' => $selectedBoardIds->toArray(),
+                'categoryIds' => $selectedCategoryItemIds->toArray(),
+                'urlMore' => $urlMore
             ]
         );
     }
@@ -229,12 +334,13 @@ class ArticleListWidget extends AbstractWidget
         $configHandler = app('xe.board.config');
         $boards = $configHandler->gets();
         $boardList = [];
-        /** @var \Xpressengine\Config\ConfigEntity $config */
+
+        /** @var ConfigEntity $config */
         foreach ($boards as $config) {
             $boardName = $config->get('boardName');
             if ($boardName === null || $boardName === '' || xe_trans($boardName) == null) {
-                $menuItem = MenuItem::find($config->get('boardId'));
-                $boardName = $menuItem->title;
+                $menuItem = app(MenuItemRepository::class)->fetchIn([$config->get('boardId')], [])->first();
+                $boardName = $menuItem->title ?? $config->get('boardId');
             }
             $categories = [];
 
@@ -255,6 +361,12 @@ class ArticleListWidget extends AbstractWidget
         return $boardList;
     }
 
+    /**
+     * get category list
+     *
+     * @param CategoryItem $categoryItem
+     * @return array
+     */
     private function getCategoryList(CategoryItem $categoryItem)
     {
         $result = [
