@@ -17,8 +17,10 @@ namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use View;
+use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Category\Models\Category;
 use Xpressengine\Category\Models\CategoryItem;
+use Xpressengine\Config\ConfigEntity;
 use Xpressengine\Menu\Models\MenuItem;
 use Xpressengine\Menu\Repositories\MenuItemRepository;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
@@ -61,6 +63,11 @@ class ArticleListWidget extends AbstractWidget
     protected $boardUrlHandler;
 
     /**
+     * @var CategoryHandler
+     */
+    protected $categoryHandler;
+
+    /**
      * Article Lis tWidget __construct
      *
      * @param array|null $config
@@ -72,6 +79,7 @@ class ArticleListWidget extends AbstractWidget
         $this->boardHandler = app('xe.board.handler');
         $this->boardConfigHandler = app('xe.board.config');
         $this->boardUrlHandler = app('xe.board.url');
+        $this->categoryHandler = app(CategoryHandler::class);
     }
 
     /**
@@ -82,14 +90,19 @@ class ArticleListWidget extends AbstractWidget
     public function render()
     {
         $widgetConfig = $this->setting();
-
         $title = $widgetConfig['@attributes']['title'];
-        $more = array_has($widgetConfig, 'more');
 
+        // board config
         $take = Arr::get($widgetConfig, 'take');
         $recent_date = (int)Arr::get($widgetConfig, 'recent_date', 0);
         $orderType = Arr::get($widgetConfig, 'order_type', '');
         $noticeInList = array_get($widgetConfig, 'noticeInList', array_get($widgetConfig, 'notice_type', 'withOutNotice'));
+
+        // more
+        $more = array_has($widgetConfig, 'more');
+        $moreMenuItem = null;
+        $moreBoardConfig = null;
+        $urlMore = null;
 
         if (array_has($widgetConfig, 'board_id') === false) {
             $widgetConfig['board_id']['item'] = [];
@@ -103,14 +116,14 @@ class ArticleListWidget extends AbstractWidget
 
         $selectedBoardIds = $selectedCategories->filter(
             function ($item) {
-                return mb_substr($item, 0, 9) != 'category.';
+                return starts_with($item, 'category.') === false;
             }
         );
 
-        $selectedCategoryIds = $selectedCategories
+        $selectedCategoryItemIds = $selectedCategories
             ->filter(
                 function ($item) {
-                    return mb_substr($item, 0, 9) == 'category.';
+                    return starts_with($item, 'category.') === true;
                 }
             )
             ->transform(function (string $id) {
@@ -126,29 +139,31 @@ class ArticleListWidget extends AbstractWidget
 
         $query = Board::query();
 
-        if ($selectedCategoryIds->isEmpty() === true && $selectedBoardIds->count() == 1) {
-            $query = Board::division($selectedCategoryIds->first())->newQuery();
+        if ($selectedCategoryItemIds->isEmpty() === true && $selectedBoardIds->count() == 1) {
+            $query = Board::division($selectedCategoryItemIds->first())->newQuery();
         }
 
         $query->where('type', BoardModule::getId());
 
-        $query->when(
-            $selectedBoardIds->isNotEmpty(),
-            function ($query) use ($selectedBoardIds) {
-                $query->whereIn('instance_id', $selectedBoardIds);
-            }
-        );
+        $query->where(function ($query) use ($selectedBoardIds, $selectedCategoryItemIds) {
+            $query->when(
+                $selectedBoardIds->isNotEmpty() === true,
+                function ($query) use ($selectedBoardIds) {
+                    $query->whereIn('instance_id', $selectedBoardIds);
+                }
+            );
 
-        $query->when(
-            $selectedCategoryIds->isNotEmpty(),
-            function ($query) use ($selectedCategoryIds) {
-                $query->whereHas('boardCategory',
-                    function ($query) use ($selectedCategoryIds) {
-                        $query->whereIn('item_id', $selectedCategoryIds);
-                    }
-                );
-            }
-        );
+            $query->when(
+                $selectedCategoryItemIds->isNotEmpty() === true,
+                function ($query) use ($selectedCategoryItemIds) {
+                    $query->orWhereHas('boardCategory',
+                        function ($query) use ($selectedCategoryItemIds) {
+                            $query->whereIn('item_id', $selectedCategoryItemIds);
+                        }
+                    );
+                }
+            );
+        });
 
         switch ($noticeInList) {
             case 'onlyNotice':
@@ -226,19 +241,57 @@ class ArticleListWidget extends AbstractWidget
             }
         );
 
-        $list = $query->with(['thumb', 'slug'])->get();
+        $list = $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem'])->get();
 
         $list = $list->map(function ($item) {
             $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
             return $item;
         });
 
-        $moreMenuItem = MenuItem::find($selectedBoardIds->isNotEmpty() ?
-            $selectedBoardIds->first() :
-            Board::where('type', BoardModule::getId())->first()->instance_id
-        );
+        // more 더보기 처리
+        if ($more === true) {
+            $moreMenuItemId = $selectedBoardIds->first();
 
-        $moreBoardConfig = $this->boardConfigHandler->get($moreMenuItem->id);
+            if ($moreMenuItemId === null) {
+                if ($selectedCategoryItemIds->isNotEmpty() === true) {
+                    $categoryItemId = $selectedCategoryItemIds->first();
+
+                    $board = $list->first(
+                        function ($board) use ($categoryItemId) {
+                            return $board->boardCategory->item_id === $categoryItemId;
+                        }
+                    );
+
+                    $moreMenuItemId = $board->instance_id;
+                }
+
+                else {
+                    $moreMenuItemId = Board::where('type', BoardModule::getId())->first()->instance_id;
+                }
+            }
+
+            $moreMenuItem = MenuItem::find($moreMenuItemId);
+            $moreBoardConfig = $this->boardConfigHandler->get($moreMenuItem->id);
+            $moreBoardCategoryId = $moreBoardConfig->get('categoryId');
+            $moreCategoryItems = collect([]);
+
+            $urlMore = instance_route('index', [], $moreMenuItem->id);
+            $categoryItemId = $selectedCategoryItemIds->first();
+
+            if (is_null($moreBoardCategoryId) === false) {
+                $moreCategoryItems = $this->categoryHandler->items()->where('category_id', $moreBoardCategoryId)->get();
+            }
+
+            if (is_null($categoryItemId) === false) {
+                if ($moreCategoryItems->contains('id', $categoryItemId) === true) {
+                    $urlMore = instance_route('index', ['category_item_id' => $categoryItemId], $moreMenuItem->id);
+                }
+
+                else {
+                    $more = false;
+                }
+            }
+        }
 
         return $this->renderSkin(
             [
@@ -246,11 +299,12 @@ class ArticleListWidget extends AbstractWidget
                 'boardConfig' => $moreBoardConfig,
                 'menuItem' => $moreMenuItem,
                 'widgetConfig' => $widgetConfig,
-                'urlHandler' => new UrlHandler($moreBoardConfig),
+                'urlHandler' => $this->boardUrlHandler,
                 'title' => $title,
                 'more' => $more,
                 'boardIds' => $selectedBoardIds->toArray(),
-                'categoryIds' => $selectedCategoryIds->toArray(),
+                'categoryIds' => $selectedCategoryItemIds->toArray(),
+                'urlMore' => $urlMore
             ]
         );
     }
@@ -281,7 +335,7 @@ class ArticleListWidget extends AbstractWidget
         $boards = $configHandler->gets();
         $boardList = [];
 
-        /** @var \Xpressengine\Config\ConfigEntity $config */
+        /** @var ConfigEntity $config */
         foreach ($boards as $config) {
             $boardName = $config->get('boardName');
             if ($boardName === null || $boardName === '' || xe_trans($boardName) == null) {

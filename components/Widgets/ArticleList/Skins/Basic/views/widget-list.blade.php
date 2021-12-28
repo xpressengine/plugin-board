@@ -6,25 +6,12 @@
     <div class="widget-funnyweb-main-board">
         <div class="xe-widget__header title-box">
             <!-- [D] 타이틀 -->
-            <h2 class="xe-widget__title title">{{ $widgetConfig['@attributes']['title'] }}</h2>
+            <h2 class="xe-widget__title title">{{ $title }}</h2>
             <!-- [D] 전체보기 링크 -->
             @if ($more)
-                @php
-                    $instanceId = $menuItem->id;
-                    $urlMore = instance_route('index', [], $instanceId);
-                    if (count($categoryIds)) {
-                        $categoryId = array_first($categoryIds);
-                        $urlMore = instance_route('index', ['category_item_id' => $categoryId], $instanceId);
-                    } else {
-                        if (starts_with($widgetConfig['board_id'], 'category.')) {
-                            $categoryId = str_after($widgetConfig['board_id'], 'category.');
-                            $urlMore = instance_route('index', ['category_item_id' => $categoryId], $instanceId);
-                        }
-                    }
-                @endphp
                 <a href="{{ $urlMore }}" class="xe-widget__more-link more-link">
                     <i class="xi-angle-right"></i>
-                    <span class="blind">전체보기</span>
+                    <span class="blind">{{ xe_trans('more') }}</span>
                 </a>
             @endif
         </div>
@@ -34,7 +21,7 @@
             <ul class="xe-widget__items list list--item-two">
                 @foreach ($list as $idx => $item)
                     <li>
-                        <a href="{{ $urlHandler->getShow($item) }}" class="item-link">
+                        <a href="{{ $urlHandler->getShow($item, [], $item->boardConfig) }}" class="item-link">
                             <!-- [D] 게시물 제목 -->
                             <strong class="item__title">{{ $item->title }}</strong>
                             <!-- [D] 게시물 날짜 -->
