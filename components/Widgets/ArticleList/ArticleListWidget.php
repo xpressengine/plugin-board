@@ -16,6 +16,7 @@ namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use View;
 use Xpressengine\Category\CategoryHandler;
 use Xpressengine\Category\Models\Category;
@@ -113,29 +114,8 @@ class ArticleListWidget extends AbstractWidget
             [$widgetConfig['board_id']];
 
         $selectedCategories = collect($selectedCategories);
-
-        $selectedBoardIds = $selectedCategories->filter(
-            function ($item) {
-                return starts_with($item, 'category.') === false;
-            }
-        );
-
-        $selectedCategoryItemIds = $selectedCategories
-            ->filter(
-                function ($item) {
-                    return starts_with($item, 'category.') === true;
-                }
-            )
-            ->transform(function (string $id) {
-                $item = CategoryItem::find(mb_substr($id, 9));
-
-                if ($item === null) {
-                    return [];
-                }
-
-                return $item->getDescendantTree(true)->getNodes()->pluck('id');
-            })
-            ->flatten();
+        $selectedBoardIds = $this->getSelectedBoardIds($selectedCategories);
+        $selectedCategoryItemIds = $this->getSelectedCategoryItemIds($selectedCategories);
 
         $query = Board::query();
 
@@ -241,36 +221,16 @@ class ArticleListWidget extends AbstractWidget
             }
         );
 
-        $list = $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem'])->get();
+        $boardList = $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem'])->get();
 
-        $list = $list->map(function ($item) {
+        $boardList = $boardList->map(function ($item) {
             $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
             return $item;
         });
 
         // more 더보기 처리
         if ($more === true) {
-            $moreMenuItemId = $selectedBoardIds->first();
-
-            if ($moreMenuItemId === null) {
-                if ($selectedCategoryItemIds->isNotEmpty() === true) {
-                    $categoryItemId = $selectedCategoryItemIds->first();
-
-                    $board = $list->first(
-                        function ($board) use ($categoryItemId) {
-                            return $board->boardCategory->item_id === $categoryItemId;
-                        }
-                    );
-
-                    $moreMenuItemId = $board->instance_id;
-                }
-
-                else {
-                    $moreMenuItemId = Board::where('type', BoardModule::getId())->first()->instance_id;
-                }
-            }
-
-            $moreMenuItem = MenuItem::find($moreMenuItemId);
+            $moreMenuItem = $this->getMoreMenuItem($selectedBoardIds, $selectedCategoryItemIds, $boardList);
             $moreBoardConfig = $this->boardConfigHandler->get($moreMenuItem->id);
             $moreBoardCategoryId = $moreBoardConfig->get('categoryId');
             $moreCategoryItems = collect([]);
@@ -285,9 +245,7 @@ class ArticleListWidget extends AbstractWidget
             if (is_null($categoryItemId) === false) {
                 if ($moreCategoryItems->contains('id', $categoryItemId) === true) {
                     $urlMore = instance_route('index', ['category_item_id' => $categoryItemId], $moreMenuItem->id);
-                }
-
-                else {
+                } else {
                     $more = false;
                 }
             }
@@ -295,7 +253,7 @@ class ArticleListWidget extends AbstractWidget
 
         return $this->renderSkin(
             [
-                'list' => $list,
+                'list' => $boardList,
                 'boardConfig' => $moreBoardConfig,
                 'menuItem' => $moreMenuItem,
                 'widgetConfig' => $widgetConfig,
@@ -310,6 +268,82 @@ class ArticleListWidget extends AbstractWidget
     }
 
     /**
+     * Get Selected Board Ids
+     *
+     * @param Collection $selectedCategories
+     * @return Collection
+     */
+    protected function getSelectedBoardIds(Collection $selectedCategories)
+    {
+        return $selectedCategories->filter(
+            function ($item) {
+                return starts_with($item, 'category.') === false;
+            }
+        );
+    }
+
+    /**
+     * Get Selected Category Item Ids
+     *
+     * @param Collection $selectedCategories
+     * @return Collection
+     */
+    protected function getSelectedCategoryItemIds(Collection $selectedCategories)
+    {
+        return $selectedCategories
+            ->filter(
+                function ($item) {
+                    return starts_with($item, 'category.') === true;
+                }
+            )
+            ->transform(function (string $id) {
+                $item = CategoryItem::find(mb_substr($id, 9));
+
+                if ($item === null) {
+                    return [];
+                }
+
+                return $item->getDescendantTree(true)->getNodes()->pluck('id');
+            })
+            ->flatten();
+    }
+
+    /**
+     * Get More Menu Item
+     *
+     * @param Collection $selectedBoardIds
+     * @param Collection $selectedCategoryItemIds
+     * @param Collection $boardList
+     * @return MenuItem
+     */
+    protected function getMoreMenuItem(
+        Collection $selectedBoardIds,
+        Collection $selectedCategoryItemIds,
+        Collection $boardList
+    )
+    {
+        $moreMenuItemId = $selectedBoardIds->first();
+
+        if ($moreMenuItemId === null) {
+            if ($selectedCategoryItemIds->isNotEmpty() === true) {
+                $categoryItemId = $selectedCategoryItemIds->first();
+
+                $board = $boardList->first(
+                    function ($board) use ($categoryItemId) {
+                        return $board->boardCategory->item_id === $categoryItemId;
+                    }
+                );
+
+                $moreMenuItemId = $board->instance_id;
+            } else {
+                $moreMenuItemId = Board::where('type', BoardModule::getId())->first()->instance_id;
+            }
+        }
+
+        return MenuItem::find($moreMenuItemId);
+    }
+
+    /**
      * 위젯 설정 페이지에 출력할 폼을 출력한다.
      *
      * @param array $args 설정값
@@ -318,7 +352,7 @@ class ArticleListWidget extends AbstractWidget
      */
     public function renderSetting(array $args = [])
     {
-        return $view = View::make(sprintf('%s/views/setting', static::$path), [
+        return View::make(sprintf('%s/views/setting', static::$path), [
             'args' => $args,
             'boardList' => $this->getBoardList(),
         ]);
