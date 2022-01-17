@@ -105,6 +105,9 @@ class ArticleListWidget extends AbstractWidget
         $moreBoardConfig = null;
         $urlMore = null;
 
+        // pagination
+        $pagination = array_has($widgetConfig, 'pagination');
+
         if (array_has($widgetConfig, 'board_id') === false) {
             $widgetConfig['board_id']['item'] = [];
         }
@@ -160,12 +163,14 @@ class ArticleListWidget extends AbstractWidget
                 break;
         }
 
-        $query->when(
-            $take,
-            function ($query, $take) {
-                $query->take($take);
-            }
-        );
+        if(!$pagination) {
+            $query->when(
+                $take,
+                function ($query, $take) {
+                    $query->take($take);
+                }
+            );
+        }
 
         $query->when(
             $recent_date !== 0,
@@ -221,9 +226,10 @@ class ArticleListWidget extends AbstractWidget
             }
         );
 
-        $boardList = $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem'])->get();
+        $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem']);
+        $boardList = $pagination ? $query->paginate($take) : $query->get();
 
-        $boardList = $boardList->map(function ($item) {
+        $boardList->transform(function ($item) {
             $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
             return $item;
         });
@@ -260,6 +266,7 @@ class ArticleListWidget extends AbstractWidget
                 'urlHandler' => $this->boardUrlHandler,
                 'title' => $title,
                 'more' => $more,
+                'pagination' => $pagination,
                 'boardIds' => $selectedBoardIds->toArray(),
                 'categoryIds' => $selectedCategoryItemIds->toArray(),
                 'urlMore' => $urlMore

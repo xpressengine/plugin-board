@@ -53,6 +53,17 @@
     <input type="number" name="take" class="form-control" value="{{array_get($args, 'take', 5)}}" />
 </div>
 
+<div class="form-group">
+    <label>페이지네이션</label>
+    <div class="xe-btn-toggle">
+        <label>
+            <span class="sr-only">toggle</span>
+            <input name="pagination" type="checkbox" @if(array_get($args, 'pagination')) checked="checked" @endif />
+            <span class="toggle"></span>
+        </label>
+    </div>
+</div>
+
 <script>
     $(function(){
         $('[name="@title"]').prev().html('타이틀');
