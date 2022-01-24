@@ -64,6 +64,11 @@
     </div>
 </div>
 
+<div class="form-group">
+    <label>페이지 이름</label>
+    <input type="text" name="page_name" class="form-control" placeholder="page" value="{{array_get($args, 'pageName')}}" />
+</div>
+
 <script>
     $(function(){
         $('[name="@title"]').prev().html('타이틀');

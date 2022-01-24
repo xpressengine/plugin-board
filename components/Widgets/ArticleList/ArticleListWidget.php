@@ -107,6 +107,7 @@ class ArticleListWidget extends AbstractWidget
 
         // pagination
         $pagination = array_has($widgetConfig, 'pagination');
+        $pageName = Arr::get($widgetConfig, 'page_name');
 
         if (array_has($widgetConfig, 'board_id') === false) {
             $widgetConfig['board_id']['item'] = [];
@@ -227,7 +228,11 @@ class ArticleListWidget extends AbstractWidget
         );
 
         $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem']);
-        $boardList = $pagination ? $query->paginate($take) : $query->get();
+        if($pagination) {
+            $boardList = $query->paginate($take, ['*'], empty($pageName) ? 'page' : $pageName);
+        } else {
+            $boardList = $query->get();
+        }
 
         $boardList->transform(function ($item) {
             $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
