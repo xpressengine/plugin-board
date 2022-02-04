@@ -225,6 +225,15 @@ class ArticleListWidget extends AbstractWidget
 
         $boardList = $boardList->map(function ($item) {
             $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
+            $thumb = $item->thumb;
+
+            if ($thumb !== null) {
+                $item->setAttribute('target_id', $thumb->target_id);
+                $item->setAttribute('board_thumbnail_file_id', $thumb->board_thumbnail_file_id);
+                $item->setAttribute('board_thumbnail_external_path', $thumb->board_thumbnail_external_path);
+                $item->setAttribute('board_thumbnail_path', $thumb->board_thumbnail_path);
+            }
+
             return $item;
         });
 
