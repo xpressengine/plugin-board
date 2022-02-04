@@ -1,10 +1,11 @@
 <div class="form-group">
     <label>정렬</label>
     <select name="order_type" class="form-control">
-        <option value="recentlyCreated" @if(array_get($args, 'order_type') == 'recentlyCreated') selected="selected" @endif >{{xe_trans('board::recentlyCreated')}}</option>
-        <option value="recentlyUpdated" @if(array_get($args, 'order_type') == 'recentlyUpdated') selected="selected" @endif >{{xe_trans('board::recentlyUpdated')}}</option>
-        <option value="assent_count" @if(array_get($args, 'order_type') == 'assent_count') selected="selected" @endif >{{xe_trans('board::assentOrder')}}</option>
-        <option value="random" @if(array_get($args, 'order_type') == 'random') selected="selected" @endif >랜덤</option>
+        <option value="recentlyCreated" @if(array_get($args, 'order_type') == 'recentlyCreated') selected="selected" @endif >{{ xe_trans('board::recentlyCreated') }}</option>
+        <option value="recentlyUpdated" @if(array_get($args, 'order_type') == 'recentlyUpdated') selected="selected" @endif >{{ xe_trans('board::recentlyUpdated') }}</option>
+        <option value="assent_count" @if(array_get($args, 'order_type') == 'assent_count') selected="selected" @endif >{{ xe_trans('board::assentOrder') }}</option>
+        <option value="read_count" @if(array_get($args, 'order_type') == 'read_count') selected="selected" @endif >{{ xe_trans('board::readOrder') }}</option>
+        <option value="random" @if(array_get($args, 'order_type') == 'random') selected="selected" @endif >{{ xe_trans('board::randomOrder') }}</option>
     </select>
 </div>
 

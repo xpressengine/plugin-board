@@ -226,6 +226,14 @@ return [
         'ko' => '많은 추천을 받은 순서로 정렬합니다.',
         'en' => 'Sort by assent count',
     ],
+    'readOrder' => [
+        'ko' => '조회순',
+        'en' => 'Most viewed',
+    ],
+    'randomOrder' => [
+        'ko' => '랜덤',
+        'en' => 'Random',
+    ],
     'moveToTrash' => [
         'ko' => '휴지통으로 이동',
         'en' => 'Move to Trash',
