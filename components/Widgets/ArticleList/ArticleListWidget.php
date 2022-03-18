@@ -105,6 +105,10 @@ class ArticleListWidget extends AbstractWidget
         $moreBoardConfig = null;
         $urlMore = null;
 
+        // pagination
+        $pagination = array_has($widgetConfig, 'pagination');
+        $pageName = Arr::get($widgetConfig, 'page_name');
+
         if (array_has($widgetConfig, 'board_id') === false) {
             $widgetConfig['board_id']['item'] = [];
         }
@@ -160,12 +164,14 @@ class ArticleListWidget extends AbstractWidget
                 break;
         }
 
-        $query->when(
-            $take,
-            function ($query, $take) {
-                $query->take($take);
-            }
-        );
+        if(!$pagination) {
+            $query->when(
+                $take,
+                function ($query, $take) {
+                    $query->take($take);
+                }
+            );
+        }
 
         $query->when(
             $recent_date !== 0,
@@ -221,9 +227,14 @@ class ArticleListWidget extends AbstractWidget
             }
         );
 
-        $boardList = $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem'])->get();
+        $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem']);
+        if($pagination) {
+            $boardList = $query->paginate($take, ['*'], empty($pageName) ? 'page' : $pageName);
+        } else {
+            $boardList = $query->get();
+        }
 
-        $boardList = $boardList->map(function ($item) {
+        $boardList->transform(function ($item) {
             $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
             $thumb = $item->thumb;
 
@@ -269,6 +280,7 @@ class ArticleListWidget extends AbstractWidget
                 'urlHandler' => $this->boardUrlHandler,
                 'title' => $title,
                 'more' => $more,
+                'pagination' => $pagination,
                 'boardIds' => $selectedBoardIds->toArray(),
                 'categoryIds' => $selectedCategoryItemIds->toArray(),
                 'urlMore' => $urlMore
