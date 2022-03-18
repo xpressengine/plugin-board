@@ -205,6 +205,13 @@ class ArticleListWidget extends AbstractWidget
                 );
 
                 $query->when(
+                    $orderType === 'read_count',
+                    function ($query) {
+                        $query->orderBy('read_count', 'desc')->orderBy('head', 'desc');
+                    }
+                );
+
+                $query->when(
                     $orderType === 'recentlyCreated',
                     function ($query) {
                         $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
