@@ -105,6 +105,10 @@ class ArticleListWidget extends AbstractWidget
         $moreBoardConfig = null;
         $urlMore = null;
 
+        // pagination
+        $pagination = array_has($widgetConfig, 'pagination');
+        $pageName = Arr::get($widgetConfig, 'page_name');
+
         if (array_has($widgetConfig, 'board_id') === false) {
             $widgetConfig['board_id']['item'] = [];
         }
@@ -160,12 +164,14 @@ class ArticleListWidget extends AbstractWidget
                 break;
         }
 
-        $query->when(
-            $take,
-            function ($query, $take) {
-                $query->take($take);
-            }
-        );
+        if(!$pagination) {
+            $query->when(
+                $take,
+                function ($query, $take) {
+                    $query->take($take);
+                }
+            );
+        }
 
         $query->when(
             $recent_date !== 0,
@@ -199,6 +205,13 @@ class ArticleListWidget extends AbstractWidget
                 );
 
                 $query->when(
+                    $orderType === 'read_count',
+                    function ($query) {
+                        $query->orderBy('read_count', 'desc')->orderBy('head', 'desc');
+                    }
+                );
+
+                $query->when(
                     $orderType === 'recentlyCreated',
                     function ($query) {
                         $query->orderBy(Board::CREATED_AT, 'desc')->orderBy('head', 'desc');
@@ -221,10 +234,24 @@ class ArticleListWidget extends AbstractWidget
             }
         );
 
-        $boardList = $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem'])->get();
+        $query->with(['thumb', 'slug', 'boardCategory', 'boardCategory.categoryItem']);
+        if($pagination) {
+            $boardList = $query->paginate($take, ['*'], empty($pageName) ? 'page' : $pageName);
+        } else {
+            $boardList = $query->get();
+        }
 
-        $boardList = $boardList->map(function ($item) {
+        $boardList->transform(function ($item) {
             $item->boardConfig = $this->boardConfigHandler->get($item->instance_id);
+            $thumb = $item->thumb;
+
+            if ($thumb !== null) {
+                $item->setAttribute('target_id', $thumb->target_id);
+                $item->setAttribute('board_thumbnail_file_id', $thumb->board_thumbnail_file_id);
+                $item->setAttribute('board_thumbnail_external_path', $thumb->board_thumbnail_external_path);
+                $item->setAttribute('board_thumbnail_path', $thumb->board_thumbnail_path);
+            }
+
             return $item;
         });
 
@@ -260,6 +287,7 @@ class ArticleListWidget extends AbstractWidget
                 'urlHandler' => $this->boardUrlHandler,
                 'title' => $title,
                 'more' => $more,
+                'pagination' => $pagination,
                 'boardIds' => $selectedBoardIds->toArray(),
                 'categoryIds' => $selectedCategoryItemIds->toArray(),
                 'urlMore' => $urlMore

@@ -1,10 +1,11 @@
 <div class="form-group">
     <label>정렬</label>
     <select name="order_type" class="form-control">
-        <option value="recentlyCreated" @if(array_get($args, 'order_type') == 'recentlyCreated') selected="selected" @endif >{{xe_trans('board::recentlyCreated')}}</option>
-        <option value="recentlyUpdated" @if(array_get($args, 'order_type') == 'recentlyUpdated') selected="selected" @endif >{{xe_trans('board::recentlyUpdated')}}</option>
-        <option value="assent_count" @if(array_get($args, 'order_type') == 'assent_count') selected="selected" @endif >{{xe_trans('board::assentOrder')}}</option>
-        <option value="random" @if(array_get($args, 'order_type') == 'random') selected="selected" @endif >랜덤</option>
+        <option value="recentlyCreated" @if(array_get($args, 'order_type') == 'recentlyCreated') selected="selected" @endif >{{ xe_trans('board::recentlyCreated') }}</option>
+        <option value="recentlyUpdated" @if(array_get($args, 'order_type') == 'recentlyUpdated') selected="selected" @endif >{{ xe_trans('board::recentlyUpdated') }}</option>
+        <option value="assent_count" @if(array_get($args, 'order_type') == 'assent_count') selected="selected" @endif >{{ xe_trans('board::assentOrder') }}</option>
+        <option value="read_count" @if(array_get($args, 'order_type') == 'read_count') selected="selected" @endif >{{ xe_trans('board::readOrder') }}</option>
+        <option value="random" @if(array_get($args, 'order_type') == 'random') selected="selected" @endif >{{ xe_trans('board::randomOrder') }}</option>
     </select>
 </div>
 
@@ -51,6 +52,22 @@
 <div class="form-group">
     <label>글 수</label>
     <input type="number" name="take" class="form-control" value="{{array_get($args, 'take', 5)}}" />
+</div>
+
+<div class="form-group">
+    <label>페이지네이션</label>
+    <div class="xe-btn-toggle">
+        <label>
+            <span class="sr-only">toggle</span>
+            <input name="pagination" type="checkbox" @if(array_get($args, 'pagination')) checked="checked" @endif />
+            <span class="toggle"></span>
+        </label>
+    </div>
+</div>
+
+<div class="form-group">
+    <label>페이지 이름</label>
+    <input type="text" name="page_name" class="form-control" placeholder="page" value="{{array_get($args, 'pageName')}}" />
 </div>
 
 <script>
