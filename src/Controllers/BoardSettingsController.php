@@ -569,14 +569,22 @@ class BoardSettingsController extends Controller
         $instances = [];
         $instanceIds = [];
         $urls = [];
-        $instanceRoutes = $routeRepository->fetchByModule(BoardModule::getId());
+
+        $instanceRoutes = new \Illuminate\Database\Eloquent\Collection(
+            $routeRepository->fetchByModule(BoardModule::getId())
+        );
+
+        $instanceRoutes->load('MenuItem', 'MenuItem.menu');
+
         foreach ($instanceRoutes as $route) {
             $instanceIds[] = $route->instance_id;
             $urls[$route->instance_id] = $route->url;
 
             $instances[] = [
                 'id' => $route->instance_id,
-                'name' => $route->url,
+                'url' => $route->url,
+                'title' => xe_trans(optional($route->MenuItem)->title),
+                'menu_title' => optional($route->MenuItem->menu)->title
             ];
         }
 

@@ -185,7 +185,9 @@ use Xpressengine\Plugins\Board\Models\Board;
                     <select class="form-control __xe_select_move_instance_id">
                         <option value="">선택</option>
                         @foreach ($instances as $instance)
-                        <option value="{{ $instance['id'] }}">{{ $instance['name'] }}</option>
+                            <option value="{{ $instance['id'] }}">
+                                {{ $instance['menu_title'] }} - {{ $instance['title'] }} (URL : /{{ $instance['url'] }})
+                            </option>
                         @endforeach
                     </select>
                 </div>
