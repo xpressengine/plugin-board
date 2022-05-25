@@ -45,8 +45,12 @@ use Xpressengine\Plugins\Board\Models\Board;
 
                                         <ul class="dropdown-menu" role="menu" style="overflow: scroll; height: 280px;">
                                             <li class="active"><a href="#" value="">{{ xe_trans('board::manage.boardFilter.all') }}</a></li>
-                                            @foreach ($boards as $id => $boardName)
-                                                <li><a href="#" value="{{ $id }}">{{ xe_trans($boardName) }}</a></li>
+                                            @foreach ($instances as $instance)
+                                                <li>
+                                                    <a href="#" value="{{ $instance['id'] }}">
+                                                        {{ $instance['menu_title'] }} - {{ $instance['title'] }} (URL : /{{ $instance['url'] }})
+                                                    </a>
+                                                </li>
                                             @endforeach
                                         </ul>
                                     </div>
