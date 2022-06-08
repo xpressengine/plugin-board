@@ -95,6 +95,7 @@ class BoardSlug extends DynamicModel
 
         // remove double dash
         $slug = str_replace('--', '-', $slug);
+        $slug = str_replace('?', '', $slug);
 
         return $slug;
     }
