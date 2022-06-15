@@ -505,6 +505,22 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div id="collapseTwo" class="panel-collapse collapse in">
+                                                <div class="form-group">
+                                                    <div class="pull-left">
+                                                        <label>글쓰기 기본 내용</label>
+                                                    </div>
+
+                                                    <div class="input-group">
+                                                        {!! editor($config->get('boardId'), ['content' => old('defaultContent') ?: $config->get('defaultContent'), 'contentDomName' => 'defaultContent', 'contentDomId' => 'defaultContent', 'class'=>'xf-input']) !!}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

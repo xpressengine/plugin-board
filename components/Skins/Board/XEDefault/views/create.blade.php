@@ -66,7 +66,7 @@
             @case('content')
             <div class="xf-write-editor-box">
                 {!! editor($config->get('boardId'), [
-                'content' => Request::old('content'),
+                'content' => Request::old('content') ?: $config->get('defaultContent'),
                 'cover' => true,
                 ]) !!}
             </div>

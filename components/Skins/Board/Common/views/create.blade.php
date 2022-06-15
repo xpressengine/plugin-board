@@ -50,7 +50,7 @@
         <div class="write_body">
             <div class="write_form_editor">
                 {!! editor($config->get('boardId'), [
-                'content' => Request::old('content'),
+                'content' => Request::old('content') ?: $config->get('defaultContent'),
                 'cover' => true,
                 ]) !!}
             </div>

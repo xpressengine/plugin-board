@@ -306,7 +306,7 @@ class BoardSettingsController extends Controller
         foreach ($config->getPureAll() as $key => $value) {
             // 기본 설정이 아닌 항목 예외 처리
             if (in_array($key, [
-                    'listColumns','formColumns','sortListColumns','sortFormColumns'
+                    'listColumns','formColumns','sortListColumns','sortFormColumns', 'defaultContent'
                 ]) == true) {
                 continue;
             }
