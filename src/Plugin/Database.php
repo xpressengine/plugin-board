@@ -11,12 +11,12 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0-standalone.html LGPL
  * @link        https://xpressengine.io
  */
+
 namespace Xpressengine\Plugins\Board\Plugin;
 
+use Illuminate\Database\Schema\Blueprint;
 use Schema;
 use XeDB;
-use Illuminate\Database\Schema\Builder;
-use Illuminate\Database\Schema\Blueprint;
 
 /**
  * Database
@@ -47,6 +47,20 @@ class Database
     }
 
     /**
+     * created database for this plugin
+     *
+     * @return void
+     */
+    public static function created()
+    {
+        static::createdDataTable();
+        static::createdFavoriteTable();
+        static::createdSlugTable();
+        static::createdCategoryTable();
+        static::createdGalleryThumbnailTable();
+    }
+
+    /**
      * create data table
      *
      * @return void
@@ -55,18 +69,45 @@ class Database
     {
         if (Schema::hasTable('board_data') === false) {
             Schema::create('board_data', function (Blueprint $table) {
-                $table->engine = "InnoDB";
+                // board data
+                $table->engine = 'InnoDB';
 
-                $table->string('target_id', 36);
+                // columns
+                $table->string('target_id', 36)->comment("ID of the board's post");
 
-                $table->integer('allow_comment')->default(1);
-                $table->integer('use_alarm')->default(1);
-                $table->integer('file_count')->default(0);
-                $table->string('title_head', 255)->default('')->comment('title head is specific tag of title');
+                $table->boolean('allow_comment')
+                    ->default(true)
+                    ->comment('allow_comment status. true:allow, false:disallow');
 
-                $table->primary(array('target_id'));
+                $table->boolean('use_alarm')
+                    ->default(true)
+                    ->comment('use_alarm status. true:use, false:not used');
+
+                $table->integer('file_count')
+                    ->default(0)
+                    ->comment('number of attached files');
+
+                $table->string('title_head', 255)
+                    ->default('')
+                    ->comment('title head is specific tag of title');
+
+                // indexes
+                $table->primary(['target_id']);
             });
         }
+    }
+
+    /**
+     * Created Data Table
+     *
+     * @return void
+     */
+    protected static function createdDataTable()
+    {
+        Schema::table('board_data', function (Blueprint $table) {
+            // foreign
+            $table->foreign('target_id')->references('id')->on('documents');
+        });
     }
 
     /**
@@ -78,15 +119,33 @@ class Database
     {
         if (Schema::hasTable('board_favorites') === false) {
             Schema::create('board_favorites', function (Blueprint $table) {
-                $table->engine = "InnoDB";
+                // board favorites
+                $table->engine = 'InnoDB';
 
-                $table->bigIncrements('favorite_id');
-                $table->string('target_id', 36);
-                $table->string('user_id', 36);
+                // columns
+                $table->bigIncrements('favorite_id')->comment('ID');
+                $table->string('user_id', 36)->comment('ID of the user who liked it');
+                $table->string('target_id', 36)->comment("ID of the liked board's post");
 
-                $table->index(array('target_id', 'user_id'));
+                // indexes
+                $table->index('user_id');
+                $table->unique(['target_id', 'user_id']);
             });
         }
+    }
+
+    /**
+     * Created favorite Table
+     *
+     * @return void
+     */
+    protected static function createdFavoriteTable()
+    {
+        Schema::table('board_favorites', function (Blueprint $table) {
+            // foreign
+            $table->foreign('user_id')->references('id')->on('user');
+            $table->foreign('target_id')->references('id')->on('documents');
+        });
     }
 
     /**
@@ -98,19 +157,35 @@ class Database
     {
         if (Schema::hasTable('board_slug') === false) {
             Schema::create('board_slug', function (Blueprint $table) {
-                $table->engine = "InnoDB";
+                // slug table
+                $table->engine = 'InnoDB';
 
-                $table->bigIncrements('id');
-                $table->string('target_id', 36);
-                $table->string('instance_id', 36);
-                $table->string('slug', 190);
-                $table->string('title', 180);
+                // columns
+                $table->bigIncrements('id')->comment('ID');
+                $table->string('target_id', 36)->comment("ID of board's post");
+                $table->string('instance_id', 36)->comment('ID of board');
+                $table->string('slug', 190)->comment('text for retrieval.');
+                $table->string('title', 180)->comment("slug's title");
 
-                $table->unique(array('slug'));
-                $table->index(array('title'));
-                $table->index(array('target_id'));
+                // index
+                $table->unique(['slug']);
+                $table->index(['title']);
+                $table->index(['target_id']);
             });
         }
+    }
+
+    /**
+     * created slug table
+     *
+     * @return void
+     */
+    protected static function createdSlugTable()
+    {
+        Schema::table('board_slug', function (Blueprint $table) {
+            // foreign
+            $table->foreign('target_id')->references('id')->on('documents');
+        });
     }
 
     /**
@@ -122,14 +197,32 @@ class Database
     {
         if (Schema::hasTable('board_category') === false) {
             Schema::create('board_category', function (Blueprint $table) {
-                $table->engine = "InnoDB";
+                // board_category_table
+                $table->engine = 'InnoDB';
 
-                $table->string('target_id', 36);
-                $table->integer('item_id');
+                // columns
+                $table->string('target_id', 36)->comment("ID of board's document");
+                $table->unsignedInteger('item_id')->comment('ID of category item');
 
-                $table->primary(array('target_id'));
+                // foreign
+                $table->primary(['target_id']);
+                $table->index(['item_id']);
             });
         }
+    }
+
+    /**
+     * created category table
+     *
+     * @return void
+     */
+    protected static function createdCategoryTable()
+    {
+        Schema::table('board_category', function (Blueprint $table) {
+            // foreign
+            $table->foreign('target_id')->references('id')->on('documents');
+            $table->foreign('item_id')->references('id')->on('category_item');
+        });
     }
 
     /**
@@ -141,15 +234,40 @@ class Database
     {
         if (Schema::hasTable('board_gallery_thumbs') === false) {
             Schema::create('board_gallery_thumbs', function (Blueprint $table) {
-                $table->engine = "InnoDB";
+                // board_gallery_thumbs table
+                $table->engine = 'InnoDB';
 
-                $table->string('target_id', 36);
-                $table->string('board_thumbnail_file_id', 255);
-                $table->string('board_thumbnail_external_path', 255);
-                $table->string('board_thumbnail_path', 255);
+                // columns
+                $table->string('target_id', 36)
+                    ->comment("ID of board's document");
 
-                $table->primary(array('target_id'));
+                $table->string('board_thumbnail_file_id', 255)
+                    ->comment("ID of board's thumbnail file");
+
+                $table->string('board_thumbnail_external_path', 255)
+                    ->comment("External Path of board's thumbnail file");
+
+                $table->string('board_thumbnail_path', 255)
+                    ->comment("Path of board's thumbnail file");
+
+                // index
+                $table->primary(['target_id']);
+                $table->index('board_thumbnail_file_id');
             });
         }
+    }
+
+    /**
+     * created category table
+     *
+     * @return void
+     */
+    protected static function createdGalleryThumbnailTable()
+    {
+        Schema::table('board_gallery_thumbs', function (Blueprint $table) {
+            // foreign
+            $table->foreign('target_id')->references('id')->on('documents');
+            $table->foreign('board_thumbnail_file_id')->references('id')->on('files');
+        });
     }
 }

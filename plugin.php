@@ -66,6 +66,7 @@ class Plugin extends AbstractPlugin
     public function install()
     {
         Database::create();
+        Database::created();
 
         Resources::createDefaultConfig();
         Resources::createShareConfig();
