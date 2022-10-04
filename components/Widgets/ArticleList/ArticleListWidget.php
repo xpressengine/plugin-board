@@ -257,7 +257,12 @@ class ArticleListWidget extends AbstractWidget
 
         // more 더보기 처리
         if ($more === true) {
-            $moreMenuItem = $this->getMoreMenuItem($selectedBoardIds, $selectedCategoryItemIds, $boardList);
+            $moreMenuItem = $this->getMoreMenuItem(
+                $selectedBoardIds,
+                $selectedCategoryItemIds,
+                $pagination ? $boardList->getCollection() : $boardList
+            );
+
             $moreBoardConfig = $this->boardConfigHandler->get($moreMenuItem->id);
             $moreBoardCategoryId = $moreBoardConfig->get('categoryId');
             $moreCategoryItems = collect([]);
