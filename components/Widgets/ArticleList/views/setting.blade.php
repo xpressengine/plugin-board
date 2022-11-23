@@ -15,6 +15,17 @@
 </div>
 
 <div class="form=-group">
+    <label>내가 쓴 글만 표시</label>
+    <div class="xe-btn-toggle">
+        <label>
+            <span class="sr-only">toggle</span>
+            <input name="display_my_posts" type="checkbox" @if(array_get($args, 'display_my_posts')) checked="checked" @endif />
+            <span class="toggle"></span>
+        </label>
+    </div>
+</div>
+
+<div class="form=-group">
     <label>더보기 버튼 여부</label>
     <div class="xe-btn-toggle">
         <label>
