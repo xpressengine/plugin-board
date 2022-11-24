@@ -99,9 +99,6 @@ class ArticleListWidget extends AbstractWidget
         $orderType = Arr::get($widgetConfig, 'order_type', '');
         $noticeInList = array_get($widgetConfig, 'noticeInList', array_get($widgetConfig, 'notice_type', 'withOutNotice'));
 
-        // display only my posts
-        $displayMyPosts = array_has($widgetConfig, 'display_my_posts');
-
         // more
         $more = array_has($widgetConfig, 'more');
         $moreMenuItem = null;
@@ -152,9 +149,18 @@ class ArticleListWidget extends AbstractWidget
             );
         });
 
-        if($displayMyPosts) {
+        // display only my posts
+        if (array_has($widgetConfig, 'display_my_posts')) {
             $targetUserId = auth()->id() ?: '';
             $query->where('user_id', $targetUserId);
+        }
+
+        // display only my favorite posts
+        if (array_has($widgetConfig, 'display_favorite_posts')) {
+            $targetUserId = auth()->id() ?: '';
+            $query->whereHas('favoriteUsers', function ($query) use ($targetUserId) {
+                $query->where('id', $targetUserId);
+            });
         }
 
         switch ($noticeInList) {

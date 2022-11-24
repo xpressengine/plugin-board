@@ -14,28 +14,6 @@
     <input type="number" name="recent_date" class="form-control" value="{{array_get($args, 'recent_date')}}" />
 </div>
 
-<div class="form=-group">
-    <label>내가 쓴 글만 표시</label>
-    <div class="xe-btn-toggle">
-        <label>
-            <span class="sr-only">toggle</span>
-            <input name="display_my_posts" type="checkbox" @if(array_get($args, 'display_my_posts')) checked="checked" @endif />
-            <span class="toggle"></span>
-        </label>
-    </div>
-</div>
-
-<div class="form=-group">
-    <label>더보기 버튼 여부</label>
-    <div class="xe-btn-toggle">
-        <label>
-            <span class="sr-only">toggle</span>
-                <input name="more" type="checkbox" @if(array_get($args, 'more')) checked="checked" @endif />
-            <span class="toggle"></span>
-        </label>
-    </div>
-</div>
-
 <div class="form-group">
     <label>공지 게시물 출력 타입</label>
     <select name="notice_type" class="form-control">
@@ -43,6 +21,17 @@
         <option value="withNotice" @if (in_array(array_get($args, 'noticeInList', array_get($args, 'notice_type', 'withOutNotice')), ['on', 'withNotice']) === true) selected @endif>공지 게시물을 포함해서 출력</option>
         <option value="withOutNotice" @if (in_array(array_get($args, 'noticeInList', array_get($args, 'notice_type', 'withOutNotice')), ['', 'withOutNotice']) === true) selected @endif>일반 게시물만 출력</option>
     </select>
+</div>
+
+<div class="form=-group">
+    <label>더보기 버튼 여부</label>
+    <div class="xe-btn-toggle">
+        <label>
+            <span class="sr-only">toggle</span>
+            <input name="more" type="checkbox" @if(array_get($args, 'more')) checked="checked" @endif />
+            <span class="toggle"></span>
+        </label>
+    </div>
 </div>
 
 <p>글 설정</p>
@@ -79,6 +68,28 @@
 <div class="form-group">
     <label>페이지 이름</label>
     <input type="text" name="page_name" class="form-control" placeholder="page" value="{{array_get($args, 'pageName')}}" />
+</div>
+
+<div class="form=-group">
+    <label>내가 쓴 글만 표시</label>
+    <div class="xe-btn-toggle">
+        <label>
+            <span class="sr-only">toggle</span>
+            <input name="display_my_posts" type="checkbox" @if(array_get($args, 'display_my_posts')) checked="checked" @endif />
+            <span class="toggle"></span>
+        </label>
+    </div>
+</div>
+
+<div class="form=-group">
+    <label>내가 찜한(favorite) 글만 표시</label>
+    <div class="xe-btn-toggle">
+        <label>
+            <span class="sr-only">toggle</span>
+            <input name="display_favorite_posts" type="checkbox" @if(array_get($args, 'display_favorite_posts')) checked="checked" @endif />
+            <span class="toggle"></span>
+        </label>
+    </div>
 </div>
 
 <script>
