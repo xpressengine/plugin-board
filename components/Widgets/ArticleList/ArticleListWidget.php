@@ -124,7 +124,7 @@ class ArticleListWidget extends AbstractWidget
         $query = Board::query();
 
         if ($selectedCategoryItemIds->isEmpty() === true && $selectedBoardIds->count() == 1) {
-            $query = Board::division($selectedCategoryItemIds->first())->newQuery();
+            $query = Board::division($selectedBoardIds->first())->newQuery();
         }
 
         $query->where('type', BoardModule::getId());
