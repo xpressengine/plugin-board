@@ -117,7 +117,7 @@ class BoardService
             ]);
         }
 
-        Event::fire('xe.plugin.board.notice', [$query, $request]);
+        Event::dispatch('xe.plugin.board.notice', [$query, $request]);
 
         return $query->orderBy('head', 'desc')->get();
     }
@@ -215,7 +215,7 @@ class BoardService
         $this->handler->makeWhere($query, $request, $config);
         $this->handler->makeOrder($query, $request, $config);
 
-        Event::fire('xe.plugin.board.articles', [$query, $request]);
+        Event::dispatch('xe.plugin.board.articles', [$query, $request]);
 
         if ($id !== null) {
             $board = Board::division($boardInstanceId)->newQuery()->find($id);
@@ -264,7 +264,7 @@ class BoardService
             }
         );
 
-        Event::fire('xe.plugin.board.moreItems', [$query, $config]);
+        Event::dispatch('xe.plugin.board.moreItems', [$query, $config]);
 
         return $query->take(8)->orderBy('head', 'desc')->get();
     }
