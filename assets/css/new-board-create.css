@@ -254,6 +254,10 @@
   border-color: #adb8c0;
 }
 
+.xe-list-board-body .xe-list-board-body--footer .xe-list-board-body--footer-check-box .xe-list-board-body--footer-check-list .xe-list-board-body--footer-check-item input[type="checkbox"]:focus + label:before {
+  border-color: #2684FF;
+}
+
 .xe-list-board-body .xe-list-board-body--footer .captcha_container {
   margin: 20px 0 50px 0;
 }

@@ -2,7 +2,7 @@
   "name": "xpressengine-plugin/board",
   "description": "XpressEngine's plugin for bundle (XE)",
   "keywords": ["xpressengine bundle", "XE board", "Xpressengine3 board"],
-  "version": "1.0.14",
+  "version": "1.0.15",
   "support": {
     "email": "developers@xpressengine.com"
   },
@@ -205,7 +205,7 @@
     }
   },
   "require": {
-    "xpressengine/xpressengine": "~3.0.2",
+    "xpressengine/xpressengine": "^3.0.2",
     "xpressengine-plugin/ckeditor": "*",
     "xpressengine-plugin/comment": "*"
   },
