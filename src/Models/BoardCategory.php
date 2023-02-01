@@ -40,6 +40,13 @@ class BoardCategory extends DynamicModel
     protected $fillable = ['target_id', 'item_id'];
 
     /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * get category item
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

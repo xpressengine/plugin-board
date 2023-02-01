@@ -44,6 +44,13 @@ class BoardGalleryThumb extends DynamicModel
     ];
 
     /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * thumbnail의 실제 url을 반환
      *
      * @param string $value board_thumbnail_path attribute
