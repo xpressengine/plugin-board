@@ -179,7 +179,7 @@ class ArchivesController extends Controller
                 });
         }
 
-        Event::fire('xe.plugin.board.archive', [$query, $slug->board]);
+        Event::dispatch('xe.plugin.board.archive', [$query, $slug->board]);
         $count = $query->count() ? : 1;
 
         $page = (int)($count / $config->get('perPage'));
