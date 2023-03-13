@@ -53,6 +53,13 @@ class BoardData extends DynamicModel
     ];
 
     /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * check alarm status
      *
      * @return bool

@@ -42,6 +42,13 @@ class BoardCategory extends DynamicModel
     public $incrementing = false;
 
     /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * get category item
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
