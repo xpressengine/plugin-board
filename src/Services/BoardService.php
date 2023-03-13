@@ -215,11 +215,6 @@ class BoardService
         $this->handler->makeWhere($query, $request, $config);
         $this->handler->makeOrder($query, $request, $config);
 
-        // eager loading favorite list
-        $query->with(['favorite' => function ($favoriteQuery) {
-            $favoriteQuery->where('user_id', Auth::user()->getId());
-        }, 'slug', 'data', 'thumb']);
-
         Event::dispatch('xe.plugin.board.articles', [$query, $request]);
 
         if ($id !== null) {
