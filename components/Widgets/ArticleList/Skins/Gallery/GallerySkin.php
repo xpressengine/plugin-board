@@ -2,6 +2,7 @@
 namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList\Skins\Gallery;
 
 use Xpressengine\Media\Repositories\ImageRepository;
+use Xpressengine\Plugins\Board\ConfigHandler;
 use Xpressengine\Plugins\Board\Models\Board;
 use Xpressengine\Plugins\Board\Models\BoardGalleryThumb;
 use Xpressengine\Plugins\Board\Components\Modules\BoardModule;
@@ -54,54 +55,62 @@ class GallerySkin extends GenericSkin
      */
     protected function bindGalleryThumb(Board $item)
     {
-        /** @var \Xpressengine\Media\MediaManager $mediaManager */
-        $mediaManager = app('xe.media');
+        $instanceId = $item->instance_id;
+        $configHandler = app(ConfigHandler::class);
 
-        // board gallery thumbnails 에 항목이 없는 경우
-        if ($item->board_thumbnail_file_id === null && $item->board_thumbnail_path === null) {
-            // find file by document id
-            $files = \XeStorage::fetchByFileable($item->id);
-            $fileId = '';
-            $externalPath = '';
-            $thumbnailPath = '';
+        $boardInstanceConfigEntity = $configHandler->get($instanceId);
+        $isReplaceableCoverImage = $boardInstanceConfigEntity->get('isReplaceableCoverImage');
 
-            if (count($files) == 0) {
-                // find file by contents link or path
-                $externalPath = $this->getImagePathFromContent($item->content);
+        if ($isReplaceableCoverImage === null || $isReplaceableCoverImage === true) {
+            /** @var \Xpressengine\Media\MediaManager $mediaManager */
+            $mediaManager = app('xe.media');
 
-                // make thumbnail
-                $thumbnailPath = $externalPath;
-            } else {
-                foreach ($files as $file) {
-                    if ($mediaManager->is($file) !== true) {
-                        continue;
+            // board gallery thumbnails 에 항목이 없는 경우
+            if ($item->board_thumbnail_file_id === null && $item->board_thumbnail_path === null) {
+                // find file by document id
+                $files = \XeStorage::fetchByFileable($item->id);
+                $fileId = '';
+                $externalPath = '';
+                $thumbnailPath = '';
+
+                if (count($files) == 0) {
+                    // find file by contents link or path
+                    $externalPath = $this->getImagePathFromContent($item->content);
+
+                    // make thumbnail
+                    $thumbnailPath = $externalPath;
+                } else {
+                    foreach ($files as $file) {
+                        if ($mediaManager->is($file) !== true) {
+                            continue;
+                        }
+
+                        /**
+                         * set thumbnail size
+                         */
+                        $dimension = 'L';
+
+                        $imageRepository = new ImageRepository();
+                        $media = $imageRepository->getThumbnail(
+                            $mediaManager->make($file),
+                            BoardModule::THUMBNAIL_TYPE,
+                            $dimension
+                        );
+
+                        if ($media === null) {
+                            continue;
+                        }
+
+                        $fileId = $file->id;
+                        $thumbnailPath = $media->url();
+                        break;
                     }
-
-                    /**
-                     * set thumbnail size
-                     */
-                    $dimension = 'L';
-
-                    $imageRepository = new ImageRepository();
-                    $media = $imageRepository->getThumbnail(
-                        $mediaManager->make($file),
-                        BoardModule::THUMBNAIL_TYPE,
-                        $dimension
-                    );
-
-                    if ($media === null) {
-                        continue;
-                    }
-
-                    $fileId = $file->id;
-                    $thumbnailPath = $media->url();
-                    break;
                 }
-            }
 
-            $item->board_thumbnail_file_id = $fileId;
-            $item->board_thumbnail_external_path = $externalPath;
-            $item->board_thumbnail_path = $thumbnailPath;
+                $item->board_thumbnail_file_id = $fileId;
+                $item->board_thumbnail_external_path = $externalPath;
+                $item->board_thumbnail_path = $thumbnailPath;
+            }
         }
 
         // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
