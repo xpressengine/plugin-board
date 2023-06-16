@@ -292,6 +292,20 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <div class="clearfix">
+                                                        <label>썸네일 커버가 없는 경우 첨부된 이미지, 내용으로 대체</label>
+                                                    </div>
+                                                    <select id="" name="isReplaceableCoverImage" class="form-control">
+                                                        <option value="true" {!! $config->get('isReplaceableCoverImage') === true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                        <option value="false" {!! $config->get('isReplaceableCoverImage') === false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <div class="clearfix">
                                                         <label>{{xe_trans('board::useApprove')}} </label>
                                                     </div>
                                                     <select id="" name="useApprove" class="form-control">

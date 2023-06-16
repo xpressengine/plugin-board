@@ -439,6 +439,26 @@
                                         </div>
                                     </div>
 
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="clearfix">
+                                                    <label>썸네일 커버가 없는 경우 첨부된 이미지, 내용으로 대체</label>
+
+                                                    <div class="checkbox pull-right">
+                                                        <label>
+                                                            <input type="checkbox" class="inheritCheck" data-target="isReplaceableCoverImage" @if($config->getPure('isReplaceableCoverImage') === null) checked="checked" @endif />{{ xe_trans('xe::inheritMode') }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <select id="" name="isReplaceableCoverImage" class="form-control" @if($config->getPure('isReplaceableCoverImage') === null) disabled="disabled" @endif>
+                                                    <option value="true" {!! $config->get('isReplaceableCoverImage') === true ? 'selected="selected"' : '' !!} >{{xe_trans('xe::use')}}</option>
+                                                    <option value="false" {!! $config->get('isReplaceableCoverImage') === false ? 'selected="selected"' : '' !!} >{{xe_trans('xe::disuse')}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="row">
 
