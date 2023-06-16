@@ -91,7 +91,7 @@ class GallerySkin extends CommonSkin
     {
         intercept(
             sprintf('%s@getOrders', BoardHandler::class),
-            static::class.'-board-getOrders',
+            static::class . '-board-getOrders',
             function ($func) {
                 $orders = $func();
                 $orders[] = ['value' => 'exceptNotice', 'text' => 'board::exceptNotice'];
@@ -101,7 +101,7 @@ class GallerySkin extends CommonSkin
 
         intercept(
             sprintf('%s@getsNotice', BoardHandler::class),
-            static::class.'-board-getsNotice',
+            static::class . '-board-getsNotice',
             function ($func, ConfigEntity $config, $userId) {
                 $notice = $func($config, $userId);
 
@@ -215,71 +215,73 @@ class GallerySkin extends CommonSkin
      */
     protected static function bindGalleryThumb(Board $item)
     {
+        if ($item->thumb !== null) {
+            $item->board_thumbnail_file_id = $item->thumb->board_thumbnail_file_id;
+            $item->board_thumbnail_external_path = $item->thumb->board_thumbnail_external_path;
+            $item->board_thumbnail_path = $item->thumb->board_thumbnail_path;
+
+            return;
+        }
+
         $instanceId = $item->instance_id;
         $configHandler = app(ConfigHandler::class);
 
         $boardInstanceConfigEntity = $configHandler->get($instanceId);
         $isReplaceableCoverImage = $boardInstanceConfigEntity->get('isReplaceableCoverImage');
 
-        if ($isReplaceableCoverImage === null || $isReplaceableCoverImage === true){
+        if ($isReplaceableCoverImage === null || $isReplaceableCoverImage === true) {
             /** @var \Xpressengine\Media\MediaManager $mediaManager */
             $mediaManager = App::make('xe.media');
 
             // board gallery thumbnails 에 항목이 없는 경우
-            if ($item->thumb == null) {
-                // find file by document id
-                $files = XeStorage::fetchByFileable($item->id);
-                $fileId = '';
-                $externalPath = '';
-                $thumbnailPath = '';
+            // find file by document id
+            $files = XeStorage::fetchByFileable($item->id);
+            $fileId = '';
+            $externalPath = '';
+            $thumbnailPath = '';
 
-                if (count($files) == 0) {
-                    // find file by contents link or path
-                    $externalPath = static::getImagePathFromContent($item->content);
+            if (count($files) == 0) {
+                // find file by contents link or path
+                $externalPath = static::getImagePathFromContent($item->content);
 
-                    // make thumbnail
-                    $thumbnailPath = $externalPath;
-                } else {
-                    foreach ($files as $file) {
-                        if ($mediaManager->is($file) !== true) {
-                            continue;
-                        }
-
-                        /**
-                         * set thumbnail size
-                         */
-                        $dimension = 'L';
-
-                        $imageRepository = new ImageRepository();
-                        $media = $imageRepository->getThumbnail(
-                            $mediaManager->make($file),
-                            BoardModule::THUMBNAIL_TYPE,
-                            $dimension
-                        );
-
-                        if ($media === null) {
-                            continue;
-                        }
-
-                        $fileId = $file->id;
-                        $thumbnailPath = $media->url();
-                        break;
-                    }
-                }
-
-                $item->board_thumbnail_file_id = $fileId;
-                $item->board_thumbnail_external_path = $externalPath;
-                $item->board_thumbnail_path = $thumbnailPath;
+                // make thumbnail
+                $thumbnailPath = $externalPath;
             } else {
-                $item->board_thumbnail_file_id = $item->thumb->board_thumbnail_file_id;
-                $item->board_thumbnail_external_path = $item->thumb->board_thumbnail_external_path;
-                $item->board_thumbnail_path = $item->thumb->board_thumbnail_path;
-            }
-        }
+                foreach ($files as $file) {
+                    if ($mediaManager->is($file) !== true) {
+                        continue;
+                    }
 
-        // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
-        if ($item->board_thumbnail_path == '') {
-            $item->board_thumbnail_path = asset('assets/core/common/img/default_image_1200x800.jpg');
+                    /**
+                     * set thumbnail size
+                     */
+                    $dimension = 'L';
+
+                    $imageRepository = new ImageRepository();
+                    $media = $imageRepository->getThumbnail(
+                        $mediaManager->make($file),
+                        BoardModule::THUMBNAIL_TYPE,
+                        $dimension
+                    );
+
+                    if ($media === null) {
+                        continue;
+                    }
+
+                    $fileId = $file->id;
+                    $thumbnailPath = $media->url();
+                    break;
+                }
+            }
+
+            $item->board_thumbnail_file_id = $fileId;
+            $item->board_thumbnail_external_path = $externalPath;
+            $item->board_thumbnail_path = $thumbnailPath;
+
+            // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
+            if ($item->board_thumbnail_path == '') {
+                $item->board_thumbnail_path = asset('assets/core/common/img/default_image_1200x800.jpg');
+            }
         }
     }
 
@@ -298,7 +300,7 @@ class GallerySkin extends CommonSkin
 
         preg_match_all($pattern, $content, $matches);
         if (isset($matches[1][0])) {
-            $path= $matches[1][0];
+            $path = $matches[1][0];
         }
 
         $fullUrl = $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'];
