@@ -1,4 +1,5 @@
 <?php
+
 namespace Xpressengine\Plugins\Board\Components\Widgets\ArticleList\Skins\Gallery;
 
 use Xpressengine\Media\Repositories\ImageRepository;
@@ -55,6 +56,14 @@ class GallerySkin extends GenericSkin
      */
     protected function bindGalleryThumb(Board $item)
     {
+        if ($item->thumb !== null) {
+            $item->board_thumbnail_file_id = $item->thumb->board_thumbnail_file_id;
+            $item->board_thumbnail_external_path = $item->thumb->board_thumbnail_external_path;
+            $item->board_thumbnail_path = $item->thumb->board_thumbnail_path;
+
+            return;
+        }
+
         $instanceId = $item->instance_id;
         $configHandler = app(ConfigHandler::class);
 
@@ -66,56 +75,54 @@ class GallerySkin extends GenericSkin
             $mediaManager = app('xe.media');
 
             // board gallery thumbnails 에 항목이 없는 경우
-            if ($item->board_thumbnail_file_id === null && $item->board_thumbnail_path === null) {
-                // find file by document id
-                $files = \XeStorage::fetchByFileable($item->id);
-                $fileId = '';
-                $externalPath = '';
-                $thumbnailPath = '';
+            // find file by document id
+            $files = \XeStorage::fetchByFileable($item->id);
+            $fileId = '';
+            $externalPath = '';
+            $thumbnailPath = '';
 
-                if (count($files) == 0) {
-                    // find file by contents link or path
-                    $externalPath = $this->getImagePathFromContent($item->content);
+            if (count($files) == 0) {
+                // find file by contents link or path
+                $externalPath = $this->getImagePathFromContent($item->content);
 
-                    // make thumbnail
-                    $thumbnailPath = $externalPath;
-                } else {
-                    foreach ($files as $file) {
-                        if ($mediaManager->is($file) !== true) {
-                            continue;
-                        }
-
-                        /**
-                         * set thumbnail size
-                         */
-                        $dimension = 'L';
-
-                        $imageRepository = new ImageRepository();
-                        $media = $imageRepository->getThumbnail(
-                            $mediaManager->make($file),
-                            BoardModule::THUMBNAIL_TYPE,
-                            $dimension
-                        );
-
-                        if ($media === null) {
-                            continue;
-                        }
-
-                        $fileId = $file->id;
-                        $thumbnailPath = $media->url();
-                        break;
+                // make thumbnail
+                $thumbnailPath = $externalPath;
+            } else {
+                foreach ($files as $file) {
+                    if ($mediaManager->is($file) !== true) {
+                        continue;
                     }
+
+                    /**
+                     * set thumbnail size
+                     */
+                    $dimension = 'L';
+
+                    $imageRepository = new ImageRepository();
+                    $media = $imageRepository->getThumbnail(
+                        $mediaManager->make($file),
+                        BoardModule::THUMBNAIL_TYPE,
+                        $dimension
+                    );
+
+                    if ($media === null) {
+                        continue;
+                    }
+
+                    $fileId = $file->id;
+                    $thumbnailPath = $media->url();
+                    break;
                 }
-
-                $item->board_thumbnail_file_id = $fileId;
-                $item->board_thumbnail_external_path = $externalPath;
-                $item->board_thumbnail_path = $thumbnailPath;
             }
-        }
 
-        // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
-        if ($item->board_thumbnail_path == '') {
-            $item->board_thumbnail_path = asset('assets/core/common/img/default_image_1200x800.jpg');
+            $item->board_thumbnail_file_id = $fileId;
+            $item->board_thumbnail_external_path = $externalPath;
+            $item->board_thumbnail_path = $thumbnailPath;
+
+            // 없을 경우 출력될 디폴트 이미지 (스킨의 설정으로 뺄 수 있을것 같음)
+            if ($item->board_thumbnail_path == '') {
+                $item->board_thumbnail_path = asset('assets/core/common/img/default_image_1200x800.jpg');
+            }
         }
     }
 
@@ -134,7 +141,7 @@ class GallerySkin extends GenericSkin
 
         preg_match_all($pattern, $content, $matches);
         if (isset($matches[1][0])) {
-            $path= $matches[1][0];
+            $path = $matches[1][0];
         }
 
         return $path;
@@ -150,7 +157,7 @@ class GallerySkin extends GenericSkin
     public function renderSetting(array $args = [])
     {
         return $view = View::make(sprintf('%s/views/setting', static::$path), [
-            'args'=>$args
+            'args' => $args
         ]);
     }
 }
